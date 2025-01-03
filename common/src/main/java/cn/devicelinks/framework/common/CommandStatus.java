@@ -6,21 +6,21 @@ package cn.devicelinks.framework.common;
  * @author 恒宇少年
  * @since 1.0
  */
-public enum DeviceCommandStatus {
+public enum CommandStatus {
     /**
-     * 等待发送
+     * 待发送
      */
-    WAIT_SEND,
+    wait,
+    /**
+     * 已发送
+     */
+    sent,
+    /**
+     * 发送成功
+     */
+    success,
     /**
      * 发送失败
      */
-    SEND_ERROR,
-    /**
-     * 等待响应
-     */
-    WAIT_RESPONSE,
-    /**
-     * 成功
-     */
-    SUCCESS
+    failure
 }

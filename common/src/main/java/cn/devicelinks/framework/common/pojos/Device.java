@@ -41,7 +41,6 @@ public class Device implements Serializable {
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
     private String deviceNumber;
-    private String tenantId;
     private String productId;
     private String name;
     private DeviceStatus status;
