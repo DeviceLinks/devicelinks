@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/devicelinks
+    username: root
+    password: gCIqBTU3WueMCfJON0z5
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  data:
+    redis:
+      database: 2
+      password: homeserver@2025
+
+logging:
+  level:
+    cn.devicelinks.framework.jdbc: debug

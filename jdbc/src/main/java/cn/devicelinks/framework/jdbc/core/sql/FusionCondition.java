@@ -1,0 +1,92 @@
+package cn.devicelinks.framework.jdbc.core.sql;
+
+import lombok.Getter;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 融合数据过滤条件
+ *
+ * @author 恒宇少年
+ * @see Condition
+ * @see ConditionGroup
+ * @see SortCondition
+ * @see LimitCondition
+ * @since 1.0
+ */
+@Getter
+public class FusionCondition {
+    private final List<Condition> conditions;
+    private final List<ConditionGroup> conditionGroups;
+    private final SortCondition sort;
+    private final LimitCondition limit;
+
+    private FusionCondition(List<Condition> conditions, List<ConditionGroup> conditionGroups, SortCondition sort, LimitCondition limit) {
+        this.conditions = conditions;
+        this.conditionGroups = conditionGroups;
+        this.sort = sort;
+        this.limit = limit;
+    }
+
+    public static FusionCondition empty() {
+        return new FusionCondition(null, null, null, null);
+    }
+
+    public static FusionConditionBuilder withCondition(Condition condition) {
+        Assert.notNull(condition, "Condition must not be null");
+        return new FusionConditionBuilder().conditions(condition);
+    }
+
+    public static FusionConditionBuilder withConditions(Condition... conditions) {
+        Assert.notEmpty(conditions, "Conditions must not be empty");
+        return new FusionConditionBuilder().conditions(conditions);
+    }
+
+    public static FusionConditionBuilder withConditionGroup(ConditionGroup conditionGroup) {
+        Assert.notNull(conditionGroup, "ConditionGroup must not be null");
+        return new FusionConditionBuilder().conditionGroups(conditionGroup);
+    }
+
+    public static FusionConditionBuilder withConditionGroups(ConditionGroup... conditionGroups) {
+        Assert.notEmpty(conditionGroups, "ConditionGroups must not be empty");
+        return new FusionConditionBuilder().conditionGroups(conditionGroups);
+    }
+
+    public static FusionConditionBuilder withLimit(LimitCondition limit) {
+        Assert.notNull(limit, "Limit must not be null");
+        return new FusionConditionBuilder().limit(limit);
+    }
+
+    public static class FusionConditionBuilder {
+        private List<Condition> conditions = new ArrayList<>();
+        private List<ConditionGroup> conditionGroups = new ArrayList<>();
+        private SortCondition sort;
+        private LimitCondition limit;
+
+        public FusionConditionBuilder conditionGroups(ConditionGroup... conditionGroups) {
+            this.conditionGroups = List.of(conditionGroups);
+            return this;
+        }
+
+        public FusionConditionBuilder conditions(Condition... conditions) {
+            this.conditions = List.of(conditions);
+            return this;
+        }
+
+        public FusionConditionBuilder sort(SortCondition sort) {
+            this.sort = sort;
+            return this;
+        }
+
+        public FusionConditionBuilder limit(LimitCondition limit) {
+            this.limit = limit;
+            return this;
+        }
+
+        public FusionCondition build() {
+            return new FusionCondition(conditions, conditionGroups, sort, limit);
+        }
+    }
+}

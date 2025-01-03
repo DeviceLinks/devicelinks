@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2023  恒宇少年
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <springProperty scope="context" name="port" source="server.port"/>
+    <springProperty scope="context" name="httpApiPath" source="devicelinks.loki.http-api-path"/>
+    <springProperty scope="context" name="lokiBasicAuthUser" source="devicelinks.loki.basic-auth-user"/>
+    <springProperty scope="context" name="lokiBasicAuthPassword" source="devicelinks.loki.basic-auth-password"/>
+    <springProperty scope="context" name="profile" source="spring.profiles.active"/>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %green(%-5level) %magenta(${PID:-}) --- [%15.15thread] %cyan(%-40.40logger{40}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="loki" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>${httpApiPath}/loki/api/v1/push</url>
+            <auth>
+                <username>${lokiBasicAuthUser}</username>
+                <password>${lokiBasicAuthPassword}</password>
+            </auth>
+        </http>
+        <format>
+            <label>
+                <!--MDC参数：account：账号，requestId：请求ID，resourceId：资源ID-->
+                <pattern>service_name=${name},service_version=${version},service_port=${port},environment=${profile},host=${HOSTNAME},level=%level,account=%X{X-Account-ID:-unknown},requestId=%X{X-Request-ID:-unknown},resourceId=%X{X-Resource-ID:-unknown}</pattern>
+                <readMarkers>true</readMarkers>
+            </label>
+            <message>
+                <pattern>
+                    {
+                    "level":"%level",
+                    "class":"%logger{36}",
+                    "thread":"%thread",
+                    "message": "%message"
+                    }
+                </pattern>
+            </message>
+        </format>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+    </root>
+    <logger name="cn.devicelinks.management.console" level="DEBUG" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="cn.devicelinks.jdbc" level="DEBUG" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="cn.devicelinks.component" level="DEBUG" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+</configuration>
