@@ -29,7 +29,6 @@ public class TProduct extends TableImpl {
     public final Column PRODUCT_KEY = Column.withName("product_key").build();
     public final Column PRODUCT_SECRET = Column.withName("product_secret").build();
     public final Column NETWORKING_AWAY = Column.withName("networking_away").typeMapper(ColumnValueMappers.DEVICE_NETWORKING_AWAY).build();
-    public final Column PROTOCOL_ID = Column.withName("protocol_id").build();
     public final Column DATA_FORMAT = Column.withName("data_format").typeMapper(ColumnValueMappers.DATA_FORMAT).build();
     public final Column AUTHENTICATION_METHOD = Column.withName("authentication_method").typeMapper(ColumnValueMappers.DEVICE_AUTHENTICATION_METHOD).build();
     public final Column SIGNATURE_CODE = Column.withName("signature_code").build();
@@ -40,6 +39,6 @@ public class TProduct extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, NETWORKING_AWAY, PROTOCOL_ID, DATA_FORMAT, AUTHENTICATION_METHOD, SIGNATURE_CODE, STATUS, DELETED, DESCRIPTION, CREATE_TIME);
+        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, NETWORKING_AWAY, DATA_FORMAT, AUTHENTICATION_METHOD, SIGNATURE_CODE, STATUS, DELETED, DESCRIPTION, CREATE_TIME);
     }
 }

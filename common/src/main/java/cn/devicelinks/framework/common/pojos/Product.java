@@ -24,7 +24,6 @@ public class Product implements Serializable {
     private String productKey;
     private String productSecret;
     private DeviceNetworkingAway networkingAway;
-    private String protocolId;
     private DataFormat dataFormat;
     private DeviceAuthenticationMethod authenticationMethod;
     private String signatureCode;
