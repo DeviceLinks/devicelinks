@@ -10,23 +10,24 @@ import java.io.Serial;
 import java.util.List;
 
 /**
- * The {@link Product} Table Impl
+ * The {@link Product} TableImpl
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class TDeviceProduct extends TableImpl {
+public class TProduct extends TableImpl {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TDeviceProduct DEVICE_PRODUCT = new TDeviceProduct("device_product");
+    public static final TProduct PRODUCT = new TProduct("product");
 
-    private TDeviceProduct(String tableName) {
+    private TProduct(String tableName) {
         super(tableName);
     }
 
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column NAME = Column.withName("name").build();
-    public final Column TENANT_ID = Column.withName("tenant_id").build();
+    public final Column PRODUCT_KEY = Column.withName("product_key").build();
+    public final Column PRODUCT_SECRET = Column.withName("product_secret").build();
     public final Column NETWORKING_AWAY = Column.withName("networking_away").typeMapper(ColumnValueMappers.DEVICE_NETWORKING_AWAY).build();
     public final Column PROTOCOL_ID = Column.withName("protocol_id").build();
     public final Column DATA_FORMAT = Column.withName("data_format").typeMapper(ColumnValueMappers.DATA_FORMAT).build();
@@ -39,6 +40,6 @@ public class TDeviceProduct extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, TENANT_ID, NETWORKING_AWAY, PROTOCOL_ID, DATA_FORMAT, AUTHENTICATION_METHOD, SIGNATURE_CODE, STATUS, DELETED, DESCRIPTION, CREATE_TIME);
+        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, NETWORKING_AWAY, PROTOCOL_ID, DATA_FORMAT, AUTHENTICATION_METHOD, SIGNATURE_CODE, STATUS, DELETED, DESCRIPTION, CREATE_TIME);
     }
 }

@@ -25,7 +25,6 @@ public class TSysGroup extends TableImpl {
     }
 
     public final Column ID = Column.withName("id").primaryKey().build();
-    public final Column TENANT_ID = Column.withName("tenant_id").build();
     public final Column DEPARTMENT_ID = Column.withName("department_id").build();
     public final Column NAME = Column.withName("name").build();
     public final Column TYPE = Column.withName("type").typeMapper(ColumnValueMappers.GROUP_TYPE).build();
@@ -36,6 +35,6 @@ public class TSysGroup extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, TENANT_ID, DEPARTMENT_ID, TYPE, ENABLED, DELETED, CREATE_BY, CREATE_TIME);
+        return List.of(ID, NAME, DEPARTMENT_ID, TYPE, ENABLED, DELETED, CREATE_BY, CREATE_TIME);
     }
 }

@@ -21,7 +21,8 @@ public class Product implements Serializable {
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
     private String name;
-    private String tenantId;
+    private String productKey;
+    private String productSecret;
     private DeviceNetworkingAway networkingAway;
     private String protocolId;
     private DataFormat dataFormat;

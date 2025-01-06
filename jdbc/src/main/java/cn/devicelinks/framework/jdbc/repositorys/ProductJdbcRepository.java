@@ -3,7 +3,7 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.Product;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.tables.TDeviceProduct;
+import cn.devicelinks.framework.jdbc.tables.TProduct;
 import org.springframework.jdbc.core.JdbcOperations;
 
 /**
@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.JdbcOperations;
  * @since 1.0
  */
 @RegisterBean
-public class DeviceProductJdbcRepository extends JdbcRepository<Product, String> implements DeviceProductRepository {
-    public DeviceProductJdbcRepository(JdbcOperations jdbcOperations) {
-        super(TDeviceProduct.DEVICE_PRODUCT, jdbcOperations);
+public class ProductJdbcRepository extends JdbcRepository<Product, String> implements ProductRepository {
+    public ProductJdbcRepository(JdbcOperations jdbcOperations) {
+        super(TProduct.PRODUCT, jdbcOperations);
     }
 }

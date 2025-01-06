@@ -20,7 +20,6 @@ public class SysPosition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
-    private String tenantId;
     private String name;
     private boolean deleted;
     private boolean enabled;

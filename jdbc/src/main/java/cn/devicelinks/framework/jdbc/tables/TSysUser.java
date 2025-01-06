@@ -32,7 +32,6 @@ public class TSysUser extends TableImpl {
     public final Column ACCOUNT = Column.withName("account").build();
     public final Column IDENTITY = Column.withName("identity").typeMapper(USER_IDENTITY).build();
     public final Column PWD = Column.withName("pwd").build();
-    public final Column TENANT_ID = Column.withName("tenant_id").build();
     public final Column DEPARTMENT_ID = Column.withName("department_id").build();
     public final Column POSITION_ID = Column.withName("position_id").build();
     public final Column ENABLED = Column.withName("enabled").booleanValue().build();
@@ -44,6 +43,6 @@ public class TSysUser extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, ACCOUNT, IDENTITY, PWD, TENANT_ID, DEPARTMENT_ID, POSITION_ID, ENABLED, DELETED, LAST_LOGIN_TIME, LAST_CHANGE_PWD_TIME, CREATE_BY, CREATE_TIME);
+        return List.of(ID, NAME, ACCOUNT, IDENTITY, PWD, DEPARTMENT_ID, POSITION_ID, ENABLED, DELETED, LAST_LOGIN_TIME, LAST_CHANGE_PWD_TIME, CREATE_BY, CREATE_TIME);
     }
 }

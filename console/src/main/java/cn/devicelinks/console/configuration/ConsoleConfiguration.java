@@ -59,11 +59,6 @@ public class ConsoleConfiguration {
             }
 
             @Override
-            public String getTenantId() {
-                return UserDetailsContext.getTenantId();
-            }
-
-            @Override
             public List<SysGroup> getUserGroups() {
                 return UserDetailsContext.getUserGroups();
             }

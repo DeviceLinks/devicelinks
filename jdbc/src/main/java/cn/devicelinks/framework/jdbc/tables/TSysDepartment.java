@@ -26,7 +26,6 @@ public class TSysDepartment extends TableImpl {
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column NAME = Column.withName("name").build();
     public final Column CODE = Column.withName("code").build();
-    public final Column TENANT_ID = Column.withName("tenant_id").build();
     public final Column PID = Column.withName("pid").build();
     public final Column SORT = Column.withName("sort").intValue().build();
     public final Column LEVEL = Column.withName("level").intValue().build();
@@ -37,6 +36,6 @@ public class TSysDepartment extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, CODE, TENANT_ID, PID, SORT, LEVEL, CREATE_BY, CREATE_TIME, DELETED, MARK);
+        return List.of(ID, NAME, CODE, PID, SORT, LEVEL, CREATE_BY, CREATE_TIME, DELETED, MARK);
     }
 }

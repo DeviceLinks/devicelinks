@@ -39,7 +39,6 @@ public class SysDepartment implements Serializable {
     private String id;
     private String name;
     private String code;
-    private String tenantId;
     private String pid;
     private int sort;
     private int level;

@@ -25,7 +25,6 @@ public class TSysUserOperateLog extends TableImpl {
     }
 
     public final Column ID = Column.withName("id").primaryKey().build();
-    private final Column TENANT_ID = Column.withName("tenant_id").build();
     public final Column USER_ID = Column.withName("user_id").build();
     public final Column REQUEST_ID = Column.withName("request_id").build();
     public final Column RESOURCE_CODE = Column.withName("resource_code").build();
@@ -42,6 +41,6 @@ public class TSysUserOperateLog extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, TENANT_ID, USER_ID, REQUEST_ID, RESOURCE_CODE, ACTION, OBJECT_TYPE, OBJECT, MSG, OBJECT_FIELDS, SUCCESS, FAILURE_REASON, IP_ADDRESS, ADDITION, OPERATE_TIME);
+        return List.of(ID, USER_ID, REQUEST_ID, RESOURCE_CODE, ACTION, OBJECT_TYPE, OBJECT, MSG, OBJECT_FIELDS, SUCCESS, FAILURE_REASON, IP_ADDRESS, ADDITION, OPERATE_TIME);
     }
 }

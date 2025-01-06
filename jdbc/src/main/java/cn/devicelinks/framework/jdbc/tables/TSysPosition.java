@@ -20,7 +20,6 @@ public class TSysPosition extends TableImpl {
     public static final TSysPosition SYS_POSITION = new TSysPosition("sys_position");
 
     public final Column ID = Column.withName("id").primaryKey().build();
-    public final Column TENANT_ID = Column.withName("tenant_id").build();
     public final Column NAME = Column.withName("name").build();
     public final Column DELETED = Column.withName("deleted").booleanValue().build();
     public final Column ENABLED = Column.withName("enabled").booleanValue().build();
@@ -34,6 +33,6 @@ public class TSysPosition extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, TENANT_ID, NAME, DELETED, ENABLED, CREATE_TIME, CREATE_BY, MARK);
+        return List.of(ID, NAME, DELETED, ENABLED, CREATE_TIME, CREATE_BY, MARK);
     }
 }

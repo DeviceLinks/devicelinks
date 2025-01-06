@@ -50,10 +50,6 @@ public final class UserDetailsContext {
         return getUserAddition().getUser();
     }
 
-    public static String getTenantId() {
-        return getUser().getTenantId();
-    }
-
     public static SysPosition getUserPosition() {
         return getUserAddition().getPosition();
     }

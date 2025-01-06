@@ -50,6 +50,24 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper DEVICE_NETWORKING_AWAY = new EnumColumnValueMapper(DeviceNetworkingAway.class);
     EnumColumnValueMapper PRODUCT_STATUS = new EnumColumnValueMapper(ProductStatus.class);
     EnumColumnValueMapper SESSION_STATUS = new EnumColumnValueMapper(SessionStatus.class);
+    EnumColumnValueMapper COMMAND_STATUS = new EnumColumnValueMapper(CommandStatus.class);
+    EnumColumnValueMapper DATA_PROPERTIES_TYPE = new EnumColumnValueMapper(DataPropertiesType.class);
+    EnumColumnValueMapper DATA_PROPERTIES_DATA_TYPE = new EnumColumnValueMapper(DataPropertiesDataType.class);
+    EnumColumnValueMapper DATA_PROPERTIES_RW_TYPE = new EnumColumnValueMapper(DataPropertiesRwType.class);
+    EnumColumnValueMapper TOPIC_CATEGORY = new EnumColumnValueMapper(TopicCategory.class);
+    EnumColumnValueMapper TOPIC_SUB_CATEGORY = new EnumColumnValueMapper(TopicSubCategory.class);
+    EnumColumnValueMapper TOPIC_DEVICE_PERMISSION = new EnumColumnValueMapper(TopicDevicePermission.class);
+    EnumColumnValueMapper OTA_PACKAGE_TYPE = new EnumColumnValueMapper(OtaPackageType.class);
+    EnumColumnValueMapper SIGN_ALGORITHM = new EnumColumnValueMapper(SignAlgorithm.class);
+    EnumColumnValueMapper OTA_UPGRADE_BATCH_TYPE = new EnumColumnValueMapper(OtaUpgradeBatchType.class);
+    EnumColumnValueMapper OTA_UPGRADE_BATCH_STATE = new EnumColumnValueMapper(OtaUpgradeBatchState.class);
+    EnumColumnValueMapper OTA_UPGRADE_BATCH_METHOD = new EnumColumnValueMapper(OtaUpgradeBatchMethod.class);
+    EnumColumnValueMapper OTA_UPGRADE_BATCH_SCOPE = new EnumColumnValueMapper(OtaUpgradeBatchScope.class);
+    EnumColumnValueMapper OTA_UPGRADE_PROGRESS_STATE = new EnumColumnValueMapper(OtaUpgradeProgressState.class);
+    EnumColumnValueMapper OTA_UPGRADE_STRATEGY_TYPE = new EnumColumnValueMapper(OtaUpgradeStrategyType.class);
+    EnumColumnValueMapper OTA_UPGRADE_STRATEGY_RETRY_INTERVAL = new EnumColumnValueMapper(OtaUpgradeStrategyRetryInterval.class);
+    EnumColumnValueMapper OTA_PACKAGE_DOWNLOAD_PROTOCOL = new EnumColumnValueMapper(OtaPackageDownloadProtocol.class);
+    EnumColumnValueMapper GLOBAL_SETTING_TYPE = new EnumColumnValueMapper(GlobalSettingType.class);
 
 
     // ------------------------------------Customize Mappers---------------------------------------//

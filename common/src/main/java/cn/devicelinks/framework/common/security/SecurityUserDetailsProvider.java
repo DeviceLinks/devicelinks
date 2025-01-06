@@ -45,13 +45,6 @@ public interface SecurityUserDetailsProvider {
     SysPosition getUserPosition();
 
     /**
-     * 获取当前登录用户的租户ID
-     *
-     * @return {@link SysUser#getTenantId()}
-     */
-    String getTenantId();
-
-    /**
      * 获取用户授权的用户组列表
      *
      * @return 用户组列表

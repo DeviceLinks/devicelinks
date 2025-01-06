@@ -9,20 +9,18 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 日期属性单位
+ * OTA升级文件
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
 @Accessors(chain = true)
-public class DatePropertiesUnit implements Serializable {
+public class OtaFile implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
-    private String name;
-    private String symbol;
-    private boolean enabled;
-    private boolean deleted;
+    private String otaId;
+    private String fileId;
     private LocalDateTime createTime;
 }

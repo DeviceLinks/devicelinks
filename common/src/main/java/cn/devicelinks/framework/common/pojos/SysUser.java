@@ -42,7 +42,6 @@ public class SysUser implements Serializable {
     private String account;
     private UserIdentity identity;
     private String pwd;
-    private String tenantId;
     private String departmentId;
     private String positionId;
     private boolean enabled;

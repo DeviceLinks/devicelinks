@@ -9,6 +9,6 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface DeviceProductRepository extends Repository<Product, String> {
+public interface ProductRepository extends Repository<Product, String> {
 
 }

@@ -38,7 +38,6 @@ public class SysGroup implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
-    private String tenantId;
     private String departmentId;
     private String name;
     private GroupType type;
