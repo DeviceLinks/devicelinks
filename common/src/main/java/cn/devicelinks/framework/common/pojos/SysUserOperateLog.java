@@ -24,6 +24,7 @@ public class SysUserOperateLog implements Serializable {
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
     private String userId;
+    private String sessionId;
     private String requestId;
     private String resourceCode;
     private OperateAction action;
