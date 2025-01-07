@@ -111,37 +111,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <!--Publish to central-->
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>${central-publishing-maven-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>hengyu</publishingServerId>
-                    <excludeArtifacts>
-                        <artifact>devicelinks-build</artifact>
-                        <artifact>devicelinks-console</artifact>
-                        <artifact>devicelinks-core-service</artifact>
-                    </excludeArtifacts>
-                </configuration>
-            </plugin>
-            <!--GPG-->
-            <plugin>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven-gpg-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 
     <profiles>
@@ -206,6 +175,36 @@
                                 <id>package</id>
                                 <goals>
                                     <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!--Publish to central-->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central-publishing-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>hengyu</publishingServerId>
+                            <excludeArtifacts>
+                                <artifact>devicelinks-build</artifact>
+                                <artifact>devicelinks-console</artifact>
+                                <artifact>devicelinks-core-service</artifact>
+                            </excludeArtifacts>
+                        </configuration>
+                    </plugin>
+                    <!--GPG-->
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
                                 </goals>
                             </execution>
                         </executions>
