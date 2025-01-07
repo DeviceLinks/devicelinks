@@ -35,6 +35,9 @@
         <central-publishing-maven-plugin.version>0.6.0</central-publishing-maven-plugin.version>
         <maven-javadoc-plugin.version>3.11.1</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
+        <origin.source.dir>src/main/java</origin.source.dir>
+        <delombok.dir>${project.build.directory}/generated-sources/delombok</delombok.dir>
+        <source.generate.dir>${delombok.dir}</source.generate.dir>
     </properties>
     <licenses>
         <license>
@@ -79,6 +82,8 @@
         </repository>
     </repositories>
     <build>
+        <!--The source code directory used to build the project-->
+        <sourceDirectory>${source.generate.dir}</sourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -104,6 +109,7 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <!--Publish to central-->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -118,32 +124,65 @@
                     </excludeArtifacts>
                 </configuration>
             </plugin>
+            <!--Source-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${maven.source.plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
+                        <id>package</id>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <!--Lombok-->
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.18.20.0</version>
+                <!--Support java21-->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>1.18.36</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <sourceDirectory>${origin.source.dir}</sourceDirectory>
+                    <outputDirectory>${delombok.dir}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--Javadoc-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
+                        <id>package</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <!--GPG-->
             <plugin>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven-gpg-plugin.version}</version>
