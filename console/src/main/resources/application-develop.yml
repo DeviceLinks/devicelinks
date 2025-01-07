@@ -12,11 +12,6 @@ spring:
       password: homeserver@2025
 
 devicelinks:
-  # 配置loki日志服务参数
-  loki:
-    basic-auth-user: admin
-    basic-auth-password: CrmerGc8il
-    http-api-path: http://localhost:3200
   # 应用服务配置
   console:
     token:
