@@ -1,4 +1,4 @@
-import cn.devicelinks.framework.common.pojos.SysGlobalSetting;
+import cn.devicelinks.framework.common.pojos.ProtocolGateway;
 import com.google.common.base.CaseFormat;
 
 import java.lang.reflect.Field;
@@ -12,11 +12,14 @@ import java.util.*;
  */
 public class TableImplGenerator {
     public static void main(String[] args) {
-        generate(SysGlobalSetting.class, new HashMap<>() {
+        generate(ProtocolGateway.class, new HashMap<>() {
             {
-                put("dataType", ".typeMapper(ColumnValueMappers.GLOBAL_SETTING_TYPE)");
-                put("multivalued", ".booleanValue()");
-                put("allowSelfSet", ".booleanValue()");
+                put("protocol", ".typeMapper(ColumnValueMappers.GATEWAY_PROTOCOL)");
+                put("port", ".intValue()");
+                put("authenticationMethod", ".typeMapper(ColumnValueMappers.GATEWAY_AUTHENTICATION_METHOD)");
+                put("transportProtocol", ".typeMapper(ColumnValueMappers.DATA_TRANSPORT_PROTOCOL)");
+                put("status", ".typeMapper(ColumnValueMappers.GATEWAY_STATUS)");
+
 
                 put("addition", ".typeMapper(ColumnValueMappers.JSON_MAP)");
                 put("enabled", ".booleanValue()");

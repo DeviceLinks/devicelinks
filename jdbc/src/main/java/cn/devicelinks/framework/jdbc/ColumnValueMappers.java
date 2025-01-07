@@ -68,6 +68,10 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper OTA_UPGRADE_STRATEGY_RETRY_INTERVAL = new EnumColumnValueMapper(OtaUpgradeStrategyRetryInterval.class);
     EnumColumnValueMapper OTA_PACKAGE_DOWNLOAD_PROTOCOL = new EnumColumnValueMapper(OtaPackageDownloadProtocol.class);
     EnumColumnValueMapper GLOBAL_SETTING_TYPE = new EnumColumnValueMapper(GlobalSettingType.class);
+    EnumColumnValueMapper GATEWAY_PROTOCOL = new EnumColumnValueMapper(GatewayProtocol.class);
+    EnumColumnValueMapper GATEWAY_AUTHENTICATION_METHOD = new EnumColumnValueMapper(GatewayAuthenticationMethod.class);
+    EnumColumnValueMapper DATA_TRANSPORT_PROTOCOL = new EnumColumnValueMapper(DataTransportProtocol.class);
+    EnumColumnValueMapper GATEWAY_STATUS = new EnumColumnValueMapper(GatewayStatus.class);
 
 
     // ------------------------------------Customize Mappers---------------------------------------//
