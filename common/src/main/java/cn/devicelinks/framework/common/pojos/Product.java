@@ -27,6 +27,7 @@ public class Product implements Serializable {
     private DataFormat dataFormat;
     private DeviceAuthenticationMethod authenticationMethod;
     private String signatureCode;
+    private boolean dynamicRegistration;
     private ProductStatus status;
     private boolean deleted;
     private String description;

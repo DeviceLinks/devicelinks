@@ -32,6 +32,7 @@ public class TProduct extends TableImpl {
     public final Column DATA_FORMAT = Column.withName("data_format").typeMapper(ColumnValueMappers.DATA_FORMAT).build();
     public final Column AUTHENTICATION_METHOD = Column.withName("authentication_method").typeMapper(ColumnValueMappers.DEVICE_AUTHENTICATION_METHOD).build();
     public final Column SIGNATURE_CODE = Column.withName("signature_code").build();
+    public final Column DYNAMIC_REGISTRATION = Column.withName("dynamic_registration").build();
     public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.PRODUCT_STATUS).build();
     public final Column DELETED = Column.withName("deleted").booleanValue().build();
     public final Column DESCRIPTION = Column.withName("description").build();
@@ -39,6 +40,6 @@ public class TProduct extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, NETWORKING_AWAY, DATA_FORMAT, AUTHENTICATION_METHOD, SIGNATURE_CODE, STATUS, DELETED, DESCRIPTION, CREATE_TIME);
+        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, NETWORKING_AWAY, DATA_FORMAT, AUTHENTICATION_METHOD, SIGNATURE_CODE, DYNAMIC_REGISTRATION, STATUS, DELETED, DESCRIPTION, CREATE_TIME);
     }
 }
