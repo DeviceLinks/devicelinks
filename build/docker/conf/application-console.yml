@@ -1,0 +1,31 @@
+server:
+  port: ${DEVICELINKS_CONSOLE_PORT:13650}
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_SERVICE_HOST}:${MYSQL_SERVICE_PORT:3306}/${MYSQL_SERVICE_DB_NAME:devicelinks}?${MYSQL_SERVICE_DB_PARAM:characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false}
+    username: ${MYSQL_SERVICE_USERNAME}
+    password: ${MYSQL_SERVICE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  data:
+    redis:
+      host: ${REDIS_SERVICE_HOST}
+      database: ${REDIS_SERVICE_DATABASE}
+      password: ${REDIS_SERVICE_PASSWORD}
+
+devicelinks:
+  console:
+    version: ${DEVICELINKS_VERSION}
+    token:
+      expires-seconds: ${TOKEN_EXPIRES_SECONDS:7200}
+  initializer:
+    database:
+      initializer-away: check
+      check-init-tables-count-sql: "select count(table_name) from information_schema.tables where table_schema = '%s'"
+      schema-name: ${MYSQL_SERVICE_DB_NAME:devicelinks}
+      schema-sql: classpath:init-schema.sql
+      data-sql: classpath:init-data.sql
+
+logging:
+  config: ${HOME_DIR}/conf/logback.xml
