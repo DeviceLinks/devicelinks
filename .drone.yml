@@ -68,7 +68,8 @@ steps:
     settings:
       host:
         - 10.147.17.17
-      username: yuqiyu
+      username:
+        from_secret: ssh_username
       password:
         from_secret: ssh_password
       port: 22
@@ -78,11 +79,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-console
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/console | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
-        - /usr/local/bin/docker run -p 13650:13650 -d --restart=always --name devicelinks-console --env-file /root/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
-    volumes:
-      # 挂载环境变量文件
-      - name: env-file
-        path: /root/run.env
+        - /usr/local/bin/docker run -p 13650:13650 -d --restart=always --name devicelinks-console --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
 
   # Deploy Core-Service
   - name: deploy core-service
@@ -91,7 +88,8 @@ steps:
     settings:
       host:
         - 10.147.17.17
-      username: yuqiyu
+      username:
+        from_secret: ssh_username
       password:
         from_secret: ssh_password
       port: 22
@@ -101,11 +99,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-core-service
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
-        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --name devicelinks-core-service --env-file /root/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
-    volumes:
-      # 挂载环境变量文件
-      - name: env-file
-        path: /root/run.env
+        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
 
 trigger:
   branch:
