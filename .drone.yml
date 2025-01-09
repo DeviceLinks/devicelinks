@@ -8,7 +8,7 @@ platform:
 volumes:
   - name: maven-cache
     host:
-      path: ~/docker/maven/maven/.m2
+      path: ~/docker/maven/.m2
   - name: docker
     host:
       path: /var/run/docker.sock
