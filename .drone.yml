@@ -74,7 +74,9 @@ steps:
       port: 22
       command_timeout: 5m
       script:
-        - echo "start deploy console service."
+        - pwd
+        - ifconfig
+        - cat /usr/local/docker/devicelinks/run.env
         - docker stop devicelinks-console
         - docker rm devicelinks-console
         - docker image rm -f $(docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/console | awk 'NR>1{print $3}')
