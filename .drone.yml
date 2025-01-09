@@ -26,7 +26,7 @@ steps:
       - mvn clean package -U -Dmaven.test.skip=true -Dmaven.repo.local=/root/.m2/repository
 
   # Build Console Docker Image
-  - name: build console docker image
+  - name: build console
     image: plugins/docker
     network_mode: host
     settings:
@@ -43,7 +43,7 @@ steps:
         path: /var/run/docker.sock
 
   # Build Core-Service Docker Image
-  - name: build core-service docker image
+  - name: build core-service
     image: plugins/docker
     network_mode: host
     settings:
@@ -65,7 +65,7 @@ steps:
     network_mode: host
     settings:
       host:
-        - 127.0.0.1
+        - 10.147.17.17
       username:
         from_secret: ssh_username
       password:
@@ -78,6 +78,30 @@ steps:
         - docker image rm -f $(docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/console | awk 'NR>1{print $3}')
         - docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
         - docker run -p 13650:13650 -d --name devicelinks-console --env-file /root/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
+    volumes:
+      # 挂载环境变量文件
+      - name: env-file
+        path: /root/run.env
+
+  # Deploy Core-Service
+  - name: deploy core-service
+    image: appleboy/drone-ssh
+    network_mode: host
+    settings:
+      host:
+        - 10.147.17.17
+      username:
+        from_secret: ssh_username
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 2m
+      script:
+        - docker stop devicelinks-core-service
+        - docker rm devicelinks-core-service
+        - docker image rm -f $(docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service | awk 'NR>1{print $3}')
+        - docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
+        - docker run -p 13651:13651 -d --name devicelinks-core-service --env-file /root/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
     volumes:
       # 挂载环境变量文件
       - name: env-file
