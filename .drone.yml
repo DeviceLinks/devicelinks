@@ -14,6 +14,7 @@ volumes:
       path: /var/run/docker.sock
 
 steps:
+  # Package SourceCode
   - name: package
     image: maven:3.9.9-eclipse-temurin-21-alpine
     volumes:
@@ -21,7 +22,38 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean package -U -Dmaven.test.skip=true -Dmaven.repo.local=/root/.m2/repository
-
+  # Build Console Docker Image
+  - name: build console docker image
+    image: plugins/docker
+    network_mode: host
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: latest
+      dockerfile: build/docker/Dockerfile.develop.console
+      registry: registry.cn-hangzhou.aliyuncs.com
+      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/console
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+  # Build Core-Service Docker Image
+  - name: build core-service docker image
+    image: plugins/docker
+    network_mode: host
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: latest
+      dockerfile: build/docker/Dockerfile.develop.core-service
+      registry: registry.cn-hangzhou.aliyuncs.com
+      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
 trigger:
   branch:
     - master
