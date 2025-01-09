@@ -12,7 +12,9 @@ volumes:
   - name: docker
     host:
       path: /var/run/docker.sock
-
+  - name: env-file
+    host:
+      path: /usr/local/docker/devicelinks/run.env
 steps:
   # Package SourceCode
   - name: package
@@ -22,6 +24,7 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean package -U -Dmaven.test.skip=true -Dmaven.repo.local=/root/.m2/repository
+
   # Build Console Docker Image
   - name: build console docker image
     image: plugins/docker
@@ -38,6 +41,7 @@ steps:
     volumes:
       - name: docker
         path: /var/run/docker.sock
+
   # Build Core-Service Docker Image
   - name: build core-service docker image
     image: plugins/docker
@@ -54,6 +58,31 @@ steps:
     volumes:
       - name: docker
         path: /var/run/docker.sock
+
+  # Deploy Console
+  - name: deploy console
+    image: appleboy/drone-ssh
+    network_mode: host
+    settings:
+      host:
+        - 127.0.0.1
+      username:
+        from_secret: ssh_username
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 2m
+      script:
+        - docker stop devicelinks-console
+        - docker rm devicelinks-console
+        - docker image rm -f $(docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/console | awk 'NR>1{print $3}')
+        - docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
+        - docker run -p 13650:13650 -d --name devicelinks-console --env-file /root/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
+    volumes:
+      # 挂载环境变量文件
+      - name: env-file
+        path: /root/run.env
+
 trigger:
   branch:
     - master
