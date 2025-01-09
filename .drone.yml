@@ -66,8 +66,7 @@ steps:
     settings:
       host:
         - 10.147.17.17
-      username:
-        from_secret: ssh_username
+      username: yuqiyu
       password:
         from_secret: ssh_password
       port: 22
