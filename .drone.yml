@@ -1,0 +1,29 @@
+kind: pipeline
+name: devicelinks-build
+type: docker
+
+platform:
+  os: linux
+  arch: arm64
+volumes:
+  - name: maven-cache
+    host:
+      path: ~/docker/maven/maven/.m2
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
+steps:
+  - name: package
+    image: maven:3.9.9-eclipse-temurin-21-alpine
+    volumes:
+      - name: maven-cache
+        path: /root/.m2
+    commands:
+      - mvn clean package -U -Dmaven.test.skip=true -Dmaven.repo.local=/root/.m2/repository
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
