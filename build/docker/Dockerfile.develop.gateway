@@ -2,23 +2,23 @@ FROM devicelinks/openjdk:jre21.0.5_11-openj9-0.48.0
 MAINTAINER hengboy
 
 # 环境变量
-ENV HOME_DIR="/home/devicelinks/console" \
+ENV HOME_DIR="/home/devicelinks/gateway" \
     JVM_XMS="1g" \
     JVM_XMX="1g" \
     JVM_XMN="512m" \
     TIME_ZONE="Asia/Shanghai" \
     DEVICELINKS_VERSION="1.0-SNAPSHOT" \
-    JAR="devicelinks-console.jar"
+    JAR="devicelinks-gateway.jar"
 
 WORKDIR $HOME_DIR
 
 # 复制启动脚本
 ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
-# 复制“控制台”配置文件以及可执行Jar
-ADD /build/docker/conf/application-console.yml conf/application.yml
+# 复制“核心服务”配置文件以及可执行Jar
+ADD /build/docker/conf/application-gateway.yml conf/application.yml
 ADD /build/docker/conf/logback.xml conf/logback.xml
-ADD /console/target/devicelinks-console.jar target/$JAR
+ADD /gateway/target/devicelinks-gateway.jar target/$JAR
 
 # 创建日志目录以及启动文件授权
 RUN mkdir logs \
