@@ -17,7 +17,7 @@ ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
 # 复制“核心服务”配置文件以及可执行Jar
 ADD /build/docker/conf/application-core-service.yml conf/application.yml
-ADD /build/docker/conf/core-service-logback.xml conf/logback.xml
+ADD /build/docker/conf/logback.xml conf/logback.xml
 ADD /core-service/target/devicelinks-core-service.jar target/$JAR
 
 # 创建日志目录以及启动文件授权

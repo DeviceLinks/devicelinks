@@ -5,25 +5,30 @@ type: docker
 platform:
   os: linux
   arch: arm64
+
 volumes:
-  - name: maven-cache
+  - name: cache
     host:
       path: /usr/local/docker/maven/.m2
   - name: docker
     host:
       path: /var/run/docker.sock
+  - name: env-file
+    host:
+      path: /usr/local/docker/devicelinks/run.env
 
 steps:
   # Package SourceCode
   - name: package
     image: maven:3.9.9-eclipse-temurin-21-alpine
     volumes:
-      - name: maven-cache
+      - name: cache
         path: /root/.m2
     commands:
       - mvn clean package -U -Dmaven.test.skip=true -Dmaven.repo.local=/root/.m2/repository
+
   # Build Console Docker Image
-  - name: build console docker image
+  - name: build console
     image: plugins/docker
     network_mode: host
     settings:
@@ -38,8 +43,9 @@ steps:
     volumes:
       - name: docker
         path: /var/run/docker.sock
+
   # Build Core-Service Docker Image
-  - name: build core-service docker image
+  - name: build core-service
     image: plugins/docker
     network_mode: host
     settings:
@@ -54,6 +60,84 @@ steps:
     volumes:
       - name: docker
         path: /var/run/docker.sock
+
+  # Build Gateway Docker Image
+  - name: build gateway
+    image: plugins/docker
+    network_mode: host
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: latest
+      dockerfile: build/docker/Dockerfile.develop.gateway
+      registry: registry.cn-hangzhou.aliyuncs.com
+      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+  # Deploy Console
+  - name: deploy console
+    image: appleboy/drone-ssh
+    network_mode: host
+    settings:
+      host:
+        - 10.147.17.17
+      username:
+        from_secret: ssh_username
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 5m
+      script:
+        - /usr/local/bin/docker stop devicelinks-console
+        - /usr/local/bin/docker rm devicelinks-console
+        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/console | awk 'NR>1{print $3}')
+        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
+        - /usr/local/bin/docker run -p 13650:13650 -d --restart=always --net=devicelinks --ip=172.10.1.10 --name devicelinks-console --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
+
+  # Deploy Core-Service
+  - name: deploy core-service
+    image: appleboy/drone-ssh
+    network_mode: host
+    settings:
+      host:
+        - 10.147.17.17
+      username:
+        from_secret: ssh_username
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 5m
+      script:
+        - /usr/local/bin/docker stop devicelinks-core-service
+        - /usr/local/bin/docker rm devicelinks-core-service
+        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service | awk 'NR>1{print $3}')
+        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
+        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
+
+  # Deploy Core-Service
+  - name: deploy gateway
+    image: appleboy/drone-ssh
+    network_mode: host
+    settings:
+      host:
+        - 10.147.17.17
+      username:
+        from_secret: ssh_username
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 5m
+      script:
+        - /usr/local/bin/docker stop devicelinks-gateway
+        - /usr/local/bin/docker rm devicelinks-gateway
+        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway | awk 'NR>1{print $3}')
+        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
+        - /usr/local/bin/docker run -p 13652:13652 -d --restart=always --net=devicelinks --ip=172.10.1.12 --name devicelinks-gateway --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
+
 trigger:
   branch:
     - master
