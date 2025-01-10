@@ -96,7 +96,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-console
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/console | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
-        - /usr/local/bin/docker run -p 13650:13650 -d --restart=always --name devicelinks-console --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
+        - /usr/local/bin/docker run -p 13650:13650 -d --restart=always --net=devicelinks --ip=192.168.117.10 --name devicelinks-console --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
 
   # Deploy Core-Service
   - name: deploy core-service
@@ -116,7 +116,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-core-service
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
-        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
+        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=192.168.117.11 --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
 
   # Deploy Core-Service
   - name: deploy gateway
@@ -136,7 +136,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-gateway
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
-        - /usr/local/bin/docker run -p 13652:13652 -d --restart=always --name devicelinks-gateway --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
+        - /usr/local/bin/docker run -p 13652:13652 -d --restart=always --net=devicelinks --ip=192.168.117.12 --name devicelinks-gateway --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
 
 trigger:
   branch:
