@@ -18,7 +18,7 @@
         <module>common</module>
         <module>jdbc</module>
         <module>console</module>
-        <module>protocol-gateway</module>
+        <module>gateway</module>
         <module>core-service</module>
     </modules>
     <properties>

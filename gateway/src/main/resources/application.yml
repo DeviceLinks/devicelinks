@@ -1,0 +1,13 @@
+server:
+  port: 13652
+spring:
+  profiles:
+    active: develop
+
+devicelinks:
+  gateway:
+    version: @project.version@
+
+logging:
+  # 多环境下的日志配置
+  config: classpath:logback-${spring.profiles.active}.xml
