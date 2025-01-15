@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.devicelinks</groupId>
         <artifactId>devicelinks-transports</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>devicelinks-transport-coap</artifactId>
