@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 2023  恒宇少年
+  ~ Copyright (C) 2025  恒宇少年
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -17,52 +17,38 @@
   -->
 
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-    <springProperty scope="context" name="port" source="server.port"/>
-    <springProperty scope="context" name="httpApiPath" source="devicelinks.loki.http-api-path"/>
-    <springProperty scope="context" name="lokiBasicAuthUser" source="devicelinks.loki.basic-auth-user"/>
-    <springProperty scope="context" name="lokiBasicAuthPassword" source="devicelinks.loki.basic-auth-password"/>
-    <springProperty scope="context" name="profile" source="spring.profiles.active"/>
+    <property name="LOG_HOME" value="logs/console" />
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %green(%-5level) %magenta(${PID:-}) --- [%15.15thread] %cyan(%-40.40logger{40}) - %msg%n</pattern>
         </encoder>
     </appender>
-    <appender name="loki" class="com.github.loki4j.logback.Loki4jAppender">
-        <http>
-            <url>${httpApiPath}/loki/api/v1/push</url>
-            <auth>
-                <username>${lokiBasicAuthUser}</username>
-                <password>${lokiBasicAuthPassword}</password>
-            </auth>
-        </http>
-        <format>
-            <label>
-                <!--MDC参数：account：账号，requestId：请求ID，resourceId：资源ID-->
-                <pattern>service_name=${name},service_version=${version},service_port=${port},environment=${profile},host=${HOSTNAME},level=%level,account=%X{X-Account-ID:-unknown},requestId=%X{X-Request-ID:-unknown},resourceId=%X{X-Resource-ID:-unknown}</pattern>
-                <readMarkers>true</readMarkers>
-            </label>
-            <message>
-                <pattern>
-                    {
-                    "level":"%level",
-                    "class":"%logger{36}",
-                    "thread":"%thread",
-                    "message": "%message"
-                    }
-                </pattern>
-            </message>
-        </format>
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <File>${LOG_HOME}/error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/error-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>1</MaxHistory>
+            <TotalSizeCap>1GB</TotalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} --- [%thread] %logger{50} - %msg%n</pattern>
+        </encoder>
     </appender>
     <root level="INFO">
         <appender-ref ref="stdout"/>
     </root>
-    <logger name="cn.devicelinks.management.console" level="DEBUG" additivity="false">
+    <logger name="cn.devicelinks.console" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
-    <logger name="cn.devicelinks.jdbc" level="DEBUG" additivity="false">
+    <logger name="cn.devicelinks.framework.jdbc" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
-    <logger name="cn.devicelinks.component" level="DEBUG" additivity="false">
+    <logger name="cn.devicelinks.framework.component" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
 </configuration>
