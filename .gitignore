@@ -29,3 +29,5 @@ logs
 .vscode/
 
 .flattened-pom.xml
+
+*/.DS_Store
