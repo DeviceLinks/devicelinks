@@ -20,6 +20,7 @@
         <module>console</module>
         <module>rule-engine</module>
         <module>core-service</module>
+        <module>transports</module>
     </modules>
     <properties>
         <revision>1.0-SNAPSHOT</revision>

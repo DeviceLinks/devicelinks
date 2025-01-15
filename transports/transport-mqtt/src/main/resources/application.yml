@@ -1,0 +1,13 @@
+server:
+  port: 15000
+spring:
+  profiles:
+    active: develop
+
+devicelinks:
+  transport-mqtt:
+    version: @project.version@
+
+logging:
+  # 多环境下的日志配置
+  config: classpath:logback-${spring.profiles.active}.xml
