@@ -5,7 +5,7 @@ spring:
     active: develop
 
 devicelinks:
-  gateway:
+  rule-engine:
     version: @project.version@
 
 logging:

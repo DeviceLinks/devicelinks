@@ -61,8 +61,8 @@ steps:
       - name: docker
         path: /var/run/docker.sock
 
-  # Build Gateway Docker Image
-  - name: build gateway
+  # Build Rule-Engine Docker Image
+  - name: build rule-engine
     image: plugins/docker
     network_mode: host
     settings:
@@ -71,9 +71,9 @@ steps:
       password:
         from_secret: docker_password
       tags: latest
-      dockerfile: build/docker/Dockerfile.develop.gateway
+      dockerfile: build/docker/Dockerfile.develop.rule-engine
       registry: registry.cn-hangzhou.aliyuncs.com
-      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway
+      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/rule-engine
     volumes:
       - name: docker
         path: /var/run/docker.sock
@@ -118,8 +118,8 @@ steps:
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
         - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
 
-  # Deploy Core-Service
-  - name: deploy gateway
+  # Deploy Rule-Engine
+  - name: deploy rule-engine
     image: appleboy/drone-ssh
     network_mode: host
     settings:
@@ -132,11 +132,11 @@ steps:
       port: 22
       command_timeout: 5m
       script:
-        - /usr/local/bin/docker stop devicelinks-gateway
-        - /usr/local/bin/docker rm devicelinks-gateway
-        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway | awk 'NR>1{print $3}')
-        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
-        - /usr/local/bin/docker run -p 13652:13652 -d --restart=always --net=devicelinks --ip=172.10.1.12 --name devicelinks-gateway --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/gateway:latest
+        - /usr/local/bin/docker stop devicelinks-rule-engine
+        - /usr/local/bin/docker rm devicelinks-rule-engine
+        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/rule-engine | awk 'NR>1{print $3}')
+        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/rule-engine:latest
+        - /usr/local/bin/docker run -p 13652:13652 -d --restart=always --net=devicelinks --ip=172.10.1.12 --name devicelinks-rule-engine --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/rule-engine:latest
 
 trigger:
   branch:

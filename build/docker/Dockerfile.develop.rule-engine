@@ -2,13 +2,13 @@ FROM devicelinks/openjdk:jre21.0.5_11-openj9-0.48.0
 MAINTAINER hengboy
 
 # 环境变量
-ENV HOME_DIR="/home/devicelinks/gateway" \
+ENV HOME_DIR="/home/devicelinks/rule-engine" \
     JVM_XMS="1g" \
     JVM_XMX="1g" \
     JVM_XMN="512m" \
     TIME_ZONE="Asia/Shanghai" \
     DEVICELINKS_VERSION="1.0-SNAPSHOT" \
-    JAR="devicelinks-gateway.jar"
+    JAR="devicelinks-rule-engine.jar"
 
 WORKDIR $HOME_DIR
 
@@ -16,9 +16,9 @@ WORKDIR $HOME_DIR
 ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
 # 复制“核心服务”配置文件以及可执行Jar
-ADD /build/docker/conf/application-gateway.yml conf/application.yml
+ADD /build/docker/conf/application-rule-engine.yml conf/application.yml
 ADD /build/docker/conf/logback.xml conf/logback.xml
-ADD /gateway/target/devicelinks-gateway.jar target/$JAR
+ADD /rule-engine/target/devicelinks-rule-engine.jar target/$JAR
 
 # 创建日志目录以及启动文件授权
 RUN mkdir logs \

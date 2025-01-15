@@ -1,5 +1,5 @@
 server:
-  port: ${DEVICELINKS_GATEWAY_PORT:13652}
+  port: ${DEVICELINKS_RULE_ENGINE_PORT:13652}
 
 spring:
   datasource:
@@ -15,7 +15,7 @@ spring:
       password: ${REDIS_SERVICE_PASSWORD}
 
 devicelinks:
-  gateway:
+  rule-engine:
     version: ${DEVICELINKS_VERSION}
 
 logging:
