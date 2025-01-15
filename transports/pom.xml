@@ -18,6 +18,7 @@
         <module>transport-mqtt</module>
         <module>transport-http</module>
         <module>transport-coap</module>
+        <module>transport-jt808</module>
     </modules>
 
     <properties>

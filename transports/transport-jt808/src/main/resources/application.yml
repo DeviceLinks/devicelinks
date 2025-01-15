@@ -1,0 +1,13 @@
+server:
+  port: 15003
+spring:
+  profiles:
+    active: develop
+
+devicelinks:
+  transport-jt808:
+    version: @project.version@
+
+logging:
+  # 多环境下的日志配置
+  config: classpath:logback-${spring.profiles.active}.xml
