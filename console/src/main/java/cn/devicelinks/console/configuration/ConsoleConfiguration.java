@@ -18,15 +18,12 @@
 package cn.devicelinks.console.configuration;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.framework.common.pojos.SysGroup;
-import cn.devicelinks.framework.common.pojos.SysPosition;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.security.SecurityUserDetailsProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 /**
  * 控制台配置类
@@ -54,13 +51,8 @@ public class ConsoleConfiguration {
             }
 
             @Override
-            public SysPosition getUserPosition() {
-                return UserDetailsContext.getUserPosition();
-            }
-
-            @Override
-            public List<SysGroup> getUserGroups() {
-                return UserDetailsContext.getUserGroups();
+            public SysDepartment getUserDepartment() {
+                return UserDetailsContext.getDepartment();
             }
         };
     }

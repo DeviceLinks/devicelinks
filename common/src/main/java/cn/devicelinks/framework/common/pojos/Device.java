@@ -17,8 +17,9 @@
 
 package cn.devicelinks.framework.common.pojos;
 
-import cn.devicelinks.framework.common.DeviceStatus;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.DeviceStatus;
+import cn.devicelinks.framework.common.DeviceType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -26,7 +27,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 设备基本信息
@@ -40,20 +40,21 @@ public class Device implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
-    private String deviceNumber;
-    private String deviceSecret;
+    private String departmentId;
     private String productId;
+    private String deviceCode;
+    private String deviceSecret;
+    private DeviceType deviceType;
     private String name;
     private DeviceStatus status;
     private List<String> tags;
-    private String certificationCode;
     private LocalDateTime activationTime;
     private LocalDateTime lastOnlineTime;
     private LocalDateTime lastReportTime;
     private boolean enabled;
     private boolean deleted;
-    private Map<String, Object> extendedInfo;
-    private LocalDateTime createTime;
+    private DeviceAddition addition;
     private String createBy;
+    private LocalDateTime createTime;
     private String mark;
 }

@@ -8,9 +8,9 @@ public enum OtaUpgradeBatchType {
     /**
      * 验证升级包
      */
-    verify_package,
+    VerifyPackage,
     /**
      * 批量升级
      */
-    batch_upgrade
+    BatchUpgrade
 }

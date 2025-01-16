@@ -19,8 +19,6 @@ package cn.devicelinks.framework.common.jackson2.security;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
-import cn.devicelinks.framework.common.pojos.SysGroup;
-import cn.devicelinks.framework.common.pojos.SysPosition;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
@@ -46,7 +44,5 @@ public class DeviceLinksSecurityJackson2Module extends SimpleModule {
         super.setupModule(context);
         context.setMixInAnnotations(DeviceLinksUserDetails.class, SecurityUserDetailsMixin.class);
         context.setMixInAnnotations(SysUser.class, SysUserMixin.class);
-        context.setMixInAnnotations(SysPosition.class, SysPositionMixin.class);
-        context.setMixInAnnotations(SysGroup.class, SysGroupMixin.class);
     }
 }

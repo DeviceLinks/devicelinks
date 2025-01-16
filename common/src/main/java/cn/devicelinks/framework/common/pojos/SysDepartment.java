@@ -38,12 +38,12 @@ public class SysDepartment implements Serializable {
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
     private String name;
-    private String code;
+    private String identifier;
     private String pid;
     private int sort;
     private int level;
+    private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;
-    private boolean deleted;
-    private String mark;
+    private String description;
 }

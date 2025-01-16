@@ -96,7 +96,7 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                     if (targetBeforeObject != null) {
                         evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
                     }
-                    if (targetBeforeObject == null && (OperateAction.update == extractor.getAction() || OperateAction.delete == extractor.getAction())) {
+                    if (targetBeforeObject == null && (OperateAction.Update == extractor.getAction() || OperateAction.Delete == extractor.getAction())) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -120,7 +120,7 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                     if (targetAfterObject != null) {
                         evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
                     }
-                    if (targetAfterObject == null && (OperateAction.update == extractor.getAction() || OperateAction.add == extractor.getAction())) {
+                    if (targetAfterObject == null && (OperateAction.Update == extractor.getAction() || OperateAction.Add == extractor.getAction())) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -133,9 +133,9 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             throw e;
         } finally {
             try {
-                boolean skip = (OperateAction.update == extractor.getAction() && (targetBeforeObject == null || targetAfterObject == null)) ||
-                        (OperateAction.add == extractor.getAction() && targetAfterObject == null) ||
-                        (OperateAction.delete == extractor.getAction() && targetBeforeObject == null);
+                boolean skip = (OperateAction.Update == extractor.getAction() && (targetBeforeObject == null || targetAfterObject == null)) ||
+                        (OperateAction.Add == extractor.getAction() && targetAfterObject == null) ||
+                        (OperateAction.Delete == extractor.getAction() && targetBeforeObject == null);
                 if (!skip) {
                     OperationLogResolveProcessor resolveProcessor =
                             new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);

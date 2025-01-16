@@ -37,26 +37,26 @@ import java.util.stream.Collectors;
 @Getter
 public enum ObjectField {
     /**
-     * {@link OperateObjectType#user}
+     * {@link OperateObjectType#User}
      *
      * @see cn.devicelinks.framework.common.pojos.SysUser
      */
-    user_id(OperateObjectType.user, "id", "用户ID", OperateAction.add, OperateAction.update, OperateAction.delete),
-    user_name(OperateObjectType.user, "name", "用户名称", OperateAction.add, OperateAction.update, OperateAction.delete),
-    user_account(OperateObjectType.user, "account", "用户账号", OperateAction.add, OperateAction.update, OperateAction.delete),
-    user_department(OperateObjectType.user, "department", "部门", OperateAction.add, OperateAction.update),
-    user_position(OperateObjectType.user, "position", "岗位", OperateAction.add, OperateAction.update),
+    user_id(OperateObjectType.User, "id", "用户ID", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    user_name(OperateObjectType.User, "name", "用户名称", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    user_account(OperateObjectType.User, "account", "用户账号", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    user_department(OperateObjectType.User, "department", "部门", OperateAction.Add, OperateAction.Update),
+    user_position(OperateObjectType.User, "position", "岗位", OperateAction.Add, OperateAction.Update),
     /**
-     * {@link OperateObjectType#department}
+     * {@link OperateObjectType#Department}
      *
      * @see cn.devicelinks.framework.common.pojos.SysDepartment
      */
-    department_id(OperateObjectType.department, "id", "部门ID", OperateAction.add, OperateAction.update, OperateAction.delete),
-    department_name(OperateObjectType.department, "name", "部门名称", OperateAction.add, OperateAction.update, OperateAction.delete),
-    department_code(OperateObjectType.department, "code", "部门编码", OperateAction.add, OperateAction.update, OperateAction.delete),
-    department_pid(OperateObjectType.department, "pid", "上级部门ID", OperateAction.add, OperateAction.update, OperateAction.delete),
-    department_level(OperateObjectType.department, "level", "部门等级", OperateAction.add, OperateAction.update),
-    department_sort(OperateObjectType.department, "sort", "部门排序", OperateAction.add, OperateAction.update),
+    department_id(OperateObjectType.Department, "id", "部门ID", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    department_name(OperateObjectType.Department, "name", "部门名称", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    department_code(OperateObjectType.Department, "code", "部门编码", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    department_pid(OperateObjectType.Department, "pid", "上级部门ID", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
+    department_level(OperateObjectType.Department, "level", "部门等级", OperateAction.Add, OperateAction.Update),
+    department_sort(OperateObjectType.Department, "sort", "部门排序", OperateAction.Add, OperateAction.Update),
     ;
 
     private final OperateObjectType objectType;

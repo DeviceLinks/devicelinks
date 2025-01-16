@@ -10,13 +10,13 @@ public enum DeviceStatus {
     /**
      * 未激活，设备从未连接并上报数据
      */
-    NOT_ACTIVATED,
+    NotActivated,
     /**
      * 已激活，在线
      */
-    ONLINE,
+    Online,
     /**
      * 已激活，离线
      */
-    OFFLINE,
+    Offline,
 }

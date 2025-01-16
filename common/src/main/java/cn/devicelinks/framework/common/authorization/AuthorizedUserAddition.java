@@ -18,15 +18,13 @@
 package cn.devicelinks.framework.common.authorization;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.pojos.SysGroup;
-import cn.devicelinks.framework.common.pojos.SysPosition;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 认证用户附加信息
@@ -42,12 +40,10 @@ public class AuthorizedUserAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private SysUser user;
-    private SysPosition position;
-    private List<SysGroup> userGroups;
+    private SysDepartment department;
 
-    public AuthorizedUserAddition(SysUser user, SysPosition position, List<SysGroup> userGroups) {
+    public AuthorizedUserAddition(SysUser user, SysDepartment department) {
         this.user = user;
-        this.position = position;
-        this.userGroups = userGroups;
+        this.department = department;
     }
 }

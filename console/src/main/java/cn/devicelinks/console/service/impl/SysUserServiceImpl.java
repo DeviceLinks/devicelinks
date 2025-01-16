@@ -25,9 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
 
 /**
  * 用户业务逻辑实现类
@@ -50,12 +47,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
     @Override
     public void updateLastLoginTime(String userId, LocalDateTime lastLoginTime) {
         // @formatter:off
-        this.repository.update(
+        /*this.repository.update(
                 List.of(
                         SYS_USER.LAST_LOGIN_TIME.set(lastLoginTime)
                 ),
                 SYS_USER.ID.eq(userId)
-        );
+        );*/
         // @formatter:on
     }
 }

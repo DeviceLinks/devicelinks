@@ -12,9 +12,9 @@ public enum UserIdentity {
      * <p>
      * 当用户所属租户ID不为空时表示为“租户管理员”，为空时表示为“系统管理员”
      */
-    administrator,
+    Administrator,
     /**
      * 普通用户
      */
-    user
+    User
 }

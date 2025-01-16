@@ -8,27 +8,35 @@ package cn.devicelinks.framework.common;
  */
 public enum OperateAction {
     /**
+     * 登录
+     */
+    Login,
+    /**
+     * 登出
+     */
+    Logout,
+    /**
      * 新增
      */
-    add,
+    Add,
     /**
      * 编辑
      */
-    update,
+    Update,
     /**
      * 修改密码
      */
-    change_pwd,
+    ChangePwd,
     /**
      * 删除
      */
-    delete,
+    Delete,
     /**
      * 绑定
      */
-    bind,
+    Bind,
     /**
      * 解绑
      */
-    unbind
+    Unbind
 }

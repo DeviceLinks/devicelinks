@@ -16,19 +16,23 @@ public enum DeviceAuthenticationMethod {
     /**
      * 一机一密
      * <p>
-     * 根据ProductSecret、DeviceNumber、DeviceSecret进行鉴权
+     * 根据ProductSecret、DeviceCode、DeviceSecret进行鉴权
      */
     DeviceCredential,
     /**
-     * 固定签名
-     * <p>
-     * 根据固定的签名来进行鉴权，可以输入固定签名，也可以随机生成后作为固定签名使用
+     * 请求令牌
      */
-    Signature,
+    AccessToken,
     /**
-     * 临时令牌
+     * MQTT基础认证
      * <p>
-     * 使用受使用日期限制的令牌，可随机生成临时令牌并设置过期时间，也可以主动删除临时令牌
+     * 客户端ID、用户名、密码
      */
-    TemporaryToken
+    MqttBasic,
+    /**
+     * X.509证书
+     * <p>
+     * PEM格式证书
+     */
+    X509
 }

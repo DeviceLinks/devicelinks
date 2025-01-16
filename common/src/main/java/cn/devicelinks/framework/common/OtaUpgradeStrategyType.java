@@ -10,9 +10,9 @@ public enum OtaUpgradeStrategyType {
     /**
      * 立即升级
      */
-    immediately,
+    Immediately,
     /**
      * 定时升级
      */
-    schedule
+    Schedule
 }

@@ -22,9 +22,9 @@ import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.OperateAction;
 import cn.devicelinks.framework.common.OperateObjectType;
 import cn.devicelinks.framework.common.ResourceCode;
-import cn.devicelinks.framework.common.pojos.SysPosition;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.pojos.SysUserOperateLog;
+import cn.devicelinks.framework.common.pojos.SysLog;
 
 import java.lang.annotation.*;
 
@@ -72,8 +72,8 @@ public @interface OperationLog {
      * 支持SpEL表达式
      * <p>
      * 跟{@link #objectType()}一一对应。
-     * 如：{@link OperateObjectType#user}，那么操作对象可以为{@link SysUser#getId()}或{@link SysUser#getAccount()}
-     * 自行定义操作对象，该值会被存储到{@link SysUserOperateLog#getObject()}数据列中
+     * 如：{@link OperateObjectType}，那么操作对象可以为{@link SysUser#getId()}或{@link SysUser#getAccount()}
+     * 自行定义操作对象，该值会被存储到{@link SysLog#getObject()}数据列中
      *
      * @return 获取操作对象值的SpEL表达，解析后获取操作对象详情中用户可读的唯一标识字段值，如：{@link SysUser#getAccount()}
      */
@@ -84,7 +84,7 @@ public @interface OperationLog {
      * 支持SpEL表达式
      * <p>
      * 获取到非空值后会根据{@link OperateObjectType}以及{@link OperateAction}提取到本次操作的{@link ObjectField}对象字段列表，
-     * 将对象字段列表与对象详细信息实例进行匹配，将匹配到的字段值以JSON字符串的形式存储到{@link SysUserOperateLog#getObjectFields()}数据列中
+     * 将对象字段列表与对象详细信息实例进行匹配，将匹配到的字段值以JSON字符串的形式存储到{@link SysLog#getObjectFields()}数据列中
      * <p>
      * 在操作目标方法之前将获取到非空值存入{@link ExpressionVariables}变量集合中，变量名为"before"，可以通过"{#before.xxx}"进行调用，如："{#before.account}"、"{#before.getLastName()}"
      * 在操作目标方法之后将获取到非空值存入{@link ExpressionVariables}变量集合中，变量名为"after"，可以通过"{#before.xxx}"进行调用，如："{#after.account}"、"{#after.getLastName()}"
@@ -106,8 +106,8 @@ public @interface OperationLog {
      * <p>
      * 配置操作对象详情中不存在的额外附加字段列表
      * <p>
-     * 如：想记录用户的岗位名称，而{@link SysUser}对象中并不存在”岗位名称“{@link SysPosition#getName()}字段，只有”岗位ID“{@link SysUser#getPositionId()}字段
-     * 这时我们就可以通过配置附加字段来提取到”岗位名称“的值并存储到{@link SysUserOperateLog#getObjectFields()}进行记录存在
+     * 如：想记录用户的部门名称，而{@link SysUser}对象中并不存在”部门名称“{@link SysDepartment#getName()}字段，只有”部门ID“{@link SysUser#getDepartmentId()} ()}字段
+     * 这时我们就可以通过配置附加字段来提取到”部门名称“的值并存储到{@link SysLog#getObjectFields()}进行记录存在
      * <p>
      * 附加字段都在{@link ObjectField}中与标准字段一并定义
      *

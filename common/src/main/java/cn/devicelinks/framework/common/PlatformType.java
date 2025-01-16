@@ -27,9 +27,9 @@ public enum PlatformType {
     /**
      * 电脑端
      */
-    pc,
+    Pc,
     /**
      * App端
      */
-    app
+    App
 }

@@ -10,7 +10,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OTA升级信息
@@ -27,16 +26,15 @@ public class Ota implements Serializable {
     private String productId;
     private String moduleId;
     private OtaPackageType type;
-    private String versionBefore;
     private String version;
     private SignAlgorithm signAlgorithm;
     private boolean signWithKey;
     private boolean verify;
     private List<String> upgradeItem;
-    private Map<String, Object> addition;
+    private OtaAddition addition;
     private boolean enabled;
     private boolean deleted;
-    private LocalDateTime createTime;
     private String createBy;
+    private LocalDateTime createTime;
     private String mark;
 }

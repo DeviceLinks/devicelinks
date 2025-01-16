@@ -67,7 +67,7 @@ public class SysUserSessionServiceImpl extends BaseServiceImpl<SysUserSession, S
     @Override
     public void updateLogoutTime(String token) {
         this.repository.update(List.of(
-                SYS_USER_SESSION.STATUS.set(SessionStatus.loggedOut),
+                SYS_USER_SESSION.STATUS.set(SessionStatus.LoggedOut),
                 SYS_USER_SESSION.LOGOUT_TIME.set(LocalDateTime.now())
         ), SYS_USER_SESSION.TOKEN_VALUE.eq(token));
     }

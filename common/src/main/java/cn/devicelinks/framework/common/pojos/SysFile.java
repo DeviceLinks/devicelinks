@@ -26,7 +26,7 @@ public class SysFile implements Serializable {
     private int size;
     private SignAlgorithm signAlgorithm;
     private boolean signWithKey;
-    private String sign;
+    private String checksum;
     private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;

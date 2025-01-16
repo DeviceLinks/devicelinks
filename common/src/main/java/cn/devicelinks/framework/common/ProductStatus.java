@@ -10,9 +10,9 @@ public enum ProductStatus {
     /**
      * 开发中
      */
-    development,
+    Development,
     /**
      * 已发布
      */
-    published
+    Published
 }

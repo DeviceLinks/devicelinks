@@ -19,14 +19,13 @@ package cn.devicelinks.console.authorization.endpoint.login;
 
 import cn.devicelinks.console.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.console.service.SysUserLoginLogService;
+import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.console.service.SysUserSessionService;
-import cn.devicelinks.framework.common.PlatformType;
-import cn.devicelinks.framework.common.SessionStatus;
+import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
+import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.pojos.SysUserLoginLog;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
@@ -59,20 +58,21 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
     private static final String TOKEN_ISSUER = "https://devicelinks.cn";
     private static final StatusCode USER_NOT_FOUND = StatusCode.build("USER_NOT_FOUND", "用户不存在.");
     private static final StatusCode PASSWORD_VERIFICATION_FAILED = StatusCode.build("PASSWORD_VERIFICATION_FAILED", "密码校验失败.");
+    private static final String LOGIN_SUCCESS_MSG = "登录成功";
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final SysUserSessionService userSessionService;
-    private final SysUserLoginLogService userLoginLogService;
+    private final SysLogService logService;
     private final TokenRepository tokenRepository;
     private final JwtEncoder jwtEncoder;
 
     public UsernamePasswordLoginAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService,
-                                                       SysUserSessionService userSessionService, SysUserLoginLogService userLoginLogService,
+                                                       SysUserSessionService userSessionService, SysLogService logService,
                                                        TokenRepository tokenRepository, JwtEncoder jwtEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.userSessionService = userSessionService;
-        this.userLoginLogService = userLoginLogService;
+        this.logService = logService;
         this.tokenRepository = tokenRepository;
         this.jwtEncoder = jwtEncoder;
     }
@@ -127,30 +127,33 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                 .setUserId(user.getId())
                 .setUsername(deviceLinksUserDetails.getUsername())
                 .setTokenValue(jwt.getTokenValue())
-                .setIpAddress(ipAddress)
                 .setPlatformType(platformType)
-                .setStatus(SessionStatus.normal)
+                .setStatus(SessionStatus.Normal)
                 .setIssuedTime(Objects.requireNonNull(jwt.getIssuedAt()).atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .setExpiresTime(Objects.requireNonNull(jwt.getExpiresAt()).atZone(ZoneId.systemDefault()).toLocalDateTime());
         // @formatter:on
         this.userSessionService.insert(userSession);
         // save user login log
-        SysUserLoginLog userLoginLog = new SysUserLoginLog()
+        SysLog userLoginLog = new SysLog()
                 .setId(UUIDUtils.generateNoDelimiter())
+                .setObject(user.getAccount())
+                .setAction(OperateAction.Login)
+                .setObjectType(OperateObjectType.User)
                 .setUserId(user.getId())
-                .setUserSessionId(userSession.getId())
+                .setSessionId(userSession.getId())
+                .setSuccess(true)
+                .setMsg(LOGIN_SUCCESS_MSG)
                 .setIpAddress(ipAddress)
-                .setPlatformType(platformType)
-                .setLoginTime(LocalDateTime.now());
-        this.userLoginLogService.insert(userLoginLog);
+                .setOperateTime(LocalDateTime.now());
+        this.logService.insert(userLoginLog);
     }
 
     private PlatformType getPlatformType(HttpServletRequest request) {
         String platform = request.getHeader(PLATFORM_HEADER_NAME);
         try {
-            return ObjectUtils.isEmpty(platform) ? PlatformType.pc : PlatformType.valueOf(platform);
+            return ObjectUtils.isEmpty(platform) ? PlatformType.Pc : PlatformType.valueOf(platform);
         } catch (Exception e) {
-            return PlatformType.pc;
+            return PlatformType.Pc;
         }
     }
 

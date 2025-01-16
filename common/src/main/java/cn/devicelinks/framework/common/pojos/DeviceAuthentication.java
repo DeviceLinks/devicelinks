@@ -1,5 +1,6 @@
 package cn.devicelinks.framework.common.pojos;
 
+import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -22,7 +23,8 @@ public class DeviceAuthentication implements Serializable {
 
     private String id;
     private String deviceId;
-    private String code;
+    private DeviceAuthenticationMethod authenticationMethod;
+    private DeviceAuthenticationAddition addition;
     private LocalDateTime expirationTime;
     private boolean deleted;
     private LocalDateTime createTime;

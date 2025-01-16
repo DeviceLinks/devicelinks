@@ -27,13 +27,13 @@ public enum SessionStatus {
     /**
      * 正常
      */
-    normal,
+    Normal,
     /**
      * 已登出
      */
-    loggedOut,
+    LoggedOut,
     /**
      * 被踢除
      */
-    kickoff
+    Kickoff
 }

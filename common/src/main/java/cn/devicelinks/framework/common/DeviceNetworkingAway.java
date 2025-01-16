@@ -10,13 +10,13 @@ public enum DeviceNetworkingAway {
     /**
      * Wi-Fi
      */
-    wifi,
+    WiFi,
     /**
      * 蜂窝网络（2G/3G/4G/5G）
      */
-    cellular_network,
+    CellularNetwork,
     /**
      * 以太网
      */
-    ethernet
+    Ethernet
 }

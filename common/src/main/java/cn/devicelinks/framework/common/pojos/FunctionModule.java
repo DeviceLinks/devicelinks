@@ -22,6 +22,7 @@ public class FunctionModule implements Serializable {
     private String id;
     private String productId;
     private String name;
+    private String identifier;
     private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;

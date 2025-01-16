@@ -31,27 +31,15 @@ public enum DataFormat {
      * <p>
      * 如：{"deviceCode":"xxxx","reportTime":"xxxx"}
      */
-    JSON,
+    Json,
     /**
-     * 二进制数据格式
-     * <p>
-     * 如：0100001010
+     * 字节
      */
-    BINARY,
-    /**
-     * 十进制数据格式
-     * <p>
-     * 如：deviceCode=xxxx,reportTime=xxxx
-     */
-    DECIMAL,
+    Bytes,
     /**
      * 十六进制数据格式
      * <p>
      * 如：685a68b337010200100213812
      */
-    HEX,
-    /**
-     * 字符串
-     */
-    STRING
+    Hex
 }

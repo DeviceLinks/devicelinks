@@ -49,7 +49,7 @@ public class IndexController {
     private SysUserService userService;
 
     @PostMapping(value = "/post")
-    @OperationLog(resource = ResourceCode.R0010000, action = OperateAction.add, objectType = OperateObjectType.user,
+    @OperationLog(resource = ResourceCode.R0010000, action = OperateAction.Add, objectType = OperateObjectType.User,
             object = "{#p0.name}",
             objectDetails = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
             msg = "更新了用户 {#p0.name} 基本信息.",
@@ -64,7 +64,7 @@ public class IndexController {
     }
 
     @PostMapping(value = "/update")
-    @OperationLog(resource = ResourceCode.R0010000, action = OperateAction.update, objectType = OperateObjectType.user,
+    @OperationLog(resource = ResourceCode.R0010000, action = OperateAction.Update, objectType = OperateObjectType.User,
             object = "{#before.account}",
             objectDetails = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
             msg = "更新了用户 {#before.account} 基本信息.",
@@ -82,7 +82,6 @@ public class IndexController {
     public ApiResponse update(@RequestBody @Valid PostBody body) {
         SysUser user = userService.selectById(body.getUserId());
         user.setName(user.getName() + "_1");
-        user.setPositionId(body.getPositionId());
         userService.update(user);
         return ApiResponse.success(user);
     }

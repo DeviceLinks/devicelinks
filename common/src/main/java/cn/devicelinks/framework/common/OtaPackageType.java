@@ -8,11 +8,11 @@ package cn.devicelinks.framework.common;
  */
 public enum OtaPackageType {
     /**
-     * 全量升级包
+     * 固件
      */
-    full,
+    Firmware,
     /**
-     * 差分升级包
+     * 软件
      */
-    diff
+    Software
 }

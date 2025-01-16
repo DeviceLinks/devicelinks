@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 公共网关启动类
+ * 规则引擎启动类
  *
  * @author 恒宇少年
  * @since 1.0

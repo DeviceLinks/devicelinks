@@ -1,10 +1,10 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.pojos.SysGlobalSetting;
-import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
+import cn.devicelinks.framework.jdbc.ColumnValueMappers;
+import cn.devicelinks.framework.common.pojos.SysGlobalSetting;
 
 import java.io.Serial;
 import java.util.List;
@@ -16,26 +16,26 @@ import java.util.List;
  * @since 1.0
  */
 public class TSysGlobalSetting extends TableImpl {
-    @Serial
+	@Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TSysGlobalSetting SYS_GLOBAL_SETTING = new TSysGlobalSetting("sys_global_setting");
+	public static final TSysGlobalSetting SYS_GLOBAL_SETTING = new TSysGlobalSetting("sys_global_setting");
 
-    private TSysGlobalSetting(String tableName) {
+	private TSysGlobalSetting(String tableName) {
         super(tableName);
     }
 
-    public final Column ID = Column.withName("id").primaryKey().build();
-    public final Column NAME = Column.withName("name").build();
-    public final Column FLAG = Column.withName("flag").build();
-    public final Column DEFAULT_VALUE = Column.withName("default_value").build();
-    public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.GLOBAL_SETTING_TYPE).build();
-    public final Column MULTIVALUED = Column.withName("multivalued").booleanValue().build();
-    public final Column ALLOW_SELF_SET = Column.withName("allow_self_set").booleanValue().build();
-    public final Column ENABLED = Column.withName("enabled").booleanValue().build();
-    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
-    public final Column MARK = Column.withName("mark").build();
+	public final Column ID = Column.withName("id").primaryKey().build();
+	public final Column NAME = Column.withName("name").build();
+	public final Column FLAG = Column.withName("flag").build();
+	public final Column DEFAULT_VALUE = Column.withName("default_value").build();
+	public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.GLOBAL_SETTING_DATA_TYPE).build();
+	public final Column MULTIVALUED = Column.withName("multivalued").booleanValue().build();
+	public final Column ALLOW_SELF_SET = Column.withName("allow_self_set").booleanValue().build();
+	public final Column ENABLED = Column.withName("enabled").booleanValue().build();
+	public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+	public final Column MARK = Column.withName("mark").build();
 
-    @Override
+	@Override
     public List<Column> getColumns() {
         return List.of(ID, NAME, FLAG, DEFAULT_VALUE, DATA_TYPE, MULTIVALUED, ALLOW_SELF_SET, ENABLED, CREATE_TIME, MARK);
     }

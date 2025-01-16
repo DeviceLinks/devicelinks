@@ -17,19 +17,14 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.console.service.SysGroupService;
-import cn.devicelinks.console.service.SysPositionService;
+import cn.devicelinks.console.service.SysDepartmentService;
 import cn.devicelinks.console.service.SysUserService;
-import cn.devicelinks.framework.common.GroupType;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
-import cn.devicelinks.framework.common.pojos.SysGroup;
-import cn.devicelinks.framework.common.pojos.SysPosition;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-
-import java.util.List;
 
 /**
  * 用户附加信息JDBC数据加载实现类
@@ -42,9 +37,7 @@ public class JdbcAuthorizedUserAdditionService implements AuthorizedUserAddition
     @Autowired
     private SysUserService userService;
     @Autowired
-    private SysPositionService positionService;
-    @Autowired
-    private SysGroupService groupService;
+    private SysDepartmentService departmentService;
 
     @Override
     public AuthorizedUserAddition selectByUsername(String username) {
@@ -53,11 +46,10 @@ public class JdbcAuthorizedUserAdditionService implements AuthorizedUserAddition
             throw new DeviceLinksAuthorizationException(ACCOUNT_NOT_FOUND);
         }
         // @formatter:on
-        SysPosition position = null;
-        if (!ObjectUtils.isEmpty(user.getPositionId())) {
-            position = positionService.selectById(user.getPositionId());
+        SysDepartment department = null;
+        if (!ObjectUtils.isEmpty(user.getDepartmentId())) {
+            department = departmentService.selectById(user.getDepartmentId());
         }
-        List<SysGroup> userGroups = groupService.selectByUserId(GroupType.user, user.getId());
-        return new AuthorizedUserAddition(user, position, userGroups);
+        return new AuthorizedUserAddition(user, department);
     }
 }

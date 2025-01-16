@@ -17,11 +17,8 @@
 
 package cn.devicelinks.framework.common.security;
 
-import cn.devicelinks.framework.common.pojos.SysGroup;
-import cn.devicelinks.framework.common.pojos.SysPosition;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
-
-import java.util.List;
 
 /**
  * 用户详情数据提供者
@@ -38,18 +35,9 @@ public interface SecurityUserDetailsProvider {
     SysUser getUser();
 
     /**
-     * 获取用户岗位
+     * 获取用户部门
      *
-     * @return {@link SysPosition}
+     * @return {@link SysDepartment}
      */
-    SysPosition getUserPosition();
-
-    /**
-     * 获取用户授权的用户组列表
-     *
-     * @return 用户组列表
-     * @see cn.devicelinks.framework.common.pojos.SysGroupUser
-     */
-    List<SysGroup> getUserGroups();
-
+    SysDepartment getUserDepartment();
 }

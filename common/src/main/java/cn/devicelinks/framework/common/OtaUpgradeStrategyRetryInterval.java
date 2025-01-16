@@ -10,25 +10,25 @@ public enum OtaUpgradeStrategyRetryInterval {
     /**
      * 不重试
      */
-    not,
+    Not,
     /**
      * 立即重试
      */
-    immediately,
+    Immediately,
     /**
      * 10分钟后重试
      */
-    minute_10,
+    Minute10,
     /**
      * 30分钟后重试
      */
-    minute_30,
+    Minute30,
     /**
      * 1小时后重试
      */
-    hour_1,
+    Hour1,
     /**
      * 24小时后重试
      */
-    hour_24
+    Hour24
 }

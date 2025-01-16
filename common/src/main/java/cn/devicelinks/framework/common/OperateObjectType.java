@@ -10,10 +10,29 @@ public enum OperateObjectType {
     /**
      * 用户
      */
-    user,
+    User,
     /**
      * 部门
      */
-    department,
-    //...
+    Department,
+    /**
+     * 设备
+     */
+    Device,
+    /**
+     * 产品
+     */
+    Product,
+    /**
+     * OTA
+     */
+    Ota,
+    /**
+     * 功能模块
+     */
+    FunctionModule,
+    /**
+     * 属性
+     */
+    Attribute
 }

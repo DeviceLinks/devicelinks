@@ -10,21 +10,21 @@ public enum OtaUpgradeProgressState {
     /**
      * 等待推送
      */
-    WAIT_PUSH,
+    WaitPush,
     /**
      * 等待升级
      */
-    WAIT,
+    Wait,
     /**
      * 升级成功
      */
-    SUCCESS,
+    Success,
     /**
      * 升级失败
      */
-    FAILURE,
+    Failure,
     /**
      * 取消升级
      */
-    CANCEL
+    Cancel
 }

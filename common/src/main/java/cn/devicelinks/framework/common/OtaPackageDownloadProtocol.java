@@ -7,6 +7,6 @@ package cn.devicelinks.framework.common;
  * @since 1.0
  */
 public enum OtaPackageDownloadProtocol {
-    http,
-    mqtt
+    Http,
+    Mqtt
 }

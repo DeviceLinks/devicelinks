@@ -20,15 +20,12 @@ package cn.devicelinks.console.authorization;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
-import cn.devicelinks.framework.common.pojos.SysGroup;
-import cn.devicelinks.framework.common.pojos.SysPosition;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
 
 /**
  * The {@link DeviceLinksUserDetails} context
@@ -50,16 +47,12 @@ public final class UserDetailsContext {
         return getUserAddition().getUser();
     }
 
-    public static SysPosition getUserPosition() {
-        return getUserAddition().getPosition();
+    public static SysDepartment getDepartment() {
+        return getUserAddition().getDepartment();
     }
 
     public static AuthorizedUserAddition getUserAddition() {
         return getUserDetails().getAuthorizedUserAddition();
-    }
-
-    public static List<SysGroup> getUserGroups() {
-        return getUserAddition().getUserGroups();
     }
 
     private static DeviceLinksUserDetails getUserDetails() {

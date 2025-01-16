@@ -17,10 +17,10 @@
 
 package cn.devicelinks.console.adaptation;
 
-import cn.devicelinks.console.service.SysUserOperateLogService;
+import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.framework.common.operate.log.OperationLogObject;
 import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
-import cn.devicelinks.framework.common.pojos.SysUserOperateLog;
+import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +36,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OperationLogStorageSupport implements OperationLogStorage {
     @Autowired
-    private SysUserOperateLogService operateLogService;
+    private SysLogService operateLogService;
 
     @Override
     public void storage(OperationLogObject object) {
         // @formatter:off
-        SysUserOperateLog operateLog = new SysUserOperateLog()
+        SysLog operateLog = new SysLog()
                 .setId(UUIDUtils.generateNoDelimiter())
                 //.setTenantId(UserAdditionContextHolder.getContext().getUser().getTenantId())
                 .setUserId(object.getOperatorId())
-                .setRequestId(object.getRequestId())
                 .setResourceCode(object.getResourceCode().toString())
                 .setAction(object.getOperateAction())
                 .setObjectType(object.getObjectType())

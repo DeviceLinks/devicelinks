@@ -23,13 +23,15 @@ public class Product implements Serializable {
     private String name;
     private String productKey;
     private String productSecret;
+    private DeviceType deviceType;
     private DeviceNetworkingAway networkingAway;
+    private AccessGatewayProtocol accessGatewayProtocol;
     private DataFormat dataFormat;
     private DeviceAuthenticationMethod authenticationMethod;
-    private String signatureCode;
     private boolean dynamicRegistration;
     private ProductStatus status;
     private boolean deleted;
     private String description;
+    private String createBy;
     private LocalDateTime createTime;
 }

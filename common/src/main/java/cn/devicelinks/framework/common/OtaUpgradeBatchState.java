@@ -10,21 +10,21 @@ public enum OtaUpgradeBatchState {
     /**
      * 待升级
      */
-    wait,
+    Wait,
     /**
      * 升级中
      */
-    upgrading,
+    Upgrading,
     /**
      * 已完成
      */
-    completed,
+    Completed,
     /**
      * 已取消
      */
-    cancelled,
+    Cancelled,
     /**
      * 未完成
      */
-    unfinished
+    Unfinished
 }

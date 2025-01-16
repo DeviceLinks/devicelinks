@@ -10,21 +10,21 @@ public enum OtaUpgradeBatchScope {
     /**
      * 全部设备
      */
-    all,
+    All,
     /**
      * 定向升级
      */
-    direction,
+    Direction,
     /**
      * 区域升级
      */
-    area,
+    Area,
     /**
      * 灰度升级
      */
-    grayscale,
+    Grayscale,
     /**
      * 分组升级
      */
-    group
+    Group
 }

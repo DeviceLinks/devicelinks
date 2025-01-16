@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * OTA升级批次
@@ -27,7 +26,7 @@ public class OtaUpgradeBatch implements Serializable {
     private OtaUpgradeBatchState state;
     private OtaUpgradeBatchMethod upgradeMethod;
     private OtaUpgradeBatchScope upgradeScope;
-    private Map<String, Object> addition;
+    private OtaUpgradeBatchAddition addition;
     private String createBy;
     private LocalDateTime createTime;
     private String mark;

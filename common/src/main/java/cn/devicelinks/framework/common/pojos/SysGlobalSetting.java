@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.GlobalSettingType;
+import cn.devicelinks.framework.common.GlobalSettingDataType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -24,7 +24,7 @@ public class SysGlobalSetting implements Serializable {
     private String name;
     private String flag;
     private String defaultValue;
-    private GlobalSettingType dataType;
+    private GlobalSettingDataType dataType;
     private boolean multivalued;
     private boolean allowSelfSet;
     private boolean enabled;

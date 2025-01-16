@@ -1,6 +1,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.OTAFileSource;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -21,6 +22,9 @@ public class OtaFile implements Serializable {
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
     private String id;
     private String otaId;
-    private String fileId;
+    private OTAFileSource fileSource;
+    private String fileChecksum;
+    private OtaFileAddition addition;
+    private boolean deleted;
     private LocalDateTime createTime;
 }

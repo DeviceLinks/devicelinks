@@ -26,7 +26,6 @@ public class SysUserSession implements Serializable {
     private String userId;
     private String username;
     private String tokenValue;
-    private String ipAddress;
     private PlatformType platformType;
     private SessionStatus status;
     private LocalDateTime issuedTime;

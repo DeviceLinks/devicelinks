@@ -20,7 +20,7 @@ package cn.devicelinks.console.authorization.endpoint.login;
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.console.authorization.endpoint.AbstractAuthorizationEndpointConfigurer;
-import cn.devicelinks.console.service.SysUserLoginLogService;
+import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.console.service.SysUserSessionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
@@ -59,12 +59,12 @@ public class UsernamePasswordLoginAuthenticationConfigurer extends AbstractAutho
         PasswordEncoder passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
         UserDetailsService userDetailsService = applicationContext.getBean(UserDetailsService.class);
         SysUserSessionService userSessionService = applicationContext.getBean(SysUserSessionService.class);
-        SysUserLoginLogService userLoginLogService = applicationContext.getBean(SysUserLoginLogService.class);
+        SysLogService sysLogService = applicationContext.getBean(SysLogService.class);
         TokenRepository tokenRepository = applicationContext.getBean(TokenRepository.class);
         JwtEncoder jwtEncoder = applicationContext.getBean(JwtEncoder.class);
         UsernamePasswordLoginAuthenticationProvider loginAuthenticationProvider =
                 new UsernamePasswordLoginAuthenticationProvider(passwordEncoder, userDetailsService, userSessionService,
-                        userLoginLogService, tokenRepository, jwtEncoder);
+                        sysLogService, tokenRepository, jwtEncoder);
         httpSecurity.authenticationProvider(loginAuthenticationProvider);
     }
 

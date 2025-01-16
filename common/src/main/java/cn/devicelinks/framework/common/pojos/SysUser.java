@@ -40,14 +40,13 @@ public class SysUser implements Serializable {
     private String id;
     private String name;
     private String account;
-    private UserIdentity identity;
     private String pwd;
     private String departmentId;
-    private String positionId;
+    private UserIdentity identity;
+    private LocalDateTime lastLoginTime;
+    private LocalDateTime lastChangePwdTime;
     private boolean enabled;
     private boolean deleted;
-    private LocalDateTime lastChangePwdTime;
-    private LocalDateTime lastLoginTime;
     private String createBy;
     private LocalDateTime createTime;
 }
