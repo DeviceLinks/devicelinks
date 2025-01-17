@@ -72,6 +72,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper NOTIFICATION_MATCH_USER_AWAY = new EnumColumnValueMapper(NotificationMatchUserAway.class);
     EnumColumnValueMapper NOTIFICATION_PUSH_AWAY = new EnumColumnValueMapper(NotificationPushAway.class);
     EnumColumnValueMapper ACCESS_GATEWAY_PROTOCOL = new EnumColumnValueMapper(AccessGatewayProtocol.class);
+    EnumColumnValueMapper NOTIFICATION_TYPE_IDENTIFIER = new EnumColumnValueMapper(NotificationTypeIdentifier.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);

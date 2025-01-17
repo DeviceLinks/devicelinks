@@ -1,6 +1,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.NotificationTypeIdentifier;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -22,7 +23,7 @@ public class NotificationType implements Serializable {
 
     private String id;
     private String name;
-    private String identifier;
+    private NotificationTypeIdentifier identifier;
     private boolean enabled;
     private LocalDateTime createTime;
 }

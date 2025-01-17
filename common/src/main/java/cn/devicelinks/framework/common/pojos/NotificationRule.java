@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 通知规则
@@ -22,10 +23,13 @@ public class NotificationRule implements Serializable {
 
     private String id;
     private String name;
-    private String typeId;
+    private String triggerTypeId;
     private String templateId;
-    private String receiverId;
+    private List<String> receiverIds;
     private NotificationRuleAddition addition;
+    private boolean enabled;
+    private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;
+    private String description;
 }

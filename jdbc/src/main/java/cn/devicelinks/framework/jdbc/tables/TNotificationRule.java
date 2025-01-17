@@ -16,25 +16,28 @@ import java.util.List;
  * @since 1.0
  */
 public class TNotificationRule extends TableImpl {
-	@Serial
+    @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-	public static final TNotificationRule NOTIFICATION_RULE = new TNotificationRule("notification_rule");
+    public static final TNotificationRule NOTIFICATION_RULE = new TNotificationRule("notification_rule");
 
-	private TNotificationRule(String tableName) {
+    private TNotificationRule(String tableName) {
         super(tableName);
     }
 
-	public final Column ID = Column.withName("id").primaryKey().build();
-	public final Column NAME = Column.withName("name").build();
-	public final Column TYPE_ID = Column.withName("type_id").build();
-	public final Column TEMPLATE_ID = Column.withName("template_id").build();
-	public final Column RECEIVER_ID = Column.withName("receiver_id").build();
-	public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.NOTIFICATION_RULE_ADDITION).build();
-	public final Column CREATE_BY = Column.withName("create_by").build();
-	public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column ID = Column.withName("id").primaryKey().build();
+    public final Column NAME = Column.withName("name").build();
+    public final Column TRIGGER_TYPE_ID = Column.withName("trigger_type_id").build();
+    public final Column TEMPLATE_ID = Column.withName("template_id").build();
+    public final Column RECEIVER_IDS = Column.withName("receiver_ids").typeMapper(ColumnValueMappers.STRING_JOINER).build();
+    public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.NOTIFICATION_RULE_ADDITION).build();
+    public final Column ENABLED = Column.withName("enabled").booleanValue().build();
+    public final Column DELETED = Column.withName("deleted").booleanValue().build();
+    public final Column CREATE_BY = Column.withName("create_by").build();
+    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column DESCRIPTION = Column.withName("description").build();
 
-	@Override
+    @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, TYPE_ID, TEMPLATE_ID, RECEIVER_ID, ADDITION, CREATE_BY, CREATE_TIME);
+        return List.of(ID, NAME, TRIGGER_TYPE_ID, TEMPLATE_ID, RECEIVER_IDS, ADDITION, ENABLED, DELETED, CREATE_BY, CREATE_TIME, DESCRIPTION);
     }
 }

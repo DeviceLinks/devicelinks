@@ -26,7 +26,7 @@ public class TNotificationType extends TableImpl {
 
 	public final Column ID = Column.withName("id").primaryKey().build();
 	public final Column NAME = Column.withName("name").build();
-	public final Column IDENTIFIER = Column.withName("identifier").build();
+	public final Column IDENTIFIER = Column.withName("identifier").typeMapper(ColumnValueMappers.NOTIFICATION_TYPE_IDENTIFIER).build();
 	public final Column ENABLED = Column.withName("enabled").booleanValue().build();
 	public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
