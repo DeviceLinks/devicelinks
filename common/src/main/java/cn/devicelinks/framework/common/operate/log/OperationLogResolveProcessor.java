@@ -105,7 +105,6 @@ public class OperationLogResolveProcessor {
             this.operationLogObject.setObjectFields(JacksonUtils.toJsonString(fieldDifferentValueList));
         }
         this.operationLogObject
-                .setResourceCode(extractor.getResourceCode())
                 .setOperateAction(extractor.getAction())
                 .setObjectType(extractor.getObjectType());
         // @formatter:on

@@ -20,9 +20,8 @@ package cn.devicelinks.console.web;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.DeviceService;
 import cn.devicelinks.console.service.SysUserService;
-import cn.devicelinks.framework.common.OperateAction;
-import cn.devicelinks.framework.common.OperateObjectType;
-import cn.devicelinks.framework.common.ResourceCode;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -49,7 +48,7 @@ public class IndexController {
     private SysUserService userService;
 
     @PostMapping(value = "/post")
-    @OperationLog(resource = ResourceCode.R0010000, action = OperateAction.Add, objectType = OperateObjectType.User,
+    @OperationLog(action = LogAction.Add, objectType = LogObjectType.User,
             object = "{#p0.name}",
             objectDetails = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
             msg = "更新了用户 {#p0.name} 基本信息.",
@@ -64,7 +63,7 @@ public class IndexController {
     }
 
     @PostMapping(value = "/update")
-    @OperationLog(resource = ResourceCode.R0010000, action = OperateAction.Update, objectType = OperateObjectType.User,
+    @OperationLog(action = LogAction.Update, objectType = LogObjectType.User,
             object = "{#before.account}",
             objectDetails = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
             msg = "更新了用户 {#before.account} 基本信息.",

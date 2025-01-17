@@ -18,13 +18,19 @@
 package cn.devicelinks.console.adaptation;
 
 import cn.devicelinks.console.service.SysLogService;
+import cn.devicelinks.framework.common.operate.log.ObjectFieldDifferentValue;
 import cn.devicelinks.framework.common.operate.log.OperationLogObject;
 import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
 import cn.devicelinks.framework.common.pojos.SysLog;
+import cn.devicelinks.framework.common.pojos.SysLogAddition;
+import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 /**
  * 操作日志数据存储实现类
@@ -40,21 +46,34 @@ public class OperationLogStorageSupport implements OperationLogStorage {
 
     @Override
     public void storage(OperationLogObject object) {
+        List<SysLogAddition.ObjectField> objectFields = null;
+        if (!ObjectUtils.isEmpty(object.getObjectFields())) {
+            List<ObjectFieldDifferentValue> fieldDifferentValueList = JacksonUtils.parseList(object.getObjectFields(), ObjectFieldDifferentValue.class);
+            objectFields = fieldDifferentValueList.stream()
+                    .map(fdv ->
+                            new SysLogAddition.ObjectField()
+                                    .setField(fdv.getField())
+                                    .setFieldName(fdv.getFieldName())
+                                    .setBeforeValue(fdv.getBeforeValue())
+                                    .setAfterValue(fdv.getAfterValue())
+                                    .setDifferent(fdv.isDifferent())).toList();
+        }
+
         // @formatter:off
         SysLog operateLog = new SysLog()
                 .setId(UUIDUtils.generateNoDelimiter())
-                //.setTenantId(UserAdditionContextHolder.getContext().getUser().getTenantId())
                 .setUserId(object.getOperatorId())
-                .setResourceCode(object.getResourceCode().toString())
                 .setAction(object.getOperateAction())
                 .setObjectType(object.getObjectType())
                 .setObject(object.getObject())
                 .setMsg(object.getMsg())
-                .setObjectFields(object.getObjectFields())
                 .setSuccess(object.isExecutionSucceed())
-                .setFailureReason(object.getFailureReason())
-                .setIpAddress(object.getIpAddress())
-                .setOperateTime(object.getTime());
+                .setCreateTime(object.getTime())
+                .setAddition(
+                        new SysLogAddition()
+                                .setIpAddress(object.getIpAddress())
+                                .setFailureReason(object.getFailureReason())
+                                .setObjectFields(objectFields));
         // @formatter:on
         this.operateLogService.insert(operateLog);
     }

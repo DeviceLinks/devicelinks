@@ -17,9 +17,8 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.OperateAction;
-import cn.devicelinks.framework.common.OperateObjectType;
-import cn.devicelinks.framework.common.ResourceCode;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.Variables;
 import com.google.common.collect.Maps;
 import lombok.Getter;
@@ -52,9 +51,8 @@ public class OperationLogAnnotationExtractor {
     private final Class<?> targetClass;
     private final Method specificMethod;
     private String conditionTemplate;
-    private ResourceCode resourceCode;
-    private OperateAction action;
-    private OperateObjectType objectType;
+    private LogAction action;
+    private LogObjectType objectType;
     private String objectTemplate;
     private String msgTemplate;
     private String objectDetailTemplate;
@@ -69,7 +67,6 @@ public class OperationLogAnnotationExtractor {
         OperationLog operationLog = AnnotationUtils.getAnnotation(invocation.getMethod(), OperationLog.class);
         if (operationLog != null) {
             this.conditionTemplate = operationLog.condition();
-            this.resourceCode = operationLog.resource();
             this.action = operationLog.action();
             this.objectType = operationLog.objectType();
             this.objectTemplate = operationLog.object();

@@ -25,6 +25,7 @@ import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import cn.devicelinks.framework.common.pojos.SysLog;
+import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
@@ -136,15 +137,16 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
         // save user login log
         SysLog userLoginLog = new SysLog()
                 .setId(UUIDUtils.generateNoDelimiter())
-                .setObject(user.getAccount())
-                .setAction(OperateAction.Login)
-                .setObjectType(OperateObjectType.User)
                 .setUserId(user.getId())
                 .setSessionId(userSession.getId())
+                .setAction(LogAction.Login)
+                .setObjectType(LogObjectType.User)
+                .setObject(user.getAccount())
+                .setObjectId(user.getId())
                 .setSuccess(true)
                 .setMsg(LOGIN_SUCCESS_MSG)
-                .setIpAddress(ipAddress)
-                .setOperateTime(LocalDateTime.now());
+                .setAddition(new SysLogAddition().setIpAddress(ipAddress))
+                .setCreateTime(LocalDateTime.now());
         this.logService.insert(userLoginLog);
     }
 

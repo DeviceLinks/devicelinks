@@ -17,14 +17,13 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.OperateAction;
-import cn.devicelinks.framework.common.OperateObjectType;
-import cn.devicelinks.framework.common.ResourceCode;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
+import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.pojos.SysLog;
+import cn.devicelinks.framework.common.pojos.SysUser;
 
 import java.lang.annotation.*;
 
@@ -47,32 +46,25 @@ public @interface OperationLog {
     String condition() default "true";
 
     /**
-     * 资源编码
-     *
-     * @return {@link ResourceCode}
-     */
-    ResourceCode resource();
-
-    /**
      * 操作动作
      *
-     * @return {@link OperateAction}
+     * @return {@link LogAction}
      */
-    OperateAction action();
+    LogAction action();
 
     /**
      * 操作对象类型
      *
-     * @return {@link OperateObjectType}
+     * @return {@link LogObjectType}
      */
-    OperateObjectType objectType();
+    LogObjectType objectType();
 
     /**
      * 操作对象
      * 支持SpEL表达式
      * <p>
      * 跟{@link #objectType()}一一对应。
-     * 如：{@link OperateObjectType}，那么操作对象可以为{@link SysUser#getId()}或{@link SysUser#getAccount()}
+     * 如：{@link LogObjectType}，那么操作对象可以为{@link SysUser#getId()}或{@link SysUser#getAccount()}
      * 自行定义操作对象，该值会被存储到{@link SysLog#getObject()}数据列中
      *
      * @return 获取操作对象值的SpEL表达，解析后获取操作对象详情中用户可读的唯一标识字段值，如：{@link SysUser#getAccount()}
@@ -83,7 +75,7 @@ public @interface OperationLog {
      * 配置用于获取“对象详细信息”的表达式
      * 支持SpEL表达式
      * <p>
-     * 获取到非空值后会根据{@link OperateObjectType}以及{@link OperateAction}提取到本次操作的{@link ObjectField}对象字段列表，
+     * 获取到非空值后会根据{@link LogObjectType}以及{@link LogAction}提取到本次操作的{@link ObjectField}对象字段列表，
      * 将对象字段列表与对象详细信息实例进行匹配，将匹配到的字段值以JSON字符串的形式存储到{@link SysLog#getObjectFields()}数据列中
      * <p>
      * 在操作目标方法之前将获取到非空值存入{@link ExpressionVariables}变量集合中，变量名为"before"，可以通过"{#before.xxx}"进行调用，如："{#before.account}"、"{#before.getLastName()}"

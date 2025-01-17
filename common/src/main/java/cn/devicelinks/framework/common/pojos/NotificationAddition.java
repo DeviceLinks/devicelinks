@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.OperateObjectType;
+import cn.devicelinks.framework.common.LogObjectType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -29,7 +29,7 @@ public class NotificationAddition implements Serializable {
     @Data
     @Accessors(chain = true)
     public static class DataEntityAction {
-        private OperateObjectType objectType;
+        private LogObjectType objectType;
         private String objectId;
     }
 

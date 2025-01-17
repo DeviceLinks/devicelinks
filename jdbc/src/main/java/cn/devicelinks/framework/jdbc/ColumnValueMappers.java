@@ -44,8 +44,8 @@ import java.util.stream.Collectors;
 public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper USER_IDENTITY = new EnumColumnValueMapper(UserIdentity.class);
     EnumColumnValueMapper PLATFORM_TYPE = new EnumColumnValueMapper(PlatformType.class);
-    EnumColumnValueMapper OPERATE_ACTION = new EnumColumnValueMapper(OperateAction.class);
-    EnumColumnValueMapper OPERATE_OBJECT_TYPE = new EnumColumnValueMapper(OperateObjectType.class);
+    EnumColumnValueMapper LOG_ACTION = new EnumColumnValueMapper(LogAction.class);
+    EnumColumnValueMapper LOG_OBJECT_TYPE = new EnumColumnValueMapper(LogObjectType.class);
     EnumColumnValueMapper DEVICE_STATUS = new EnumColumnValueMapper(DeviceStatus.class);
     EnumColumnValueMapper DATA_FORMAT = new EnumColumnValueMapper(DataFormat.class);
     EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceAuthenticationMethod.class);

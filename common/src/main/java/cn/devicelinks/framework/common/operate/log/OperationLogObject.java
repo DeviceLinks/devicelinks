@@ -17,9 +17,8 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.OperateAction;
-import cn.devicelinks.framework.common.OperateObjectType;
-import cn.devicelinks.framework.common.ResourceCode;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -39,17 +38,13 @@ public class OperationLogObject {
      */
     private String requestId;
     /**
-     * 资源编码
-     */
-    private ResourceCode resourceCode;
-    /**
      * 操作动作
      */
-    private OperateAction operateAction;
+    private LogAction operateAction;
     /**
      * 操作对象类型
      */
-    private OperateObjectType objectType;
+    private LogObjectType objectType;
     /**
      * 操作对象
      */

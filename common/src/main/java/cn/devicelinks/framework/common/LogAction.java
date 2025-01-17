@@ -1,12 +1,12 @@
 package cn.devicelinks.framework.common;
 
 /**
- * 操作动作
+ * 记录日志的动作定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public enum OperateAction {
+public enum LogAction {
     /**
      * 登录
      */
@@ -23,6 +23,10 @@ public enum OperateAction {
      * 编辑
      */
     Update,
+    /**
+     * 变更属性
+     */
+    UpdateAttribute,
     /**
      * 修改密码
      */

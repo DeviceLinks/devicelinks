@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.OperateAction;
-import cn.devicelinks.framework.common.OperateObjectType;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -37,34 +37,34 @@ import java.util.stream.Collectors;
 @Getter
 public enum ObjectField {
     /**
-     * {@link OperateObjectType#User}
+     * {@link LogObjectType#User}
      *
      * @see cn.devicelinks.framework.common.pojos.SysUser
      */
-    user_id(OperateObjectType.User, "id", "用户ID", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    user_name(OperateObjectType.User, "name", "用户名称", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    user_account(OperateObjectType.User, "account", "用户账号", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    user_department(OperateObjectType.User, "department", "部门", OperateAction.Add, OperateAction.Update),
-    user_position(OperateObjectType.User, "position", "岗位", OperateAction.Add, OperateAction.Update),
+    user_id(LogObjectType.User, "id", "用户ID", LogAction.Add, LogAction.Update, LogAction.Delete),
+    user_name(LogObjectType.User, "name", "用户名称", LogAction.Add, LogAction.Update, LogAction.Delete),
+    user_account(LogObjectType.User, "account", "用户账号", LogAction.Add, LogAction.Update, LogAction.Delete),
+    user_department(LogObjectType.User, "department", "部门", LogAction.Add, LogAction.Update),
+    user_position(LogObjectType.User, "position", "岗位", LogAction.Add, LogAction.Update),
     /**
-     * {@link OperateObjectType#Department}
+     * {@link LogObjectType#Department}
      *
      * @see cn.devicelinks.framework.common.pojos.SysDepartment
      */
-    department_id(OperateObjectType.Department, "id", "部门ID", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    department_name(OperateObjectType.Department, "name", "部门名称", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    department_code(OperateObjectType.Department, "code", "部门编码", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    department_pid(OperateObjectType.Department, "pid", "上级部门ID", OperateAction.Add, OperateAction.Update, OperateAction.Delete),
-    department_level(OperateObjectType.Department, "level", "部门等级", OperateAction.Add, OperateAction.Update),
-    department_sort(OperateObjectType.Department, "sort", "部门排序", OperateAction.Add, OperateAction.Update),
+    department_id(LogObjectType.Department, "id", "部门ID", LogAction.Add, LogAction.Update, LogAction.Delete),
+    department_name(LogObjectType.Department, "name", "部门名称", LogAction.Add, LogAction.Update, LogAction.Delete),
+    department_code(LogObjectType.Department, "code", "部门编码", LogAction.Add, LogAction.Update, LogAction.Delete),
+    department_pid(LogObjectType.Department, "pid", "上级部门ID", LogAction.Add, LogAction.Update, LogAction.Delete),
+    department_level(LogObjectType.Department, "level", "部门等级", LogAction.Add, LogAction.Update),
+    department_sort(LogObjectType.Department, "sort", "部门排序", LogAction.Add, LogAction.Update),
     ;
 
-    private final OperateObjectType objectType;
+    private final LogObjectType objectType;
     private final String field;
     private final String fieldName;
-    private final List<OperateAction> matchActions;
+    private final List<LogAction> matchActions;
 
-    ObjectField(OperateObjectType objectType, String field, String fieldName, OperateAction... matchActions) {
+    ObjectField(LogObjectType objectType, String field, String fieldName, LogAction... matchActions) {
         this.field = field;
         this.fieldName = fieldName;
         this.objectType = objectType;
@@ -78,7 +78,7 @@ public enum ObjectField {
      * @param operateAction 操作动作
      * @return {@link ObjectField}
      */
-    public static List<ObjectField> getFields(OperateObjectType objectType, OperateAction operateAction) {
+    public static List<ObjectField> getFields(LogObjectType objectType, LogAction operateAction) {
         // @formatter:off
         return Arrays.stream(values())
                 .filter(fs -> fs.getObjectType() == objectType)

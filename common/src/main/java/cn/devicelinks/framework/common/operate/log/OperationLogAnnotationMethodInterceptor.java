@@ -17,7 +17,7 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.OperateAction;
+import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionEvaluationContext;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.operate.log.expression.OperationLogCachedExpressionEvaluator;
@@ -96,7 +96,7 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                     if (targetBeforeObject != null) {
                         evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
                     }
-                    if (targetBeforeObject == null && (OperateAction.Update == extractor.getAction() || OperateAction.Delete == extractor.getAction())) {
+                    if (targetBeforeObject == null && (LogAction.Update == extractor.getAction() || LogAction.Delete == extractor.getAction())) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -120,7 +120,7 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                     if (targetAfterObject != null) {
                         evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
                     }
-                    if (targetAfterObject == null && (OperateAction.Update == extractor.getAction() || OperateAction.Add == extractor.getAction())) {
+                    if (targetAfterObject == null && (LogAction.Update == extractor.getAction() || LogAction.Add == extractor.getAction())) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -133,9 +133,9 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             throw e;
         } finally {
             try {
-                boolean skip = (OperateAction.Update == extractor.getAction() && (targetBeforeObject == null || targetAfterObject == null)) ||
-                        (OperateAction.Add == extractor.getAction() && targetAfterObject == null) ||
-                        (OperateAction.Delete == extractor.getAction() && targetBeforeObject == null);
+                boolean skip = (LogAction.Update == extractor.getAction() && (targetBeforeObject == null || targetAfterObject == null)) ||
+                        (LogAction.Add == extractor.getAction() && targetAfterObject == null) ||
+                        (LogAction.Delete == extractor.getAction() && targetBeforeObject == null);
                 if (!skip) {
                     OperationLogResolveProcessor resolveProcessor =
                             new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);

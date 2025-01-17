@@ -77,7 +77,7 @@ public class NotificationRuleAddition implements Serializable {
     @Accessors(chain = true)
     public static class DataEntityAction {
 
-        private List<OperateObjectType> objectTypes;
+        private List<LogObjectType> objectTypes;
 
         private List<EntityAction> actions;
     }

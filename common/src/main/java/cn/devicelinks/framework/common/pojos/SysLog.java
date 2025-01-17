@@ -1,8 +1,8 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.OperateAction;
-import cn.devicelinks.framework.common.OperateObjectType;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -24,15 +24,12 @@ public class SysLog implements Serializable {
     private String id;
     private String userId;
     private String sessionId;
-    private String resourceCode;
-    private OperateAction action;
-    private OperateObjectType objectType;
+    private LogObjectType objectType;
+    private LogAction action;
     private String object;
-    private String objectFields;
+    private String objectId;
     private String msg;
     private boolean success;
-    private String failureReason;
-    private String ipAddress;
     private SysLogAddition addition;
-    private LocalDateTime operateTime;
+    private LocalDateTime createTime;
 }

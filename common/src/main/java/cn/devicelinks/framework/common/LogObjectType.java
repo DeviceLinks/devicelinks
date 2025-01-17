@@ -1,12 +1,12 @@
 package cn.devicelinks.framework.common;
 
 /**
- * 操作对象类型
+ * 记录日志的对象类型定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public enum OperateObjectType {
+public enum LogObjectType {
     /**
      * 用户
      */
