@@ -18,5 +18,9 @@ public enum NotificationPushAway {
     /**
      * 微信消息
      */
-    Weixin
+    Weixin,
+    /**
+     * 短信通知
+     */
+    Sms
 }

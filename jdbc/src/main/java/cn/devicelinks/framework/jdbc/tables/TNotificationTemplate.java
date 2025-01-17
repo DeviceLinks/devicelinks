@@ -27,7 +27,7 @@ public class TNotificationTemplate extends TableImpl {
 	public final Column ID = Column.withName("id").primaryKey().build();
 	public final Column NAME = Column.withName("name").build();
 	public final Column TYPE_ID = Column.withName("type_id").build();
-	public final Column PUSH_AWAY = Column.withName("push_away").typeMapper(ColumnValueMappers.NOTIFICATION_PUSH_AWAY).build();
+	public final Column PUSH_AWAY = Column.withName("push_away").typeMapper(ColumnValueMappers.STRING_JOINER).build();
 	public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.NOTIFICATION_TEMPLATE_ADDITION).build();
 	public final Column DELETED = Column.withName("deleted").booleanValue().build();
 	public final Column CREATE_BY = Column.withName("create_by").build();

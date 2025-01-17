@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 通知模版
@@ -24,7 +25,7 @@ public class NotificationTemplate implements Serializable {
     private String id;
     private String name;
     private String typeId;
-    private NotificationPushAway pushAway;
+    private List<NotificationPushAway> pushAway;
     private NotificationTemplateAddition addition;
     private boolean deleted;
     private String createBy;
