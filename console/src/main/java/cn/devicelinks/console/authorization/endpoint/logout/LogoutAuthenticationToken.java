@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console.authorization.endpoint.logout;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
@@ -31,10 +32,12 @@ import java.util.Collections;
 @Getter
 public class LogoutAuthenticationToken extends AbstractAuthenticationToken {
     private final String token;
+    private final HttpServletRequest request;
 
-    public LogoutAuthenticationToken(String token) {
+    public LogoutAuthenticationToken(String token, HttpServletRequest request) {
         super(Collections.emptyList());
         this.token = token;
+        this.request = request;
     }
 
     @Override

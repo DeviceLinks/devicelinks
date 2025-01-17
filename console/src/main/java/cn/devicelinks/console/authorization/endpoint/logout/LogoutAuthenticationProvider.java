@@ -19,9 +19,17 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 
 import cn.devicelinks.console.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
+import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.console.service.SysUserSessionService;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.pojos.SysLog;
+import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
+import cn.devicelinks.framework.common.utils.HttpRequestUtils;
+import cn.devicelinks.framework.common.utils.UUIDUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -30,6 +38,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * The logout authentication provider
@@ -38,14 +47,16 @@ import java.time.Instant;
  * @since 1.0
  */
 public class LogoutAuthenticationProvider implements AuthenticationProvider {
-
+    private static final String LOGOUT_SUCCESS_MSG = "登出成功";
     private final TokenRepository tokenRepository;
     private final SysUserSessionService userSessionService;
+    private final SysLogService logService;
     private final JwtDecoder jwtDecoder;
 
-    public LogoutAuthenticationProvider(TokenRepository tokenRepository, SysUserSessionService userSessionService, JwtDecoder jwtDecoder) {
+    public LogoutAuthenticationProvider(TokenRepository tokenRepository, SysUserSessionService userSessionService, SysLogService logService, JwtDecoder jwtDecoder) {
         this.tokenRepository = tokenRepository;
         this.userSessionService = userSessionService;
+        this.logService = logService;
         this.jwtDecoder = jwtDecoder;
     }
 
@@ -64,15 +75,30 @@ public class LogoutAuthenticationProvider implements AuthenticationProvider {
 
         tokenRepository.remove(logoutAuthenticationToken.getToken());
 
-        this.afterLogoutSuccess(logoutAuthenticationToken.getToken());
+        this.afterLogoutSuccess(logoutAuthenticationToken.getToken(), logoutAuthenticationToken.getRequest());
 
         return logoutAuthenticationToken;
     }
 
-    private void afterLogoutSuccess(String token) {
+    private void afterLogoutSuccess(String token, HttpServletRequest request) {
         SysUserSession userSession = this.userSessionService.selectByToken(token);
         if (userSession != null) {
             this.userSessionService.updateLogoutTime(token);
+            String ipAddress = HttpRequestUtils.getIp(request);
+            // save user login log
+            SysLog userLoginLog = new SysLog()
+                    .setId(UUIDUtils.generateNoDelimiter())
+                    .setUserId(userSession.getUserId())
+                    .setSessionId(userSession.getId())
+                    .setAction(LogAction.Logout)
+                    .setObjectType(LogObjectType.User)
+                    .setObject(userSession.getUsername())
+                    .setObjectId(userSession.getUserId())
+                    .setSuccess(true)
+                    .setMsg(LOGOUT_SUCCESS_MSG)
+                    .setAddition(new SysLogAddition().setIpAddress(ipAddress))
+                    .setCreateTime(LocalDateTime.now());
+            this.logService.insert(userLoginLog);
         }
     }
 

@@ -90,7 +90,7 @@ public class LogoutEndpointFilter extends OncePerRequestFilter {
         if (ObjectUtils.isEmpty(token)) {
             throw new DeviceLinksAuthorizationException(StatusCode.INVALID_TOKEN);
         }
-        return new LogoutAuthenticationToken(token);
+        return new LogoutAuthenticationToken(token, request);
     }
 
     private void sendSuccessResponse(HttpServletRequest request, HttpServletResponse response,

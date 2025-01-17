@@ -20,6 +20,7 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.console.authorization.endpoint.AbstractAuthorizationEndpointConfigurer;
+import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.console.service.SysUserSessionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
@@ -55,8 +56,9 @@ public class LogoutAuthenticationConfigurer extends AbstractAuthorizationEndpoin
         ApplicationContext applicationContext = HttpSecuritySharedObjectUtils.getApplicationContext(httpSecurity);
         TokenRepository tokenRepository = applicationContext.getBean(TokenRepository.class);
         SysUserSessionService userSessionService = applicationContext.getBean(SysUserSessionService.class);
+        SysLogService logService = applicationContext.getBean(SysLogService.class);
         JwtDecoder jwtDecoder = applicationContext.getBean(JwtDecoder.class);
-        LogoutAuthenticationProvider logoutAuthenticationProvider = new LogoutAuthenticationProvider(tokenRepository, userSessionService, jwtDecoder);
+        LogoutAuthenticationProvider logoutAuthenticationProvider = new LogoutAuthenticationProvider(tokenRepository, userSessionService, logService, jwtDecoder);
         httpSecurity.authenticationProvider(logoutAuthenticationProvider);
     }
 
