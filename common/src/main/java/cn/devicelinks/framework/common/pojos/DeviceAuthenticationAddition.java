@@ -2,6 +2,7 @@ package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,5 +18,17 @@ public class DeviceAuthenticationAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
-    //...
+    private String accessToken;
+
+    private String x509Pem;
+
+    private MqttBasic mqttBasic;
+
+    @Data
+    @Accessors(chain = true)
+    public static class MqttBasic {
+        private String clientId;
+        private String username;
+        private String password;
+    }
 }
