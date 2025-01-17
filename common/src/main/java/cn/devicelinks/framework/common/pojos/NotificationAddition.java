@@ -2,6 +2,7 @@ package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import cn.devicelinks.framework.common.LogObjectType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -15,6 +16,8 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Data
+@Accessors(chain = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class NotificationAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
