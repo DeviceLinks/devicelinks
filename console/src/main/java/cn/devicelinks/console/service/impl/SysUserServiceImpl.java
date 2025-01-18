@@ -17,14 +17,20 @@
 
 package cn.devicelinks.console.service.impl;
 
+import cn.devicelinks.console.model.parameter.GetUserListParameter;
 import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import cn.devicelinks.framework.jdbc.repositorys.SysUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
 
 /**
  * 用户业务逻辑实现类
@@ -35,6 +41,7 @@ import java.time.LocalDateTime;
 @Service
 @Slf4j
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUserRepository> implements SysUserService {
+
     public SysUserServiceImpl(SysUserRepository repository) {
         super(repository);
     }
@@ -47,12 +54,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
     @Override
     public void updateLastLoginTime(String userId, LocalDateTime lastLoginTime) {
         // @formatter:off
-        /*this.repository.update(
+        this.repository.update(
                 List.of(
                         SYS_USER.LAST_LOGIN_TIME.set(lastLoginTime)
                 ),
                 SYS_USER.ID.eq(userId)
-        );*/
+        );
         // @formatter:on
+    }
+
+    @Override
+    public PageResult<UserDTO> selectByPageable(GetUserListParameter parameter) {
+        return this.repository.selectByPage(parameter.getName(), parameter.getDepartmentId(),
+                parameter.getIdentity(), parameter.getPageIndex(), parameter.getPageSize());
     }
 }

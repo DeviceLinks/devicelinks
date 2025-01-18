@@ -19,6 +19,8 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 
 /**
  * 管理用户数据接口定义
@@ -27,11 +29,8 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @since 1.0
  */
 public interface SysUserRepository extends Repository<SysUser, String> {
-    /**
-     * 根据账号查询用户
-     *
-     * @param account {@link SysUser#getAccount()}
-     * @return {@link SysUser}
-     */
+
     SysUser selectByAccount(String account);
+
+    PageResult<UserDTO> selectByPage(String name, String departmentId, String userIdentity, int pageIndex, int pageSize);
 }

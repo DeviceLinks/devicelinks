@@ -24,6 +24,8 @@ public class StatusCode {
     public static final StatusCode TOKEN_EXPIRED = StatusCode.build("TOKEN_EXPIRED", "令牌已过期.");
     public static final StatusCode ACCESS_TIME_NOT_ALLOWED = StatusCode.build("ACCESS_TIME_NOT_ALLOWED", "该时间段不允许访问数据.");
     public static final StatusCode TODAY_WEEK_NOT_ALLOWED = StatusCode.build("TODAY_WEEK_NOT_ALLOWED", "今日：[%s]，不允许访问数据.");
+    public static final StatusCode PARAMETER_CANNOT_NULL = StatusCode.build("PARAMETER_CANNOT_NULL", "请求参数：[%s]，不允许为null.");
+    public static final StatusCode PARAMETER_CANNOT_EMPTY = StatusCode.build("PARAMETER_CANNOT_EMPTY", "请求参数：[%s]，不允许为空.");
 
     /**
      * 状态码

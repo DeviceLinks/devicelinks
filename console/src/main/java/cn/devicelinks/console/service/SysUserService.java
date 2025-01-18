@@ -17,8 +17,11 @@
 
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+import cn.devicelinks.console.model.parameter.GetUserListParameter;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
 import java.time.LocalDateTime;
 
@@ -40,8 +43,16 @@ public interface SysUserService extends BaseService<SysUser, String> {
     /**
      * 更新账号最后登录时间
      *
-     * @param userId       用户ID{@link SysUser#getId()}
+     * @param userId        用户ID{@link SysUser#getId()}
      * @param lastLoginTime 最后登录时间 {@link SysUser#getLastLoginTime()}
      */
     void updateLastLoginTime(String userId, LocalDateTime lastLoginTime);
+
+    /**
+     * 分页获取用户列表
+     *
+     * @param parameter {@link GetUserListParameter}
+     * @return {@link SysUser}
+     */
+    PageResult<UserDTO> selectByPageable(GetUserListParameter parameter);
 }
