@@ -85,7 +85,17 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             if (allowAppend) {
                 this.sql += Constants.SPACE + condition;
                 if (!ObjectUtils.isEmpty(parameterValue)) {
-                    this.parameters.addAll(Arrays.asList(parameterValue));
+                    // @formatter:off
+                    List<Object> parameterValues = Arrays.stream(parameterValue)
+                            .map(value -> {
+                                if (value instanceof Enum) {
+                                    return value.toString();
+                                } else {
+                                    return value;
+                                }
+                            }).toList();
+                    // @formatter:on
+                    this.parameters.addAll(parameterValues);
                 }
             }
             return this;
