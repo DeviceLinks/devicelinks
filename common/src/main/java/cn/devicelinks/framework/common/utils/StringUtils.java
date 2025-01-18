@@ -108,4 +108,12 @@ public class StringUtils {
         return inputString.replace(inputString.charAt(0), capitalFirstLetter);
     }
 
+    public static boolean equals(String a, String b) {
+        if (a == null) {
+            return b == null;
+        } else {
+            return a.equals(b);
+        }
+    }
+
 }
