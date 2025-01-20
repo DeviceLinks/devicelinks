@@ -14,28 +14,28 @@ import java.util.List;
  */
 public abstract class AbstractPageResult<T extends Serializable> implements PageResult<T> {
     public static final String PAGE_RESULT_COUNT_NAME = "PageResultCount";
-    protected final int pageIndex;
+    protected final int page;
     protected final int pageSize;
     protected int totalPages;
     protected int totalRows;
     protected List<T> result;
 
-    public AbstractPageResult(int pageIndex, int pageSize) {
-        Assert.isTrue(pageIndex > Constants.ZERO, "pageIndex must be greater than 0");
+    public AbstractPageResult(int page, int pageSize) {
+        Assert.isTrue(page > Constants.ZERO, "page must be greater than 0");
         Assert.isTrue(pageSize > Constants.ZERO, "pageSize must be greater than 0");
-        this.pageIndex = pageIndex;
+        this.page = page;
         this.pageSize = pageSize;
     }
 
-    public AbstractPageResult(int pageIndex, int pageSize, int totalRows, List<T> result) {
-        this(pageIndex, pageSize);
+    public AbstractPageResult(int page, int pageSize, int totalRows, List<T> result) {
+        this(page, pageSize);
         this.totalRows = totalRows;
         this.result = result;
     }
 
     @Override
-    public int getPageIndex() {
-        return this.pageIndex;
+    public int getPage() {
+        return this.page;
     }
 
     @Override
@@ -56,12 +56,12 @@ public abstract class AbstractPageResult<T extends Serializable> implements Page
 
     @Override
     public boolean hasNext() {
-        return this.totalPages > Constants.ZERO && this.totalPages - this.pageIndex > Constants.ZERO;
+        return this.totalPages > Constants.ZERO && this.totalPages - this.page > Constants.ZERO;
     }
 
     @Override
     public boolean hasPrevious() {
-        return this.totalPages > Constants.ZERO && this.pageIndex > Constants.ONE;
+        return this.totalPages > Constants.ZERO && this.page > Constants.ONE;
     }
 
     @Override

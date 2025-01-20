@@ -13,12 +13,12 @@ import java.util.List;
  */
 public class DefaultPageResult<T extends Serializable> extends AbstractPageResult<T> {
 
-    private DefaultPageResult(int pageIndex, int pageSize) {
-        super(pageIndex, pageSize);
+    private DefaultPageResult(int page, int pageSize) {
+        super(page, pageSize);
     }
 
-    private DefaultPageResult(int pageIndex, int pageSize, int totalRows, List<T> result) {
-        super(pageIndex, pageSize, totalRows, result);
+    private DefaultPageResult(int page, int pageSize, int totalRows, List<T> result) {
+        super(page, pageSize, totalRows, result);
     }
 
     public static DefaultPageResultBuilder withPageQuery(PageQuery pageQuery) {

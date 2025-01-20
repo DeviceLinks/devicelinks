@@ -17,7 +17,7 @@ public interface PageResult<T extends Serializable> {
      *
      * @return 当前页码索引
      */
-    int getPageIndex();
+    int getPage();
 
     /**
      * 获取每页条数
