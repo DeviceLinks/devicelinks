@@ -41,7 +41,6 @@ public class ConditionValue {
 
     public static ConditionValue with(Column column, Object value) {
         Assert.notNull(column, "The filter column cannot be null.");
-        Assert.notNull(value, "The filter column value cannot be null.");
         return new ConditionValue(column, value);
     }
 }

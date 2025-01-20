@@ -2,6 +2,7 @@ package cn.devicelinks.framework.jdbc.core.sql;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -81,21 +82,23 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             return this;
         }
 
-        public SelectBuilder appendCondition(boolean allowAppend, String condition, Object... parameterValue) {
+        public SelectBuilder appendCondition(boolean allowAppend, SqlFederationAway federationAway, Condition condition) {
+            if (allowAppend) {
+                this.sql += federationAway.getValue() + condition.getSql();
+                this.parameters.add(conditionValueConvert(condition.getParameterValue()));
+            }
+            return this;
+        }
+
+        public SelectBuilder appendCondition(boolean allowAppend, String condition, Object... parameterValues) {
             if (allowAppend) {
                 this.sql += Constants.SPACE + condition;
-                if (!ObjectUtils.isEmpty(parameterValue)) {
+                if (!ObjectUtils.isEmpty(parameterValues)) {
                     // @formatter:off
-                    List<Object> parameterValues = Arrays.stream(parameterValue)
-                            .map(value -> {
-                                if (value instanceof Enum) {
-                                    return value.toString();
-                                } else {
-                                    return value;
-                                }
-                            }).toList();
+                    List<Object> parameterValueList = Arrays.stream(parameterValues)
+                            .map(DynamicWrapper::conditionValueConvert).toList();
                     // @formatter:on
-                    this.parameters.addAll(parameterValues);
+                    this.parameters.addAll(parameterValueList);
                 }
             }
             return this;
@@ -127,11 +130,23 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             return this;
         }
 
+        public ModifyBuilder appendCondition(boolean allowAppend, SqlFederationAway federationAway, Condition condition) {
+            if (allowAppend) {
+                this.sql += federationAway.getValue() + condition.getSql();
+                this.parameters.add(conditionValueConvert(condition.getParameterValue()));
+            }
+            return this;
+        }
+
         public ModifyBuilder appendCondition(boolean allowAppend, String condition, Object... parameterValues) {
             if (allowAppend) {
                 this.sql += condition;
                 if (!ObjectUtils.isEmpty(parameterValues)) {
-                    this.parameters.addAll(Arrays.asList(parameterValues));
+                    // @formatter:off
+                    List<Object> parameterValueList = Arrays.stream(parameterValues)
+                            .map(DynamicWrapper::conditionValueConvert).toList();
+                    // @formatter:on
+                    this.parameters.addAll(parameterValueList);
                 }
             }
             return this;
@@ -142,5 +157,9 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             Assert.notEmpty(this.parameters, "The parameters must not be empty.");
             return new DynamicWrapper(Dynamic.buildModify(this.sql, this.parameterColumns), this.parameters.toArray(Object[]::new));
         }
+    }
+
+    private static Object conditionValueConvert(Object conditionValue) {
+        return conditionValue instanceof Enum<?> ? conditionValue.toString() : conditionValue;
     }
 }
