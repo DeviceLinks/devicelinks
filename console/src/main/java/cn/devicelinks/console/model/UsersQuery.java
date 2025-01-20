@@ -1,9 +1,8 @@
-package cn.devicelinks.console.model.parameter;
+package cn.devicelinks.console.model;
 
 import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -13,8 +12,7 @@ import org.hibernate.validator.constraints.Length;
  * @since 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class GetUserListParameter extends PageableParameter {
+public class UsersQuery {
 
     @Length(max = 50)
     private String name;

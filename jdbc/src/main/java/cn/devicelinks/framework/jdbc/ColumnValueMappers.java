@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
  */
 public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper USER_IDENTITY = new EnumColumnValueMapper(UserIdentity.class);
+    EnumColumnValueMapper USER_ACTIVATE_METHOD = new EnumColumnValueMapper(UserActivateMethod.class);
     EnumColumnValueMapper PLATFORM_TYPE = new EnumColumnValueMapper(PlatformType.class);
     EnumColumnValueMapper LOG_ACTION = new EnumColumnValueMapper(LogAction.class);
     EnumColumnValueMapper LOG_OBJECT_TYPE = new EnumColumnValueMapper(LogObjectType.class);

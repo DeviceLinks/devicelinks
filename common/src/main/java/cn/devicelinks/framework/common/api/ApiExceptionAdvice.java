@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,6 +44,7 @@ public class ApiExceptionAdvice {
     public static StatusCode SYSTEM_EXCEPTION_STATUS = StatusCode.build("SYSTEM_EXCEPTION", "系统开小差啦.");
     public static StatusCode HTTP_METHOD_NOT_SUPPORT = StatusCode.build("HTTP_METHOD_NOT_SUPPORT", "不支持请求方法：%s.");
     public static StatusCode NO_RESOURCE_FOUND = StatusCode.build("NO_RESOURCE_FOUND", "资源([%s] /%s )不存在，无法访问.");
+    public static StatusCode PARAMETER_MISSING = StatusCode.build("PARAMETER_MISSING", "参数[%s]并未传递, 该参数必须传递.");
 
     @Autowired
     private MessageSource messageSource;
@@ -58,6 +60,17 @@ public class ApiExceptionAdvice {
         String errorMsg = exception.getStatusCode().formatMessage(exception.getMessageVariables());
         log.error(errorMsg, exception);
         return ApiResponse.error(exception.getStatusCode(), exception.getMessageVariables());
+    }
+
+    /**
+     * 处理遇到的{@link MissingServletRequestParameterException}异常
+     *
+     * @param exception {@link MissingServletRequestParameterException}异常对象实例
+     * @return {@link ApiResponse}
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ApiResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+        return ApiResponse.error(PARAMETER_MISSING, exception.getParameterName());
     }
 
     /**

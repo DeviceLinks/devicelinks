@@ -17,8 +17,10 @@
 
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.console.model.page.PageRequest;
+import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
-import cn.devicelinks.console.model.parameter.GetUserListParameter;
+import cn.devicelinks.console.model.UsersQuery;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -32,6 +34,23 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 public interface SysUserService extends BaseService<SysUser, String> {
+    /**
+     * 添加用户
+     *
+     * @param sysUser            {@link SysUser} 用户实例
+     * @param userActivateMethod 用户激活方式
+     * @return {@link SysUser}
+     */
+    SysUser addUser(SysUser sysUser, UserActivateMethod userActivateMethod);
+
+    /**
+     * 更新用户基本信息
+     *
+     * @param sysUser {@link SysUser}
+     * @return 更新后的用户对象实例 {@link SysUser}
+     */
+    SysUser updateUser(SysUser sysUser);
+
     /**
      * 根据账号查询用户
      *
@@ -51,8 +70,23 @@ public interface SysUserService extends BaseService<SysUser, String> {
     /**
      * 分页获取用户列表
      *
-     * @param parameter {@link GetUserListParameter}
+     * @param query {@link UsersQuery}
      * @return {@link SysUser}
      */
-    PageResult<UserDTO> selectByPageable(GetUserListParameter parameter);
+    PageResult<UserDTO> getUsers(UsersQuery query, PageRequest pageRequest);
+
+    /**
+     * 删除用户
+     *
+     * @param userId 用户ID {@link SysUser#getId()}
+     */
+    void deleteUser(String userId);
+
+    /**
+     * 更新用户启用状态
+     *
+     * @param userId  用户ID {@link SysUser#getId()}
+     * @param enabled 是否启用
+     */
+    void updateEnabled(String userId, boolean enabled);
 }

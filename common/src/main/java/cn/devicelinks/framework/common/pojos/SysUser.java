@@ -18,6 +18,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.UserIdentity;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -40,7 +41,11 @@ public class SysUser implements Serializable {
     private String id;
     private String name;
     private String account;
+    private String email;
+    private String phone;
     private String pwd;
+    private UserActivateMethod activateMethod;
+    private String activateToken;
     private String departmentId;
     private UserIdentity identity;
     private LocalDateTime lastLoginTime;
@@ -49,4 +54,5 @@ public class SysUser implements Serializable {
     private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;
+    private String mark;
 }

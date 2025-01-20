@@ -58,7 +58,7 @@ public class IndexController {
     )
     public ApiResponse post(@RequestBody @Valid PostBody body) {
         userService.selectByAccount("admin");
-        SysUser sysUser = UserDetailsContext.getUser();
+        SysUser sysUser = UserDetailsContext.getCurrentUser();
         return ApiResponse.success(sysUser);
     }
 

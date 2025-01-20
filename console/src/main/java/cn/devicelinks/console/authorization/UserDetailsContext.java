@@ -40,10 +40,10 @@ public final class UserDetailsContext {
     private static final StatusCode NO_AUTHORIZATION = StatusCode.build("NO_AUTHORIZATION", "未登录认证.");
 
     public static String getUserId() {
-        return getUser().getId();
+        return getCurrentUser().getId();
     }
 
-    public static SysUser getUser() {
+    public static SysUser getCurrentUser() {
         return getUserAddition().getUser();
     }
 

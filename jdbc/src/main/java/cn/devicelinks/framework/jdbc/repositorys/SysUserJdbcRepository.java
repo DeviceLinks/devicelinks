@@ -46,6 +46,8 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
             " left join sys_department sd on sd.id = su.department_id" +
             " where su.deleted is false";
     // @formatter:on
+    private static final Column COLUMN_DEPARTMENT_NAME = Column.withName("department_name").build();
+
     public SysUserJdbcRepository(JdbcOperations jdbcOperations) {
         super(SYS_USER, jdbcOperations);
     }
@@ -61,7 +63,7 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
         DynamicWrapper wrapper = DynamicWrapper.select(SELECT_USER_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(SYS_USER.getColumns());
-                    resultColumns.add(Column.withName("department_name").build());
+                    resultColumns.add(COLUMN_DEPARTMENT_NAME);
                 })
                 .appendCondition(!ObjectUtils.isEmpty(queryUser.getDepartmentId()), SqlFederationAway.AND, SYS_USER.DEPARTMENT_ID.eq(queryUser.getDepartmentId()).tableAlias("su"))
                 .appendCondition(!ObjectUtils.isEmpty(queryUser.getIdentity()), SqlFederationAway.AND, SYS_USER.IDENTITY.eq(queryUser.getIdentity()).tableAlias("su"))

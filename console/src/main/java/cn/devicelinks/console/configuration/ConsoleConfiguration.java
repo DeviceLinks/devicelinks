@@ -47,7 +47,7 @@ public class ConsoleConfiguration {
         return new SecurityUserDetailsProvider() {
             @Override
             public SysUser getUser() {
-                return UserDetailsContext.getUser();
+                return UserDetailsContext.getCurrentUser();
             }
 
             @Override
