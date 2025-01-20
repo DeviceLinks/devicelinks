@@ -32,5 +32,5 @@ public interface SysUserRepository extends Repository<SysUser, String> {
 
     SysUser selectByAccount(String account);
 
-    PageResult<UserDTO> selectByPage(String name, String departmentId, String userIdentity, int pageIndex, int pageSize);
+    PageResult<UserDTO> selectByPage(SysUser queryUser, int pageIndex, int pageSize);
 }

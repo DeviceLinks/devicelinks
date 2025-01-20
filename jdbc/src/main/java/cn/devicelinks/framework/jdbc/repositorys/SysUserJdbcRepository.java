@@ -25,6 +25,7 @@ import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.ObjectUtils;
@@ -55,19 +56,20 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
     }
 
     @Override
-    public PageResult<UserDTO> selectByPage(String name, String departmentId, String userIdentity, int pageIndex, int pageSize) {
+    public PageResult<UserDTO> selectByPage(SysUser queryUser, int pageIndex, int pageSize) {
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(SELECT_USER_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(SYS_USER.getColumns());
                     resultColumns.add(Column.withName("department_name").build());
                 })
-                .appendCondition(!ObjectUtils.isEmpty(departmentId), "and su.department_id = ?", departmentId)
-                .appendCondition(!ObjectUtils.isEmpty(userIdentity), "and su.identity = ?", userIdentity)
-                .appendCondition(!ObjectUtils.isEmpty(name), "and su.name like ?", "%" + name + "%")
+                .appendCondition(!ObjectUtils.isEmpty(queryUser.getDepartmentId()), SqlFederationAway.AND, SYS_USER.DEPARTMENT_ID.eq(queryUser.getDepartmentId()).tableAlias("su"))
+                .appendCondition(!ObjectUtils.isEmpty(queryUser.getIdentity()), SqlFederationAway.AND, SYS_USER.IDENTITY.eq(queryUser.getIdentity()).tableAlias("su"))
+                .appendCondition(!ObjectUtils.isEmpty(queryUser.getName()), SqlFederationAway.AND, SYS_USER.NAME.like(queryUser.getName()).tableAlias("su"))
                 .resultType(UserDTO.class)
                 .build();
         // @formatter:on
+
         Dynamic dynamic = wrapper.dynamic();
         return this.page(dynamic, PageQuery.of(pageIndex, pageSize), wrapper.parameters());
     }

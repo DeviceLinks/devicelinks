@@ -19,6 +19,7 @@ package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.model.parameter.GetUserListParameter;
 import cn.devicelinks.console.service.SysUserService;
+import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -65,7 +66,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
 
     @Override
     public PageResult<UserDTO> selectByPageable(GetUserListParameter parameter) {
-        return this.repository.selectByPage(parameter.getName(), parameter.getDepartmentId(),
-                parameter.getIdentity(), parameter.getPageIndex(), parameter.getPageSize());
+        // @formatter:off
+        SysUser queryUser = new SysUser()
+                .setName(parameter.getName())
+                .setDepartmentId(parameter.getDepartmentId())
+                .setIdentity(parameter.getIdentity() != null ? UserIdentity.valueOf(parameter.getIdentity()) : null);
+        // @formatter:on
+        return this.repository.selectByPage(queryUser, parameter.getPageIndex(), parameter.getPageSize());
     }
 }
