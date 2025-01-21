@@ -8,11 +8,13 @@ package cn.devicelinks.framework.common;
  */
 public enum UserIdentity {
     /**
-     * 管理员
-     * <p>
-     * 当用户所属租户ID不为空时表示为“租户管理员”，为空时表示为“系统管理员”
+     * 系统管理员
      */
-    Administrator,
+    SystemAdmin,
+    /**
+     * 租户管理员
+     */
+    TenantAdmin,
     /**
      * 普通用户
      */

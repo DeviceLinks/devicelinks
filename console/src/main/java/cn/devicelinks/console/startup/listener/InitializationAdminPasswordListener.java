@@ -46,7 +46,7 @@ public class InitializationAdminPasswordListener extends AbstractStartupEventLis
                     .setAccount(SYS_ADMIN_ACCOUNT)
                     .setName(SYS_ADMIN_ACCOUNT)
                     .setPwd(this.getDefaultPassword(originalPassword))
-                    .setIdentity(UserIdentity.Administrator)
+                    .setIdentity(UserIdentity.SystemAdmin)
                     .setEnabled(true)
                     .setDeleted(false)
                     .setCreateTime(LocalDateTime.now());
