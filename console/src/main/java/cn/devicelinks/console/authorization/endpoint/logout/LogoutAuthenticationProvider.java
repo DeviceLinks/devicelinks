@@ -92,7 +92,6 @@ public class LogoutAuthenticationProvider implements AuthenticationProvider {
                     .setSessionId(userSession.getId())
                     .setAction(LogAction.Logout)
                     .setObjectType(LogObjectType.User)
-                    .setObject(userSession.getUsername())
                     .setObjectId(userSession.getUserId())
                     .setSuccess(true)
                     .setMsg(LOGOUT_SUCCESS_MSG)

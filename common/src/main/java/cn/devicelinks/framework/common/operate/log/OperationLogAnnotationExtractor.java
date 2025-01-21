@@ -53,9 +53,9 @@ public class OperationLogAnnotationExtractor {
     private String conditionTemplate;
     private LogAction action;
     private LogObjectType objectType;
+    private String objectIdTemplate;
     private String objectTemplate;
     private String msgTemplate;
-    private String objectDetailTemplate;
     private Object[] arguments;
     private Parameter[] parameters;
     private Map<String, ObjectField> objectFieldMap;
@@ -69,9 +69,9 @@ public class OperationLogAnnotationExtractor {
             this.conditionTemplate = operationLog.condition();
             this.action = operationLog.action();
             this.objectType = operationLog.objectType();
+            this.objectIdTemplate = operationLog.objectId();
             this.objectTemplate = operationLog.object();
             this.msgTemplate = operationLog.msg();
-            this.objectDetailTemplate = operationLog.objectDetails();
             this.arguments = invocation.getArguments();
             this.parameters = this.specificMethod.getParameters();
 

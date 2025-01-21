@@ -49,8 +49,8 @@ public class IndexController {
 
     @PostMapping(value = "/post")
     @OperationLog(action = LogAction.Add, objectType = LogObjectType.User,
-            object = "{#p0.name}",
-            objectDetails = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
+            objectId = "{#p0.userId}",
+            object = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
             msg = "更新了用户 {#p0.name} 基本信息.",
             additionFields = {
                     @ObjectAdditionField(field = ObjectField.user_department, value = "{@sysDepartmentJdbcRepository.selectOne(#p0.departmentId).getName()}")
@@ -64,15 +64,15 @@ public class IndexController {
 
     @PostMapping(value = "/update")
     @OperationLog(action = LogAction.Update, objectType = LogObjectType.User,
-            object = "{#before.account}",
-            objectDetails = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
+            objectId = "{#before.id}",
+            object = "{@sysUserJdbcRepository.selectOne(#p0.userId)}",
             msg = "更新了用户 {#before.account} 基本信息.",
             additionFields = {
                     @ObjectAdditionField(field = ObjectField.user_department,
                             condition = "{#target!=null && #target.departmentId!=null}",
                             preValueLoad = "{@sysDepartmentJdbcRepository.selectOne(#target.departmentId)}",
                             value = "{#pre0!=null ? #pre0.getName() : null}"),
-                    @ObjectAdditionField(field = ObjectField.user_position,
+                    @ObjectAdditionField(field = ObjectField.user_department,
                             condition = "{#target!=null && #target.positionId!=null}",
                             preValueLoad = "{@sysPositionJdbcRepository.selectOne(#target.positionId)}",
                             value = "{#pre0!=null ? #pre0.getName() : null}")

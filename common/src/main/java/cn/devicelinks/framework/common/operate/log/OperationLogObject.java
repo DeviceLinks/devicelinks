@@ -34,17 +34,21 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class OperationLogObject {
     /**
-     * 请求ID
+     * 会话ID
      */
-    private String requestId;
+    private String sessionId;
     /**
      * 操作动作
      */
-    private LogAction operateAction;
+    private LogAction action;
     /**
      * 操作对象类型
      */
     private LogObjectType objectType;
+    /**
+     * 操作对象ID
+     */
+    private String objectId;
     /**
      * 操作对象
      */

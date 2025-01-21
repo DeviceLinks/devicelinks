@@ -4,15 +4,18 @@ import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.model.*;
 import cn.devicelinks.console.model.page.PageRequest;
 import cn.devicelinks.console.service.SysUserService;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +29,10 @@ import java.time.LocalDateTime;
  */
 @RestController
 @RequestMapping(value = "/api/user")
+@RequiredArgsConstructor
 public class SysUserController {
-    @Autowired
-    private SysUserService userService;
+
+    private final SysUserService userService;
 
     @GetMapping
     public ApiResponse getUsers(@Valid UsersQuery query,
@@ -46,6 +50,10 @@ public class SysUserController {
     }
 
     @PostMapping
+    @OperationLog(action = LogAction.Add,
+            objectType = LogObjectType.User,
+            objectId = "{#result.data.id}",
+            object = "{@sysUserServiceImpl.selectById(#result.data.id)}")
     public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
             throw new ApiException(StatusCodeConstants.USER_EMAIL_CANNOT_EMPTY);
@@ -68,6 +76,11 @@ public class SysUserController {
     }
 
     @PostMapping(value = "/{userId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.User,
+            objectId = "{#p0}",
+            object = "{@sysUserServiceImpl.selectById(#p0)}")
+    //@PreAuthorize("hasAnyAuthority('SYS_ADMIN','TENANT_ADMIN')")
     public ApiResponse updateUser(@PathVariable("userId") String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
@@ -85,12 +98,19 @@ public class SysUserController {
         return ApiResponse.success(storedUser);
     }
 
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.User,
+            objectId = "{#p0}",
+            object = "{@sysUserServiceImpl.selectById(#p0)}")
     @DeleteMapping(value = "/{userId}")
     public ApiResponse deleteUser(@PathVariable("userId") String userId) throws ApiException {
         this.userService.deleteUser(userId);
         return ApiResponse.success();
     }
 
+    @OperationLog(action = LogAction.UpdateStatus,
+            objectType = LogObjectType.User,
+            objectId = "{#p0}")
     @PostMapping(value = "/status/{userId}")
     public ApiResponse updateStatus(@PathVariable("userId") String userId,
                                     @RequestParam boolean enabled) throws ApiException {

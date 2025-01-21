@@ -29,7 +29,6 @@ public class TSysLog extends TableImpl {
     public final Column SESSION_ID = Column.withName("session_id").build();
     public final Column ACTION = Column.withName("action").typeMapper(ColumnValueMappers.LOG_ACTION).build();
     public final Column OBJECT_TYPE = Column.withName("object_type").typeMapper(ColumnValueMappers.LOG_OBJECT_TYPE).build();
-    public final Column OBJECT = Column.withName("object").build();
     public final Column OBJECT_ID = Column.withName("object_id").build();
     public final Column MSG = Column.withName("msg").build();
     public final Column SUCCESS = Column.withName("success").booleanValue().build();
@@ -38,6 +37,6 @@ public class TSysLog extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, USER_ID, SESSION_ID, ACTION, OBJECT_TYPE, OBJECT, OBJECT_ID, MSG, SUCCESS, ADDITION, OPERATE_TIME);
+        return List.of(ID, USER_ID, SESSION_ID, ACTION, OBJECT_TYPE, OBJECT_ID, MSG, SUCCESS, ADDITION, OPERATE_TIME);
     }
 }

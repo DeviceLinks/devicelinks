@@ -24,9 +24,8 @@ public class SysLog implements Serializable {
     private String id;
     private String userId;
     private String sessionId;
-    private LogObjectType objectType;
     private LogAction action;
-    private String object;
+    private LogObjectType objectType;
     private String objectId;
     private String msg;
     private boolean success;

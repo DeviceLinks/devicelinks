@@ -43,6 +43,10 @@ public final class UserDetailsContext {
         return getCurrentUser().getId();
     }
 
+    public static String getSessionId() {
+        return getUserDetails().getSessionId();
+    }
+
     public static SysUser getCurrentUser() {
         return getUserAddition().getUser();
     }

@@ -17,7 +17,6 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionEvaluationContext;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.operate.log.expression.OperationLogCachedExpressionEvaluator;
@@ -91,12 +90,12 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             boolean condition = evaluator.parseExpression(evaluationContext, Boolean.class, extractor.getConditionTemplate());
             try {
                 // get object before value
-                if (condition && !ObjectUtils.isEmpty(extractor.getObjectDetailTemplate())) {
-                    targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectDetailTemplate());
+                if (condition && !ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveBeforeData()) {
+                    targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetBeforeObject != null) {
                         evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
                     }
-                    if (targetBeforeObject == null && (LogAction.Update == extractor.getAction() || LogAction.Delete == extractor.getAction())) {
+                    if (targetBeforeObject == null && extractor.getAction().isHaveBeforeData()) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -115,12 +114,12 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             }
             try {
                 // get object after value
-                if (!ObjectUtils.isEmpty(extractor.getObjectDetailTemplate())) {
-                    targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectDetailTemplate());
+                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveAfterData()) {
+                    targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetAfterObject != null) {
                         evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
                     }
-                    if (targetAfterObject == null && (LogAction.Update == extractor.getAction() || LogAction.Add == extractor.getAction())) {
+                    if (targetAfterObject == null && extractor.getAction().isHaveAfterData()) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -132,18 +131,21 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             exceptionMessage = e.getMessage();
             throw e;
         } finally {
+            // storage operate log
             try {
-                boolean skip = (LogAction.Update == extractor.getAction() && (targetBeforeObject == null || targetAfterObject == null)) ||
-                        (LogAction.Add == extractor.getAction() && targetAfterObject == null) ||
-                        (LogAction.Delete == extractor.getAction() && targetBeforeObject == null);
+                boolean skip = (extractor.getAction().isHaveBeforeData() && targetBeforeObject == null) ||
+                        (extractor.getAction().isHaveAfterData() && targetAfterObject == null);
                 if (!skip) {
                     OperationLogResolveProcessor resolveProcessor =
                             new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
                     OperationLogObject operationLogObject = resolveProcessor.processing();
                     operationLogObject.setFailureReason(exceptionMessage);
-                    if (this.userDetailsProvider != null && this.userDetailsProvider.getUser() != null) {
-                        SysUser sysUser = this.userDetailsProvider.getUser();
-                        operationLogObject.setOperatorId(sysUser.getId());
+                    if (this.userDetailsProvider != null) {
+                        if (this.userDetailsProvider.getUser() != null) {
+                            SysUser sysUser = this.userDetailsProvider.getUser();
+                            operationLogObject.setOperatorId(sysUser.getId());
+                        }
+                        operationLogObject.setSessionId(this.userDetailsProvider.getSessionId());
                     }
                     if (this.operationLogStorage != null) {
                         this.operationLogStorage.storage(operationLogObject);

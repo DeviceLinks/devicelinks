@@ -21,12 +21,12 @@ public class JSONObjectValueMapper implements ColumnValueMapper<Object, String> 
 
     @Override
     public String toColumn(Object originalValue, String columnName) {
-        return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.toJsonString(originalValue) : null;
+        return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.objectToJson(originalValue) : null;
     }
 
     @Override
     public Object fromColumn(ResultSet rs, String columnName) throws SQLException {
         String columnValue = rs.getString(columnName);
-        return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.parseObject(columnValue, objectClass) : null;
+        return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.jsonToObject(columnValue, objectClass) : null;
     }
 }

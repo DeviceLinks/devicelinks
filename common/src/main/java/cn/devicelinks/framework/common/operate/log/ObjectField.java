@@ -44,8 +44,9 @@ public enum ObjectField {
     user_id(LogObjectType.User, "id", "用户ID", LogAction.Add, LogAction.Update, LogAction.Delete),
     user_name(LogObjectType.User, "name", "用户名称", LogAction.Add, LogAction.Update, LogAction.Delete),
     user_account(LogObjectType.User, "account", "用户账号", LogAction.Add, LogAction.Update, LogAction.Delete),
+    user_email(LogObjectType.User, "email", "邮箱地址", LogAction.Add, LogAction.Update, LogAction.Delete),
+    user_phone(LogObjectType.User, "phone", "手机号码", LogAction.Add, LogAction.Update, LogAction.Delete),
     user_department(LogObjectType.User, "department", "部门", LogAction.Add, LogAction.Update),
-    user_position(LogObjectType.User, "position", "岗位", LogAction.Add, LogAction.Update),
     /**
      * {@link LogObjectType#Department}
      *

@@ -42,30 +42,35 @@ import java.util.List;
 @Slf4j
 public class OperationLogStorageSupport implements OperationLogStorage {
     @Autowired
-    private SysLogService operateLogService;
+    private SysLogService logService;
 
     @Override
     public void storage(OperationLogObject object) {
         List<SysLogAddition.ObjectField> objectFields = null;
         if (!ObjectUtils.isEmpty(object.getObjectFields())) {
-            List<ObjectFieldDifferentValue> fieldDifferentValueList = JacksonUtils.parseList(object.getObjectFields(), ObjectFieldDifferentValue.class);
-            objectFields = fieldDifferentValueList.stream()
-                    .map(fdv ->
-                            new SysLogAddition.ObjectField()
-                                    .setField(fdv.getField())
-                                    .setFieldName(fdv.getFieldName())
-                                    .setBeforeValue(fdv.getBeforeValue())
-                                    .setAfterValue(fdv.getAfterValue())
-                                    .setDifferent(fdv.isDifferent())).toList();
+
+            List<ObjectFieldDifferentValue> fieldDifferentValueList = JacksonUtils.jsonToList(object.getObjectFields(), ObjectFieldDifferentValue.class);
+            if (!ObjectUtils.isEmpty(fieldDifferentValueList)) {
+                objectFields = fieldDifferentValueList.stream()
+                        .map(fdv ->
+                                new SysLogAddition.ObjectField()
+                                        .setField(fdv.getField())
+                                        .setFieldName(fdv.getFieldName())
+                                        .setBeforeValue(fdv.getBeforeValue())
+                                        .setAfterValue(fdv.getAfterValue())
+                                        .setDifferent(fdv.isDifferent()))
+                        .toList();
+            }
         }
 
         // @formatter:off
         SysLog operateLog = new SysLog()
                 .setId(UUIDUtils.generateNoDelimiter())
                 .setUserId(object.getOperatorId())
-                .setAction(object.getOperateAction())
+                .setSessionId(object.getSessionId())
+                .setAction(object.getAction())
                 .setObjectType(object.getObjectType())
-                .setObject(object.getObject())
+                .setObjectId(object.getObjectId())
                 .setMsg(object.getMsg())
                 .setSuccess(object.isExecutionSucceed())
                 .setCreateTime(object.getTime())
@@ -75,6 +80,6 @@ public class OperationLogStorageSupport implements OperationLogStorage {
                                 .setFailureReason(object.getFailureReason())
                                 .setObjectFields(objectFields));
         // @formatter:on
-        this.operateLogService.insert(operateLog);
+        this.logService.insert(operateLog);
     }
 }

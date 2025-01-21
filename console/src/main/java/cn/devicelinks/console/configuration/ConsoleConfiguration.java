@@ -46,6 +46,11 @@ public class ConsoleConfiguration {
     public SecurityUserDetailsProvider deviceLinksUserDetailsProvider() {
         return new SecurityUserDetailsProvider() {
             @Override
+            public String getSessionId() {
+                return UserDetailsContext.getSessionId();
+            }
+
+            @Override
             public SysUser getUser() {
                 return UserDetailsContext.getCurrentUser();
             }

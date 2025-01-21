@@ -141,7 +141,6 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                 .setSessionId(userSession.getId())
                 .setAction(LogAction.Login)
                 .setObjectType(LogObjectType.User)
-                .setObject(user.getAccount())
                 .setObjectId(user.getId())
                 .setSuccess(true)
                 .setMsg(LOGIN_SUCCESS_MSG)

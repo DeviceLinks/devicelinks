@@ -19,6 +19,7 @@ package cn.devicelinks.framework.common.operate.log;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 操作字段区别值定义类
@@ -28,6 +29,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ObjectFieldDifferentValue {
     /**
      * 字段
