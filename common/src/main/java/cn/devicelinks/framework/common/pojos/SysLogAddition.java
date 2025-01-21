@@ -25,6 +25,7 @@ public class SysLogAddition implements Serializable {
     private String ipAddress;
     private List<ObjectField> objectFields;
     private String failureReason;
+    private String failureStackTrace;
 
     /**
      * 操作日志字段

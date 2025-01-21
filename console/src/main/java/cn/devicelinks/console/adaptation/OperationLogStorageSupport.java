@@ -26,6 +26,7 @@ import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.minbox.framework.util.StackTraceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -78,6 +79,7 @@ public class OperationLogStorageSupport implements OperationLogStorage {
                         new SysLogAddition()
                                 .setIpAddress(object.getIpAddress())
                                 .setFailureReason(object.getFailureReason())
+                                .setFailureStackTrace(object.getFailureCause() != null ? StackTraceUtil.getStackTrace(object.getFailureCause()) : null)
                                 .setObjectFields(objectFields))
                 .setActivityData(object.getActivateData());
         // @formatter:on

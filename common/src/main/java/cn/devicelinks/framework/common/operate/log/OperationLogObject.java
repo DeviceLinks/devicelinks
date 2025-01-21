@@ -82,6 +82,10 @@ public class OperationLogObject {
      */
     private String failureReason;
     /**
+     * 失败异常对象实例
+     */
+    private Throwable failureCause;
+    /**
      * 日志生成的时间
      */
     private LocalDateTime time = LocalDateTime.now();

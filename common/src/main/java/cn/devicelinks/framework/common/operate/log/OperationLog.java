@@ -42,7 +42,7 @@ public @interface OperationLog {
      * 记录操作日志的条件
      * 支持SpEL表达式
      *
-     * @return 解析后的值为 {@link Boolean} 类型，当为"true"时才会执行操作日志记录逻辑
+     * @return 解析后的值为 {@link Boolean} 类型，当为"true"时才会存储操作日志
      */
     String condition() default "true";
 

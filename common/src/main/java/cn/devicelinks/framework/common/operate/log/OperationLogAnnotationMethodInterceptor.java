@@ -78,7 +78,8 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
         OperationLogCachedExpressionEvaluator evaluator = new OperationLogCachedExpressionEvaluator(elementKey);
         ExpressionEvaluationContext evaluationContext = null;
         boolean executionSucceed = true;
-        String exceptionMessage = null;
+        String failureReason = null;
+        Throwable failureCause = null;
         // invoke method before, target object value
         Object targetBeforeObject = null;
         // invoke method after, target object value
@@ -90,11 +91,9 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 variables.addVariables(parameterValues);
             }
             evaluationContext = new ExpressionEvaluationContext(variables, beanFactoryResolver);
-            // Conditions for recording operation logs
-            boolean condition = evaluator.parseExpression(evaluationContext, Boolean.class, extractor.getConditionTemplate());
             try {
                 // get object before value
-                if (condition && !ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveBeforeData()) {
+                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveBeforeData()) {
                     targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetBeforeObject != null) {
                         evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
@@ -108,13 +107,9 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             }
             // invoke target method
             result = invocation.proceed();
-            if (!condition) {
-                return result;
-            } else {
-                // #result
-                if (result != null) {
-                    evaluationContext.addVariable(RESULT_VARIABLE_KEY, result);
-                }
+            // #result
+            if (result != null) {
+                evaluationContext.addVariable(RESULT_VARIABLE_KEY, result);
             }
             try {
                 // get object after value
@@ -132,7 +127,8 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             }
             return result;
         } catch (Exception e) {
-            exceptionMessage = e.getMessage();
+            failureCause = e;
+            failureReason = e.getMessage();
             executionSucceed = false;
             throw e;
         } finally {
@@ -141,21 +137,29 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 if (evaluationContext != null) {
                     evaluationContext.addVariable(EXECUTION_SUCCEED_VARIABLE_KEY, executionSucceed);
                 }
-                OperationLogResolveProcessor resolveProcessor =
-                        new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
-                OperationLogObject operationLogObject = resolveProcessor.processing();
-                operationLogObject.setFailureReason(exceptionMessage);
-                if (this.userDetailsProvider != null) {
-                    if (this.userDetailsProvider.getUser() != null) {
-                        SysUser sysUser = this.userDetailsProvider.getUser();
-                        operationLogObject.setOperatorId(sysUser.getId());
-                    }
-                    operationLogObject.setSessionId(this.userDetailsProvider.getSessionId());
+                // Conditions for recording operation logs
+                boolean condition = true;
+                if (!ObjectUtils.isEmpty(extractor.getConditionTemplate())) {
+                    condition = evaluator.parseExpression(evaluationContext, Boolean.class, extractor.getConditionTemplate());
                 }
-                if (this.operationLogStorage != null) {
-                    this.operationLogStorage.storage(operationLogObject);
-                } else {
-                    log.error("未找到[OperationLogStorage]实现类实例, 跳过存储操作日志.");
+                if (condition) {
+                    OperationLogResolveProcessor resolveProcessor =
+                            new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
+                    OperationLogObject operationLogObject = resolveProcessor.processing();
+                    operationLogObject.setFailureReason(failureReason);
+                    operationLogObject.setFailureCause(failureCause);
+                    if (this.userDetailsProvider != null) {
+                        if (this.userDetailsProvider.getUser() != null) {
+                            SysUser sysUser = this.userDetailsProvider.getUser();
+                            operationLogObject.setOperatorId(sysUser.getId());
+                        }
+                        operationLogObject.setSessionId(this.userDetailsProvider.getSessionId());
+                    }
+                    if (this.operationLogStorage != null) {
+                        this.operationLogStorage.storage(operationLogObject);
+                    } else {
+                        log.error("未找到[OperationLogStorage]实现类实例, 跳过存储操作日志.");
+                    }
                 }
             } catch (Exception e) {
                 log.error("[操作日志], 内容解析或存储操作日志时遇到异常.", e);
