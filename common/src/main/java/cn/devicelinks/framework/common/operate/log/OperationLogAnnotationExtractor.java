@@ -77,12 +77,14 @@ public class OperationLogAnnotationExtractor {
             this.arguments = invocation.getArguments();
             this.parameters = this.specificMethod.getParameters();
 
-            List<ObjectField> objectFields = ObjectField.getFields(this.objectType, this.action);
-            // @formatter:off
-            this.objectFieldMap = !ObjectUtils.isEmpty(objectFields) ?
-                    objectFields.stream().collect(Collectors.toMap(ObjectField::getField, v -> v)) :
-                    Maps.newHashMap();
-            // @formatter:on
+            if (!ObjectUtils.isEmpty(objectTemplate)) {
+                List<ObjectField> objectFields = ObjectField.getFields(this.objectType, this.action);
+                // @formatter:off
+                this.objectFieldMap = !ObjectUtils.isEmpty(objectFields) ?
+                        objectFields.stream().collect(Collectors.toMap(ObjectField::getField, v -> v)) :
+                        Maps.newHashMap();
+                // @formatter:on
+            }
             ObjectAdditionField[] additionFields = operationLog.additionFields();
             if (!ObjectUtils.isEmpty(additionFields)) {
                 Arrays.stream(additionFields).forEach(additionField -> {
