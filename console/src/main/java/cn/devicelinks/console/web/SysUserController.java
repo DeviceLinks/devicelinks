@@ -73,7 +73,7 @@ public class SysUserController {
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.User,
             objectId = "{#result.data.id}",
-            object = "{@sysUserServiceImpl.selectById(#result.data.id)}")
+            activateData = "{#p0}")
     public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
             throw new ApiException(StatusCodeConstants.USER_EMAIL_CANNOT_EMPTY);
@@ -106,7 +106,8 @@ public class SysUserController {
     @OperationLog(action = LogAction.Update,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
-            object = "{@sysUserServiceImpl.selectById(#p0)}")
+            object = "{@sysUserServiceImpl.selectById(#p0)}",
+            activateData = "{#result.data}")
     public ApiResponse updateUser(@PathVariable("userId") String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
@@ -132,7 +133,7 @@ public class SysUserController {
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
-            object = "{@sysUserServiceImpl.selectById(#p0)}")
+            activateData = "{@sysUserServiceImpl.selectById(#p0)}")
     @DeleteMapping(value = "/{userId}")
     public ApiResponse deleteUser(@PathVariable("userId") String userId) throws ApiException {
         this.userService.deleteUser(userId);
@@ -147,7 +148,8 @@ public class SysUserController {
      */
     @OperationLog(action = LogAction.UpdateStatus,
             objectType = LogObjectType.User,
-            objectId = "{#p0}")
+            objectId = "{#p0}",
+            activateData = "{#p1}")
     @PostMapping(value = "/status/{userId}")
     public ApiResponse updateStatus(@PathVariable("userId") String userId,
                                     @RequestParam boolean enabled) throws ApiException {

@@ -85,6 +85,12 @@ public class OperationLogResolveProcessor {
             this.operationLogObject.setObjectId(this.executionSucceed ?
                     evaluator.parseExpression(this.evaluationContext, String.class, extractor.getObjectIdTemplate()) : null);
         }
+        if (!ObjectUtils.isEmpty(extractor.getActivateDataTemplate())) {
+            Object activateData = evaluator.parseExpression(this.evaluationContext, Object.class, extractor.getActivateDataTemplate());
+            this.operationLogObject.setActivateData(this.executionSucceed ?
+                    !ObjectUtils.isEmpty(activateData) ? JacksonUtils.objectToJson(activateData) : null
+                    : null);
+        }
         if (!ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
             this.operationLogObject.setMsg(this.executionSucceed ?
                     evaluator.parseExpression(this.evaluationContext, String.class, extractor.getMsgTemplate()) : null);

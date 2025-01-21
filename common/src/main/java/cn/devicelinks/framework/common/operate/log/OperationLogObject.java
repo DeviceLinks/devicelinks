@@ -58,6 +58,10 @@ public class OperationLogObject {
      */
     private String objectFields;
     /**
+     * 操作的活动数据
+     */
+    private String activateData;
+    /**
      * 操作描述
      */
     private String msg;

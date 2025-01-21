@@ -33,10 +33,11 @@ public class TSysLog extends TableImpl {
     public final Column MSG = Column.withName("msg").build();
     public final Column SUCCESS = Column.withName("success").booleanValue().build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.SYS_LOG_ADDITION).build();
+    public final Column ACTIVITY_DATA = Column.withName("activity_data").build();
     public final Column OPERATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, USER_ID, SESSION_ID, ACTION, OBJECT_TYPE, OBJECT_ID, MSG, SUCCESS, ADDITION, OPERATE_TIME);
+        return List.of(ID, USER_ID, SESSION_ID, ACTION, OBJECT_TYPE, OBJECT_ID, MSG, SUCCESS, ADDITION, ACTIVITY_DATA, OPERATE_TIME);
     }
 }

@@ -30,5 +30,6 @@ public class SysLog implements Serializable {
     private String msg;
     private boolean success;
     private SysLogAddition addition;
+    private String activityData;
     private LocalDateTime createTime;
 }

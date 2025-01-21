@@ -78,7 +78,8 @@ public class OperationLogStorageSupport implements OperationLogStorage {
                         new SysLogAddition()
                                 .setIpAddress(object.getIpAddress())
                                 .setFailureReason(object.getFailureReason())
-                                .setObjectFields(objectFields));
+                                .setObjectFields(objectFields))
+                .setActivityData(object.getActivateData());
         // @formatter:on
         this.logService.insert(operateLog);
     }

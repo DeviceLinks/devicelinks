@@ -56,6 +56,7 @@ public class OperationLogAnnotationExtractor {
     private String objectIdTemplate;
     private String objectTemplate;
     private String msgTemplate;
+    private String activateDataTemplate;
     private Object[] arguments;
     private Parameter[] parameters;
     private Map<String, ObjectField> objectFieldMap;
@@ -71,6 +72,7 @@ public class OperationLogAnnotationExtractor {
             this.objectType = operationLog.objectType();
             this.objectIdTemplate = operationLog.objectId();
             this.objectTemplate = operationLog.object();
+            this.activateDataTemplate = operationLog.activateData();
             this.msgTemplate = operationLog.msg();
             this.arguments = invocation.getArguments();
             this.parameters = this.specificMethod.getParameters();

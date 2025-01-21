@@ -133,25 +133,21 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
         } finally {
             // storage operate log
             try {
-                boolean skip = (extractor.getAction().isHaveBeforeData() && targetBeforeObject == null) ||
-                        (extractor.getAction().isHaveAfterData() && targetAfterObject == null);
-                if (!skip) {
-                    OperationLogResolveProcessor resolveProcessor =
-                            new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
-                    OperationLogObject operationLogObject = resolveProcessor.processing();
-                    operationLogObject.setFailureReason(exceptionMessage);
-                    if (this.userDetailsProvider != null) {
-                        if (this.userDetailsProvider.getUser() != null) {
-                            SysUser sysUser = this.userDetailsProvider.getUser();
-                            operationLogObject.setOperatorId(sysUser.getId());
-                        }
-                        operationLogObject.setSessionId(this.userDetailsProvider.getSessionId());
+                OperationLogResolveProcessor resolveProcessor =
+                        new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
+                OperationLogObject operationLogObject = resolveProcessor.processing();
+                operationLogObject.setFailureReason(exceptionMessage);
+                if (this.userDetailsProvider != null) {
+                    if (this.userDetailsProvider.getUser() != null) {
+                        SysUser sysUser = this.userDetailsProvider.getUser();
+                        operationLogObject.setOperatorId(sysUser.getId());
                     }
-                    if (this.operationLogStorage != null) {
-                        this.operationLogStorage.storage(operationLogObject);
-                    } else {
-                        log.error("未找到[OperationLogStorage]实现类实例, 跳过存储操作日志.");
-                    }
+                    operationLogObject.setSessionId(this.userDetailsProvider.getSessionId());
+                }
+                if (this.operationLogStorage != null) {
+                    this.operationLogStorage.storage(operationLogObject);
+                } else {
+                    log.error("未找到[OperationLogStorage]实现类实例, 跳过存储操作日志.");
                 }
             } catch (Exception e) {
                 log.error("[操作日志], 内容解析或存储操作日志时遇到异常.", e);

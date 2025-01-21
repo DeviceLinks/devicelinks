@@ -63,6 +63,7 @@ public @interface OperationLog {
     /**
      * 操作对象ID
      * 支持SpEL表达式，在目标方法执行后调用，可使用"#before"、"#after"、"#result"、"#pre"等内置变量
+     * 只在目标方法执行成功{@link OperationLogObject#isExecutionSucceed()}后记录
      * <p>
      * 跟{@link #objectType()}一一对应。
      * 如：{@link LogObjectType}，那么操作对象可以为{@link SysUser#getAccount()}
@@ -107,4 +108,17 @@ public @interface OperationLog {
      * @return {@link ObjectAdditionField}
      */
     ObjectAdditionField[] additionFields() default {};
+
+    /**
+     * 当前操作的活动数据
+     * <p>
+     * 会将解析后的值解析成JSON字符串存储到{@link SysLog#getActivityData()}
+     * 只在目标方法执行成功{@link OperationLogObject#isExecutionSucceed()}后记录
+     * <p>
+     * 支持SpEL表达式，一般配置请求的数据内容，也可以配置操作后的数据内容。
+     * 在目标方法执行后调用，可使用"#before"、"#after"、"#result"、"#pre"等内置变量
+     *
+     * @return 获取当前操作活动数据SpEL表达式
+     */
+    String activateData();
 }
