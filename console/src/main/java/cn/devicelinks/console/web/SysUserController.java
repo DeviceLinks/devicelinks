@@ -34,6 +34,14 @@ public class SysUserController {
 
     private final SysUserService userService;
 
+    /**
+     * 分页获取用户列表
+     *
+     * @param query    查询参数实体实例 {@link UsersQuery}
+     * @param pageSize 每页条数
+     * @param page     当前页码
+     * @return 用户列表 {@link UserDTO}
+     */
     @GetMapping
     public ApiResponse getUsers(@Valid UsersQuery query,
                                 @RequestParam int pageSize,
@@ -43,12 +51,24 @@ public class SysUserController {
         return ApiResponse.success(userPageResult);
     }
 
+    /**
+     * 获取用户
+     *
+     * @param userId 用户ID {@link SysUser#getId()}
+     * @return 用户实例 {@link SysUser}
+     */
     @GetMapping(value = "/{userId}")
     public ApiResponse getUserById(@PathVariable("userId") String userId) throws ApiException {
         SysUser user = this.userService.selectById(userId);
         return ApiResponse.success(user);
     }
 
+    /**
+     * 添加用户
+     *
+     * @param request {@link AddUserRequest}
+     * @return 添加后的用户实例 {@link SysUser}
+     */
     @PostMapping
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.User,
@@ -64,7 +84,7 @@ public class SysUserController {
                 .setAccount(request.getAccount())
                 .setName(request.getUsername())
                 .setEmail(request.getEmail())
-                .setActivateToken(SecureRandomString.getRandomString(50))
+                .setActivateToken(SecureRandomString.getActiveToken())
                 .setIdentity(UserIdentity.User)
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
                 .setCreateBy(currentUser.getId())
@@ -75,12 +95,18 @@ public class SysUserController {
         return ApiResponse.success(user);
     }
 
+    /**
+     * 更新用户
+     *
+     * @param userId  用户ID {@link SysUser#getId()}
+     * @param request 更新用户参数实体 {@link UpdateUserRequest}
+     * @return 更新后的用户 {@link SysUser}
+     */
     @PostMapping(value = "/{userId}")
     @OperationLog(action = LogAction.Update,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
             object = "{@sysUserServiceImpl.selectById(#p0)}")
-    //@PreAuthorize("hasAnyAuthority('SYS_ADMIN','TENANT_ADMIN')")
     public ApiResponse updateUser(@PathVariable("userId") String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
@@ -98,6 +124,11 @@ public class SysUserController {
         return ApiResponse.success(storedUser);
     }
 
+    /**
+     * 删除用户
+     *
+     * @param userId 用户ID {@link SysUser#getId()}
+     */
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
@@ -108,6 +139,12 @@ public class SysUserController {
         return ApiResponse.success();
     }
 
+    /**
+     * 启用/禁用用户状态
+     *
+     * @param userId  用户ID {@link SysUser#getId()}
+     * @param enabled 是否启用
+     */
     @OperationLog(action = LogAction.UpdateStatus,
             objectType = LogObjectType.User,
             objectId = "{#p0}")

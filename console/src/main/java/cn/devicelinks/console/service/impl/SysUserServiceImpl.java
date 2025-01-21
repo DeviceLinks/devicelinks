@@ -107,7 +107,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
     @Override
     public void deleteUser(String userId) {
         this.repository.update(
-                List.of(SYS_USER.DELETED.set(false)),
+                List.of(SYS_USER.DELETED.set(true)),
                 SYS_USER.ID.eq(userId));
     }
 
