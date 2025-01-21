@@ -17,6 +17,7 @@ import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class SysUserController {
      * @return 用户列表 {@link UserDTO}
      */
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
     public ApiResponse getUsers(@Valid UsersQuery query,
                                 @RequestParam int pageSize,
                                 @RequestParam int page) throws ApiException {
@@ -75,6 +77,7 @@ public class SysUserController {
             objectType = LogObjectType.User,
             objectId = "{#executionSucceed ? #result.data.id : #p0.account}",
             activateData = "{#p0}")
+    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
     public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
             throw new ApiException(StatusCodeConstants.USER_EMAIL_CANNOT_EMPTY);
@@ -109,6 +112,7 @@ public class SysUserController {
             objectId = "{#p0}",
             object = "{@sysUserServiceImpl.selectById(#p0)}",
             activateData = "{#p1}")
+    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
     public ApiResponse updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
@@ -136,6 +140,7 @@ public class SysUserController {
             objectId = "{#p0}",
             activateData = "{#executionSucceed ? #result.data : null}")
     @DeleteMapping(value = "/{userId}")
+    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
     public ApiResponse deleteUser(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
         if (ObjectUtils.isEmpty(storedUser)) {
@@ -156,6 +161,7 @@ public class SysUserController {
             objectId = "{#p0}",
             activateData = "{#p1}")
     @PostMapping(value = "/status/{userId}")
+    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
     public ApiResponse updateStatus(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                     @RequestParam boolean enabled) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);

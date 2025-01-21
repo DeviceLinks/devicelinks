@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -41,12 +42,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiExceptionAdvice {
     public static StatusCode PARAM_INVALID = StatusCode.build("PARAM_INVALID", "参数验证失败.");
-    public static StatusCode PATH_VARIABLES_INVALID = StatusCode.build("PATH_VARIABLES_INVALID","请求地址参数值非法.");
+    public static StatusCode PATH_VARIABLES_INVALID = StatusCode.build("PATH_VARIABLES_INVALID", "请求地址参数值非法.");
     public static StatusCode REQUEST_BODY_UNABLE_PARSE = StatusCode.build("REQUEST_BODY_UNABLE_PARSE_CODE", "请求主体无法解析.");
     public static StatusCode SYSTEM_EXCEPTION_STATUS = StatusCode.build("SYSTEM_EXCEPTION", "系统开小差啦.");
     public static StatusCode HTTP_METHOD_NOT_SUPPORT = StatusCode.build("HTTP_METHOD_NOT_SUPPORT", "不支持请求方法：%s.");
     public static StatusCode NO_RESOURCE_FOUND = StatusCode.build("NO_RESOURCE_FOUND", "资源([%s] /%s )不存在，无法访问.");
     public static StatusCode PARAMETER_MISSING = StatusCode.build("PARAMETER_MISSING", "参数[%s]并未传递, 该参数必须传递.");
+    public static StatusCode AUTHORIZATION_DENIED = StatusCode.build("AUTHORIZATION_DENIED", "无权限访问.");
 
     @Autowired
     private MessageSource messageSource;
@@ -62,6 +64,18 @@ public class ApiExceptionAdvice {
         String errorMsg = exception.getStatusCode().formatMessage(exception.getMessageVariables());
         log.error(errorMsg, exception);
         return ApiResponse.error(exception.getStatusCode(), exception.getMessageVariables());
+    }
+
+    /**
+     * 处理遇到的{@link AuthorizationDeniedException}异常
+     *
+     * @param exception {@link AuthorizationDeniedException}异常对象实例
+     * @return {@link ApiResponse}
+     */
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ApiResponse handleAuthorizationDeniedException(AuthorizationDeniedException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(AUTHORIZATION_DENIED);
     }
 
     /**

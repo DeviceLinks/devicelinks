@@ -25,6 +25,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serial;
 import java.util.Collection;
@@ -56,7 +57,9 @@ public class DeviceLinksUserDetails implements UserDetails, CredentialsContainer
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.NO_AUTHORITIES;
+        return !ObjectUtils.isEmpty(authorizedUserAddition.getUser().getIdentity()) ?
+                AuthorityUtils.createAuthorityList(authorizedUserAddition.getUser().getIdentity().toString()) :
+                AuthorityUtils.NO_AUTHORITIES;
     }
 
     @Override
