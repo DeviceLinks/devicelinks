@@ -107,8 +107,8 @@ public class SysUserController {
     @OperationLog(action = LogAction.Update,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
-            object = "{@sysUserServiceImpl.selectById(#result.data.id)}",
-            activateData = "{#result.data}")
+            object = "{@sysUserServiceImpl.selectById(#p0)}",
+            activateData = "{#p1}")
     public ApiResponse updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
@@ -133,8 +133,8 @@ public class SysUserController {
      */
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.User,
-            objectId = "{#executionSucceed ? #result.data.id : #p0}",
-            activateData = "{#result.data}")
+            objectId = "{#p0}",
+            activateData = "{#executionSucceed ? #result.data : null}")
     @DeleteMapping(value = "/{userId}")
     public ApiResponse deleteUser(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
