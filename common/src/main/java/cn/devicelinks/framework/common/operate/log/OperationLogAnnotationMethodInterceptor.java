@@ -49,6 +49,10 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
      */
     private static final String RESULT_VARIABLE_KEY = "result";
     /**
+     * 定义方法是否执行成功在{@link ExpressionVariables}变量集合内的Key
+     */
+    private static final String EXECUTION_SUCCEED_VARIABLE_KEY = "executionSucceed";
+    /**
      * 定义操作对象在目标方法执行之前的值在{@link ExpressionVariables}变量集合内的Key
      */
     private static final String BEFORE_VARIABLE_KEY = "before";
@@ -129,10 +133,14 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             return result;
         } catch (Exception e) {
             exceptionMessage = e.getMessage();
+            executionSucceed = false;
             throw e;
         } finally {
             // storage operate log
             try {
+                if (evaluationContext != null) {
+                    evaluationContext.addVariable(EXECUTION_SUCCEED_VARIABLE_KEY, executionSucceed);
+                }
                 OperationLogResolveProcessor resolveProcessor =
                         new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
                 OperationLogObject operationLogObject = resolveProcessor.processing();

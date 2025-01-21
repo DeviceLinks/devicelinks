@@ -63,7 +63,7 @@ public @interface OperationLog {
     /**
      * 操作对象ID
      * 支持SpEL表达式，在目标方法执行后调用，可使用"#before"、"#after"、"#result"、"#pre"等内置变量
-     * 只在目标方法执行成功{@link OperationLogObject#isExecutionSucceed()}后记录
+     * 目标方法执行成功或失败都会执行数据解析
      * <p>
      * 跟{@link #objectType()}一一对应。
      * 如：{@link LogObjectType}，那么操作对象可以为{@link SysUser#getAccount()}
@@ -90,6 +90,8 @@ public @interface OperationLog {
     /**
      * 操作描述
      * 支持SpEL表达式
+     * <p>
+     * 只有在目标方法执行成功后解析
      *
      * @return 操作描述SpEL表达式，解析后为本次操作的文字描述
      */
@@ -113,7 +115,7 @@ public @interface OperationLog {
      * 当前操作的活动数据
      * <p>
      * 会将解析后的值解析成JSON字符串存储到{@link SysLog#getActivityData()}
-     * 只在目标方法执行成功{@link OperationLogObject#isExecutionSucceed()}后记录
+     * 目标方法执行成功或失败都会执行数据解析
      * <p>
      * 支持SpEL表达式，一般配置请求的数据内容，也可以配置操作后的数据内容。
      * 在目标方法执行后调用，可使用"#before"、"#after"、"#result"、"#pre"等内置变量

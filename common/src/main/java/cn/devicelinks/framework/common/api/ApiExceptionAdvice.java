@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiExceptionAdvice {
     public static StatusCode PARAM_INVALID = StatusCode.build("PARAM_INVALID", "参数验证失败.");
+    public static StatusCode PATH_VARIABLES_INVALID = StatusCode.build("PATH_VARIABLES_INVALID","请求地址参数值非法.");
     public static StatusCode REQUEST_BODY_UNABLE_PARSE = StatusCode.build("REQUEST_BODY_UNABLE_PARSE_CODE", "请求主体无法解析.");
     public static StatusCode SYSTEM_EXCEPTION_STATUS = StatusCode.build("SYSTEM_EXCEPTION", "系统开小差啦.");
     public static StatusCode HTTP_METHOD_NOT_SUPPORT = StatusCode.build("HTTP_METHOD_NOT_SUPPORT", "不支持请求方法：%s.");
@@ -87,6 +89,18 @@ public class ApiExceptionAdvice {
         } catch (Exception e) {
             return ApiResponse.error(SYSTEM_EXCEPTION_STATUS);
         }
+    }
+
+    /**
+     * 处理遇到的{@link HandlerMethodValidationException}异常
+     *
+     * @param exception {@link HandlerMethodValidationException}异常对象实例
+     * @return {@link ApiResponse}
+     */
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ApiResponse handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(PATH_VARIABLES_INVALID);
     }
 
     /**

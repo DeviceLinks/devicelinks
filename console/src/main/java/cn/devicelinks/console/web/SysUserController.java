@@ -16,6 +16,7 @@ import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +59,7 @@ public class SysUserController {
      * @return 用户实例 {@link SysUser}
      */
     @GetMapping(value = "/{userId}")
-    public ApiResponse getUserById(@PathVariable("userId") String userId) throws ApiException {
+    public ApiResponse getUserById(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         SysUser user = this.userService.selectById(userId);
         return ApiResponse.success(user);
     }
@@ -72,7 +73,7 @@ public class SysUserController {
     @PostMapping
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.User,
-            objectId = "{#result.data.id}",
+            objectId = "{#executionSucceed ? #result.data.id : #p0.account}",
             activateData = "{#p0}")
     public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
@@ -106,9 +107,9 @@ public class SysUserController {
     @OperationLog(action = LogAction.Update,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
-            object = "{@sysUserServiceImpl.selectById(#p0)}",
+            object = "{@sysUserServiceImpl.selectById(#result.data.id)}",
             activateData = "{#result.data}")
-    public ApiResponse updateUser(@PathVariable("userId") String userId,
+    public ApiResponse updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
         if (ObjectUtils.isEmpty(storedUser)) {
@@ -132,12 +133,16 @@ public class SysUserController {
      */
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.User,
-            objectId = "{#p0}",
-            activateData = "{@sysUserServiceImpl.selectById(#p0)}")
+            objectId = "{#executionSucceed ? #result.data.id : #p0}",
+            activateData = "{#result.data}")
     @DeleteMapping(value = "/{userId}")
-    public ApiResponse deleteUser(@PathVariable("userId") String userId) throws ApiException {
+    public ApiResponse deleteUser(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
+        SysUser storedUser = this.userService.selectById(userId);
+        if (ObjectUtils.isEmpty(storedUser)) {
+            throw new ApiException(StatusCodeConstants.USER_NOT_FOUND, userId);
+        }
         this.userService.deleteUser(userId);
-        return ApiResponse.success();
+        return ApiResponse.success(storedUser);
     }
 
     /**
@@ -151,8 +156,12 @@ public class SysUserController {
             objectId = "{#p0}",
             activateData = "{#p1}")
     @PostMapping(value = "/status/{userId}")
-    public ApiResponse updateStatus(@PathVariable("userId") String userId,
+    public ApiResponse updateStatus(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                     @RequestParam boolean enabled) throws ApiException {
+        SysUser storedUser = this.userService.selectById(userId);
+        if (ObjectUtils.isEmpty(storedUser)) {
+            throw new ApiException(StatusCodeConstants.USER_NOT_FOUND, userId);
+        }
         this.userService.updateEnabled(userId, enabled);
         return ApiResponse.success();
     }

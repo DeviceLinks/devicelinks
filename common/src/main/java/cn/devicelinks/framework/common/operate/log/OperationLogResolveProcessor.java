@@ -82,18 +82,14 @@ public class OperationLogResolveProcessor {
     public OperationLogObject processing() {
         // @formatter:off
         if (!ObjectUtils.isEmpty(extractor.getObjectIdTemplate())) {
-            this.operationLogObject.setObjectId(this.executionSucceed ?
-                    evaluator.parseExpression(this.evaluationContext, String.class, extractor.getObjectIdTemplate()) : null);
+            this.operationLogObject.setObjectId(evaluator.parseExpression(this.evaluationContext, String.class, extractor.getObjectIdTemplate()));
         }
         if (!ObjectUtils.isEmpty(extractor.getActivateDataTemplate())) {
             Object activateData = evaluator.parseExpression(this.evaluationContext, Object.class, extractor.getActivateDataTemplate());
-            this.operationLogObject.setActivateData(this.executionSucceed ?
-                    !ObjectUtils.isEmpty(activateData) ? JacksonUtils.objectToJson(activateData) : null
-                    : null);
+            this.operationLogObject.setActivateData(!ObjectUtils.isEmpty(activateData) ? JacksonUtils.objectToJson(activateData) : null);
         }
-        if (!ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
-            this.operationLogObject.setMsg(this.executionSucceed ?
-                    evaluator.parseExpression(this.evaluationContext, String.class, extractor.getMsgTemplate()) : null);
+        if (this.executionSucceed && !ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
+            this.operationLogObject.setMsg(evaluator.parseExpression(this.evaluationContext, String.class, extractor.getMsgTemplate()));
         }
         RequestContext requestContext = RequestContextHolder.getContext();
         if (requestContext != null) {
