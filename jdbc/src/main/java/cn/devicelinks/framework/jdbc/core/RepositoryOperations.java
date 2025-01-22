@@ -42,6 +42,17 @@ public interface RepositoryOperations {
     <T> List<T> query(String sql, ResultRowMapper<T> resultRowMapper, Object... parameters);
 
     /**
+     * 查询单个数据
+     *
+     * @param sql        执行SQL
+     * @param clazz      数据类型
+     * @param parameters 参数值列表
+     * @param <T>        数据类型
+     * @return 数据值
+     */
+    <T> T queryForObject(String sql, Class<T> clazz, Object... parameters);
+
+    /**
      * 查询数据列表
      *
      * @param sql             执行SQL
