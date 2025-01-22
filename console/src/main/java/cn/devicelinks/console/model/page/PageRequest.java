@@ -18,6 +18,7 @@
 package cn.devicelinks.console.model.page;
 
 import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
@@ -72,8 +73,9 @@ public class PageRequest {
         if (ObjectUtils.isEmpty(sortProperty) || sortDirection == null) {
             return DEFAULT_SORT;
         } else {
+            String columnName = StringUtils.lowerCamelToLowerUnder(this.sortProperty);
             return SortCondition
-                    .withColumn(Column.withName(this.sortProperty).build())
+                    .withColumn(Column.withName(columnName).build())
                     .by(SortBy.valueOf(this.sortDirection.toLowerCase()));
         }
     }
