@@ -63,6 +63,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
         private Class<?> resultType;
         private final List<Object> parameters = new ArrayList<>();
         private SortCondition sort;
+        private LimitCondition limit;
 
         public SelectBuilder(String sql) {
             this.sql = sql;
@@ -85,6 +86,11 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
 
         public SelectBuilder sort(SortCondition sort) {
             this.sort = sort;
+            return this;
+        }
+
+        public SelectBuilder limit(LimitCondition limit) {
+            this.limit = limit;
             return this;
         }
 
@@ -115,8 +121,13 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             Assert.notEmpty(this.resultColumns, "The resultColumns must not be empty.");
             Assert.notNull(this.resultType, "The resultType must not be null.");
             Assert.notEmpty(this.parameters, "The parameters must not be empty.");
-            if (this.sort != null) {
-                this.sql += this.sort.getSql();
+            // append sort sql
+            if (!ObjectUtils.isEmpty(sort)) {
+                this.sql += sort.getSql();
+            }
+            // append limit sql
+            if (!ObjectUtils.isEmpty(limit)) {
+                this.sql += limit.getSql();
             }
             return new DynamicWrapper(Dynamic.buildSelect(this.sql, this.resultColumns, this.resultType), this.parameters.toArray(Object[]::new));
         }
