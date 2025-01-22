@@ -59,7 +59,7 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
     }
 
     @Override
-    public PageResult<UserDTO> selectByPage(SysUser queryUser, int pageIndex, int pageSize) {
+    public PageResult<UserDTO> selectByPage(SysUser queryUser, PageQuery pageQuery, SortCondition sortCondition) {
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(SELECT_USER_DTO_SQL)
                 .resultColumns(resultColumns -> {
@@ -69,12 +69,12 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
                 .appendCondition(!ObjectUtils.isEmpty(queryUser.getDepartmentId()), SqlFederationAway.AND, SYS_USER.DEPARTMENT_ID.eq(queryUser.getDepartmentId()).tableAlias("su"))
                 .appendCondition(!ObjectUtils.isEmpty(queryUser.getIdentity()), SqlFederationAway.AND, SYS_USER.IDENTITY.eq(queryUser.getIdentity()).tableAlias("su"))
                 .appendCondition(!ObjectUtils.isEmpty(queryUser.getName()), SqlFederationAway.AND, SYS_USER.NAME.like(queryUser.getName()).tableAlias("su"))
-                .sort(SortCondition.withColumn(SYS_USER.CREATE_TIME).desc())
+                .sort(sortCondition)
                 .resultType(UserDTO.class)
                 .build();
         // @formatter:on
 
         Dynamic dynamic = wrapper.dynamic();
-        return this.page(dynamic, PageQuery.of(pageIndex, pageSize), wrapper.parameters());
+        return this.page(dynamic, pageQuery, wrapper.parameters());
     }
 }

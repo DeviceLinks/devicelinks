@@ -67,10 +67,13 @@ public class SortCondition {
      */
     public String getSql() {
         if (!ObjectUtils.isEmpty(SortColumnMap)) {
-            String sortColumnSql = this.SortColumnMap.keySet().stream().map(column -> {
-                SortBy sortBy = SortColumnMap.get(column);
-                return column.getName() + Constants.SPACE + sortBy.name();
-            }).collect(Collectors.joining(SORT_COLUMN_DELIMITER));
+            String sortColumnSql = this.SortColumnMap.keySet()
+                    .stream()
+                    .map(column -> {
+                        SortBy sortBy = SortColumnMap.get(column);
+                        return column.getName() + Constants.SPACE + sortBy.name();
+                    })
+                    .collect(Collectors.joining(SORT_COLUMN_DELIMITER));
             return SORT_SQL_PREFIX + sortColumnSql;
         }
         return null;
@@ -84,6 +87,10 @@ public class SortCondition {
 
         public SortConditionBuilder(Column column) {
             this.column = column;
+        }
+
+        public SortCondition by(SortBy sortBy) {
+            return new SortCondition(column, sortBy);
         }
 
         public SortCondition asc() {

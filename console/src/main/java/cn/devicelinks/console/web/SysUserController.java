@@ -39,17 +39,12 @@ public class SysUserController {
     /**
      * 分页获取用户列表
      *
-     * @param query    查询参数实体实例 {@link UsersQuery}
-     * @param pageSize 每页条数
-     * @param page     当前页码
+     * @param query 查询参数实体实例 {@link UsersQuery}
      * @return 用户列表 {@link UserDTO}
      */
     @GetMapping
     @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
-    public ApiResponse getUsers(@Valid UsersQuery query,
-                                @RequestParam int pageSize,
-                                @RequestParam int page) throws ApiException {
-        PageRequest pageRequest = new PageRequest(pageSize, page);
+    public ApiResponse getUsers(@Valid UsersQuery query, @Valid PageRequest pageRequest) throws ApiException {
         PageResult<UserDTO> userPageResult = this.userService.getUsers(query, pageRequest);
         return ApiResponse.success(userPageResult);
     }

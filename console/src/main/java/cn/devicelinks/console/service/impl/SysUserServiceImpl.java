@@ -101,7 +101,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
                 .setDepartmentId(parameter.getDepartmentId())
                 .setIdentity(parameter.getIdentity() != null ? UserIdentity.valueOf(parameter.getIdentity()) : null);
         // @formatter:on
-        return this.repository.selectByPage(queryUser, pageRequest.getPage(), pageRequest.getPageSize());
+        return this.repository.selectByPage(queryUser, pageRequest.toPageQuery(), pageRequest.toSortCondition());
     }
 
     @Override

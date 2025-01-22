@@ -1,13 +1,15 @@
 package cn.devicelinks.console.model.page;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.sql.SortBy;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import lombok.Data;
-import org.springframework.data.domain.Sort;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.util.ObjectUtils;
 
 /**
  * 分页查询请求实体
@@ -16,69 +18,55 @@ import java.util.stream.Collectors;
  * @since 1.0
  */
 @Data
+@NoArgsConstructor
 public class PageRequest {
-    protected static final String DEFAULT_SORT_PROPERTY = "id";
-    private static final Sort DEFAULT_SORT = Sort.by(Sort.Direction.ASC, DEFAULT_SORT_PROPERTY);
+    private static final String DEFAULT_SORT_PROPERTY = "id";
+    private static final SortCondition DEFAULT_SORT = SortCondition.withColumn(Column.withName(DEFAULT_SORT_PROPERTY).build()).asc();
+    private static final PageQuery DEFAULT_PAGE_QUERY = PageQuery.of();
 
-    private final int pageSize;
-    private final int page;
-    private final SortOrder sortOrder;
+    private int pageSize;
 
-    public PageRequest(PageRequest pageRequest) {
-        this.pageSize = pageRequest.getPageSize();
-        this.page = pageRequest.getPage();
-        this.sortOrder = pageRequest.getSortOrder();
-    }
+    private int page;
+
+    @Length(max = 50)
+    private String sortProperty;
+
+    @EnumValid(target = Direction.class, message = "排序顺序不允许传递非法值")
+    private String sortDirection;
 
     public PageRequest(int pageSize) {
         this(pageSize, 0);
     }
 
     public PageRequest(int pageSize, int page) {
-        this(pageSize, page, null);
+        this(pageSize, page, DEFAULT_SORT_PROPERTY, Direction.ASC.toString());
     }
 
-    public PageRequest(int pageSize, int page, SortOrder sortOrder) {
+    public PageRequest(int pageSize, int page, String sortProperty, String sortDirection) {
         this.pageSize = pageSize;
         this.page = page;
-        this.sortOrder = sortOrder;
+        this.sortProperty = sortProperty;
+        this.sortDirection = sortDirection;
     }
 
-    @JsonIgnore
-    public PageRequest nextPageRequest() {
-        return new PageRequest(this.pageSize, this.page + 1, this.sortOrder);
-    }
-
-    public Sort toSort(SortOrder sortOrder, Map<String, String> columnMap, boolean addDefaultSorting) {
-        if (sortOrder == null) {
+    public SortCondition toSortCondition() {
+        if (ObjectUtils.isEmpty(sortProperty) || sortDirection == null) {
             return DEFAULT_SORT;
         } else {
-            return toSort(List.of(sortOrder), columnMap, addDefaultSorting);
+            return SortCondition
+                    .withColumn(Column.withName(this.sortProperty).build())
+                    .by(SortBy.valueOf(this.sortDirection.toLowerCase()));
         }
     }
 
-    public Sort toSort(List<SortOrder> sortOrders, Map<String, String> columnMap, boolean addDefaultSorting) {
-        if (addDefaultSorting && !isDefaultSortOrderAvailable(sortOrders)) {
-            sortOrders = new ArrayList<>(sortOrders);
-            sortOrders.add(new SortOrder(DEFAULT_SORT_PROPERTY, SortOrder.Direction.ASC));
+    public PageQuery toPageQuery() {
+        if (this.page <= Constants.ZERO || this.pageSize <= Constants.ZERO) {
+            return DEFAULT_PAGE_QUERY;
         }
-        return Sort.by(sortOrders.stream().map(s -> toSortOrder(s, columnMap)).collect(Collectors.toList()));
+        return PageQuery.of(this.page, this.pageSize);
     }
 
-    private Sort.Order toSortOrder(SortOrder sortOrder, Map<String, String> columnMap) {
-        String property = sortOrder.getProperty();
-        if (columnMap.containsKey(property)) {
-            property = columnMap.get(property);
-        }
-        return new Sort.Order(Sort.Direction.fromString(sortOrder.getDirection().name()), property);
-    }
-
-    public boolean isDefaultSortOrderAvailable(List<SortOrder> sortOrders) {
-        for (SortOrder sortOrder : sortOrders) {
-            if (DEFAULT_SORT_PROPERTY.equals(sortOrder.getProperty())) {
-                return true;
-            }
-        }
-        return false;
+    public enum Direction {
+        ASC, DESC
     }
 }

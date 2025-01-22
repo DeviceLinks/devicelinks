@@ -19,7 +19,9 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 
 /**
@@ -32,5 +34,5 @@ public interface SysUserRepository extends Repository<SysUser, String> {
 
     SysUser selectByAccount(String account);
 
-    PageResult<UserDTO> selectByPage(SysUser queryUser, int pageIndex, int pageSize);
+    PageResult<UserDTO> selectByPage(SysUser queryUser, PageQuery pageQuery, SortCondition sortCondition);
 }
