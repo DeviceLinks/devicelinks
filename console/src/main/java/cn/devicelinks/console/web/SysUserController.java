@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.console.web;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
@@ -12,7 +29,6 @@ import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +59,9 @@ public class SysUserController {
      * @return 用户列表 {@link UserDTO}
      */
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse getUsers(@Valid UsersQuery query, @Valid PageRequest pageRequest) throws ApiException {
-        PageResult<UserDTO> userPageResult = this.userService.getUsers(query, pageRequest);
-        return ApiResponse.success(userPageResult);
+        return ApiResponse.success(this.userService.getUsers(query, pageRequest));
     }
 
     /**
@@ -57,8 +72,7 @@ public class SysUserController {
      */
     @GetMapping(value = "/{userId}")
     public ApiResponse getUserById(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
-        SysUser user = this.userService.selectById(userId);
-        return ApiResponse.success(user);
+        return ApiResponse.success(this.userService.selectById(userId));
     }
 
     /**
@@ -72,7 +86,7 @@ public class SysUserController {
             objectType = LogObjectType.User,
             objectId = "{#executionSucceed ? #result.data.id : #p0.account}",
             activateData = "{#p0}")
-    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
             throw new ApiException(StatusCodeConstants.USER_EMAIL_CANNOT_EMPTY);
@@ -107,7 +121,7 @@ public class SysUserController {
             objectId = "{#p0}",
             object = "{@sysUserServiceImpl.selectById(#p0)}",
             activateData = "{#p1}")
-    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                   @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
@@ -135,7 +149,7 @@ public class SysUserController {
             objectId = "{#p0}",
             activateData = "{#executionSucceed ? #result.data : null}")
     @DeleteMapping(value = "/{userId}")
-    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse deleteUser(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
         if (ObjectUtils.isEmpty(storedUser)) {
@@ -156,7 +170,7 @@ public class SysUserController {
             objectId = "{#p0}",
             activateData = "{#p1}")
     @PostMapping(value = "/status/{userId}")
-    @PreAuthorize("hasAnyAuthority('SystemAdmin','TenantAdmin')")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse updateStatus(@Valid @PathVariable("userId") @Length(max = 32) String userId,
                                     @RequestParam boolean enabled) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);

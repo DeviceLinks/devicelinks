@@ -1,6 +1,5 @@
-package cn.devicelinks.framework.common.utils;
 /*
- *   Copyright (C) 2024  DeviceLinks
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,6 +14,8 @@ package cn.devicelinks.framework.common.utils;
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package cn.devicelinks.framework.common.utils;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMKeyPair;
