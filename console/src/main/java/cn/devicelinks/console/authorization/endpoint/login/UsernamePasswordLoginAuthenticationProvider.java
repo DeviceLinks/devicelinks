@@ -29,6 +29,7 @@ import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
+import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -46,6 +47,7 @@ import org.springframework.util.ObjectUtils;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -132,7 +134,6 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                 .setStatus(SessionStatus.Normal)
                 .setIssuedTime(Objects.requireNonNull(jwt.getIssuedAt()).atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .setExpiresTime(Objects.requireNonNull(jwt.getExpiresAt()).atZone(ZoneId.systemDefault()).toLocalDateTime());
-        // @formatter:on
         this.userSessionService.insert(userSession);
         // save user login log
         SysLog userLoginLog = new SysLog()
@@ -145,8 +146,16 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                 .setSuccess(true)
                 .setMsg(LOGIN_SUCCESS_MSG)
                 .setAddition(new SysLogAddition().setIpAddress(ipAddress))
+                .setActivityData(JacksonUtils.objectToJson(
+                        new HashMap<>() {{
+                            put("name", user.getName());
+                            put("account", user.getAccount());
+                            put("identity", user.getIdentity());
+                        }}
+                ))
                 .setCreateTime(LocalDateTime.now());
         this.logService.insert(userLoginLog);
+        // @formatter:on
     }
 
     private PlatformType getPlatformType(HttpServletRequest request) {
