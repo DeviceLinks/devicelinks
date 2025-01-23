@@ -6,6 +6,6 @@
 
 SpringBoot Version : ${spring-boot.formatted-version}
 
-Console Version : ${devicelinks.core.version}
+Core-Service Version : ${devicelinks.core.version}
 
 HelpUri : https://github.com/DeviceLinks/devicelinks/issues
