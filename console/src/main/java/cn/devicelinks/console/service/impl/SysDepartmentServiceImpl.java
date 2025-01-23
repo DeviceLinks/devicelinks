@@ -17,12 +17,23 @@
 
 package cn.devicelinks.console.service.impl;
 
+import cn.devicelinks.console.model.StatusCodeConstants;
 import cn.devicelinks.console.service.SysDepartmentService;
+import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
+import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
+import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.framework.jdbc.repositorys.SysDepartmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
 
 /**
  * 部门业务逻辑接口实现类
@@ -35,5 +46,58 @@ import org.springframework.stereotype.Service;
 public class SysDepartmentServiceImpl extends BaseServiceImpl<SysDepartment, String, SysDepartmentRepository> implements SysDepartmentService {
     public SysDepartmentServiceImpl(SysDepartmentRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public SysDepartment addDepartment(SysDepartment department) {
+        SysDepartment storedDepartment = this.check(department, false);
+        if (storedDepartment != null) {
+            throw new ApiException(StatusCodeConstants.DEPARTMENT_ALREADY_EXISTS);
+        }
+        department.setId(UUIDUtils.generateNoDelimiter());
+        this.repository.insert(department);
+        return department;
+    }
+
+    @Override
+    public SysDepartment updateDepartment(SysDepartment department) {
+        SysDepartment storedDepartment = this.check(department, true);
+        if (storedDepartment != null && !storedDepartment.getId().equals(department.getId())) {
+            throw new ApiException(StatusCodeConstants.DEPARTMENT_ALREADY_EXISTS);
+        }
+        this.repository.update(department);
+        return department;
+    }
+
+    @Override
+    public void deleteDepartment(String departmentId) {
+        this.repository.update(
+                List.of(SYS_DEPARTMENT.DELETED.set(true)),
+                SYS_DEPARTMENT.ID.eq(departmentId)
+        );
+    }
+
+    private SysDepartment check(SysDepartment department, boolean doUpdate) {
+        // check parent department exists
+        if (!ObjectUtils.isEmpty(department.getPid()) && ObjectUtils.isEmpty(this.selectById(department.getPid()))) {
+            throw new ApiException(StatusCodeConstants.DEPARTMENT_PARENT_NOT_EXISTS);
+        }
+        // check already exists
+        List<ConditionGroup> conditionGroups = new ArrayList<>();
+
+        // update
+        if (doUpdate) {
+            conditionGroups.add(ConditionGroup.withCondition(SqlFederationAway.OR,
+                    SYS_DEPARTMENT.NAME.eq(department.getName()),
+                    SYS_DEPARTMENT.IDENTIFIER.eq(department.getIdentifier())));
+            conditionGroups.add(ConditionGroup.withCondition(SYS_DEPARTMENT.ID.neq(department.getId())));
+        }
+        // insert
+        else {
+            conditionGroups.add(ConditionGroup.withCondition(SqlFederationAway.OR,
+                    SYS_DEPARTMENT.NAME.eq(department.getName()),
+                    SYS_DEPARTMENT.IDENTIFIER.eq(department.getIdentifier())));
+        }
+        return this.repository.selectOne(conditionGroups.toArray(ConditionGroup[]::new));
     }
 }

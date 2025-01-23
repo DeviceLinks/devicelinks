@@ -26,7 +26,17 @@ import cn.devicelinks.framework.common.api.StatusCode;
  * @since 1.0
  */
 public interface StatusCodeConstants {
+    /**
+     * User
+     */
     StatusCode USER_NOT_FOUND = StatusCode.build("USER_NOT_FOUND", "用户：%s，不存在.");
-    StatusCode USER_ALREADY_EXISTS = StatusCode.build("USER_ALREADY_EXISTS","用户已经存在，请检查账号、邮箱、手机号是否重复.");
-    StatusCode USER_EMAIL_CANNOT_EMPTY = StatusCode.build("USER_EMAIL_CANNOT_EMPTY","用户邮箱地址不允许为空.");
+    StatusCode USER_ALREADY_EXISTS = StatusCode.build("USER_ALREADY_EXISTS", "用户已经存在，请检查账号、邮箱、手机号是否重复.");
+    StatusCode USER_EMAIL_CANNOT_EMPTY = StatusCode.build("USER_EMAIL_CANNOT_EMPTY", "用户邮箱地址不允许为空.");
+
+    /**
+     * Department
+     */
+    StatusCode DEPARTMENT_NOT_FOUND = StatusCode.build("DEPARTMENT_NOT_FOUND", "部门：%s，不存在.");
+    StatusCode DEPARTMENT_ALREADY_EXISTS = StatusCode.build("DEPARTMENT_ALREADY_EXISTS", "部门已经存在，请检查名称、标识符是否重复.");
+    StatusCode DEPARTMENT_PARENT_NOT_EXISTS = StatusCode.build("DEPARTMENT_PARENT_NOT_EXISTS", "上级部门不存在.");
 }

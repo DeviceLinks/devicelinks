@@ -15,22 +15,28 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.service;
+package cn.devicelinks.console.model;
 
-import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.jdbc.BaseService;
+import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 /**
- * 部门业务逻辑接口定义
+ * 部门查询请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public interface SysDepartmentService extends BaseService<SysDepartment, String> {
+@Data
+public class DepartmentsQuery {
 
-    SysDepartment addDepartment(SysDepartment department);
+    @Length(max = 30, message = "部门名称不可以超过30个字符")
+    private String name;
 
-    SysDepartment updateDepartment(SysDepartment department);
+    @Length(max = 50, message = "部门标识符不可以超过50个字符")
+    private String identifier;
 
-    void deleteDepartment(String departmentId);
+    @Length(max = 32, message = "部门上级ID不可以超过32个字符")
+    private String pid;
+    
+    private boolean includeChildren;
 }

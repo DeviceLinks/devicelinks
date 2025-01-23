@@ -15,22 +15,20 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.service;
+package cn.devicelinks.framework.jdbc.model.dto;
 
 import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.jdbc.BaseService;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 部门业务逻辑接口定义
+ * 部门信息数据传输实体
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public interface SysDepartmentService extends BaseService<SysDepartment, String> {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class DepartmentDTO extends SysDepartment {
 
-    SysDepartment addDepartment(SysDepartment department);
-
-    SysDepartment updateDepartment(SysDepartment department);
-
-    void deleteDepartment(String departmentId);
 }
