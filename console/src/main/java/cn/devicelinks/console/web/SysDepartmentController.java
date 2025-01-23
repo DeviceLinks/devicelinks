@@ -116,7 +116,7 @@ public class SysDepartmentController {
                 .setSort(request.getSort())
                 .setDescription(request.getDescription());
         // @formatter:on
-        this.departmentService.updateDepartment(storedDepartment);
+        storedDepartment = this.departmentService.updateDepartment(storedDepartment);
         return ApiResponse.success(storedDepartment);
     }
 
