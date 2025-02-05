@@ -39,6 +39,7 @@ public class StatusCode {
     public static final StatusCode INVALID_TOKEN = StatusCode.build("INVALID_TOKEN", "令牌无效.");
     public static final StatusCode TOKEN_JWT_PARSING_FAILED = StatusCode.build("TOKEN_JWT_PARSING_FAILED", "令牌Jwt解析失败.");
     public static final StatusCode TOKEN_EXPIRED = StatusCode.build("TOKEN_EXPIRED", "令牌已过期.");
+    public static final StatusCode UPDATE_LAST_ACTIVE_TIME_FAILED = StatusCode.build("UPDATE_LAST_ACTIVE_TIME_FAILED", "更新会话最后活动时间失败.");
     public static final StatusCode ACCESS_TIME_NOT_ALLOWED = StatusCode.build("ACCESS_TIME_NOT_ALLOWED", "该时间段不允许访问数据.");
     public static final StatusCode TODAY_WEEK_NOT_ALLOWED = StatusCode.build("TODAY_WEEK_NOT_ALLOWED", "今日：[%s]，不允许访问数据.");
     public static final StatusCode PARAMETER_CANNOT_NULL = StatusCode.build("PARAMETER_CANNOT_NULL", "请求参数：[%s]，不允许为null.");

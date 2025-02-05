@@ -84,7 +84,11 @@ public class ResourceTokenAccessAuthenticationProvider implements Authentication
 
     private void updateSessionLastActiveTime(String sessionId) {
         if (!ObjectUtils.isEmpty(sessionId)) {
-            userSessionRepository.updateLastActiveTime(sessionId, LocalDateTime.now());
+            try {
+                userSessionRepository.updateLastActiveTime(sessionId, LocalDateTime.now());
+            } catch (Exception e) {
+                throw new DeviceLinksAuthorizationException(StatusCode.UPDATE_LAST_ACTIVE_TIME_FAILED);
+            }
         }
     }
 
