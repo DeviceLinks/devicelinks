@@ -27,6 +27,7 @@ import cn.devicelinks.framework.jdbc.tables.TSysUserSession;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TSysUserSession.SYS_USER_SESSION;
@@ -64,5 +65,10 @@ public class SysUserSessionJdbcRepository extends JdbcRepository<SysUserSession,
     public SysUserSession selectByUsernameAndToken(String username, String token) {
         return this.selectOne(SYS_USER_SESSION.USERNAME.eq(username),
                 SYS_USER_SESSION.TOKEN_VALUE.eq(token));
+    }
+
+    @Override
+    public void updateLastActiveTime(String sessionId, LocalDateTime lastActiveTime) {
+        this.update(List.of(SYS_USER_SESSION.LAST_ACTIVE_TIME.set(lastActiveTime)), SYS_USER_SESSION.ID.eq(sessionId));
     }
 }

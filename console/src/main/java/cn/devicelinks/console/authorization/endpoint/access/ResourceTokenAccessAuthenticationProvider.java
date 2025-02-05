@@ -22,14 +22,17 @@ import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
+import cn.devicelinks.framework.jdbc.repositorys.SysUserSessionRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * The resource access authentication provider
@@ -43,10 +46,13 @@ public class ResourceTokenAccessAuthenticationProvider implements Authentication
 
     private final TokenRepository tokenRepository;
 
+    private final SysUserSessionRepository userSessionRepository;
+
     private final JwtDecoder jwtDecoder;
 
-    public ResourceTokenAccessAuthenticationProvider(TokenRepository tokenRepository, JwtDecoder jwtDecoder) {
+    public ResourceTokenAccessAuthenticationProvider(TokenRepository tokenRepository, SysUserSessionRepository userSessionRepository, JwtDecoder jwtDecoder) {
         this.tokenRepository = tokenRepository;
+        this.userSessionRepository = userSessionRepository;
         this.jwtDecoder = jwtDecoder;
     }
 
@@ -70,8 +76,16 @@ public class ResourceTokenAccessAuthenticationProvider implements Authentication
         if (deviceLinksUserDetails == null) {
             throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_EXPIRED);
         }
+        // Update session last active time
+        this.updateSessionLastActiveTime(deviceLinksUserDetails.getSessionId());
         // Return authenticated ResourceTokenAccessAuthenticationToken
         return ResourceTokenAccessAuthenticationToken.authenticated(resourceTokenAccessAuthenticationToken.getToken(), deviceLinksUserDetails);
+    }
+
+    private void updateSessionLastActiveTime(String sessionId) {
+        if (!ObjectUtils.isEmpty(sessionId)) {
+            userSessionRepository.updateLastActiveTime(sessionId, LocalDateTime.now());
+        }
     }
 
     @Override

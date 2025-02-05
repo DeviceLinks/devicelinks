@@ -20,6 +20,8 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.jdbc.core.Repository;
 
+import java.time.LocalDateTime;
+
 /**
  * 用户会话数据接口
  *
@@ -51,4 +53,12 @@ public interface SysUserSessionRepository extends Repository<SysUserSession, Str
      * @return {@link SysUserSession}
      */
     SysUserSession selectByUsernameAndToken(String username, String token);
+
+    /**
+     * 更新最后活跃时间
+     *
+     * @param sessionId      会话ID {@link SysUserSession#getId()}
+     * @param lastActiveTime 最后活跃时间 {@link SysUserSession#getLastActiveTime()}
+     */
+    void updateLastActiveTime(String sessionId, LocalDateTime lastActiveTime);
 }
