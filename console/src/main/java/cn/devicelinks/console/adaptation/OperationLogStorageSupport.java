@@ -78,6 +78,8 @@ public class OperationLogStorageSupport implements OperationLogStorage {
                 .setAddition(
                         new SysLogAddition()
                                 .setIpAddress(object.getIpAddress())
+                                .setOs(object.getOs())
+                                .setBrowser(object.getBrowser())
                                 .setFailureReason(object.getFailureReason())
                                 .setFailureStackTrace(object.getFailureCause() != null ? StackTraceUtil.getStackTrace(object.getFailureCause()) : null)
                                 .setObjectFields(objectFields))

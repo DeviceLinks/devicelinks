@@ -40,6 +40,9 @@ public class SysLogAddition implements Serializable {
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
     private String ipAddress;
+    private String browser;
+    private String location;
+    private String os;
     private List<ObjectField> objectFields;
     private String failureReason;
     private String failureStackTrace;

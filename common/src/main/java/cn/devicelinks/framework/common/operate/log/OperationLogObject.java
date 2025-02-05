@@ -78,6 +78,14 @@ public class OperationLogObject {
      */
     private String ipAddress;
     /**
+     * 浏览器
+     */
+    private String browser;
+    /**
+     * 操作系统
+     */
+    private String os;
+    /**
      * 失败原因
      */
     private String failureReason;

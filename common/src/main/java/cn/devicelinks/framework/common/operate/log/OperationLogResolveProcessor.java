@@ -23,6 +23,7 @@ import cn.devicelinks.framework.common.operate.log.expression.OperationLogCached
 import cn.devicelinks.framework.common.request.RequestContext;
 import cn.devicelinks.framework.common.request.RequestContextHolder;
 import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.ObjectClassUtils;
 import com.google.common.collect.Maps;
@@ -94,6 +95,8 @@ public class OperationLogResolveProcessor {
         RequestContext requestContext = RequestContextHolder.getContext();
         if (requestContext != null) {
             this.operationLogObject.setIpAddress(requestContext.getIp());
+            this.operationLogObject.setOs(HttpRequestUtils.getOsInfo(requestContext.getRequest()));
+            this.operationLogObject.setBrowser(HttpRequestUtils.getBrowserInfo(requestContext.getRequest()));
         }
         if (!ObjectUtils.isEmpty(this.extractor.getObjectFieldMap())) {
             List<ObjectField> objectFields = this.extractor.getObjectFieldMap().values().stream().toList();

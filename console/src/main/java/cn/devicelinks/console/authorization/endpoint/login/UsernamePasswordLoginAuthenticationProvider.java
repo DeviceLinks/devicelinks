@@ -145,7 +145,10 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                 .setObjectId(user.getId())
                 .setSuccess(true)
                 .setMsg(LOGIN_SUCCESS_MSG)
-                .setAddition(new SysLogAddition().setIpAddress(ipAddress))
+                .setAddition(new SysLogAddition()
+                        .setIpAddress(ipAddress)
+                        .setOs(HttpRequestUtils.getOsInfo(request))
+                        .setBrowser(HttpRequestUtils.getBrowserInfo(request)))
                 .setActivityData(JacksonUtils.objectToJson(
                         new HashMap<>() {{
                             put("name", user.getName());
