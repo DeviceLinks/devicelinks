@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiExceptionAdvice {
     public static StatusCode PARAM_INVALID = StatusCode.build("PARAM_INVALID", "参数验证失败.");
-    public static StatusCode PATH_VARIABLES_INVALID = StatusCode.build("PATH_VARIABLES_INVALID", "请求地址参数值非法.");
+    public static StatusCode REQUEST_VARIABLES_INVALID = StatusCode.build("REQUEST_VARIABLES_INVALID", "请求参数值非法.");
     public static StatusCode REQUEST_BODY_UNABLE_PARSE = StatusCode.build("REQUEST_BODY_UNABLE_PARSE_CODE", "请求主体无法解析.");
     public static StatusCode SYSTEM_EXCEPTION_STATUS = StatusCode.build("SYSTEM_EXCEPTION", "系统开小差啦.");
     public static StatusCode HTTP_METHOD_NOT_SUPPORT = StatusCode.build("HTTP_METHOD_NOT_SUPPORT", "不支持请求方法：%s.");
@@ -131,7 +131,7 @@ public class ApiExceptionAdvice {
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ApiResponse handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponse.error(PATH_VARIABLES_INVALID);
+        return ApiResponse.error(REQUEST_VARIABLES_INVALID);
     }
 
     /**
