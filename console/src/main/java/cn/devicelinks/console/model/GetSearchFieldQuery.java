@@ -15,25 +15,23 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console;
+package cn.devicelinks.console.model;
 
-import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.web.SearchFieldModule;
-import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplateGroup;
-
-import java.util.List;
+import cn.devicelinks.framework.common.web.validator.EnumValid;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
 /**
- * 检索字段单元测试类
+ * 获取检索字段请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class SearchFieldTest {
+@Data
+public class GetSearchFieldQuery {
 
-    public static void main(String[] args) {
-        List<SearchFieldTemplate> searchFieldTemplateList = SearchFieldTemplateGroup.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(SearchFieldModule.Log);
-        System.out.println(JacksonUtils.objectToJson(searchFieldTemplateList));
-    }
+    @NotEmpty
+    @EnumValid(target = SearchFieldModule.class, message = "检索字段模块不允许传递非法值")
+    private String module;
 }

@@ -15,25 +15,21 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console;
-
-import cn.devicelinks.framework.common.utils.JacksonUtils;
-import cn.devicelinks.framework.common.web.SearchFieldModule;
-import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplateGroup;
-
-import java.util.List;
+package cn.devicelinks.framework.common.web;
 
 /**
- * 检索字段单元测试类
+ * 检索字段选项数据源
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class SearchFieldTest {
-
-    public static void main(String[] args) {
-        List<SearchFieldTemplate> searchFieldTemplateList = SearchFieldTemplateGroup.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(SearchFieldModule.Log);
-        System.out.println(JacksonUtils.objectToJson(searchFieldTemplateList));
-    }
+public enum SearchFieldOptionDataSource {
+    /**
+     * 接口查询
+     */
+    API,
+    /**
+     * 静态数据
+     */
+    STATIC
 }

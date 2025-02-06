@@ -15,25 +15,34 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console;
+package cn.devicelinks.framework.common.web;
 
-import cn.devicelinks.framework.common.utils.JacksonUtils;
-import cn.devicelinks.framework.common.web.SearchFieldModule;
-import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplateGroup;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 /**
- * 检索字段单元测试类
+ * 检索字段模板
+ * <p>
+ * 一个模版定义一个检索字段
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class SearchFieldTest {
+@Data
+@Accessors(chain = true)
+public class SearchFieldTemplate {
+    private String field;
+    private String fieldText;
+    private SearchFieldValueType valueType;
+    private SearchFieldComponentType componentType;
+    private SearchFieldOptionDataSource optionDataSource;
+    private String optionApiDataCode;
+    private List<SearchFieldOptionData> optionStaticData;
+    private List<SearchFieldOperator> operators;
 
-    public static void main(String[] args) {
-        List<SearchFieldTemplate> searchFieldTemplateList = SearchFieldTemplateGroup.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(SearchFieldModule.Log);
-        System.out.println(JacksonUtils.objectToJson(searchFieldTemplateList));
+    public static SearchFieldTemplate of() {
+        return new SearchFieldTemplate();
     }
 }
