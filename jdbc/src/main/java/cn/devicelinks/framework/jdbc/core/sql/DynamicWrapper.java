@@ -19,6 +19,7 @@ package cn.devicelinks.framework.jdbc.core.sql;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -130,6 +131,19 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
                     this.parameters.addAll(parameterValueList);
                 }
             }
+            return this;
+        }
+
+        public SelectBuilder appendSearchFieldCondition(Table table, List<SearchFieldCondition> searchFieldConditions, Consumer<Condition> consumer) {
+            searchFieldConditions.forEach(searchFieldCondition -> {
+                Column searchColumn = table.getColumn(searchFieldCondition.getColumnName());
+                if (searchColumn != null && !ObjectUtils.isEmpty(searchFieldCondition.getValue())) {
+                    // convert condition value
+                    Condition condition = Condition.withColumn(searchFieldCondition.getOperator(), searchColumn, searchFieldCondition.getValue());
+                    consumer.accept(condition);
+                    this.appendCondition(!ObjectUtils.isEmpty(searchFieldCondition.getValue()), searchFieldCondition.getFederationAway(), condition);
+                }
+            });
             return this;
         }
 

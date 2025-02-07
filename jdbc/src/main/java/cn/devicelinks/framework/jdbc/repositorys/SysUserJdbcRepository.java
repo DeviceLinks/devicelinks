@@ -23,10 +23,12 @@ import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.*;
+import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
+import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -65,17 +67,9 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
                     resultColumns.addAll(SYS_USER.getColumns());
                     resultColumns.add(COLUMN_DEPARTMENT_NAME);
                 })
+                .appendSearchFieldCondition(SYS_USER, searchFieldConditions, consumer -> consumer.tableAlias("su"))
                 .sort(sortCondition);
         // @formatter:on
-
-        searchFieldConditions.forEach(searchFieldCondition -> {
-            Column searchColumn = SYS_USER.getColumn(searchFieldCondition.getColumnName());
-            if (searchColumn != null && !ObjectUtils.isEmpty(searchFieldCondition.getValue())) {
-                // convert condition value
-                Condition condition = Condition.withColumn(searchFieldCondition.getOperator(), searchColumn, searchFieldCondition.getValue()).tableAlias("su");
-                selectBuilder.appendCondition(!ObjectUtils.isEmpty(searchFieldCondition.getValue()), searchFieldCondition.getFederationAway(), condition);
-            }
-        });
 
         DynamicWrapper wrapper = selectBuilder.resultType(UserDTO.class).build();
         Dynamic dynamic = wrapper.dynamic();
