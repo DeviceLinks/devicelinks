@@ -15,28 +15,30 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model;
+package cn.devicelinks.framework.jdbc.core.sql;
 
-import cn.devicelinks.framework.common.UserIdentity;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlQueryOperator;
+import lombok.Getter;
 
 /**
- * 获取用户列表请求参数
+ * 检索字段条件
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@Data
-public class UsersQuery {
+@Getter
+public class SearchFieldCondition {
 
-    @Length(max = 50)
-    private String name;
+    private final SqlFederationAway federationAway;
+    private final String columnName;
+    private final SqlQueryOperator operator;
+    private final Object value;
 
-    @Length(max = 32)
-    private String departmentId;
-
-    @EnumValid(target = UserIdentity.class, message = "用户身份不允许传递非法值")
-    private String identity;
+    public SearchFieldCondition(SqlFederationAway federationAway, String columnName, SqlQueryOperator operator, Object value) {
+        this.federationAway = federationAway;
+        this.columnName = columnName;
+        this.operator = operator;
+        this.value = value;
+    }
 }

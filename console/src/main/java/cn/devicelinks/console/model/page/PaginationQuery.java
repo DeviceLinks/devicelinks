@@ -38,7 +38,7 @@ import org.springframework.util.ObjectUtils;
  */
 @Data
 @NoArgsConstructor
-public class PageRequest {
+public class PaginationQuery {
     private static final String DEFAULT_SORT_PROPERTY = "id";
     private static final SortCondition DEFAULT_SORT = SortCondition.withColumn(Column.withName(DEFAULT_SORT_PROPERTY).build()).asc();
     private static final PageQuery DEFAULT_PAGE_QUERY = PageQuery.of();
@@ -54,15 +54,15 @@ public class PageRequest {
     @EnumValid(target = Direction.class, message = "排序顺序不允许传递非法值")
     private String sortDirection;
 
-    public PageRequest(int pageSize) {
+    public PaginationQuery(int pageSize) {
         this(pageSize, 0);
     }
 
-    public PageRequest(int pageSize, int page) {
+    public PaginationQuery(int pageSize, int page) {
         this(pageSize, page, DEFAULT_SORT_PROPERTY, Direction.ASC.toString());
     }
 
-    public PageRequest(int pageSize, int page, String sortProperty, String sortDirection) {
+    public PaginationQuery(int pageSize, int page, String sortProperty, String sortDirection) {
         this.pageSize = pageSize;
         this.page = page;
         this.sortProperty = sortProperty;

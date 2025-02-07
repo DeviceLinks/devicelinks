@@ -183,6 +183,16 @@ public class Column {
     }
 
     /**
+     * Use this column create {@link SqlQueryOperator#NotLike} condition
+     *
+     * @param value condition parameter value
+     * @return {@link Condition}
+     */
+    public Condition notLike(Object value) {
+        return condition(SqlQueryOperator.NotLike, value);
+    }
+
+    /**
      * Use this column create {@link SqlQueryOperator#Prefix} condition
      *
      * @param value condition parameter value

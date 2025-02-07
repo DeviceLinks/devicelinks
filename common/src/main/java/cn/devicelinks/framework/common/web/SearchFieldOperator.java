@@ -32,43 +32,43 @@ public enum SearchFieldOperator {
     /**
      * 等于
      */
-    EQUAL("等于", "EQUAL"),
+    EqualTo("等于", "EqualTo"),
     /**
      * 不等于
      */
-    NOT_EQUAL("不等于", "NOT_EQUAL"),
+    NotEqualTo("不等于", "NotEqualTo"),
     /**
      * 大于
      */
-    GREATER_THAN("大于", "GREATER_THAN"),
+    GreaterThan("大于", "GreaterThan"),
     /**
      * 大于等于
      */
-    GREATER_THAN_OR_EQUAL("大于等于", "GREATER_THAN_OR_EQUAL"),
+    GreaterThanOrEqualTo("大于等于", "GreaterThanOrEqualTo"),
     /**
      * 小于
      */
-    LESS_THAN("小于", "LESS_THAN"),
+    LessThan("小于", "LessThan"),
     /**
      * 小于等于
      */
-    LESS_THAN_OR_EQUAL("小于等于", "LESS_THAN_OR_EQUAL"),
+    LessThanOrEqualTo("小于等于", "LessThanOrEqualTo"),
     /**
      * 包含
      */
-    IN("包含", "IN"),
+    In("包含", "In"),
     /**
      * 不包含
      */
-    NOT_IN("不包含", "NOT_IN"),
+    NotIn("不包含", "NotIn"),
     /**
      * 模糊匹配
      */
-    LIKE("模糊匹配", "LIKE"),
+    Like("模糊匹配", "Like"),
     /**
      * 不模糊匹配
      */
-    NOT_LIKE("不模糊匹配", "NOT_LIKE");
+    NotLike("不模糊匹配", "NotLike");
     private final String label;
     private final String value;
 

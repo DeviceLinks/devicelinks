@@ -19,7 +19,8 @@ package cn.devicelinks.console.web;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.model.*;
-import cn.devicelinks.console.model.page.PageRequest;
+import cn.devicelinks.console.model.page.PaginationQuery;
+import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -55,13 +56,14 @@ public class SysUserController {
     /**
      * 分页获取用户列表
      *
-     * @param query 查询参数实体实例 {@link UsersQuery}
+     * @param paginationQuery  分页查询参数 {@link PaginationQuery}
+     * @param searchFieldQuery 搜索字段查询参数 {@link SearchFieldQuery}
      * @return 用户列表 {@link UserDTO}
      */
     @GetMapping
     @PreAuthorize("hasAuthority('SystemAdmin')")
-    public ApiResponse getUsers(@Valid UsersQuery query, @Valid PageRequest pageRequest) throws ApiException {
-        return ApiResponse.success(this.userService.getUsers(query, pageRequest));
+    public ApiResponse getUsers(@Valid PaginationQuery paginationQuery, @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        return ApiResponse.success(this.userService.getUsers(searchFieldQuery, paginationQuery));
     }
 
     /**

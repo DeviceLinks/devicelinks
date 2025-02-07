@@ -21,8 +21,11 @@ import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.Repository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+
+import java.util.List;
 
 /**
  * 管理用户数据接口定义
@@ -34,5 +37,5 @@ public interface SysUserRepository extends Repository<SysUser, String> {
 
     SysUser selectByAccount(String account);
 
-    PageResult<UserDTO> selectByPage(SysUser queryUser, PageQuery pageQuery, SortCondition sortCondition);
+    PageResult<UserDTO> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition);
 }

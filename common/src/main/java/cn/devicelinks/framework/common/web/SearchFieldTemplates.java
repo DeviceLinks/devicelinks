@@ -71,50 +71,50 @@ public interface SearchFieldTemplates {
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate USER_NAME = SearchFieldTemplate.of(SearchField.USER_NAME)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate USER_ACCOUNT = SearchFieldTemplate.of(SearchField.USER_ACCOUNT)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate USER_EMAIL = SearchFieldTemplate.of(SearchField.USER_EMAIL)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate USER_PHONE = SearchFieldTemplate.of(SearchField.USER_PHONE)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate USER_ACTIVATE_METHOD = SearchFieldTemplate.of(SearchField.USER_ACTIVATE_METHOD)
@@ -126,28 +126,28 @@ public interface SearchFieldTemplates {
                     USER_ACTIVATE_METHOD_SHOW_URL
             ))
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo
             ));
 
     SearchFieldTemplate DEVICE_CODE = SearchFieldTemplate.of(SearchField.DEVICE_CODE)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate DEVICE_NAME = SearchFieldTemplate.of(SearchField.DEVICE_NAME)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate DEVICE_TYPE = SearchFieldTemplate.of(SearchField.DEVICE_TYPE)
@@ -159,40 +159,40 @@ public interface SearchFieldTemplates {
                     DEVICE_TYPE_GATEWAY,
                     DEVICE_TYPE_GATEWAY_SUB
             )).setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.IN,
-                    SearchFieldOperator.NOT_IN
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
             ));
 
     SearchFieldTemplate DEVICE_ACTIVATION_TIME = SearchFieldTemplate.of(SearchField.DEVICE_ACTIVATION_TIME)
             .setValueType(SearchFieldValueType.DATE_TIME)
             .setComponentType(SearchFieldComponentType.DATE_TIME)
             .setOperators(List.of(
-                    SearchFieldOperator.GREATER_THAN,
-                    SearchFieldOperator.GREATER_THAN_OR_EQUAL,
-                    SearchFieldOperator.LESS_THAN,
-                    SearchFieldOperator.LESS_THAN_OR_EQUAL
+                    SearchFieldOperator.GreaterThan,
+                    SearchFieldOperator.GreaterThanOrEqualTo,
+                    SearchFieldOperator.LessThan,
+                    SearchFieldOperator.LessThanOrEqualTo
             ));
 
     SearchFieldTemplate DEVICE_LAST_ONLINE_TIME = SearchFieldTemplate.of(SearchField.DEVICE_LAST_ONLINE_TIME)
             .setValueType(SearchFieldValueType.DATE_TIME)
             .setComponentType(SearchFieldComponentType.DATE_TIME)
             .setOperators(List.of(
-                    SearchFieldOperator.GREATER_THAN,
-                    SearchFieldOperator.GREATER_THAN_OR_EQUAL,
-                    SearchFieldOperator.LESS_THAN,
-                    SearchFieldOperator.LESS_THAN_OR_EQUAL
+                    SearchFieldOperator.GreaterThan,
+                    SearchFieldOperator.GreaterThanOrEqualTo,
+                    SearchFieldOperator.LessThan,
+                    SearchFieldOperator.LessThanOrEqualTo
             ));
 
     SearchFieldTemplate DEVICE_LAST_REPORT_TIME = SearchFieldTemplate.of(SearchField.DEVICE_LAST_REPORT_TIME)
             .setValueType(SearchFieldValueType.DATE_TIME)
             .setComponentType(SearchFieldComponentType.DATE_TIME)
             .setOperators(List.of(
-                    SearchFieldOperator.GREATER_THAN,
-                    SearchFieldOperator.GREATER_THAN_OR_EQUAL,
-                    SearchFieldOperator.LESS_THAN,
-                    SearchFieldOperator.LESS_THAN_OR_EQUAL
+                    SearchFieldOperator.GreaterThan,
+                    SearchFieldOperator.GreaterThanOrEqualTo,
+                    SearchFieldOperator.LessThan,
+                    SearchFieldOperator.LessThanOrEqualTo
             ));
 
     SearchFieldTemplate LOG_ACTION = SearchFieldTemplate.of(SearchField.LOG_ACTION)
@@ -212,10 +212,10 @@ public interface SearchFieldTemplates {
                     LOG_ACTION_UNBIND
             ))
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.IN,
-                    SearchFieldOperator.NOT_IN
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
             ));
 
     SearchFieldTemplate LOG_OBJECT_TYPE = SearchFieldTemplate.of(SearchField.LOG_OBJECT_TYPE)
@@ -232,30 +232,30 @@ public interface SearchFieldTemplates {
                     LOG_OBJECT_TYPE_ATTRIBUTE
             ))
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.IN,
-                    SearchFieldOperator.NOT_IN
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
             ));
 
     SearchFieldTemplate LOG_OBJECT_ID = SearchFieldTemplate.of(SearchField.LOG_OBJECT_ID)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate LOG_MSG = SearchFieldTemplate.of(SearchField.LOG_MSG)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL,
-                    SearchFieldOperator.LIKE,
-                    SearchFieldOperator.NOT_LIKE
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
             ));
 
     SearchFieldTemplate LOG_SUCCESS = SearchFieldTemplate.of(SearchField.LOG_SUCCESS)
@@ -267,8 +267,8 @@ public interface SearchFieldTemplates {
                     LOG_SUCCESS_FALSE
             ))
             .setOperators(List.of(
-                    SearchFieldOperator.EQUAL,
-                    SearchFieldOperator.NOT_EQUAL
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo
             ));
 
     // List of search field templates for each module

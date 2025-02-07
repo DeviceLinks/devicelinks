@@ -64,6 +64,10 @@ public enum SqlQueryOperator {
      */
     Like("like"),
     /**
+     * 不模糊匹配
+     */
+    NotLike("not like"),
+    /**
      * 开头匹配
      */
     Prefix("like"),

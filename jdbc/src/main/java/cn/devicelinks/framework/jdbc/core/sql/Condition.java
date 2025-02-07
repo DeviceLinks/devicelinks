@@ -56,7 +56,7 @@ public final class Condition {
 
     public Object getParameterValue() {
         return switch (this.operator) {
-            case Like -> LIKE_PLACEHOLDER + conditionValue.getValue() + LIKE_PLACEHOLDER;
+            case Like, NotLike -> LIKE_PLACEHOLDER + conditionValue.getValue() + LIKE_PLACEHOLDER;
             case Prefix -> conditionValue.getValue() + LIKE_PLACEHOLDER;
             case Suffix -> LIKE_PLACEHOLDER + conditionValue.getValue();
             default -> conditionValue.getValue();

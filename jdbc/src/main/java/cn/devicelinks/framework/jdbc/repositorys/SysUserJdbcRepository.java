@@ -23,13 +23,12 @@ import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
-import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
-import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
-import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
+import cn.devicelinks.framework.jdbc.core.sql.*;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
 
@@ -59,21 +58,26 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
     }
 
     @Override
-    public PageResult<UserDTO> selectByPage(SysUser queryUser, PageQuery pageQuery, SortCondition sortCondition) {
+    public PageResult<UserDTO> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition) {
         // @formatter:off
-        DynamicWrapper wrapper = DynamicWrapper.select(SELECT_USER_DTO_SQL)
+        DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_USER_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(SYS_USER.getColumns());
                     resultColumns.add(COLUMN_DEPARTMENT_NAME);
                 })
-                .appendCondition(!ObjectUtils.isEmpty(queryUser.getDepartmentId()), SqlFederationAway.AND, SYS_USER.DEPARTMENT_ID.eq(queryUser.getDepartmentId()).tableAlias("su"))
-                .appendCondition(!ObjectUtils.isEmpty(queryUser.getIdentity()), SqlFederationAway.AND, SYS_USER.IDENTITY.eq(queryUser.getIdentity()).tableAlias("su"))
-                .appendCondition(!ObjectUtils.isEmpty(queryUser.getName()), SqlFederationAway.AND, SYS_USER.NAME.like(queryUser.getName()).tableAlias("su"))
-                .sort(sortCondition)
-                .resultType(UserDTO.class)
-                .build();
+                .sort(sortCondition);
         // @formatter:on
 
+        searchFieldConditions.forEach(searchFieldCondition -> {
+            Column searchColumn = SYS_USER.getColumn(searchFieldCondition.getColumnName());
+            if (searchColumn != null && !ObjectUtils.isEmpty(searchFieldCondition.getValue())) {
+                // convert condition value
+                Condition condition = Condition.withColumn(searchFieldCondition.getOperator(), searchColumn, searchFieldCondition.getValue()).tableAlias("su");
+                selectBuilder.appendCondition(!ObjectUtils.isEmpty(searchFieldCondition.getValue()), searchFieldCondition.getFederationAway(), condition);
+            }
+        });
+
+        DynamicWrapper wrapper = selectBuilder.resultType(UserDTO.class).build();
         Dynamic dynamic = wrapper.dynamic();
         return this.page(dynamic, pageQuery, wrapper.parameters());
     }

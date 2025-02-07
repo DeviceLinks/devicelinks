@@ -18,11 +18,10 @@
 package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.UsersQuery;
-import cn.devicelinks.console.model.page.PageRequest;
+import cn.devicelinks.console.model.page.PaginationQuery;
+import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.framework.common.UserActivateMethod;
-import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
@@ -94,14 +93,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
     }
 
     @Override
-    public PageResult<UserDTO> getUsers(UsersQuery parameter, PageRequest pageRequest) {
-        // @formatter:off
-        SysUser queryUser = new SysUser()
-                .setName(parameter.getName())
-                .setDepartmentId(parameter.getDepartmentId())
-                .setIdentity(parameter.getIdentity() != null ? UserIdentity.valueOf(parameter.getIdentity()) : null);
-        // @formatter:on
-        return this.repository.selectByPage(queryUser, pageRequest.toPageQuery(), pageRequest.toSortCondition());
+    public PageResult<UserDTO> getUsers(SearchFieldQuery query, PaginationQuery paginationQuery) {
+        return this.repository.selectByPage(query.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 
     @Override
