@@ -19,6 +19,9 @@ package cn.devicelinks.console.model.search;
 
 import cn.devicelinks.framework.common.web.SearchField;
 import cn.devicelinks.framework.common.web.SearchFieldOperator;
+import cn.devicelinks.framework.common.web.validator.EnumValid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -34,13 +37,17 @@ public class SearchFieldFilter {
      *
      * @see SearchField#getField()
      */
+    @NotEmpty(message = "检索字段不能为空")
     private String field;
     /**
      * 检索字段运算符
      */
-    private SearchFieldOperator operator;
+    @NotEmpty(message = "检索字段运算符不能为空")
+    @EnumValid(target = SearchFieldOperator.class, message = "检索字段运算符参数值非法")
+    private String operator;
     /**
      * 检索字段值
      */
+    @NotNull(message = "检索字段值不能为空")
     private Object value;
 }

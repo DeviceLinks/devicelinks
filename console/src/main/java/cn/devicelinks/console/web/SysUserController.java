@@ -62,7 +62,7 @@ public class SysUserController {
      */
     @GetMapping
     @PreAuthorize("hasAuthority('SystemAdmin')")
-    public ApiResponse getUsers(@Valid PaginationQuery paginationQuery, @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse getUsers(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.userService.getUsers(searchFieldQuery, paginationQuery));
     }
 

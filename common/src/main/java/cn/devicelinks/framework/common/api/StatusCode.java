@@ -46,6 +46,7 @@ public class StatusCode {
     public static final StatusCode PARAMETER_CANNOT_EMPTY = StatusCode.build("PARAMETER_CANNOT_EMPTY", "请求参数：[%s]，不允许为空.");
     public static final StatusCode QUERY_ERROR = StatusCode.build("QUERY_ERROR", "执行数据查询时遇到异常.");
     public static final StatusCode MODIFY_ERROR = StatusCode.build("MODIFY_ERROR", "执行数据更新或删除时遇到异常.");
+    public static final StatusCode SEARCH_FIELD_NOT_IN_MODULE = StatusCode.build("SEARCH_FIELD_NOT_IN_MODULE", "检索字段：[%s]，不在模块[%s]中.");
 
     /**
      * 状态码
