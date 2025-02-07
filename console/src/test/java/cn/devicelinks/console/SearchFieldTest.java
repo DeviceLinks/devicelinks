@@ -20,7 +20,7 @@ package cn.devicelinks.console;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.web.SearchFieldModule;
 import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplateGroup;
+import cn.devicelinks.framework.common.web.SearchFieldTemplates;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ import java.util.List;
 public class SearchFieldTest {
 
     public static void main(String[] args) {
-        List<SearchFieldTemplate> searchFieldTemplateList = SearchFieldTemplateGroup.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(SearchFieldModule.Log);
+        List<SearchFieldTemplate> searchFieldTemplateList = SearchFieldTemplates.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(SearchFieldModule.Log);
         System.out.println(JacksonUtils.objectToJson(searchFieldTemplateList));
     }
 }

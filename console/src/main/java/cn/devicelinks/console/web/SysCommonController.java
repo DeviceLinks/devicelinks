@@ -22,7 +22,7 @@ import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.web.SearchFieldModule;
 import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplateGroup;
+import cn.devicelinks.framework.common.web.SearchFieldTemplates;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +48,7 @@ public class SysCommonController {
     @GetMapping(value = "/search/field")
     public ApiResponse getSearchField(@Valid GetSearchFieldQuery query) throws ApiException {
         SearchFieldModule searchFieldModule = SearchFieldModule.valueOf(query.getModule());
-        List<SearchFieldTemplate> searchFieldTemplateList =  SearchFieldTemplateGroup.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(searchFieldModule);
+        List<SearchFieldTemplate> searchFieldTemplateList =  SearchFieldTemplates.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(searchFieldModule);
         return ApiResponse.success(searchFieldTemplateList);
     }
 }

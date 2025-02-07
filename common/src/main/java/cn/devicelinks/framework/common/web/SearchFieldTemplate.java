@@ -45,4 +45,8 @@ public class SearchFieldTemplate {
     public static SearchFieldTemplate of() {
         return new SearchFieldTemplate();
     }
+
+    public static SearchFieldTemplate of(SearchField searchField) {
+        return new SearchFieldTemplate().setField(searchField.getField()).setFieldText(searchField.getText());
+    }
 }

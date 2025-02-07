@@ -30,7 +30,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class SearchFieldOptionData {
     private String label;
-    private String value;
+    private Object value;
 
     public static SearchFieldOptionData of() {
         return new SearchFieldOptionData();
