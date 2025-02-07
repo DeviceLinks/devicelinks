@@ -151,7 +151,6 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             Assert.hasText(this.sql, "The query sql must not be empty.");
             Assert.notEmpty(this.resultColumns, "The resultColumns must not be empty.");
             Assert.notNull(this.resultType, "The resultType must not be null.");
-            Assert.notEmpty(this.parameters, "The parameters must not be empty.");
             // append sort sql
             if (!ObjectUtils.isEmpty(sort)) {
                 this.sql += sort.getSql();
