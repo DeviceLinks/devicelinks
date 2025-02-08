@@ -67,9 +67,16 @@ public class SearchFieldQuery {
                     // ignore empty value
                     .filter(f -> !ObjectUtils.isEmpty(f.getValue()))
                     .map(filter -> {
+                        // check field is in module
                         if (!searchFieldTemplateMap.containsKey(filter.getField())) {
                             throw new ApiException(StatusCode.SEARCH_FIELD_NOT_IN_MODULE, filter.getField(), this.searchFieldModule);
                         }
+                        // check operator is support
+                        searchFieldTemplateMap.get(filter.getField()).getOperators()
+                                .stream()
+                                .filter(operator -> operator.toString().equals(filter.getOperator()))
+                                .findAny()
+                                .orElseThrow(() -> new ApiException(StatusCode.SEARCH_FIELD_OPERATOR_NOT_SUPPORT, filter.getField(), filter.getOperator()));
                         return new SearchFieldCondition(sqlFederationAway, filter.getField(), this.toSqlQueryOperator(filter.getOperator()), filter.getValue());
                     })
                     .forEach(searchFieldConditionList::add);

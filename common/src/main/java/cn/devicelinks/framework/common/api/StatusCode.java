@@ -47,6 +47,7 @@ public class StatusCode {
     public static final StatusCode QUERY_ERROR = StatusCode.build("QUERY_ERROR", "执行数据查询时遇到异常.");
     public static final StatusCode MODIFY_ERROR = StatusCode.build("MODIFY_ERROR", "执行数据更新或删除时遇到异常.");
     public static final StatusCode SEARCH_FIELD_NOT_IN_MODULE = StatusCode.build("SEARCH_FIELD_NOT_IN_MODULE", "检索字段：[%s]，不在模块[%s]中.");
+    public static final StatusCode SEARCH_FIELD_OPERATOR_NOT_SUPPORT = StatusCode.build("SEARCH_FIELD_OPERATOR_NOT_SUPPORT", "检索字段：[%s]，不支持运算符：[%s].");
 
     /**
      * 状态码
