@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
         {
           key: 'Ant Design',
           title: 'Ant Design',
-          href:'https://github.com/DeviceLinks',
+          href: 'https://ant.design',
           blankTarget: true,
         },
       ]}
