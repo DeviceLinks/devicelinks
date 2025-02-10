@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ import cn.devicelinks.framework.jdbc.core.sql.operator.SqlQueryOperator;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collection;
 
@@ -38,9 +39,11 @@ public final class Condition {
     private static final String CONDITION_SQL_FORMAT = "%s %s %s";
     private static final String PLACEHOLDER = "?";
     private static final String LIKE_PLACEHOLDER = "%";
+    private static final String COLUMN_ALIAS_FORMAT = "%s.%s";
     @Getter
     private final SqlQueryOperator operator;
     private final ConditionValue conditionValue;
+    private String tableAlias;
 
     private Condition(SqlQueryOperator operator, ConditionValue conditionValue) {
         this.operator = operator;
@@ -53,7 +56,7 @@ public final class Condition {
 
     public Object getParameterValue() {
         return switch (this.operator) {
-            case Like -> LIKE_PLACEHOLDER + conditionValue.getValue() + LIKE_PLACEHOLDER;
+            case Like, NotLike -> LIKE_PLACEHOLDER + conditionValue.getValue() + LIKE_PLACEHOLDER;
             case Prefix -> conditionValue.getValue() + LIKE_PLACEHOLDER;
             case Suffix -> LIKE_PLACEHOLDER + conditionValue.getValue();
             default -> conditionValue.getValue();
@@ -70,7 +73,16 @@ public final class Condition {
                 log.error("Failed to obtain conditional SQL, [{}]:[{}], Value is not a collection type.", this.getColumnName(), this.operator);
             }
         }
-        return String.format(CONDITION_SQL_FORMAT, this.getColumnName(), this.operator.getValue(), PLACEHOLDER);
+        // Format sql
+        String sql = String.format(CONDITION_SQL_FORMAT, this.getColumnName(), this.operator.getValue(), PLACEHOLDER);
+        // Append table alias
+        return !ObjectUtils.isEmpty(this.tableAlias) ? String.format(COLUMN_ALIAS_FORMAT, this.tableAlias, sql) : sql;
+    }
+
+    public Condition tableAlias(String tableAlias) {
+        Assert.hasText(tableAlias, "tableAlias cannot be null or empty");
+        this.tableAlias = tableAlias;
+        return this;
     }
 
     public static Condition withColumn(Column column, Object conditionValue) {
@@ -80,7 +92,6 @@ public final class Condition {
     public static Condition withColumn(SqlQueryOperator operator, Column column, Object conditionValue) {
         Assert.notNull(operator, "The operator cannot be null");
         Assert.notNull(column, "The column cannot be null");
-        Assert.notNull(conditionValue, "value cannot be null");
         return new Condition(operator, ConditionValue.with(column, conditionValue));
     }
 }

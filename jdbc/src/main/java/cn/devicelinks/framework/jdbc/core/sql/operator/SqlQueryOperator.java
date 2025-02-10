@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -63,6 +63,10 @@ public enum SqlQueryOperator {
      * 模糊匹配
      */
     Like("like"),
+    /**
+     * 不模糊匹配
+     */
+    NotLike("not like"),
     /**
      * 开头匹配
      */

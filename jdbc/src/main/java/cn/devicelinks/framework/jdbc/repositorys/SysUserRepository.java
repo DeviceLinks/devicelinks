@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,8 +19,13 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+
+import java.util.List;
 
 /**
  * 管理用户数据接口定义
@@ -32,5 +37,5 @@ public interface SysUserRepository extends Repository<SysUser, String> {
 
     SysUser selectByAccount(String account);
 
-    PageResult<UserDTO> selectByPage(String name, String departmentId, String userIdentity, int pageIndex, int pageSize);
+    PageResult<UserDTO> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition);
 }

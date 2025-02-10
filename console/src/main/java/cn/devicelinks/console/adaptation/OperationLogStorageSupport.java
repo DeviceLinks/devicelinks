@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.minbox.framework.util.StackTraceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -42,39 +43,48 @@ import java.util.List;
 @Slf4j
 public class OperationLogStorageSupport implements OperationLogStorage {
     @Autowired
-    private SysLogService operateLogService;
+    private SysLogService logService;
 
     @Override
     public void storage(OperationLogObject object) {
         List<SysLogAddition.ObjectField> objectFields = null;
         if (!ObjectUtils.isEmpty(object.getObjectFields())) {
-            List<ObjectFieldDifferentValue> fieldDifferentValueList = JacksonUtils.parseList(object.getObjectFields(), ObjectFieldDifferentValue.class);
-            objectFields = fieldDifferentValueList.stream()
-                    .map(fdv ->
-                            new SysLogAddition.ObjectField()
-                                    .setField(fdv.getField())
-                                    .setFieldName(fdv.getFieldName())
-                                    .setBeforeValue(fdv.getBeforeValue())
-                                    .setAfterValue(fdv.getAfterValue())
-                                    .setDifferent(fdv.isDifferent())).toList();
+
+            List<ObjectFieldDifferentValue> fieldDifferentValueList = JacksonUtils.jsonToList(object.getObjectFields(), ObjectFieldDifferentValue.class);
+            if (!ObjectUtils.isEmpty(fieldDifferentValueList)) {
+                objectFields = fieldDifferentValueList.stream()
+                        .map(fdv ->
+                                new SysLogAddition.ObjectField()
+                                        .setField(fdv.getField())
+                                        .setFieldName(fdv.getFieldName())
+                                        .setBeforeValue(fdv.getBeforeValue())
+                                        .setAfterValue(fdv.getAfterValue())
+                                        .setDifferent(fdv.isDifferent()))
+                        .toList();
+            }
         }
 
         // @formatter:off
         SysLog operateLog = new SysLog()
                 .setId(UUIDUtils.generateNoDelimiter())
                 .setUserId(object.getOperatorId())
-                .setAction(object.getOperateAction())
+                .setSessionId(object.getSessionId())
+                .setAction(object.getAction())
                 .setObjectType(object.getObjectType())
-                .setObject(object.getObject())
+                .setObjectId(object.getObjectId())
                 .setMsg(object.getMsg())
                 .setSuccess(object.isExecutionSucceed())
                 .setCreateTime(object.getTime())
                 .setAddition(
                         new SysLogAddition()
                                 .setIpAddress(object.getIpAddress())
+                                .setOs(object.getOs())
+                                .setBrowser(object.getBrowser())
                                 .setFailureReason(object.getFailureReason())
-                                .setObjectFields(objectFields));
+                                .setFailureStackTrace(object.getFailureCause() != null ? StackTraceUtil.getStackTrace(object.getFailureCause()) : null)
+                                .setObjectFields(objectFields))
+                .setActivityData(object.getActivateData());
         // @formatter:on
-        this.operateLogService.insert(operateLog);
+        this.logService.insert(operateLog);
     }
 }

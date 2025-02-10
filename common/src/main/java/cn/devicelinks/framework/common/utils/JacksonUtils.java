@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,11 +17,12 @@
 
 package cn.devicelinks.framework.common.utils;
 
+import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
@@ -35,59 +36,76 @@ import java.util.Map;
  * @since 1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class JacksonUtils {
     private final static DeviceLinksJsonMapper objectMapper = new DeviceLinksJsonMapper();
 
-    public static ObjectMapper getInstance() {
-        return objectMapper;
-    }
-
-    public static String toJsonString(Object obj) {
-        if (obj == null) return null;
-        ObjectMapper mapper = getInstance();
-        String result = null;
+    /**
+     * 将对象序列化为JSON字符串
+     *
+     * @param object 要序列化的对象
+     * @return JSON字符串
+     */
+    public static String objectToJson(Object object) {
         try {
-            result = mapper.writeValueAsString(obj);
+            return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            return Constants.EMPTY_STRING;
         }
-        return result;
     }
 
-    public static <T> T parseObject(String jsonStr, Class<T> clazz) {
-        if (ObjectUtils.isEmpty(jsonStr) || clazz == null) return null;
-        ObjectMapper mapper = getInstance();
-        T t = null;
+    /**
+     * 将JSON字符串反序列化为指定类型的对象
+     *
+     * @param json  JSON字符串
+     * @param clazz 对象类型
+     * @param <T>   泛型
+     * @return 反序列化后的对象
+     */
+    public static <T> T jsonToObject(String json, Class<T> clazz) {
         try {
-            t = mapper.readValue(jsonStr, clazz);
+            return objectMapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            return null;
         }
-        return t;
     }
 
-    public static <T> List<T> parseList(String listJsonStr, Class<T> clazz) {
-        if (ObjectUtils.isEmpty(listJsonStr) || clazz == null) return Collections.emptyList();
-        ObjectMapper mapper = getInstance();
-        List<T> list = Collections.emptyList();
+    /**
+     * 将JSON字符串反序列化为List对象
+     *
+     * @param json  JSON字符串
+     * @param clazz List中元素的类型
+     * @param <T>   泛型
+     * @return 反序列化后的List
+     */
+    public static <T> List<T> jsonToList(String json, Class<T> clazz) {
         try {
-            list = mapper.readValue(listJsonStr, List.class);
+            return objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            return null;
         }
-        return list;
     }
 
-    public static <K, V> Map<K, V> parseMap(String mapJsonStr, Class<K> kClazz, Class<V> vClazz) {
-        if (ObjectUtils.isEmpty(mapJsonStr) || kClazz == null || vClazz == null) return Collections.emptyMap();
-        ObjectMapper mapper = getInstance();
-        Map<K, V> map = Collections.EMPTY_MAP;
+    /**
+     * 将JSON字符串反序列化为List对象
+     *
+     * @param json   JSON字符串
+     * @param kClazz Map Key的类型
+     * @param vClazz Map Value的类型
+     * @param <K>    Key泛型
+     * @param <V>    Value泛型
+     * @return 反序列化后的Map
+     */
+    public static <K, V> Map<K, V> jsonToMap(String json, Class<K> kClazz, Class<V> vClazz) {
+        if (ObjectUtils.isEmpty(json) || kClazz == null || vClazz == null) return Collections.emptyMap();
         try {
-            map = mapper.readValue(mapJsonStr, mapper.getTypeFactory().constructParametricType(Map.class, kClazz, vClazz));
+            return objectMapper.readValue(json, objectMapper.getTypeFactory().constructParametricType(Map.class, kClazz, vClazz));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            return Collections.emptyMap();
         }
-        return map;
     }
-
 }

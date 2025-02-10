@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,4 +27,10 @@ import cn.devicelinks.framework.jdbc.BaseService;
  * @since 1.0
  */
 public interface SysDepartmentService extends BaseService<SysDepartment, String> {
+
+    SysDepartment addDepartment(SysDepartment department);
+
+    SysDepartment updateDepartment(SysDepartment department);
+
+    void deleteDepartment(String departmentId);
 }

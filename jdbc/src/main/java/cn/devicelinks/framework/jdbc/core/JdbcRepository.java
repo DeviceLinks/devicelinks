@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import static cn.devicelinks.framework.jdbc.core.page.AbstractPageResult.PAGE_RESULT_COUNT_NAME;
-
 /**
  * 数据存储库接口JDBC实现类
  *
@@ -60,7 +58,6 @@ import static cn.devicelinks.framework.jdbc.core.page.AbstractPageResult.PAGE_RE
 public class JdbcRepository<T extends Serializable, PK> implements Repository<T, PK> {
     private static final int MAP_ENTITY_GENERIC_INDEX = 0;
     protected Table table;
-    private final JdbcOperations jdbcOperations;
     protected RepositoryOperations jdbcRepositoryOperations;
     private final Class mapEntityClass;
     private final SqlPrinter sqlPrinter = new ConsoleSqlPrinter(this.getClass());
@@ -69,7 +66,6 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         this.table = table;
         ResolvableType resolvableType = ResolvableType.forClass(this.getClass()).getSuperType();
         this.mapEntityClass = resolvableType.getGeneric(MAP_ENTITY_GENERIC_INDEX).resolve();
-        this.jdbcOperations = jdbcOperations;
         this.jdbcRepositoryOperations = new JdbcRepositoryOperations(jdbcOperations, this.sqlPrinter);
     }
 
@@ -299,53 +295,43 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         ConditionSql conditionSql = this.toConditionSql(condition);
         Object[] parameterValues = conditionSql.getSqlParameterValues().stream().map(SqlParameterValue::getValue).toList().toArray(Object[]::new);
         DefaultPageResult.DefaultPageResultBuilder builder = DefaultPageResult.withPageQuery(pageQuery);
-        try {
-            // Query Total Row Count
-            String totalRowCountQuerySql = pageQuery.getTotalRowCountQuerySql(conditionSql.getSql());
-            Integer totalRows = this.jdbcOperations.queryForObject(totalRowCountQuerySql, Integer.class, parameterValues);
-            this.sqlPrinter.print(RepositoryMethod.Query, totalRowCountQuerySql, parameterValues, List.of(Map.of(PAGE_RESULT_COUNT_NAME, totalRows != null ? totalRows : Constants.ZERO)), Constants.ONE);
-            if (ObjectUtils.isEmpty(totalRows) || totalRows < Constants.ONE) {
-                return (PageResult<T>) builder.build();
-            }
-            // Query Current Page Results
-            String currentPageQuerySql = pageQuery.getCurrentPageQuerySql(conditionSql.getSql());
-            List<T> resultList = this.jdbcRepositoryOperations.query(currentPageQuerySql, conditionSql.getRowMapper(), parameterValues);
-            // @formatter:off
-            builder
-                    .totalRows(totalRows)
-                    .result(resultList)
-                    .build();
-            // @formatter:on
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Query Total Row Count
+        String totalRowCountQuerySql = pageQuery.getTotalRowCountQuerySql(conditionSql.getSql());
+        Integer totalRows = this.jdbcRepositoryOperations.queryForObject(totalRowCountQuerySql, Integer.class, parameterValues);
+        if (ObjectUtils.isEmpty(totalRows) || totalRows < Constants.ONE) {
+            return (PageResult<T>) builder.build();
         }
+        // Query Current Page Results
+        String currentPageQuerySql = pageQuery.getCurrentPageQuerySql(conditionSql.getSql());
+        List<T> resultList = this.jdbcRepositoryOperations.query(currentPageQuerySql, conditionSql.getRowMapper(), parameterValues);
+        // @formatter:off
+        builder
+                .totalRows(totalRows)
+                .result(resultList)
+                .build();
+        // @formatter:on
         return (PageResult<T>) builder.build();
     }
 
     @Override
     public <R extends Serializable> PageResult<R> page(Dynamic dynamic, PageQuery pageQuery, Object... parameterValues) {
         DefaultPageResult.DefaultPageResultBuilder builder = DefaultPageResult.withPageQuery(pageQuery);
-        try {
-            // @formatter:off
-            // Query Total Row Count
-            String totalRowsQuerySql = this.formatSql(pageQuery.getTotalRowCountQuerySql(dynamic.getSql()));
-            Integer totalRows = this.jdbcOperations.queryForObject(totalRowsQuerySql, Integer.class, parameterValues);
-            this.sqlPrinter.print(RepositoryMethod.Query, totalRowsQuerySql, parameterValues, List.of(Map.of(PAGE_RESULT_COUNT_NAME, totalRows != null ? totalRows : Constants.ZERO)), Constants.ONE);
-            if (ObjectUtils.isEmpty(totalRows) || totalRows < Constants.ONE) {
-                return (PageResult<R>) builder.build();
-            }
-            // Query Current Page Results
-            String pageQuerySql = this.formatSql(pageQuery.getCurrentPageQuerySql(dynamic.getSql()));
-            ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getColumns(), (Class<R>) dynamic.getRowMappingClass());
-            List<R> resultList = this.jdbcRepositoryOperations.query(pageQuerySql, resultRowMapper, parameterValues);
-            builder
-                    .totalRows(totalRows)
-                    .result(resultList)
-                    .build();
-            // @formatter:on
-        } catch (Exception e) {
-            e.printStackTrace();
+        // @formatter:off
+        // Query Total Row Count
+        String totalRowsQuerySql = this.formatSql(pageQuery.getTotalRowCountQuerySql(dynamic.getSql()));
+        Integer totalRows = this.jdbcRepositoryOperations.queryForObject(totalRowsQuerySql, Integer.class, parameterValues);
+        if (ObjectUtils.isEmpty(totalRows) || totalRows < Constants.ONE) {
+            return (PageResult<R>) builder.build();
         }
+        // Query Current Page Results
+        String pageQuerySql = this.formatSql(pageQuery.getCurrentPageQuerySql(dynamic.getSql()));
+        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getColumns(), (Class<R>) dynamic.getRowMappingClass());
+        List<R> resultList = this.jdbcRepositoryOperations.query(pageQuerySql, resultRowMapper, parameterValues);
+        builder
+                .totalRows(totalRows)
+                .result(resultList)
+                .build();
+        // @formatter:on
         return (PageResult<R>) builder.build();
     }
 

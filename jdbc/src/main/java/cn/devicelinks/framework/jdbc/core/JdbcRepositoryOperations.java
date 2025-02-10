@@ -1,9 +1,29 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.jdbc.core;
 
 import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.jdbc.core.mapper.ResultRowMapper;
 import cn.devicelinks.framework.jdbc.core.printer.SqlPrinter;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -11,6 +31,7 @@ import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * {@link RepositoryOperations}JDBC实现类
@@ -21,7 +42,9 @@ import java.util.List;
  * @since 1.0
  */
 @Getter
+@Slf4j
 public class JdbcRepositoryOperations implements RepositoryOperations {
+    public static final String RESULT_OBJECT_KEY = "ResultObject";
     private final JdbcOperations jdbcOperations;
     private final SqlPrinter sqlPrinter;
 
@@ -39,6 +62,9 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             } else {
                 resultList = this.jdbcOperations.query(sql, resultRowMapper);
             }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiException(StatusCode.QUERY_ERROR);
         } finally {
             // @formatter:off
             this.sqlPrinter.print(RepositoryMethod.Query,
@@ -61,6 +87,9 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             } else {
                 resultList = this.jdbcOperations.query(sql, resultRowMapper);
             }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiException(StatusCode.QUERY_ERROR);
         } finally {
             // @formatter:off
             this.sqlPrinter.print(RepositoryMethod.Query,
@@ -71,6 +100,26 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             // @formatter:on
         }
         return resultList;
+    }
+
+    @Override
+    public <T> T queryForObject(String sql, Class<T> clazz, Object... parameters) {
+        T resultObject = null;
+        try {
+            resultObject = this.jdbcOperations.queryForObject(sql, clazz, parameters);
+            return resultObject;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiException(StatusCode.QUERY_ERROR);
+        } finally {
+            boolean printRow = resultObject != null;
+            if (printRow && resultObject instanceof Number) {
+                printRow = ((Integer) resultObject) > Constants.ZERO;
+            }
+            this.sqlPrinter.print(RepositoryMethod.Query, sql, parameters,
+                    printRow ? List.of(Map.of(RESULT_OBJECT_KEY, resultObject)) : null,
+                    printRow ? Constants.ONE : Constants.ZERO);
+        }
     }
 
     @Override
@@ -93,6 +142,9 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
         try {
             PreparedStatementSetter preparedStatementSetter = new ArgumentPreparedStatementSetter(sqlParameterValues.toArray(SqlParameterValue[]::new));
             affectedRows = this.jdbcOperations.update(sql, preparedStatementSetter);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiException(StatusCode.MODIFY_ERROR);
         } finally {
             Object[] parameterValues = sqlParameterValues.stream().map(SqlParameterValue::getValue).toArray(Object[]::new);
             this.sqlPrinter.print(method, sql, parameterValues, null, affectedRows);

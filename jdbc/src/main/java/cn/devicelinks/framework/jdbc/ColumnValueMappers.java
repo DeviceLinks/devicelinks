@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
  */
 public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper USER_IDENTITY = new EnumColumnValueMapper(UserIdentity.class);
+    EnumColumnValueMapper USER_ACTIVATE_METHOD = new EnumColumnValueMapper(UserActivateMethod.class);
     EnumColumnValueMapper PLATFORM_TYPE = new EnumColumnValueMapper(PlatformType.class);
     EnumColumnValueMapper LOG_ACTION = new EnumColumnValueMapper(LogAction.class);
     EnumColumnValueMapper LOG_OBJECT_TYPE = new EnumColumnValueMapper(LogObjectType.class);
@@ -92,13 +93,13 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     ColumnValueMapper<Map<String, Object>, String> JSON_MAP = new ColumnValueMapper<>() {
         @Override
         public String toColumn(Map<String, Object> originalValue, String columnName) {
-            return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.toJsonString(originalValue) : null;
+            return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.objectToJson(originalValue) : null;
         }
 
         @Override
         public Map<String, Object> fromColumn(ResultSet rs, String columnName) throws SQLException {
             String columnValue = rs.getString(columnName);
-            return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.parseMap(columnValue, String.class, Object.class) : null;
+            return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.jsonToMap(columnValue, String.class, Object.class) : null;
         }
     };
 

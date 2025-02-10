@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package cn.devicelinks.framework.common.security;
 
 import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.pojos.SysUserSession;
 
 /**
  * 用户详情数据提供者
@@ -27,6 +28,11 @@ import cn.devicelinks.framework.common.pojos.SysUser;
  * @since 1.0
  */
 public interface SecurityUserDetailsProvider {
+    /**
+     * 获取会话ID
+     * @return {@link SysUserSession#getId()}
+     */
+    String getSessionId();
     /**
      * 获取当前登录用户基本信息
      *

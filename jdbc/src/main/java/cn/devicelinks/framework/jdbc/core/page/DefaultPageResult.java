@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.jdbc.core.page;
 
 import org.springframework.util.Assert;
@@ -13,12 +30,12 @@ import java.util.List;
  */
 public class DefaultPageResult<T extends Serializable> extends AbstractPageResult<T> {
 
-    private DefaultPageResult(int pageIndex, int pageSize) {
-        super(pageIndex, pageSize);
+    private DefaultPageResult(int page, int pageSize) {
+        super(page, pageSize);
     }
 
-    private DefaultPageResult(int pageIndex, int pageSize, int totalRows, List<T> result) {
-        super(pageIndex, pageSize, totalRows, result);
+    private DefaultPageResult(int page, int pageSize, int totalRows, List<T> result) {
+        super(page, pageSize, totalRows, result);
     }
 
     public static DefaultPageResultBuilder withPageQuery(PageQuery pageQuery) {

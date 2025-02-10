@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -53,9 +53,10 @@ public class OperationLogAnnotationExtractor {
     private String conditionTemplate;
     private LogAction action;
     private LogObjectType objectType;
+    private String objectIdTemplate;
     private String objectTemplate;
     private String msgTemplate;
-    private String objectDetailTemplate;
+    private String activateDataTemplate;
     private Object[] arguments;
     private Parameter[] parameters;
     private Map<String, ObjectField> objectFieldMap;
@@ -69,18 +70,21 @@ public class OperationLogAnnotationExtractor {
             this.conditionTemplate = operationLog.condition();
             this.action = operationLog.action();
             this.objectType = operationLog.objectType();
+            this.objectIdTemplate = operationLog.objectId();
             this.objectTemplate = operationLog.object();
+            this.activateDataTemplate = operationLog.activateData();
             this.msgTemplate = operationLog.msg();
-            this.objectDetailTemplate = operationLog.objectDetails();
             this.arguments = invocation.getArguments();
             this.parameters = this.specificMethod.getParameters();
 
-            List<ObjectField> objectFields = ObjectField.getFields(this.objectType, this.action);
-            // @formatter:off
-            this.objectFieldMap = !ObjectUtils.isEmpty(objectFields) ?
-                    objectFields.stream().collect(Collectors.toMap(ObjectField::getField, v -> v)) :
-                    Maps.newHashMap();
-            // @formatter:on
+            if (!ObjectUtils.isEmpty(objectTemplate)) {
+                List<ObjectField> objectFields = ObjectField.getFields(this.objectType, this.action);
+                // @formatter:off
+                this.objectFieldMap = !ObjectUtils.isEmpty(objectFields) ?
+                        objectFields.stream().collect(Collectors.toMap(ObjectField::getField, v -> v)) :
+                        Maps.newHashMap();
+                // @formatter:on
+            }
             ObjectAdditionField[] additionFields = operationLog.additionFields();
             if (!ObjectUtils.isEmpty(additionFields)) {
                 Arrays.stream(additionFields).forEach(additionField -> {

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -46,8 +46,13 @@ public class ConsoleConfiguration {
     public SecurityUserDetailsProvider deviceLinksUserDetailsProvider() {
         return new SecurityUserDetailsProvider() {
             @Override
+            public String getSessionId() {
+                return UserDetailsContext.getSessionId();
+            }
+
+            @Override
             public SysUser getUser() {
-                return UserDetailsContext.getUser();
+                return UserDetailsContext.getCurrentUser();
             }
 
             @Override

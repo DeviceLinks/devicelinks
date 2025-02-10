@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  DeviceLinks
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package cn.devicelinks.console.authorization.endpoint.access;
 
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
+import cn.devicelinks.framework.jdbc.repositorys.SysUserSessionRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,8 +39,9 @@ public class ResourceTokenAccessAuthenticationConfigurer extends AbstractHttpCon
         ApplicationContext applicationContext = HttpSecuritySharedObjectUtils.getApplicationContext(httpSecurity);
         TokenRepository tokenRepository = applicationContext.getBean(TokenRepository.class);
         JwtDecoder jwtDecoder = applicationContext.getBean(JwtDecoder.class);
+        SysUserSessionRepository userSessionRepository = applicationContext.getBean(SysUserSessionRepository.class);
         ResourceTokenAccessAuthenticationProvider resourceTokenAccessAuthenticationProvider =
-                new ResourceTokenAccessAuthenticationProvider(tokenRepository, jwtDecoder);
+                new ResourceTokenAccessAuthenticationProvider(tokenRepository, userSessionRepository, jwtDecoder);
         httpSecurity.authenticationProvider(resourceTokenAccessAuthenticationProvider);
     }
 

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import cn.devicelinks.framework.common.operate.log.expression.OperationLogCached
 import cn.devicelinks.framework.common.request.RequestContext;
 import cn.devicelinks.framework.common.request.RequestContextHolder;
 import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.ObjectClassUtils;
 import com.google.common.collect.Maps;
@@ -81,31 +82,36 @@ public class OperationLogResolveProcessor {
 
     public OperationLogObject processing() {
         // @formatter:off
-        if (!ObjectUtils.isEmpty(extractor.getObjectTemplate())) {
-            this.operationLogObject.setObject(this.executionSucceed ?
-                    evaluator.parseExpression(this.evaluationContext, String.class, extractor.getObjectTemplate()) : null);
+        if (!ObjectUtils.isEmpty(extractor.getObjectIdTemplate())) {
+            this.operationLogObject.setObjectId(evaluator.parseExpression(this.evaluationContext, String.class, extractor.getObjectIdTemplate()));
         }
-        if (!ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
-            this.operationLogObject.setMsg(this.executionSucceed ?
-                    evaluator.parseExpression(this.evaluationContext, String.class, extractor.getMsgTemplate()) : null);
+        if (!ObjectUtils.isEmpty(extractor.getActivateDataTemplate())) {
+            Object activateData = evaluator.parseExpression(this.evaluationContext, Object.class, extractor.getActivateDataTemplate());
+            this.operationLogObject.setActivateData(!ObjectUtils.isEmpty(activateData) ? JacksonUtils.objectToJson(activateData) : null);
+        }
+        if (this.executionSucceed && !ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
+            this.operationLogObject.setMsg(evaluator.parseExpression(this.evaluationContext, String.class, extractor.getMsgTemplate()));
         }
         RequestContext requestContext = RequestContextHolder.getContext();
         if (requestContext != null) {
             this.operationLogObject.setIpAddress(requestContext.getIp());
-            this.operationLogObject.setRequestId(requestContext.getRequestId());
+            this.operationLogObject.setOs(HttpRequestUtils.getOsInfo(requestContext.getRequest()));
+            this.operationLogObject.setBrowser(HttpRequestUtils.getBrowserInfo(requestContext.getRequest()));
         }
-        List<ObjectField> objectFields = this.extractor.getObjectFieldMap().values().stream().toList();
-        if (!ObjectUtils.isEmpty(objectFields)) {
-            // before object field value list
-            List<ObjectFieldValue> beforeObjectFieldValueList = this.mapObjectFieldValue(objectFields, this.beforeObject);
-            // after object field value list
-            List<ObjectFieldValue> afterObjectFieldValueList = this.mapObjectFieldValue(objectFields, this.afterObject);
-            // field different value list
-            List<ObjectFieldDifferentValue> fieldDifferentValueList = this.getValueDifferentFields(objectFields, beforeObjectFieldValueList, afterObjectFieldValueList);
-            this.operationLogObject.setObjectFields(JacksonUtils.toJsonString(fieldDifferentValueList));
+        if (!ObjectUtils.isEmpty(this.extractor.getObjectFieldMap())) {
+            List<ObjectField> objectFields = this.extractor.getObjectFieldMap().values().stream().toList();
+            if (!ObjectUtils.isEmpty(objectFields)) {
+                // before object field value list
+                List<ObjectFieldValue> beforeObjectFieldValueList = this.mapObjectFieldValue(objectFields, this.beforeObject);
+                // after object field value list
+                List<ObjectFieldValue> afterObjectFieldValueList = this.mapObjectFieldValue(objectFields, this.afterObject);
+                // field different value list
+                List<ObjectFieldDifferentValue> fieldDifferentValueList = this.getValueDifferentFields(objectFields, beforeObjectFieldValueList, afterObjectFieldValueList);
+                this.operationLogObject.setObjectFields(JacksonUtils.objectToJson(fieldDifferentValueList));
+            }
         }
         this.operationLogObject
-                .setOperateAction(extractor.getAction())
+                .setAction(extractor.getAction())
                 .setObjectType(extractor.getObjectType());
         // @formatter:on
         return this.operationLogObject;

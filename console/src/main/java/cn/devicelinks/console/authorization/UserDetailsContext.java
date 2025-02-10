@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  DeviceLinks
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -40,10 +40,14 @@ public final class UserDetailsContext {
     private static final StatusCode NO_AUTHORIZATION = StatusCode.build("NO_AUTHORIZATION", "未登录认证.");
 
     public static String getUserId() {
-        return getUser().getId();
+        return getCurrentUser().getId();
     }
 
-    public static SysUser getUser() {
+    public static String getSessionId() {
+        return getUserDetails().getSessionId();
+    }
+
+    public static SysUser getCurrentUser() {
         return getUserAddition().getUser();
     }
 

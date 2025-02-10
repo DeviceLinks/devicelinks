@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.common.utils;
 
 import cn.devicelinks.framework.common.http.RequestWrapper;
@@ -149,5 +166,66 @@ public class HttpRequestUtils {
     public static String getUri(HttpServletRequest request) {
         Assert.notNull(request, "request instance is null.");
         return request.getRequestURI();
+    }
+
+    public static String getUserAgent(HttpServletRequest request) {
+        return request.getHeader("User-Agent");
+    }
+
+    public static String getOsInfo(HttpServletRequest request) {
+        String userAgent = getUserAgent(request).toLowerCase();
+        String os;
+        if (userAgent.contains("windows")) {
+            os = "Windows";
+        } else if (userAgent.contains("mac")) {
+            os = "Mac OS X";
+        } else if (userAgent.contains("x11")) {
+            os = "Unix";
+        } else if (userAgent.contains("android")) {
+            os = "Android";
+        } else if (userAgent.contains("iphone")) {
+            os = "IPhone";
+        } else {
+            os = "UnKnown, More-Info: " + userAgent;
+        }
+        return os;
+    }
+
+    public static String getBrowserInfo(HttpServletRequest request) {
+        String userAgent = getUserAgent(request).toLowerCase();
+        String browser = null;
+        if (userAgent.contains("edge")) {
+            browser = (userAgent.substring(userAgent.indexOf("Edge")).split("/")[0]);
+        } else if (userAgent.contains("msie")) {
+            String substring = userAgent.substring(userAgent.indexOf("MSIE")).split(";")[0];
+            browser = substring.split(" ")[0].replace("MSIE", "IE") + "-" + substring.split(" ")[1];
+        } else if (userAgent.contains("safari") && userAgent.contains("version")) {
+            browser = (userAgent.substring(userAgent.indexOf("Safari")).split(" ")[0]).split("/")[0]
+                    + "-" + (userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
+        } else if (userAgent.contains("opr") || userAgent.contains("opera")) {
+            if (userAgent.contains("opera")) {
+                browser = (userAgent.substring(userAgent.indexOf("Opera")).split(" ")[0]).split("/")[0]
+                        + "-" + (userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
+            } else if (userAgent.contains("opr")) {
+                browser = ((userAgent.substring(userAgent.indexOf("OPR")).split("/")[0]))
+                        .replace("OPR", "Opera");
+            }
+
+        } else if (userAgent.contains("chrome")) {
+            browser = (userAgent.substring(userAgent.indexOf("Chrome")).split("/")[0]);
+        } else if ((userAgent.contains("mozilla/7.0")) || (userAgent.contains("netscape6")) ||
+                (userAgent.contains("mozilla/4.7")) || (userAgent.contains("mozilla/4.78")) ||
+                (userAgent.contains("mozilla/4.08")) || (userAgent.contains("mozilla/3"))) {
+            browser = "Netscape-?";
+
+        } else if (userAgent.contains("firefox")) {
+            browser = (userAgent.substring(userAgent.indexOf("Firefox")).split("/")[0]);
+        } else if (userAgent.contains("rv")) {
+            String IEVersion = (userAgent.substring(userAgent.indexOf("rv")).split(" ")[0]).replace("rv:", "-");
+            browser = "IE" + IEVersion.substring(0, IEVersion.length() - 1);
+        } else {
+            browser = "UnKnown, More-Info: " + userAgent;
+        }
+        return browser;
     }
 }

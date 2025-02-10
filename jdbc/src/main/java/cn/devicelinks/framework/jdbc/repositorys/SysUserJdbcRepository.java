@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,9 +25,12 @@ import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
 
@@ -45,6 +48,8 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
             " left join sys_department sd on sd.id = su.department_id" +
             " where su.deleted is false";
     // @formatter:on
+    private static final Column COLUMN_DEPARTMENT_NAME = Column.withName("department_name").build();
+
     public SysUserJdbcRepository(JdbcOperations jdbcOperations) {
         super(SYS_USER, jdbcOperations);
     }
@@ -55,20 +60,19 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
     }
 
     @Override
-    public PageResult<UserDTO> selectByPage(String name, String departmentId, String userIdentity, int pageIndex, int pageSize) {
+    public PageResult<UserDTO> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition) {
         // @formatter:off
-        DynamicWrapper wrapper = DynamicWrapper.select(SELECT_USER_DTO_SQL)
+        DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_USER_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(SYS_USER.getColumns());
-                    resultColumns.add(Column.withName("department_name").build());
+                    resultColumns.add(COLUMN_DEPARTMENT_NAME);
                 })
-                .appendCondition(!ObjectUtils.isEmpty(departmentId), "and su.department_id = ?", departmentId)
-                .appendCondition(!ObjectUtils.isEmpty(userIdentity), "and su.identity = ?", userIdentity)
-                .appendCondition(!ObjectUtils.isEmpty(name), "and su.name like ?", "%" + name + "%")
-                .resultType(UserDTO.class)
-                .build();
+                .appendSearchFieldCondition(SYS_USER, searchFieldConditions, consumer -> consumer.tableAlias("su"))
+                .sort(sortCondition);
         // @formatter:on
+
+        DynamicWrapper wrapper = selectBuilder.resultType(UserDTO.class).build();
         Dynamic dynamic = wrapper.dynamic();
-        return this.page(dynamic, PageQuery.of(pageIndex, pageSize), wrapper.parameters());
+        return this.page(dynamic, pageQuery, wrapper.parameters());
     }
 }

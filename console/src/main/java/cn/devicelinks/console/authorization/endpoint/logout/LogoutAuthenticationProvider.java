@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  DeviceLinks
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -92,7 +92,6 @@ public class LogoutAuthenticationProvider implements AuthenticationProvider {
                     .setSessionId(userSession.getId())
                     .setAction(LogAction.Logout)
                     .setObjectType(LogObjectType.User)
-                    .setObject(userSession.getUsername())
                     .setObjectId(userSession.getUserId())
                     .setSuccess(true)
                     .setMsg(LOGOUT_SUCCESS_MSG)

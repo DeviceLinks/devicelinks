@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.common.api;
 
 import lombok.AccessLevel;
@@ -22,10 +39,15 @@ public class StatusCode {
     public static final StatusCode INVALID_TOKEN = StatusCode.build("INVALID_TOKEN", "令牌无效.");
     public static final StatusCode TOKEN_JWT_PARSING_FAILED = StatusCode.build("TOKEN_JWT_PARSING_FAILED", "令牌Jwt解析失败.");
     public static final StatusCode TOKEN_EXPIRED = StatusCode.build("TOKEN_EXPIRED", "令牌已过期.");
+    public static final StatusCode UPDATE_LAST_ACTIVE_TIME_FAILED = StatusCode.build("UPDATE_LAST_ACTIVE_TIME_FAILED", "更新会话最后活动时间失败.");
     public static final StatusCode ACCESS_TIME_NOT_ALLOWED = StatusCode.build("ACCESS_TIME_NOT_ALLOWED", "该时间段不允许访问数据.");
     public static final StatusCode TODAY_WEEK_NOT_ALLOWED = StatusCode.build("TODAY_WEEK_NOT_ALLOWED", "今日：[%s]，不允许访问数据.");
     public static final StatusCode PARAMETER_CANNOT_NULL = StatusCode.build("PARAMETER_CANNOT_NULL", "请求参数：[%s]，不允许为null.");
     public static final StatusCode PARAMETER_CANNOT_EMPTY = StatusCode.build("PARAMETER_CANNOT_EMPTY", "请求参数：[%s]，不允许为空.");
+    public static final StatusCode QUERY_ERROR = StatusCode.build("QUERY_ERROR", "执行数据查询时遇到异常.");
+    public static final StatusCode MODIFY_ERROR = StatusCode.build("MODIFY_ERROR", "执行数据更新或删除时遇到异常.");
+    public static final StatusCode SEARCH_FIELD_NOT_IN_MODULE = StatusCode.build("SEARCH_FIELD_NOT_IN_MODULE", "检索字段：[%s]，不在模块[%s]中.");
+    public static final StatusCode SEARCH_FIELD_OPERATOR_NOT_SUPPORT = StatusCode.build("SEARCH_FIELD_OPERATOR_NOT_SUPPORT", "检索字段：[%s]，不支持运算符：[%s].");
 
     /**
      * 状态码

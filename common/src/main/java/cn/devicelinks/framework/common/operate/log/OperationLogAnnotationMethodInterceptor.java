@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionEvaluationContext;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.operate.log.expression.OperationLogCachedExpressionEvaluator;
@@ -50,6 +49,10 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
      */
     private static final String RESULT_VARIABLE_KEY = "result";
     /**
+     * 定义方法是否执行成功在{@link ExpressionVariables}变量集合内的Key
+     */
+    private static final String EXECUTION_SUCCEED_VARIABLE_KEY = "executionSucceed";
+    /**
      * 定义操作对象在目标方法执行之前的值在{@link ExpressionVariables}变量集合内的Key
      */
     private static final String BEFORE_VARIABLE_KEY = "before";
@@ -75,7 +78,8 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
         OperationLogCachedExpressionEvaluator evaluator = new OperationLogCachedExpressionEvaluator(elementKey);
         ExpressionEvaluationContext evaluationContext = null;
         boolean executionSucceed = true;
-        String exceptionMessage = null;
+        String failureReason = null;
+        Throwable failureCause = null;
         // invoke method before, target object value
         Object targetBeforeObject = null;
         // invoke method after, target object value
@@ -87,16 +91,14 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 variables.addVariables(parameterValues);
             }
             evaluationContext = new ExpressionEvaluationContext(variables, beanFactoryResolver);
-            // Conditions for recording operation logs
-            boolean condition = evaluator.parseExpression(evaluationContext, Boolean.class, extractor.getConditionTemplate());
             try {
                 // get object before value
-                if (condition && !ObjectUtils.isEmpty(extractor.getObjectDetailTemplate())) {
-                    targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectDetailTemplate());
+                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveBeforeData()) {
+                    targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetBeforeObject != null) {
                         evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
                     }
-                    if (targetBeforeObject == null && (LogAction.Update == extractor.getAction() || LogAction.Delete == extractor.getAction())) {
+                    if (targetBeforeObject == null && extractor.getAction().isHaveBeforeData()) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -105,22 +107,18 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             }
             // invoke target method
             result = invocation.proceed();
-            if (!condition) {
-                return result;
-            } else {
-                // #result
-                if (result != null) {
-                    evaluationContext.addVariable(RESULT_VARIABLE_KEY, result);
-                }
+            // #result
+            if (result != null) {
+                evaluationContext.addVariable(RESULT_VARIABLE_KEY, result);
             }
             try {
                 // get object after value
-                if (!ObjectUtils.isEmpty(extractor.getObjectDetailTemplate())) {
-                    targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectDetailTemplate());
+                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveAfterData()) {
+                    targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetAfterObject != null) {
                         evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
                     }
-                    if (targetAfterObject == null && (LogAction.Update == extractor.getAction() || LogAction.Add == extractor.getAction())) {
+                    if (targetAfterObject == null && extractor.getAction().isHaveAfterData()) {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -129,21 +127,33 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             }
             return result;
         } catch (Exception e) {
-            exceptionMessage = e.getMessage();
+            failureCause = e;
+            failureReason = e.getMessage();
+            executionSucceed = false;
             throw e;
         } finally {
+            // storage operate log
             try {
-                boolean skip = (LogAction.Update == extractor.getAction() && (targetBeforeObject == null || targetAfterObject == null)) ||
-                        (LogAction.Add == extractor.getAction() && targetAfterObject == null) ||
-                        (LogAction.Delete == extractor.getAction() && targetBeforeObject == null);
-                if (!skip) {
+                if (evaluationContext != null) {
+                    evaluationContext.addVariable(EXECUTION_SUCCEED_VARIABLE_KEY, executionSucceed);
+                }
+                // Conditions for recording operation logs
+                boolean condition = true;
+                if (!ObjectUtils.isEmpty(extractor.getConditionTemplate())) {
+                    condition = evaluator.parseExpression(evaluationContext, Boolean.class, extractor.getConditionTemplate());
+                }
+                if (condition) {
                     OperationLogResolveProcessor resolveProcessor =
                             new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
                     OperationLogObject operationLogObject = resolveProcessor.processing();
-                    operationLogObject.setFailureReason(exceptionMessage);
-                    if (this.userDetailsProvider != null && this.userDetailsProvider.getUser() != null) {
-                        SysUser sysUser = this.userDetailsProvider.getUser();
-                        operationLogObject.setOperatorId(sysUser.getId());
+                    operationLogObject.setFailureReason(failureReason);
+                    operationLogObject.setFailureCause(failureCause);
+                    if (this.userDetailsProvider != null) {
+                        if (this.userDetailsProvider.getUser() != null) {
+                            SysUser sysUser = this.userDetailsProvider.getUser();
+                            operationLogObject.setOperatorId(sysUser.getId());
+                        }
+                        operationLogObject.setSessionId(this.userDetailsProvider.getSessionId());
                     }
                     if (this.operationLogStorage != null) {
                         this.operationLogStorage.storage(operationLogObject);

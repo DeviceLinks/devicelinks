@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.common.api;
 
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -9,15 +26,18 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -39,10 +59,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiExceptionAdvice {
     public static StatusCode PARAM_INVALID = StatusCode.build("PARAM_INVALID", "参数验证失败.");
+    public static StatusCode REQUEST_VARIABLES_INVALID = StatusCode.build("REQUEST_VARIABLES_INVALID", "请求参数值非法.");
     public static StatusCode REQUEST_BODY_UNABLE_PARSE = StatusCode.build("REQUEST_BODY_UNABLE_PARSE_CODE", "请求主体无法解析.");
     public static StatusCode SYSTEM_EXCEPTION_STATUS = StatusCode.build("SYSTEM_EXCEPTION", "系统开小差啦.");
     public static StatusCode HTTP_METHOD_NOT_SUPPORT = StatusCode.build("HTTP_METHOD_NOT_SUPPORT", "不支持请求方法：%s.");
     public static StatusCode NO_RESOURCE_FOUND = StatusCode.build("NO_RESOURCE_FOUND", "资源([%s] /%s )不存在，无法访问.");
+    public static StatusCode PARAMETER_MISSING = StatusCode.build("PARAMETER_MISSING", "参数[%s]并未传递, 该参数必须传递.");
+    public static StatusCode AUTHORIZATION_DENIED = StatusCode.build("AUTHORIZATION_DENIED", "无权限访问.");
 
     @Autowired
     private MessageSource messageSource;
@@ -61,6 +84,29 @@ public class ApiExceptionAdvice {
     }
 
     /**
+     * 处理遇到的{@link AuthorizationDeniedException}异常
+     *
+     * @param exception {@link AuthorizationDeniedException}异常对象实例
+     * @return {@link ApiResponse}
+     */
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ApiResponse handleAuthorizationDeniedException(AuthorizationDeniedException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(AUTHORIZATION_DENIED);
+    }
+
+    /**
+     * 处理遇到的{@link MissingServletRequestParameterException}异常
+     *
+     * @param exception {@link MissingServletRequestParameterException}异常对象实例
+     * @return {@link ApiResponse}
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ApiResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+        return ApiResponse.error(PARAMETER_MISSING, exception.getParameterName());
+    }
+
+    /**
      * 处理遇到的{@link MethodArgumentNotValidException}异常
      *
      * @param exception {@link MethodArgumentNotValidException}异常对象实例
@@ -74,6 +120,18 @@ public class ApiExceptionAdvice {
         } catch (Exception e) {
             return ApiResponse.error(SYSTEM_EXCEPTION_STATUS);
         }
+    }
+
+    /**
+     * 处理遇到的{@link HandlerMethodValidationException}异常
+     *
+     * @param exception {@link HandlerMethodValidationException}异常对象实例
+     * @return {@link ApiResponse}
+     */
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ApiResponse handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(REQUEST_VARIABLES_INVALID);
     }
 
     /**

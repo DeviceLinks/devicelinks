@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,17 +34,21 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class OperationLogObject {
     /**
-     * 请求ID
+     * 会话ID
      */
-    private String requestId;
+    private String sessionId;
     /**
      * 操作动作
      */
-    private LogAction operateAction;
+    private LogAction action;
     /**
      * 操作对象类型
      */
     private LogObjectType objectType;
+    /**
+     * 操作对象ID
+     */
+    private String objectId;
     /**
      * 操作对象
      */
@@ -53,6 +57,10 @@ public class OperationLogObject {
      * 操作对象字段列表
      */
     private String objectFields;
+    /**
+     * 操作的活动数据
+     */
+    private String activateData;
     /**
      * 操作描述
      */
@@ -70,9 +78,21 @@ public class OperationLogObject {
      */
     private String ipAddress;
     /**
+     * 浏览器
+     */
+    private String browser;
+    /**
+     * 操作系统
+     */
+    private String os;
+    /**
      * 失败原因
      */
     private String failureReason;
+    /**
+     * 失败异常对象实例
+     */
+    private Throwable failureCause;
     /**
      * 日志生成的时间
      */

@@ -6,6 +6,6 @@
                                                   `---'
 SpringBoot Version : ${spring-boot.formatted-version}
 
-Console Version : ${devicelinks.rule-engine.version}
+Rule-Engine Version : ${devicelinks.rule-engine.version}
 
 HelpUri : https://github.com/DeviceLinks/devicelinks/issues

@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.common;
 
 /**
@@ -8,11 +25,13 @@ package cn.devicelinks.framework.common;
  */
 public enum UserIdentity {
     /**
-     * 管理员
-     * <p>
-     * 当用户所属租户ID不为空时表示为“租户管理员”，为空时表示为“系统管理员”
+     * 系统管理员
      */
-    Administrator,
+    SystemAdmin,
+    /**
+     * 租户管理员
+     */
+    TenantAdmin,
     /**
      * 普通用户
      */

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,29 +46,19 @@ import java.util.List;
 @ToString
 @Getter
 public class Column {
-    /**
-     * 列名
-     */
+
+    private static final String COLUMN_ALIAS_FORMAT = "%s.%s";
+
     private final String name;
-    /**
-     * 是否为主键
-     */
+
     private boolean pk;
-    /**
-     * 是否参与Insert
-     */
+
     private boolean insertable;
-    /**
-     * 是否参与Update
-     */
+
     private boolean updatable;
-    /**
-     * 列类型 {@link Types}
-     */
+
     private int sqlType;
-    /**
-     * 列值类型映射器
-     */
+
     @Getter(AccessLevel.PRIVATE)
     private ColumnValueMapper columnValueMapper;
 
@@ -192,6 +183,16 @@ public class Column {
     }
 
     /**
+     * Use this column create {@link SqlQueryOperator#NotLike} condition
+     *
+     * @param value condition parameter value
+     * @return {@link Condition}
+     */
+    public Condition notLike(Object value) {
+        return condition(SqlQueryOperator.NotLike, value);
+    }
+
+    /**
      * Use this column create {@link SqlQueryOperator#Prefix} condition
      *
      * @param value condition parameter value
@@ -252,6 +253,13 @@ public class Column {
      */
     public ConditionValue set(Object value) {
         return ConditionValue.with(this, value);
+    }
+
+    public String getName(String tableAlias) {
+        if (ObjectUtils.isEmpty(tableAlias)) {
+            return this.getName();
+        }
+        return String.format(COLUMN_ALIAS_FORMAT, tableAlias, this.getName());
     }
 
     /**

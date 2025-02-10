@@ -1,3 +1,20 @@
+/*
+ *   Copyright (C) 2024-2025  DeviceLinks
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
@@ -29,15 +46,15 @@ public class TSysLog extends TableImpl {
     public final Column SESSION_ID = Column.withName("session_id").build();
     public final Column ACTION = Column.withName("action").typeMapper(ColumnValueMappers.LOG_ACTION).build();
     public final Column OBJECT_TYPE = Column.withName("object_type").typeMapper(ColumnValueMappers.LOG_OBJECT_TYPE).build();
-    public final Column OBJECT = Column.withName("object").build();
     public final Column OBJECT_ID = Column.withName("object_id").build();
     public final Column MSG = Column.withName("msg").build();
     public final Column SUCCESS = Column.withName("success").booleanValue().build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.SYS_LOG_ADDITION).build();
+    public final Column ACTIVITY_DATA = Column.withName("activity_data").build();
     public final Column OPERATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, USER_ID, SESSION_ID, ACTION, OBJECT_TYPE, OBJECT, OBJECT_ID, MSG, SUCCESS, ADDITION, OPERATE_TIME);
+        return List.of(ID, USER_ID, SESSION_ID, ACTION, OBJECT_TYPE, OBJECT_ID, MSG, SUCCESS, ADDITION, ACTIVITY_DATA, OPERATE_TIME);
     }
 }

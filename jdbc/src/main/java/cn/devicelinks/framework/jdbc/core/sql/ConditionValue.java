@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2024  恒宇少年
+ *   Copyright (C) 2024-2025  DeviceLinks
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ public class ConditionValue {
 
     public static ConditionValue with(Column column, Object value) {
         Assert.notNull(column, "The filter column cannot be null.");
-        Assert.notNull(value, "The filter column value cannot be null.");
         return new ConditionValue(column, value);
     }
 }
