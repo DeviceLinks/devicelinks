@@ -27,6 +27,7 @@ import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.api.ApiResponse;
+import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
@@ -75,6 +76,17 @@ public class SysUserController {
     @GetMapping(value = "/{userId}")
     public ApiResponse getUserById(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         return ApiResponse.success(this.userService.selectById(userId));
+    }
+
+    /**
+     * 获取当前用户信息
+     *
+     * @return 用户实例 {@link SysUser}
+     */
+    @GetMapping(value = "/me")
+    public ApiResponse getCurrentUser() throws ApiException {
+        AuthorizedUserAddition userAddition = UserDetailsContext.getUserAddition();
+        return ApiResponse.success(userAddition);
     }
 
     /**
