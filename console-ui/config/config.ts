@@ -147,8 +147,8 @@ export default defineConfig({
     {
       requestLibPath: "import { request } from '@umijs/max'",
       // 或者使用在线的版本
-      schemaPath: 'http://127.0.0.1:4523/export/openapi/3?version=3.0',
-      // schemaPath: join(__dirname, 'openapi.json'),
+      // schemaPath: 'http://127.0.0.1:4523/export/openapi/3?version=3.0',
+      schemaPath: join(__dirname, 'openapi.json'),
       mock: false,
     },
   ],
