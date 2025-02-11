@@ -110,10 +110,13 @@ export const errorConfig: RequestConfig = {
         config.url = `${PROXY_PREFIX}${config.url}`;
       }
       if (config.skipAuth !== false) {
-        const Authorization = Cookies.get('Authorization')!;
+        const Authorization = Cookies.get('Authorization');
+        if (!Authorization) {
+          // TODO:跳转到登录
+        }
         config.headers = {
           ...config.headers,
-          Authorization,
+          Authorization: Authorization!,
         };
       }
       // 拦截请求配置，进行个性化处理。

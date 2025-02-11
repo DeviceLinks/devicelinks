@@ -100,7 +100,7 @@ const InfoCard: React.FC<{
   );
 };
 
-const Welcome: React.FC = () => {
+const Home: React.FC = () => {
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
   return (
@@ -178,4 +178,4 @@ const Welcome: React.FC = () => {
   );
 };
 
-export default Welcome;
+export default Home;
