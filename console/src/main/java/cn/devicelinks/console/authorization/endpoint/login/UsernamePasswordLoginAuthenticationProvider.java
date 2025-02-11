@@ -147,8 +147,8 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                 .setMsg(LOGIN_SUCCESS_MSG)
                 .setAddition(new SysLogAddition()
                         .setIpAddress(ipAddress)
-                        .setOs(HttpRequestUtils.getOsInfo(request))
-                        .setBrowser(HttpRequestUtils.getBrowserInfo(request)))
+                        .setOs(HttpRequestUtils.getOS(request))
+                        .setBrowser(HttpRequestUtils.getBrowser(request)))
                 .setActivityData(JacksonUtils.objectToJson(
                         new HashMap<>() {{
                             put("name", user.getName());

@@ -28,10 +28,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * {@link HttpServletRequest} 工具类
@@ -39,6 +37,7 @@ import java.util.Map;
 public class HttpRequestUtils {
     public static final String REQUESTED_WITH = "X-Requested-With";
     public static final String AJAX_REQUEST_HEADER = "XMLHttpRequest";
+    public static final String USER_AGENT = "User-Agent";
 
     public static boolean isAjax(HttpServletRequest request) {
         String requestedWith = request.getHeader(REQUESTED_WITH);
@@ -169,80 +168,54 @@ public class HttpRequestUtils {
     }
 
     public static String getUserAgent(HttpServletRequest request) {
-        return request.getHeader("User-Agent");
+        return request.getHeader(USER_AGENT);
     }
 
-    public static String getOsInfo(HttpServletRequest request) {
+    public static String getOS(HttpServletRequest request) {
+        String userAgent = getUserAgent(request);
+        if (ObjectUtils.isEmpty(userAgent)) {
+            return "UnKnown";
+        }
         try {
-            String userAgent = getUserAgent(request);
-            if (ObjectUtils.isEmpty(userAgent)) {
-                return "UnKnown";
+            Map<String, String> osList = new LinkedHashMap<>();
+            osList.put("Windows", "Windows NT");
+            osList.put("macOS", "Macintosh");
+            osList.put("Linux", "Linux");
+            osList.put("Android", "Android");
+            osList.put("iOS", "iPhone|iPad");
+
+            for (Map.Entry<String, String> entry : osList.entrySet()) {
+                if (Pattern.compile(entry.getValue()).matcher(userAgent).find()) {
+                    return entry.getKey();
+                }
             }
-            userAgent = userAgent.toLowerCase();
-            String os;
-            if (userAgent.contains("windows")) {
-                os = "Windows";
-            } else if (userAgent.contains("mac")) {
-                os = "Mac OS X";
-            } else if (userAgent.contains("x11")) {
-                os = "Unix";
-            } else if (userAgent.contains("android")) {
-                os = "Android";
-            } else if (userAgent.contains("iphone")) {
-                os = "IPhone";
-            } else {
-                os = "UnKnown, More-Info: " + userAgent;
-            }
-            return os;
+            return "Unknown";
         } catch (Exception e) {
-            e.printStackTrace();
             return "UnKnown";
         }
     }
 
-    public static String getBrowserInfo(HttpServletRequest request) {
+    public static String getBrowser(HttpServletRequest request) {
+        String userAgent = getUserAgent(request);
+        if (ObjectUtils.isEmpty(userAgent)) {
+            return "UnKnown";
+        }
         try {
-            String userAgent = getUserAgent(request);
-            if (ObjectUtils.isEmpty(userAgent)) {
-                return "UnKnown";
-            }
-            userAgent = userAgent.toLowerCase();
-            String browser = null;
-            if (userAgent.contains("edge")) {
-                browser = (userAgent.substring(userAgent.indexOf("edge")).split("/")[0]);
-            } else if (userAgent.contains("msie")) {
-                String substring = userAgent.substring(userAgent.indexOf("msie")).split(";")[0];
-                browser = substring.split(" ")[0].replace("msie", "IE") + "-" + substring.split(" ")[1];
-            } else if (userAgent.contains("safari") && !userAgent.contains("chrome")) {
-                browser = (userAgent.substring(userAgent.indexOf("safari")).split(" ")[0]).split("/")[0]
-                        + "-" + (userAgent.substring(userAgent.indexOf("safari")).split(" ")[0]).split("/")[1];
-            } else if (userAgent.contains("opr") || userAgent.contains("opera")) {
-                if (userAgent.contains("opera")) {
-                    browser = (userAgent.substring(userAgent.indexOf("opera")).split(" ")[0]).split("/")[0]
-                            + "-" + (userAgent.substring(userAgent.indexOf("opera")).split(" ")[0]).split("/")[1];
-                } else if (userAgent.contains("opr")) {
-                    browser = ((userAgent.substring(userAgent.indexOf("opr")).split("/")[0]))
-                            .replace("opr", "Opera");
+            Map<String, String> browsers = new LinkedHashMap<>();
+            browsers.put("Chrome", "Chrome");
+            browsers.put("Firefox", "Firefox");
+            browsers.put("Safari", "Safari");
+            browsers.put("Edge", "Edg");
+            browsers.put("Opera", "OPR");
+            browsers.put("Internet Explorer", "MSIE|Trident");
+
+            for (Map.Entry<String, String> entry : browsers.entrySet()) {
+                if (Pattern.compile(entry.getValue()).matcher(userAgent).find()) {
+                    return entry.getKey();
                 }
-
-            } else if (userAgent.contains("chrome")) {
-                browser = (userAgent.substring(userAgent.indexOf("chrome")).split("/")[0]);
-            } else if ((userAgent.contains("mozilla/7.0")) || (userAgent.contains("netscape6")) ||
-                    (userAgent.contains("mozilla/4.7")) || (userAgent.contains("mozilla/4.78")) ||
-                    (userAgent.contains("mozilla/4.08")) || (userAgent.contains("mozilla/3"))) {
-                browser = "Netscape-?";
-
-            } else if (userAgent.contains("firefox")) {
-                browser = (userAgent.substring(userAgent.indexOf("firefox")).split("/")[0]);
-            } else if (userAgent.contains("rv")) {
-                String IEVersion = (userAgent.substring(userAgent.indexOf("rv")).split(" ")[0]).replace("rv:", "-");
-                browser = "IE" + IEVersion.substring(0, IEVersion.length() - 1);
-            } else {
-                browser = "UnKnown, More-Info: " + userAgent;
             }
-            return browser;
+            return "Unknown";
         } catch (Exception e) {
-            e.printStackTrace();
             return "UnKnown";
         }
     }
