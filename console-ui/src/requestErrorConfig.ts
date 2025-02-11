@@ -18,7 +18,7 @@
 import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
-
+import Cookies from 'js-cookie';
 // 错误处理方案： 错误类型
 enum ErrorShowType {
   SILENT = 0,
@@ -27,13 +27,16 @@ enum ErrorShowType {
   NOTIFICATION = 3,
   REDIRECT = 9,
 }
+enum ResponseCodeType {
+  SUCCESS = 'SUCCESS',
+}
 // 与后端约定的响应数据格式
 interface ResponseStructure {
-  success: boolean;
   data: any;
-  errorCode?: number;
+  code?: ResponseCodeType;
   message?: string;
   showType?: ErrorShowType;
+  additional: object;
 }
 /**
  * @name 错误处理
@@ -45,12 +48,11 @@ export const errorConfig: RequestConfig = {
   errorConfig: {
     // 错误抛出
     errorThrower: (res) => {
-      const { success, data, errorCode, message, showType } =
-        res as unknown as ResponseStructure;
-      if (!success) {
+      const { code, message, showType, data } = res as unknown as ResponseStructure;
+      if (code !== ResponseCodeType.SUCCESS) {
         const error: any = new Error(message);
         error.name = 'BizError';
-        error.info = { errorCode, message, showType, data };
+        error.info = { code, message, showType, data };
         throw error; // 抛出自制的错误
       }
     },
@@ -61,7 +63,7 @@ export const errorConfig: RequestConfig = {
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
-          const { message:errorMessage, errorCode } = errorInfo;
+          const { message: errorMessage, code } = errorInfo;
           switch (errorInfo.showType) {
             case ErrorShowType.SILENT:
               // do nothing
@@ -75,7 +77,7 @@ export const errorConfig: RequestConfig = {
             case ErrorShowType.NOTIFICATION:
               notification.open({
                 description: errorMessage,
-                message: errorCode,
+                message: code,
               });
               break;
             case ErrorShowType.REDIRECT:
@@ -104,9 +106,16 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-    if(REACT_APP_ENV==='dev'){
-      config.url='/dev' + config.url
-    }
+      if (PROXY_PREFIX) {
+        config.url = `${PROXY_PREFIX}${config.url}`;
+      }
+      if (config.skipAuth !== false) {
+        const Authorization = Cookies.get('Authorization')!;
+        config.headers = {
+          ...config.headers,
+          Authorization,
+        };
+      }
       // 拦截请求配置，进行个性化处理。
       return { ...config };
     },
@@ -114,12 +123,7 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response) => {
-      console.log(response);
       // 拦截响应数据，进行个性化处理
-      const { data } = response as unknown as ResponseStructure;
-      // if (data?.success === false) {
-      //   message.error('请求失败！');
-      // }
       return response;
     },
   ],

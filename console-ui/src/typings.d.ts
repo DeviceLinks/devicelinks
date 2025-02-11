@@ -35,3 +35,5 @@ declare module 'react-fittext';
 declare module 'bizcharts-plugin-slider';
 
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
+
+declare const PROXY_PREFIX: '/dev' | '/test';

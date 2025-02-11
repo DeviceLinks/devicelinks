@@ -26,6 +26,7 @@ import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createStyles } from 'antd-style';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import Cookies from 'js-cookie';
 const useStyles = createStyles(({ token }) => {
   return {
     action: {
@@ -91,20 +92,29 @@ const Login: React.FC = () => {
     }
   };
   const handleSubmit = async (values: API.postAuthLoginParams) => {
-    if(values.password){
+    if (values.password) {
       values.password = md5(values.password).toString().substring(8, 24);
     }
     try {
       // 登录
-      const loginResult = await postAuthLogin({
-        ...values,
-      },{
-        skipErrorHandler:true,
-        skipAuth:true
-      });
+      const loginResult = await postAuthLogin(
+        {
+          ...values,
+        },
+        {
+          skipErrorHandler: true,
+          skipAuth: true,
+          isLogin: true,
+        },
+      );
       if (loginResult.success) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
+        //设置登录凭证
+        Cookies.set('Authorization', loginResult.token!, {
+          expires: loginResult.expires_in! / 86400,
+          path: '/',
+        });
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
@@ -112,9 +122,9 @@ const Login: React.FC = () => {
       }
       // 如果失败去设置用户错误信息
       setUserLoginState(loginResult);
-    } catch (error:any) {
+    } catch (error: any) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(error?.message|| defaultLoginFailureMessage);
+      message.error(error?.message || defaultLoginFailureMessage);
     }
   };
   const { success } = userLoginState;
@@ -146,9 +156,7 @@ const Login: React.FC = () => {
             await handleSubmit(values as API.postAuthLoginParams);
           }}
         >
-          {success===false && (
-            <LoginMessage content={'错误的用户名和密码(admin/admin)'} />
-          )}
+          {success === false && <LoginMessage content={'错误的用户名和密码(admin/admin)'} />}
           <ProFormText
             name="username"
             fieldProps={{
