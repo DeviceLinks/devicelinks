@@ -9,17 +9,25 @@ declare namespace API {
   };
 
   type Department = {
-    /** id */
+    /** ID */
     id: string;
     /** 部门名称 */
     name: string;
+    /** 标识符 */
     identifier: string;
-    pid: any;
+    /** 上级ID */
+    pid: string;
+    /** 排序 */
     sort: number;
+    /** 等级 */
     level: number;
+    /** 是否删除 */
     deleted: boolean;
+    /** 创建人ID */
     createBy: string;
+    /** 创建时间 */
     createTime: string;
+    /** 描述 */
     description: string;
   };
 
@@ -42,15 +50,6 @@ declare namespace API {
     sortProperty?: string;
     /** 排序顺序，ASC：正序；DESC：倒序 */
     sortDirection?: string;
-  };
-
-  type JianSuoZiDuanChaXunShiTi = {
-    /** 检索字段模块，User/Device/Log/Notification */
-    searchFieldModule: string;
-    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
-    searchMatch: string;
-    /** 检索字段列表 */
-    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
   };
 
   type LoginResult = {
@@ -101,6 +100,15 @@ declare namespace API {
     password: string;
   };
 
+  type SearchField = {
+    /** 检索字段模块，User/Device/Log/Notification */
+    searchFieldModule: string;
+    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
+    searchMatch: string;
+    /** 检索字段列表 */
+    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
+  };
+
   type User = {
     /** ID */
     id: string;
@@ -111,21 +119,19 @@ declare namespace API {
     /** 邮箱地址 */
     email: string;
     /** 手机号 */
-    phone: any;
+    phone: string;
     /** 密码 */
-    pwd: any;
+    pwd?: string;
     /** 激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接 */
-    activateMethod: any;
+    activateMethod: string;
     /** 记录令牌 */
     activateToken: string;
     /** 所属部门ID */
     departmentId: string;
     /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: string;
-    /** 最后登录时间 */
-    lastLoginTime: any;
-    /** 最后修改密码时间 */
-    lastChangePwdTime: any;
+    lastLoginTime: string;
+    lastChangePwdTime: string;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
@@ -135,6 +141,6 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark: any;
+    mark: string;
   };
 }
