@@ -173,7 +173,11 @@ public class HttpRequestUtils {
     }
 
     public static String getOsInfo(HttpServletRequest request) {
-        String userAgent = getUserAgent(request).toLowerCase();
+        String userAgent = getUserAgent(request);
+        if(ObjectUtils.isEmpty(userAgent)) {
+            return "UnKnown";
+        }
+        userAgent = userAgent.toLowerCase();
         String os;
         if (userAgent.contains("windows")) {
             os = "Windows";
@@ -192,14 +196,18 @@ public class HttpRequestUtils {
     }
 
     public static String getBrowserInfo(HttpServletRequest request) {
-        String userAgent = getUserAgent(request).toLowerCase();
+        String userAgent = getUserAgent(request);
+        if (ObjectUtils.isEmpty(userAgent)) {
+            return "UnKnown";
+        }
+        userAgent = userAgent.toLowerCase();
         String browser = null;
         if (userAgent.contains("edge")) {
             browser = (userAgent.substring(userAgent.indexOf("Edge")).split("/")[0]);
         } else if (userAgent.contains("msie")) {
             String substring = userAgent.substring(userAgent.indexOf("MSIE")).split(";")[0];
             browser = substring.split(" ")[0].replace("MSIE", "IE") + "-" + substring.split(" ")[1];
-        } else if (userAgent.contains("safari") && userAgent.contains("version")) {
+        } else if (userAgent.contains("safari") && !userAgent.contains("chrome")) {
             browser = (userAgent.substring(userAgent.indexOf("Safari")).split(" ")[0]).split("/")[0]
                     + "-" + (userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
         } else if (userAgent.contains("opr") || userAgent.contains("opera")) {
