@@ -1,4 +1,9 @@
 declare namespace API {
+  type CurrentUser = {
+    user: User;
+    department: Department;
+  };
+
   type deleteApiDepartmentDepartmentIdParams = {
     departmentId: string;
   };

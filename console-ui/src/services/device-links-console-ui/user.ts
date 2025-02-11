@@ -122,7 +122,7 @@ export async function getApiUserMe(options?: { [key: string]: any }) {
   return request<{
     code: string;
     message: string;
-    data: { user?: API.User; department?: API.Department };
+    data: API.CurrentUser;
     additional: Record<string, any>;
   }>('/api/user/me', {
     method: 'GET',

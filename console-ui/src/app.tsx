@@ -17,13 +17,14 @@
 
 import { Footer, Question, AvatarDropdown, AvatarName } from '@/components';
 import { LinkOutlined } from '@ant-design/icons';
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { PageLoading, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import React from 'react';
+import { getApiUserMe } from '@/services/device-links-console-ui/user';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -32,67 +33,25 @@ const loginPath = '/user/login';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
+  currentUser?: API.CurrentUser;
   loading?: boolean;
-  currentUser?:any
-  fetchUserInfo? :()=>any
+  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
-  const fetchUserInfo =  () => {
-    return {
-      name: 'Serati Ma',
-      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-      userid: '00000001',
-      email: 'antdesign@alipay.com',
-      signature: '海纳百川，有容乃大',
-      title: '交互专家',
-      group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
-      tags: [
-        {
-          key: '0',
-          label: '很有想法的',
-        },
-        {
-          key: '1',
-          label: '专注设计',
-        },
-        {
-          key: '2',
-          label: '辣~',
-        },
-        {
-          key: '3',
-          label: '大长腿',
-        },
-        {
-          key: '4',
-          label: '川妹子',
-        },
-        {
-          key: '5',
-          label: '海纳百川',
-        },
-      ],
-      notifyCount: 12,
-      unreadCount: 11,
-      country: 'China',
-      access: 'admin',
-      geographic: {
-        province: {
-          label: '浙江省',
-          key: '330000',
-        },
-        city: {
-          label: '杭州市',
-          key: '330100',
-        },
-      },
-      address: '西湖区工专路 77 号',
-      phone: '0752-268888888',
-    };
+  const fetchUserInfo = async () => {
+    try {
+      const { data } = await getApiUserMe({
+        skipErrorHandler: true,
+      });
+      return data;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
   };
   // 如果不是登录页面，执行
   const { location } = history;
   if (location.pathname !== loginPath) {
-    const currentUser =  fetchUserInfo();
+    const currentUser = await fetchUserInfo();
     return {
       currentUser,
       fetchUserInfo,
@@ -110,14 +69,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   return {
     actionsRender: () => [<Question key="doc" />],
     avatarProps: {
-      src: initialState?.currentUser?.avatar,
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
       title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.user.name,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -160,7 +119,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
     childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
+      if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}

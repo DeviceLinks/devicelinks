@@ -841,7 +841,6 @@
                       "description": "消息"
                     },
                     "data": {
-                      "type": "object",
                       "properties": {
                         "user": {
                           "$ref": "#/components/schemas/User"
@@ -853,7 +852,8 @@
                       "required": [
                         "user",
                         "department"
-                      ]
+                      ],
+                      "$ref": "#/components/schemas/CurrentUser"
                     },
                     "additional": {
                       "type": "object",
@@ -1668,6 +1668,22 @@
           "searchFieldModule"
         ],
         "title": "检索字段查询实体"
+      },
+      "CurrentUser": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
+          }
+        },
+        "required": [
+          "user",
+          "department"
+        ],
+        "title": "当前登录用户信息"
       }
     },
     "securitySchemes": {
