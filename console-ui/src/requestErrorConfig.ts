@@ -116,7 +116,7 @@ export const errorConfig: RequestConfig = {
         }
         config.headers = {
           ...config.headers,
-          Authorization: Authorization!,
+          Authorization: `Bearer ${Authorization!}`,
         };
       }
       // 拦截请求配置，进行个性化处理。
