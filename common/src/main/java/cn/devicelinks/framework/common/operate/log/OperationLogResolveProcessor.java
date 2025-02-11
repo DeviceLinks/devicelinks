@@ -95,8 +95,8 @@ public class OperationLogResolveProcessor {
         RequestContext requestContext = RequestContextHolder.getContext();
         if (requestContext != null) {
             this.operationLogObject.setIpAddress(requestContext.getIp());
-            this.operationLogObject.setOs(HttpRequestUtils.getOsInfo(requestContext.getRequest()));
-            this.operationLogObject.setBrowser(HttpRequestUtils.getBrowserInfo(requestContext.getRequest()));
+            this.operationLogObject.setOs(HttpRequestUtils.getOS(requestContext.getRequest()));
+            this.operationLogObject.setBrowser(HttpRequestUtils.getBrowser(requestContext.getRequest()));
         }
         if (!ObjectUtils.isEmpty(this.extractor.getObjectFieldMap())) {
             List<ObjectField> objectFields = this.extractor.getObjectFieldMap().values().stream().toList();
