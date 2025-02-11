@@ -1,0 +1,1892 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "devicelinks",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "login"
+        },
+        {
+            "name": "user"
+        },
+        {
+            "name": "department"
+        },
+        {
+            "name": "common"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "summary": "登录",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "login"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": true,
+                        "example": "admin",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码，16位小写md5加密后的值",
+                        "required": true,
+                        "example": "7a57a5a743894a0e",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expires_in": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "expires_in",
+                                        "message",
+                                        "success",
+                                        "token"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "expires_in",
+                                        "message",
+                                        "success",
+                                        "token"
+                                    ],
+                                    "$ref": "#/components/schemas/LoginResult"
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "expires_in": 7200,
+                                            "message": "login success",
+                                            "success": true,
+                                            "token": "eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [],
+                "x-apifox-folder": "登录 & 令牌",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-252072704-run"
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "summary": "退出登录",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "login"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": false,
+                        "example": "Bearer eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": null,
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [],
+                "x-apifox-folder": "登录 & 令牌",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-252075739-run"
+            }
+        },
+        "/api/user": {
+            "post": {
+                "summary": "新增用户",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "description": "用户名",
+                                        "type": "string"
+                                    },
+                                    "account": {
+                                        "description": "账号",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "邮箱地址",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "手机号",
+                                        "type": "string"
+                                    },
+                                    "departmentId": {
+                                        "description": "所属部门ID",
+                                        "type": "string"
+                                    },
+                                    "activateMethod": {
+                                        "description": "激活方式",
+                                        "type": "string"
+                                    },
+                                    "mark": {
+                                        "description": "备注",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "account",
+                                    "activateMethod"
+                                ],
+                                "x-apifox-orders": [
+                                    "username",
+                                    "account",
+                                    "email",
+                                    "phone",
+                                    "departmentId",
+                                    "activateMethod",
+                                    "mark"
+                                ],
+                                "x-apifox-ignore-properties": []
+                            },
+                            "example": "{\n    \"username\":\"恒宇少年\", // 用户名\n    \"account\":\"yuqiyu\", // 账号\n    \"email\":\"hengboy@minbox.org\", //邮箱地址\n    \"phone\":\"\", // 手机号\n    \"departmentId\":\"\", //所属部门ID\n    \"activateMethod\":\"SendUrlToEmail\", // 激活方式\n    \"mark\":\"\" //备注\n}"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": {
+                                                "id": "c460883ac80b4f499cf8ec03432d5876",
+                                                "name": "恒宇少年",
+                                                "account": "yuqiyu",
+                                                "email": "hengboy@minbox.org",
+                                                "phone": null,
+                                                "pwd": null,
+                                                "activateMethod": null,
+                                                "activateToken": "d414lY14kiEHNIVBZ_ysYplE5hGrKLqJWcyxBZdZ_SXQ2zY6Uo",
+                                                "departmentId": "cb4ad62ad53911efa7700242c0a8d704",
+                                                "identity": "User",
+                                                "lastLoginTime": null,
+                                                "lastChangePwdTime": null,
+                                                "enabled": false,
+                                                "deleted": false,
+                                                "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                                                "createTime": "2025-01-21T14:49:58.78654",
+                                                "mark": null
+                                            },
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "用户",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-256445850-run"
+            },
+            "get": {
+                "summary": "分页查询用户",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "每页条数",
+                        "required": false,
+                        "example": "10",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前页码",
+                        "required": false,
+                        "example": "1",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sortProperty",
+                        "in": "query",
+                        "description": "排序属性，接口返回值\"result\"中的属性都可以作为排序字段",
+                        "required": false,
+                        "example": "createTime",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sortDirection",
+                        "in": "query",
+                        "description": "排序顺序，ASC：正序；DESC：倒序",
+                        "required": false,
+                        "example": "DESC",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "page": {
+                                                    "type": "integer",
+                                                    "description": "当前页码"
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "description": "每页条数"
+                                                },
+                                                "totalPages": {
+                                                    "type": "integer",
+                                                    "description": "总页数"
+                                                },
+                                                "totalRows": {
+                                                    "type": "integer",
+                                                    "description": "总条数"
+                                                },
+                                                "result": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/User"
+                                                    },
+                                                    "description": "用户列表"
+                                                }
+                                            },
+                                            "required": [
+                                                "page",
+                                                "pageSize",
+                                                "totalPages",
+                                                "totalRows",
+                                                "result"
+                                            ],
+                                            "x-apifox-orders": [
+                                                "01JKSQSFGEEG5YX55FR9673MMT"
+                                            ],
+                                            "type": "object",
+                                            "x-apifox-refs": {
+                                                "01JKSQSFGEEG5YX55FR9673MMT": {
+                                                    "$ref": "#/components/schemas/PageResult",
+                                                    "x-apifox-overrides": {
+                                                        "result": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/components/schemas/User"
+                                                            },
+                                                            "description": "用户列表"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "result"
+                                                    ]
+                                                }
+                                            },
+                                            "x-apifox-ignore-properties": [
+                                                "page",
+                                                "pageSize",
+                                                "totalPages",
+                                                "totalRows",
+                                                "result"
+                                            ]
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": {
+                                                "page": 1,
+                                                "pageSize": 10,
+                                                "totalPages": 1,
+                                                "totalRows": 1,
+                                                "result": [
+                                                    {
+                                                        "id": "c460883ac80b4f499cf8ec03432d5876",
+                                                        "name": "恒宇少年",
+                                                        "account": "yuqiyu",
+                                                        "email": "hengboy@minbox.org",
+                                                        "phone": null,
+                                                        "pwd": null,
+                                                        "activateMethod": null,
+                                                        "activateToken": "d414lY14kiEHNIVBZ_ysYplE5hGrKLqJWcyxBZdZ_SXQ2zY6Uo",
+                                                        "departmentId": "cb4ad62ad53911efa7700242c0a8d704",
+                                                        "identity": "User",
+                                                        "lastLoginTime": null,
+                                                        "lastChangePwdTime": null,
+                                                        "enabled": true,
+                                                        "deleted": false,
+                                                        "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                                                        "createTime": "2025-01-21T14:49:59",
+                                                        "mark": null,
+                                                        "departmentName": "测试部门"
+                                                    }
+                                                ]
+                                            },
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "用户",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-256459895-run"
+            }
+        },
+        "/api/user/{userId}": {
+            "post": {
+                "summary": "更新用户",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "example": "2f6e6a0fab1e435997e9b5e8b3fd62c8",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "description": "用户名",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "邮箱地址",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "手机号",
+                                        "type": "string"
+                                    },
+                                    "departmentId": {
+                                        "description": "所属部门ID",
+                                        "type": "string"
+                                    },
+                                    "mark": {
+                                        "description": "备注",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "email",
+                                    "phone",
+                                    "departmentId",
+                                    "mark"
+                                ],
+                                "x-apifox-orders": [
+                                    "username",
+                                    "email",
+                                    "phone",
+                                    "departmentId",
+                                    "mark"
+                                ],
+                                "x-apifox-ignore-properties": []
+                            },
+                            "example": "{\n    \"username\":\"恒宇少年\", // 用户名\n    \"account\":\"yuqiyu\", // 账号\n    \"email\":\"hengboy@minbox.org\", //邮箱地址\n    \"phone\":\"\", // 手机号\n    \"departmentId\":\"\", //所属部门ID\n    \"activateMethod\":\"SendUrlToEmail\", // 激活方式\n    \"mark\":\"\" //备注\n}"
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": {
+                                                "id": "c460883ac80b4f499cf8ec03432d5876",
+                                                "name": "恒宇少年",
+                                                "account": "yuqiyu",
+                                                "email": "hengboy@minbox.org",
+                                                "phone": null,
+                                                "pwd": null,
+                                                "activateMethod": null,
+                                                "activateToken": "d414lY14kiEHNIVBZ_ysYplE5hGrKLqJWcyxBZdZ_SXQ2zY6Uo",
+                                                "departmentId": "cb4ad62ad53911efa7700242c0a8d704",
+                                                "identity": "User",
+                                                "lastLoginTime": null,
+                                                "lastChangePwdTime": null,
+                                                "enabled": false,
+                                                "deleted": false,
+                                                "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                                                "createTime": "2025-01-21T14:49:58.78654",
+                                                "mark": null
+                                            },
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "用户",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-256453578-run"
+            },
+            "delete": {
+                "summary": "删除用户",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "example": "2f6e6a0fab1e435997e9b5e8b3fd62c8",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": {
+                                                "id": "c460883ac80b4f499cf8ec03432d5876",
+                                                "name": "恒宇少年",
+                                                "account": "yuqiyu",
+                                                "email": "hengboy@minbox.org",
+                                                "phone": null,
+                                                "pwd": null,
+                                                "activateMethod": null,
+                                                "activateToken": "d414lY14kiEHNIVBZ_ysYplE5hGrKLqJWcyxBZdZ_SXQ2zY6Uo",
+                                                "departmentId": "cb4ad62ad53911efa7700242c0a8d704",
+                                                "identity": "User",
+                                                "lastLoginTime": null,
+                                                "lastChangePwdTime": null,
+                                                "enabled": false,
+                                                "deleted": false,
+                                                "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                                                "createTime": "2025-01-21T14:49:58.78654",
+                                                "mark": null
+                                            },
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "用户",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-256454080-run"
+            }
+        },
+        "/api/user/status/{userId}": {
+            "post": {
+                "summary": "启用 / 禁用",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "用户ID",
+                        "required": true,
+                        "example": "2f6e6a0fab1e435997e9b5e8b3fd62c8",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "enabled",
+                        "in": "query",
+                        "description": "启用true，禁用：false",
+                        "required": false,
+                        "example": "true",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": null,
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "用户",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-256455216-run"
+            }
+        },
+        "/api/department": {
+            "post": {
+                "summary": "新增部门",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "department"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "名称"
+                                    },
+                                    "identifier": {
+                                        "type": "string",
+                                        "description": "标识"
+                                    },
+                                    "pid": {
+                                        "type": "string",
+                                        "description": "上级部门ID"
+                                    },
+                                    "sort": {
+                                        "type": "integer",
+                                        "description": "排序"
+                                    },
+                                    "level": {
+                                        "type": "integer",
+                                        "description": "等级"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "描述"
+                                    }
+                                },
+                                "required": [
+                                    "identifier",
+                                    "name"
+                                ],
+                                "x-apifox-orders": [
+                                    "name",
+                                    "identifier",
+                                    "pid",
+                                    "sort",
+                                    "level",
+                                    "description"
+                                ],
+                                "x-apifox-ignore-properties": []
+                            },
+                            "example": {
+                                "name": null,
+                                "identifier": null,
+                                "pid": null,
+                                "sort": 0,
+                                "level": 0,
+                                "description": null
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {},
+                                    "x-apifox-ignore-properties": [],
+                                    "x-apifox-orders": []
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "部门",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-257013453-run"
+            }
+        },
+        "/api/department/{departmentId}": {
+            "post": {
+                "summary": "更新部门",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "department"
+                ],
+                "parameters": [
+                    {
+                        "name": "departmentId",
+                        "in": "path",
+                        "description": "部门ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "名称"
+                                    },
+                                    "pid": {
+                                        "type": "string",
+                                        "description": "上级ID"
+                                    },
+                                    "sort": {
+                                        "type": "integer",
+                                        "description": "排序"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "描述"
+                                    }
+                                },
+                                "x-apifox-orders": [
+                                    "name",
+                                    "pid",
+                                    "sort",
+                                    "description"
+                                ],
+                                "required": [
+                                    "name"
+                                ],
+                                "x-apifox-ignore-properties": []
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {},
+                                    "x-apifox-ignore-properties": [],
+                                    "x-apifox-orders": []
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "部门",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-257022589-run"
+            },
+            "delete": {
+                "summary": "删除部门",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "department"
+                ],
+                "parameters": [
+                    {
+                        "name": "departmentId",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "example": "23e5ab0237d047b8b6a969c070d2612e",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {},
+                                    "x-apifox-ignore-properties": [],
+                                    "x-apifox-orders": []
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "部门",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-257023790-run"
+            },
+            "get": {
+                "summary": "获取信息",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "department"
+                ],
+                "parameters": [
+                    {
+                        "name": "departmentId",
+                        "in": "path",
+                        "description": "部门ID",
+                        "required": true,
+                        "example": "23e5ab0237d047b8b6a969c070d2612e",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "identifier": {
+                                                    "type": "string"
+                                                },
+                                                "pid": {
+                                                    "type": "null"
+                                                },
+                                                "sort": {
+                                                    "type": "integer"
+                                                },
+                                                "level": {
+                                                    "type": "integer"
+                                                },
+                                                "deleted": {
+                                                    "type": "boolean"
+                                                },
+                                                "createBy": {
+                                                    "type": "string"
+                                                },
+                                                "createTime": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "id",
+                                                "name",
+                                                "identifier",
+                                                "pid",
+                                                "sort",
+                                                "level",
+                                                "deleted",
+                                                "createBy",
+                                                "createTime",
+                                                "description"
+                                            ],
+                                            "x-apifox-orders": [
+                                                "id",
+                                                "name",
+                                                "identifier",
+                                                "pid",
+                                                "sort",
+                                                "level",
+                                                "deleted",
+                                                "createBy",
+                                                "createTime",
+                                                "description"
+                                            ],
+                                            "$ref": "#/components/schemas/Department"
+                                        },
+                                        "additional": {
+                                            "type": "object",
+                                            "properties": {},
+                                            "x-apifox-orders": [],
+                                            "x-apifox-ignore-properties": []
+                                        }
+                                    },
+                                    "required": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "code",
+                                        "message",
+                                        "data",
+                                        "additional"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "code": "SUCCESS",
+                                            "message": "success",
+                                            "data": {
+                                                "id": "23e5ab0237d047b8b6a969c070d2612e",
+                                                "name": "测试部门002",
+                                                "identifier": "test",
+                                                "pid": null,
+                                                "sort": 0,
+                                                "level": 0,
+                                                "deleted": true,
+                                                "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                                                "createTime": "2025-01-23T14:04:49",
+                                                "description": "描述"
+                                            },
+                                            "additional": {}
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "部门",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-257025480-run"
+            }
+        },
+        "/api/common/search/field": {
+            "get": {
+                "summary": "查询检索字段",
+                "deprecated": false,
+                "description": "",
+                "tags": [
+                    "common"
+                ],
+                "parameters": [
+                    {
+                        "name": "module",
+                        "in": "query",
+                        "description": "功能模块，取值：Device、User、Log、Notification",
+                        "required": false,
+                        "example": "User",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "请求令牌",
+                        "required": true,
+                        "example": "{{accessToken}}",
+                        "schema": {
+                            "type": "string",
+                            "default": "{{accessToken}}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "field": {
+                                            "type": "string",
+                                            "description": "字段"
+                                        },
+                                        "fieldText": {
+                                            "type": "string",
+                                            "description": "字段中文描述"
+                                        },
+                                        "valueType": {
+                                            "type": "string",
+                                            "description": "字段值类型"
+                                        },
+                                        "componentType": {
+                                            "type": "string",
+                                            "description": "前端组件类型"
+                                        },
+                                        "optionDataSource": {
+                                            "type": "string",
+                                            "description": "下拉框选项数据源，STATIC：静态数据；API：接口查询数据"
+                                        },
+                                        "optionApiDataCode": {
+                                            "type": "null",
+                                            "description": "数据源为API时查询数据的编码"
+                                        },
+                                        "optionStaticData": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "label": {
+                                                        "type": "string",
+                                                        "description": "描述"
+                                                    },
+                                                    "value": {
+                                                        "type": "string",
+                                                        "description": "取值"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "x-apifox-orders": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "x-apifox-ignore-properties": []
+                                            },
+                                            "description": "数据源为STATIC时的静态数据"
+                                        },
+                                        "operators": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "label": {
+                                                        "type": "string",
+                                                        "description": "描述"
+                                                    },
+                                                    "value": {
+                                                        "type": "string",
+                                                        "description": "运算符取值"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "x-apifox-orders": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "x-apifox-ignore-properties": []
+                                            },
+                                            "description": "支持的运算法"
+                                        }
+                                    },
+                                    "required": [
+                                        "field",
+                                        "fieldText",
+                                        "valueType",
+                                        "componentType",
+                                        "optionDataSource",
+                                        "optionApiDataCode",
+                                        "optionStaticData",
+                                        "operators"
+                                    ],
+                                    "x-apifox-orders": [
+                                        "field",
+                                        "fieldText",
+                                        "valueType",
+                                        "componentType",
+                                        "optionDataSource",
+                                        "optionApiDataCode",
+                                        "optionStaticData",
+                                        "operators"
+                                    ],
+                                    "x-apifox-ignore-properties": []
+                                },
+                                "examples": {
+                                    "1": {
+                                        "summary": "成功示例",
+                                        "value": {
+                                            "field": "activateMethod",
+                                            "fieldText": "激活方式",
+                                            "valueType": "STRING",
+                                            "componentType": "SELECT",
+                                            "optionDataSource": "STATIC",
+                                            "optionApiDataCode": null,
+                                            "optionStaticData": [
+                                                {
+                                                    "label": "向邮箱发送激活邮件",
+                                                    "value": "SendUrlToEmail"
+                                                },
+                                                {
+                                                    "label": "显示激活链接",
+                                                    "value": "ShowUrl"
+                                                }
+                                            ],
+                                            "operators": [
+                                                {
+                                                    "label": "等于",
+                                                    "value": "EqualTo"
+                                                },
+                                                {
+                                                    "label": "不等于",
+                                                    "value": "NotEqualTo"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "headers": {},
+                        "x-apifox-name": "成功"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "x-apifox-folder": "公共",
+                "x-apifox-status": "developing",
+                "x-run-in-apifox": "https://apifox.com/web/project/5725809/apis/api-258087959-run"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginResult": {
+                "type": "object",
+                "properties": {
+                    "expires_in": {
+                        "type": "number",
+                        "description": "过期时间"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "消息"
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "是否成功"
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "认证token"
+                    }
+                },
+                "required": [
+                    "expires_in",
+                    "message",
+                    "success",
+                    "token"
+                ],
+                "x-apifox-orders": [
+                    "expires_in",
+                    "message",
+                    "success",
+                    "token"
+                ],
+                "title": "登录数据模型",
+                "x-apifox-ignore-properties": [],
+                "description": "登录数据模型",
+                "x-apifox-folder": "login"
+            },
+            "PageResult": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "当前页码"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "description": "每页条数"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "description": "总页数"
+                    },
+                    "totalRows": {
+                        "type": "integer",
+                        "description": "总条数"
+                    },
+                    "result": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "用户列表"
+                    }
+                },
+                "required": [
+                    "page",
+                    "pageSize",
+                    "totalPages",
+                    "totalRows",
+                    "result"
+                ],
+                "x-apifox-orders": [
+                    "page",
+                    "pageSize",
+                    "totalPages",
+                    "totalRows",
+                    "result"
+                ],
+                "title": "分页数据模型",
+                "x-apifox-ignore-properties": [],
+                "description": "分页数据模型",
+                "x-apifox-folder": "common"
+            },
+            "Department": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "部门名称"
+                    },
+                    "identifier": {
+                        "type": "string"
+                    },
+                    "pid": {
+                        "type": "null"
+                    },
+                    "sort": {
+                        "type": "integer"
+                    },
+                    "level": {
+                        "type": "integer"
+                    },
+                    "deleted": {
+                        "type": "boolean"
+                    },
+                    "createBy": {
+                        "type": "string"
+                    },
+                    "createTime": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "identifier",
+                    "pid",
+                    "sort",
+                    "level",
+                    "deleted",
+                    "createBy",
+                    "createTime",
+                    "description"
+                ],
+                "x-apifox-orders": [
+                    "id",
+                    "name",
+                    "identifier",
+                    "pid",
+                    "sort",
+                    "level",
+                    "deleted",
+                    "createBy",
+                    "createTime",
+                    "description"
+                ],
+                "title": "部门数据模型",
+                "x-apifox-ignore-properties": [],
+                "description": "部门数据模型",
+                "x-apifox-folder": "department"
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "名称"
+                    },
+                    "account": {
+                        "type": "string",
+                        "description": "账号"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "邮箱地址"
+                    },
+                    "phone": {
+                        "type": "null",
+                        "description": "手机号"
+                    },
+                    "pwd": {
+                        "type": "null",
+                        "description": "密码"
+                    },
+                    "activateMethod": {
+                        "type": "null",
+                        "description": "激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接"
+                    },
+                    "activateToken": {
+                        "type": "string",
+                        "description": "记录令牌"
+                    },
+                    "departmentId": {
+                        "type": "string",
+                        "description": "所属部门ID"
+                    },
+                    "identity": {
+                        "type": "string",
+                        "description": "身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员"
+                    },
+                    "lastLoginTime": {
+                        "type": "null",
+                        "description": "最后登录时间"
+                    },
+                    "lastChangePwdTime": {
+                        "type": "null",
+                        "description": "最后修改密码时间"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "是否启用"
+                    },
+                    "deleted": {
+                        "type": "boolean",
+                        "description": "是否删除"
+                    },
+                    "createBy": {
+                        "type": "string",
+                        "description": "创建人"
+                    },
+                    "createTime": {
+                        "type": "string",
+                        "description": "创建时间"
+                    },
+                    "mark": {
+                        "type": "null",
+                        "description": "备注"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "account",
+                    "email",
+                    "phone",
+                    "pwd",
+                    "activateMethod",
+                    "activateToken",
+                    "departmentId",
+                    "identity",
+                    "lastLoginTime",
+                    "lastChangePwdTime",
+                    "enabled",
+                    "deleted",
+                    "createBy",
+                    "createTime",
+                    "mark"
+                ],
+                "x-apifox-orders": [
+                    "id",
+                    "name",
+                    "account",
+                    "email",
+                    "phone",
+                    "pwd",
+                    "activateMethod",
+                    "activateToken",
+                    "departmentId",
+                    "identity",
+                    "lastLoginTime",
+                    "lastChangePwdTime",
+                    "enabled",
+                    "deleted",
+                    "createBy",
+                    "createTime",
+                    "mark"
+                ],
+                "description": "用户，用户信息",
+                "title": "用户",
+                "x-apifox-ignore-properties": [],
+                "x-apifox-folder": ""
+            },
+            "JianSuoZiDuanChaXunShiTi": {
+                "type": "object",
+                "properties": {
+                    "searchFieldModule": {
+                        "type": "string",
+                        "description": "检索字段模块，User/Device/Log/Notification"
+                    },
+                    "searchMatch": {
+                        "type": "string",
+                        "description": "检索字段之间的匹配方式，ALL：所有；ANY：任意"
+                    },
+                    "searchFields": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {
+                                    "type": "string",
+                                    "description": "检索字段"
+                                },
+                                "operator": {
+                                    "type": "string",
+                                    "description": "检索运算符，详见检索字段列表接口返回值"
+                                },
+                                "value": {
+                                    "type": "array",
+                                    "items": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "integer"
+                                            }
+                                        ]
+                                    },
+                                    "description": "匹配检索值列表"
+                                }
+                            },
+                            "required": [
+                                "field",
+                                "operator",
+                                "value"
+                            ],
+                            "x-apifox-orders": [
+                                "field",
+                                "operator",
+                                "value"
+                            ],
+                            "x-apifox-ignore-properties": []
+                        },
+                        "description": "检索字段列表"
+                    }
+                },
+                "required": [
+                    "searchMatch",
+                    "searchFieldModule"
+                ],
+                "x-apifox-orders": [
+                    "searchFieldModule",
+                    "searchMatch",
+                    "searchFields"
+                ],
+                "x-apifox-ignore-properties": [],
+                "x-apifox-folder": ""
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "servers": []
+}

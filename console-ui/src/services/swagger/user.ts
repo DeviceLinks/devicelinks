@@ -1,25 +1,8 @@
-/*
- *   Copyright (C) 2024-2025  DeviceLinks
- *
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 // @ts-ignore
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** Create user This can only be done by the logged in user. POST /user */
+/** Create user This can only be done by the logged in user. 返回值: successful operation POST /user */
 export async function createUser(body: API.User, options?: { [key: string]: any }) {
   return request<any>('/user', {
     method: 'POST',
@@ -72,7 +55,7 @@ export async function deleteUser(
   });
 }
 
-/** Creates list of users with given input array POST /user/createWithArray */
+/** Creates list of users with given input array 返回值: successful operation POST /user/createWithArray */
 export async function createUsersWithArrayInput(
   body: API.User[],
   options?: { [key: string]: any },
@@ -84,7 +67,7 @@ export async function createUsersWithArrayInput(
   });
 }
 
-/** Creates list of users with given input array POST /user/createWithList */
+/** Creates list of users with given input array 返回值: successful operation POST /user/createWithList */
 export async function createUsersWithListInput(body: API.User[], options?: { [key: string]: any }) {
   return request<any>('/user/createWithList', {
     method: 'POST',
@@ -108,7 +91,7 @@ export async function loginUser(
   });
 }
 
-/** Logs out current logged in user session GET /user/logout */
+/** Logs out current logged in user session 返回值: successful operation GET /user/logout */
 export async function logoutUser(options?: { [key: string]: any }) {
   return request<any>('/user/logout', {
     method: 'GET',

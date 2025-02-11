@@ -1,20 +1,3 @@
-/*
- *   Copyright (C) 2024-2025  DeviceLinks
- *
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 // @ts-ignore
 /* eslint-disable */
 import { request } from '@umijs/max';
@@ -65,23 +48,10 @@ export async function updatePetWithForm(
   options?: { [key: string]: any },
 ) {
   const { petId: param0, ...queryParams } = params;
-  const formData = new FormData();
-
-  Object.keys(body).forEach((ele) => {
-    const item = (body as any)[ele];
-
-    if (item !== undefined && item !== null) {
-      formData.append(
-        ele,
-        typeof item === 'object' && !(item instanceof File) ? JSON.stringify(item) : item,
-      );
-    }
-  });
-
   return request<any>(`/pet/${param0}`, {
     method: 'POST',
     params: { ...queryParams },
-    data: formData,
+    data: body,
     ...(options || {}),
   });
 }
@@ -89,16 +59,12 @@ export async function updatePetWithForm(
 /** Deletes a pet DELETE /pet/${param0} */
 export async function deletePet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deletePetParams & {
-    // header
-    api_key?: string;
-  },
+  params: API.deletePetParams,
   options?: { [key: string]: any },
 ) {
   const { petId: param0, ...queryParams } = params;
   return request<any>(`/pet/${param0}`, {
     method: 'DELETE',
-    headers: {},
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -123,10 +89,15 @@ export async function uploadFile(
     const item = (body as any)[ele];
 
     if (item !== undefined && item !== null) {
-      formData.append(
-        ele,
-        typeof item === 'object' && !(item instanceof File) ? JSON.stringify(item) : item,
-      );
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''));
+        } else {
+          formData.append(ele, JSON.stringify(item));
+        }
+      } else {
+        formData.append(ele, item);
+      }
     }
   });
 

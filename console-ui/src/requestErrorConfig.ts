@@ -104,6 +104,9 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
+    if(REACT_APP_ENV==='dev'){
+      config.url='/dev' + config.url
+    }
       // 拦截请求配置，进行个性化处理。
       return { ...config };
     },
