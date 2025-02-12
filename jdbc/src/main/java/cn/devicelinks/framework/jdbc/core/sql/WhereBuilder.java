@@ -38,7 +38,7 @@ import java.util.List;
  * @since 1.0
  */
 public class WhereBuilder {
-    private static final String WHERE = " where ";
+    public static final String WHERE = " where ";
     private final StringBuilder whereSql = new StringBuilder();
     @Getter
     private PreparedStatementSetter preparedStatementSetter;

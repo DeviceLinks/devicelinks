@@ -18,9 +18,11 @@
 package cn.devicelinks.framework.jdbc.core.sql;
 
 import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -50,8 +52,8 @@ import java.util.function.Consumer;
  * @author 恒宇少年
  * @since 1.0
  */
+@Slf4j
 public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
-
     /**
      * Create {@link SelectBuilder}
      *
@@ -59,7 +61,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
      * @return {@link SelectBuilder} instance
      */
     public static SelectBuilder select(String sql) {
-        return new SelectBuilder(sql);
+        return new SelectBuilder(appendWhereKeyWord(sql));
     }
 
     /**
@@ -69,13 +71,27 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
      * @return {@link ModifyBuilder} instance
      */
     public static ModifyBuilder modify(String sql) {
-        return new ModifyBuilder(sql);
+        return new ModifyBuilder(appendWhereKeyWord(sql));
+    }
+
+    private static String appendWhereKeyWord(String sql) {
+        sql = StringUtils.removeTrailingSpaces(sql);
+        String whereKeyword = WhereBuilder.WHERE.trim();
+        if (!sql.contains(whereKeyword)) {
+            sql += Constants.SPACE + whereKeyword + Constants.SPACE;
+        }
+        return sql;
     }
 
     /**
      * The Select Builder
      */
     public static class SelectBuilder {
+
+        // @formatter:off
+        public static Consumer<Condition> NONE_CONDITION_CONSUMER = condition -> { };
+        // @formatter:on
+
         private String sql;
         private final List<Column> resultColumns = new ArrayList<>();
         private Class<?> resultType;
@@ -114,7 +130,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
 
         public SelectBuilder appendCondition(boolean allowAppend, SqlFederationAway federationAway, Condition condition) {
             if (allowAppend) {
-                this.sql += federationAway.getValue() + condition.getSql();
+                this.sql += ObjectUtils.isEmpty(this.parameters) ? condition.getSql() : federationAway.getValue() + condition.getSql();
                 this.parameters.add(conditionValueConvert(condition.getParameterValue()));
             }
             return this;
@@ -137,6 +153,9 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
         public SelectBuilder appendSearchFieldCondition(Table table, List<SearchFieldCondition> searchFieldConditions, Consumer<Condition> consumer) {
             searchFieldConditions.forEach(searchFieldCondition -> {
                 Column searchColumn = table.getColumn(searchFieldCondition.getColumnName());
+                if (searchColumn == null) {
+                    log.warn("The search field column: [{}] is not defined in the target TableImpl.", searchFieldCondition.getColumnName());
+                }
                 if (searchColumn != null && !ObjectUtils.isEmpty(searchFieldCondition.getValue())) {
                     // convert condition value
                     Condition condition = Condition.withColumn(searchFieldCondition.getOperator(), searchColumn, searchFieldCondition.getValue());

@@ -31,6 +31,7 @@ import cn.devicelinks.framework.jdbc.core.printer.SqlPrinter;
 import cn.devicelinks.framework.jdbc.core.sql.*;
 import cn.devicelinks.framework.jdbc.core.utils.SqlParameterValueUtils;
 import com.alibaba.druid.sql.SQLUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ResolvableType;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.SqlParameterValue;
@@ -55,6 +56,7 @@ import java.util.stream.IntStream;
  * @see ConditionValue
  * @since 1.0
  */
+@Slf4j
 public class JdbcRepository<T extends Serializable, PK> implements Repository<T, PK> {
     private static final int MAP_ENTITY_GENERIC_INDEX = 0;
     protected Table table;
@@ -315,6 +317,9 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
 
     @Override
     public <R extends Serializable> PageResult<R> page(Dynamic dynamic, PageQuery pageQuery, Object... parameterValues) {
+        if (ObjectUtils.isEmpty(parameterValues)) {
+            log.debug("No query parameters were passed, please confirm.");
+        }
         DefaultPageResult.DefaultPageResultBuilder builder = DefaultPageResult.withPageQuery(pageQuery);
         // @formatter:off
         // Query Total Row Count
