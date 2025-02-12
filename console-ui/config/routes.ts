@@ -22,6 +22,7 @@ export default [
     routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
   },
   { path: '/home', name: '首页', icon: 'home', component: './Home' },
+  { path: '/userInfo', name: '用户', icon: 'user', component: './UserInfo' },
   { path: '/', redirect: '/home' },
   { path: '*', layout: false, component: './404' },
 ];
