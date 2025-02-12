@@ -17,7 +17,9 @@
 
 package cn.devicelinks.framework.common.utils;
 
+import cn.devicelinks.framework.common.Constants;
 import com.google.common.base.CaseFormat;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.StringJoiner;
@@ -116,4 +118,16 @@ public class StringUtils {
         }
     }
 
+    /**
+     * 清除字符串末尾的空格
+     *
+     * @param inputString 待处理字符串
+     * @return 清除末尾空格的字符串
+     */
+    public static String removeTrailingSpaces(String inputString) {
+        if (ObjectUtils.isEmpty(inputString)) {
+            return Constants.EMPTY_STRING;
+        }
+        return inputString.replaceAll("\\s+$", Constants.EMPTY_STRING);
+    }
 }
