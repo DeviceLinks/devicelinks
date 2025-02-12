@@ -20,8 +20,17 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.jdbc.core.JdbcOperations;
 
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper.SelectBuilder.NONE_CONDITION_CONSUMER;
 import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODULE;
 
 /**
@@ -32,7 +41,21 @@ import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODU
  */
 @RegisterBean
 public class FunctionModuleJdbcRepository extends JdbcRepository<FunctionModule, String> implements FunctionModuleRepository {
-	public FunctionModuleJdbcRepository(JdbcOperations jdbcOperations) {
-		super(FUNCTION_MODULE, jdbcOperations);
-	}
+    public FunctionModuleJdbcRepository(JdbcOperations jdbcOperations) {
+        super(FUNCTION_MODULE, jdbcOperations);
+    }
+
+    @Override
+    public PageResult<FunctionModule> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition) {
+        // @formatter:off
+        DynamicWrapper wrapper = DynamicWrapper.select(FUNCTION_MODULE.getQuerySql())
+                .appendCondition(true, SqlFederationAway.AND, FUNCTION_MODULE.DELETED.eq(false))
+                .appendSearchFieldCondition(FUNCTION_MODULE, searchFieldConditions, NONE_CONDITION_CONSUMER)
+                .sort(sortCondition)
+                .resultColumns(columns -> columns.addAll(FUNCTION_MODULE.getColumns()))
+                .resultType(FunctionModule.class)
+                .build();
+        // @formatter:on
+        return this.page(wrapper.dynamic(), pageQuery, wrapper.parameters());
+    }
 }

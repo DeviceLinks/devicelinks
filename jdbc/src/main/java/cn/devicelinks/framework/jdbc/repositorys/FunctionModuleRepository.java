@@ -19,6 +19,12 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+
+import java.util.List;
 
 /**
  * The {@link FunctionModule} Repository
@@ -27,5 +33,13 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @since 1.0
  */
 public interface FunctionModuleRepository extends Repository<FunctionModule, String> {
-	//...
+    /**
+     * 分页查询功能模块
+     *
+     * @param searchFieldConditions 查询字段列表 {@link SearchFieldCondition}
+     * @param pageQuery             分页查询参数 {@link PageQuery}
+     * @param sortCondition         排序条件 {@link SortCondition}
+     * @return {@link FunctionModule}
+     */
+    PageResult<FunctionModule> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition);
 }
