@@ -19,6 +19,7 @@ package cn.devicelinks.console.model.search;
 
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.common.web.SearchFieldModule;
 import cn.devicelinks.framework.common.web.SearchFieldTemplate;
 import cn.devicelinks.framework.common.web.SearchFieldTemplates;
@@ -77,7 +78,7 @@ public class SearchFieldQuery {
                                 .filter(operator -> operator.toString().equals(filter.getOperator()))
                                 .findAny()
                                 .orElseThrow(() -> new ApiException(StatusCode.SEARCH_FIELD_OPERATOR_NOT_SUPPORT, filter.getField(), filter.getOperator()));
-                        return new SearchFieldCondition(sqlFederationAway, filter.getField(), this.toSqlQueryOperator(filter.getOperator()), filter.getValue());
+                        return new SearchFieldCondition(sqlFederationAway, StringUtils.lowerCamelToLowerUnder(filter.getField()), this.toSqlQueryOperator(filter.getOperator()), filter.getValue());
                     })
                     .forEach(searchFieldConditionList::add);
             // @formatter:on
