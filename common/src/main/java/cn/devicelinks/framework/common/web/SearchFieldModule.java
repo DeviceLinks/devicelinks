@@ -17,6 +17,8 @@
 
 package cn.devicelinks.framework.common.web;
 
+import cn.devicelinks.framework.common.pojos.FunctionModule;
+
 /**
  * 检索字段模块
  *
@@ -39,5 +41,9 @@ public enum SearchFieldModule {
     /**
      * 通知
      */
-    Notification
+    Notification,
+    /**
+     * 功能模块
+     */
+    FunctionModule
 }

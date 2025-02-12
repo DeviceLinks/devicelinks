@@ -28,6 +28,10 @@ import lombok.Getter;
 @Getter
 public enum SearchField {
     ID("id", "ID"),
+    DELETED("deleted", "是否删除"),
+    CREATE_BY("createBy", "创建人ID"),
+    CREATE_TIME("createTime", "创建时间"),
+
     USER_NAME("name", "用户名称"),
     USER_ACCOUNT("account", "用户账号"),
     USER_PHONE("phone", "手机号"),
@@ -44,7 +48,9 @@ public enum SearchField {
     LOG_OBJECT_ID("objectId", "对象ID"),
     LOG_MSG("msg", "日志内容"),
     LOG_SUCCESS("success", "是否成功"),
-    ;
+    PRODUCT_ID("productId", "产品ID"),
+    FUNCTION_MODULE_NAME("name", "模块名称"),
+    FUNCTION_MODULE_IDENTIFIER("identifier", "模块标识符");
     private final String field;
     private final String text;
 

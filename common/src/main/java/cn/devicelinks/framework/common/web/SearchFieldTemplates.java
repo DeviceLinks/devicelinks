@@ -271,6 +271,36 @@ public interface SearchFieldTemplates {
                     SearchFieldOperator.NotEqualTo
             ));
 
+    SearchFieldTemplate FUNCTION_MODULE_PRODUCT_ID = SearchFieldTemplate.of(SearchField.PRODUCT_ID)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
+            ));
+
+    SearchFieldTemplate FUNCTION_MODULE_NAME = SearchFieldTemplate.of(SearchField.FUNCTION_MODULE_NAME)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
+            ));
+
+    SearchFieldTemplate FUNCTION_MODULE_IDENTIFIER = SearchFieldTemplate.of(SearchField.FUNCTION_MODULE_IDENTIFIER)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
+            ));
+
     // List of search field templates for each module
     Map<SearchFieldModule, List<SearchFieldTemplate>> MODULE_SEARCH_FIELD_TEMPLATE_MAP = new HashMap<>() {{
         put(SearchFieldModule.User, List.of(
@@ -296,6 +326,11 @@ public interface SearchFieldTemplates {
                 LOG_OBJECT_ID,
                 LOG_MSG,
                 LOG_SUCCESS
+        ));
+        put(SearchFieldModule.FunctionModule, List.of(
+                FUNCTION_MODULE_PRODUCT_ID,
+                FUNCTION_MODULE_NAME,
+                FUNCTION_MODULE_IDENTIFIER
         ));
     }};
 
