@@ -39,4 +39,15 @@ public interface StatusCodeConstants {
     StatusCode DEPARTMENT_NOT_FOUND = StatusCode.build("DEPARTMENT_NOT_FOUND", "部门：%s，不存在.");
     StatusCode DEPARTMENT_ALREADY_EXISTS = StatusCode.build("DEPARTMENT_ALREADY_EXISTS", "部门已经存在，请检查名称、标识符是否重复.");
     StatusCode DEPARTMENT_PARENT_NOT_EXISTS = StatusCode.build("DEPARTMENT_PARENT_NOT_EXISTS", "上级部门不存在.");
+
+    /**
+     * Function Module
+     */
+    StatusCode FUNCTION_MODULE_NOT_FOUND = StatusCode.build("FUNCTION_MODULE_NOT_FOUND", "功能模块：%s，不存在.");
+    StatusCode FUNCTION_MODULE_ALREADY_EXISTS = StatusCode.build("FUNCTION_MODULE_ALREADY_EXISTS", "功能模块已经存在，请检查名称、标识符是否重复.");
+
+    /**
+     * Product
+     */
+    StatusCode PRODUCT_NOT_EXISTS = StatusCode.build("PRODUCT_NOT_EXISTS", "产品：%s，不存在.");
 }

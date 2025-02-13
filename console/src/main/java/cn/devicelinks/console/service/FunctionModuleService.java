@@ -3,6 +3,7 @@ package cn.devicelinks.console.service;
 import cn.devicelinks.console.model.page.PaginationQuery;
 import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
+import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
 /**
@@ -11,7 +12,7 @@ import cn.devicelinks.framework.jdbc.core.page.PageResult;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface FunctionModuleService {
+public interface FunctionModuleService extends BaseService<FunctionModule, String> {
     /**
      * 获取功能模块列表
      *
@@ -20,4 +21,27 @@ public interface FunctionModuleService {
      * @return {@link FunctionModule}
      */
     PageResult<FunctionModule> getFunctionModulesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
+
+    /**
+     * 添加功能模块
+     *
+     * @param functionModule 功能模块 {@link FunctionModule}
+     * @return 已经添加的功能模块 {@link FunctionModule}
+     */
+    FunctionModule addFunctionModule(FunctionModule functionModule);
+
+    /**
+     * 更新功能模块
+     *
+     * @param functionModule 功能模块 {@link FunctionModule}
+     * @return 已更新的功能模块 {@link FunctionModule}
+     */
+    FunctionModule updateFunctionModule(FunctionModule functionModule);
+
+    /**
+     * 逻辑删除功能模块
+     *
+     * @param functionModuleId 功能模块ID {@link FunctionModule#getId()}
+     */
+    void deleteFunctionModule(String functionModuleId);
 }
