@@ -22,7 +22,24 @@ export default [
     routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
   },
   { path: '/home', name: '首页', icon: 'home', component: './Home' },
-  { path: '/userInfo', name: '用户', icon: 'user', component: './UserInfo' },
+  {
+    path: '/device',
+    name: '设备管理',
+    icon: 'laptop',
+    routes: [
+      { path: '/device', redirect: '/device/product' },
+      { path: '/device/product', name: '产品', component: './Device/Product' },
+    ],
+  },
+  {
+    path: '/system',
+    name: '系统管理',
+    icon: 'setting',
+    routes: [
+      { path: '/system', redirect: '/system/userInfo' },
+      { path: '/system/userInfo', name: '用户', component: './System/UserInfo' },
+    ],
+  },
   { path: '/', redirect: '/home' },
   { path: '*', layout: false, component: './404' },
 ];
