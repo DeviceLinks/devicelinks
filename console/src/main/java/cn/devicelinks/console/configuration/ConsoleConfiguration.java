@@ -20,6 +20,7 @@ package cn.devicelinks.console.configuration;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.request.RequestContextWebFilter;
 import cn.devicelinks.framework.common.security.SecurityUserDetailsProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -60,5 +61,18 @@ public class ConsoleConfiguration {
                 return UserDetailsContext.getDepartment();
             }
         };
+    }
+
+    /**
+     * 创建并返回一个 {@link RequestContextWebFilter} 实例。
+     * <p>
+     * 此方法用于配置请求上下文过滤器，该过滤器在每个请求处理过程中提供请求上下文的支持。
+     * 通过此过滤器，可以在请求的生命周期内存储和访问与请求相关的信息。
+     *
+     * @return 返回一个新的 {@link RequestContextWebFilter} 实例。
+     */
+    @Bean
+    public RequestContextWebFilter requestContextWebFilter() {
+        return new RequestContextWebFilter();
     }
 }
