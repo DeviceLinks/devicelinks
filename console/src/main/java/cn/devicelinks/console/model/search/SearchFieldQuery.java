@@ -17,12 +17,12 @@
 
 package cn.devicelinks.console.model.search;
 
+import cn.devicelinks.console.model.search.module.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.utils.StringUtils;
-import cn.devicelinks.framework.common.web.SearchFieldModule;
-import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplates;
+import cn.devicelinks.framework.common.web.SearchField;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 public class SearchFieldQuery {
 
     @NotEmpty
-    @EnumValid(target = SearchFieldModule.class, message = "检索字段模块参数非法")
+    @EnumValid(target = SearchFieldModuleIdentifier.class, message = "检索字段模块参数非法")
     private String searchFieldModule;
 
     @NotEmpty
@@ -61,19 +61,19 @@ public class SearchFieldQuery {
         List<SearchFieldCondition> searchFieldConditionList = new ArrayList<>();
         SqlFederationAway sqlFederationAway = this.toFederationAway();
         if (!ObjectUtils.isEmpty(this.searchFields)) {
-            List<SearchFieldTemplate> searchFieldTemplateList = SearchFieldTemplates.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(SearchFieldModule.valueOf(this.searchFieldModule));
-            Map<String, SearchFieldTemplate> searchFieldTemplateMap = searchFieldTemplateList.stream().collect(Collectors.toMap(SearchFieldTemplate::getField, v -> v));
+            List<SearchField> searchFieldTemplateList = SearchFieldModuleFactory.getSearchFields(SearchFieldModuleIdentifier.valueOf(this.searchFieldModule));
+            Map<String, SearchField> searchFieldMap = searchFieldTemplateList.stream().collect(Collectors.toMap(SearchField::getField, v -> v));
             // @formatter:off
             this.searchFields.stream()
                     // ignore empty value
                     .filter(f -> !ObjectUtils.isEmpty(f.getValue()))
                     .map(filter -> {
                         // check field is in module
-                        if (!searchFieldTemplateMap.containsKey(filter.getField())) {
+                        if (!searchFieldMap.containsKey(filter.getField())) {
                             throw new ApiException(StatusCode.SEARCH_FIELD_NOT_IN_MODULE, filter.getField(), this.searchFieldModule);
                         }
                         // check operator is support
-                        searchFieldTemplateMap.get(filter.getField()).getOperators()
+                        searchFieldMap.get(filter.getField()).getOperators()
                                 .stream()
                                 .filter(operator -> operator.toString().equals(filter.getOperator()))
                                 .findAny()

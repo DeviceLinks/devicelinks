@@ -64,6 +64,7 @@
         <argon2-jvm.version>2.11</argon2-jvm.version>
         <devicelinks-mqttv5.client.version>1.2.6</devicelinks-mqttv5.client.version>
         <bcpkix-jdk18on.version>1.79</bcpkix-jdk18on.version>
+        <reflections.version>0.10.2</reflections.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -262,6 +263,11 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${bcpkix-jdk18on.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
