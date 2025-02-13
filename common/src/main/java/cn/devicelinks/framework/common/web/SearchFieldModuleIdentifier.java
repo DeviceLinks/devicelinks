@@ -15,23 +15,37 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model;
-
-import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
+package cn.devicelinks.framework.common.web;
 
 /**
- * 获取检索字段请求参数
+ * 检索字段模块
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@Data
-public class GetSearchFieldQuery {
-
-    @NotEmpty
-    @EnumValid(target = SearchFieldModuleIdentifier.class, message = "检索字段模块不允许传递非法值")
-    private String module;
+public enum SearchFieldModuleIdentifier {
+    /**
+     * 用户
+     */
+    User,
+    /**
+     * 设备
+     */
+    Device,
+    /**
+     * 日志
+     */
+    Log,
+    /**
+     * 通知
+     */
+    Notification,
+    /**
+     * 功能模块
+     */
+    FunctionModule,
+    /**
+     * 属性
+     */
+    Attribute
 }

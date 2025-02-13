@@ -18,11 +18,11 @@
 package cn.devicelinks.console.web;
 
 import cn.devicelinks.console.model.GetSearchFieldQuery;
+import cn.devicelinks.console.model.search.module.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.web.SearchFieldModule;
-import cn.devicelinks.framework.common.web.SearchFieldTemplate;
-import cn.devicelinks.framework.common.web.SearchFieldTemplates;
+import cn.devicelinks.framework.common.web.SearchField;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,12 +43,12 @@ public class SysCommonController {
      * 获取功能模块的检索字段
      *
      * @param query 检索字段查询参数 {@link GetSearchFieldQuery}
-     * @return {@link SearchFieldTemplate}
+     * @return {@link SearchField}
      */
     @GetMapping(value = "/search/field")
     public ApiResponse getSearchField(@Valid GetSearchFieldQuery query) throws ApiException {
-        SearchFieldModule searchFieldModule = SearchFieldModule.valueOf(query.getModule());
-        List<SearchFieldTemplate> searchFieldTemplateList =  SearchFieldTemplates.MODULE_SEARCH_FIELD_TEMPLATE_MAP.get(searchFieldModule);
+        SearchFieldModuleIdentifier identifier = SearchFieldModuleIdentifier.valueOf(query.getModule());
+        List<SearchField> searchFieldTemplateList = SearchFieldModuleFactory.getSearchFields(identifier);
         return ApiResponse.success(searchFieldTemplateList);
     }
 }
