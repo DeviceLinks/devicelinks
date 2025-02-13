@@ -47,7 +47,10 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
     public FunctionModule addFunctionModule(FunctionModule functionModule) {
         // @formatter:off
         FunctionModule stored = this.repository.selectOne(
-                ConditionGroup.withCondition(FUNCTION_MODULE.PRODUCT_ID.eq(functionModule.getProductId())),
+                ConditionGroup.withCondition(
+                        FUNCTION_MODULE.PRODUCT_ID.eq(functionModule.getProductId()),
+                        FUNCTION_MODULE.DELETED.eq(Boolean.FALSE)
+                ),
                 ConditionGroup.withCondition(
                         SqlFederationAway.AND,
                         SqlFederationAway.OR,
@@ -71,6 +74,7 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
         // @formatter:off
         FunctionModule stored = this.repository.selectOne(ConditionGroup.withCondition(
                         FUNCTION_MODULE.PRODUCT_ID.eq(functionModule.getProductId()),
+                        FUNCTION_MODULE.DELETED.eq(Boolean.FALSE),
                         FUNCTION_MODULE.ID.neq(functionModule.getId())
                 ),
                 ConditionGroup.withCondition(
@@ -89,6 +93,6 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
 
     @Override
     public void deleteFunctionModule(String functionModuleId) {
-        this.repository.update(List.of(FUNCTION_MODULE.DELETED.set(true)), FUNCTION_MODULE.ID.eq(functionModuleId));
+        this.repository.update(List.of(FUNCTION_MODULE.DELETED.set(Boolean.TRUE)), FUNCTION_MODULE.ID.eq(functionModuleId));
     }
 }
