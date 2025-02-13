@@ -6,7 +6,7 @@
   npm install
 ```
 
-or
+or (更推荐)
 
 ```bash
   pnpm
@@ -14,6 +14,8 @@ or
 
 ## 运行
 
+开发环境
+
 ```bash
-  npm start
+  npm run dev
 ```
