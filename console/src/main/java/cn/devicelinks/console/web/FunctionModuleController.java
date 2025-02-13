@@ -7,8 +7,11 @@ import cn.devicelinks.console.model.UpdateFunctionModuleRequest;
 import cn.devicelinks.console.model.page.PaginationQuery;
 import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.FunctionModuleService;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -86,6 +89,10 @@ public class FunctionModuleController {
      * @throws ApiException 如果在添加功能模块时发生错误。
      */
     @PostMapping
+    @OperationLog(action = LogAction.Add,
+            objectType = LogObjectType.FunctionModule,
+            objectId = "{#executionSucceed ? #result.data.id : #p0.name}",
+            activateData = "{#p0}")
     public ApiResponse addFunctionModule(@Valid @RequestBody AddFunctionModuleRequest request) throws ApiException {
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         // @formatter:off
@@ -111,6 +118,11 @@ public class FunctionModuleController {
      * @throws ApiException 如果在更新功能模块时发生错误。
      */
     @PostMapping(value = "/{moduleId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.FunctionModule,
+            objectId = "{#p0}",
+            object = "{@functionModuleServiceImpl.selectById(#p0)}",
+            activateData = "{#p1}")
     public ApiResponse updateFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId,
                                             @Valid @RequestBody UpdateFunctionModuleRequest request) throws ApiException {
         FunctionModule storedModule = this.functionModuleService.selectById(moduleId);
@@ -137,6 +149,10 @@ public class FunctionModuleController {
      *                      并且如果指定了模块ID，则将其作为附加信息。
      */
     @DeleteMapping(value = "/{moduleId}")
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.FunctionModule,
+            objectId = "{#p0}",
+            activateData = "{#executionSucceed ? #result.data : null}")
     public ApiResponse deleteFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId) throws ApiException {
         FunctionModule storedModule = this.functionModuleService.selectById(moduleId);
         if (ObjectUtils.isEmpty(storedModule)) {
