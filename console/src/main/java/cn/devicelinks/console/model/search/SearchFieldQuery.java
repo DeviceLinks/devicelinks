@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console.model.search;
 
+import cn.devicelinks.console.model.StatusCodeConstants;
 import cn.devicelinks.console.model.search.module.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -35,6 +36,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -61,19 +63,29 @@ public class SearchFieldQuery {
         List<SearchFieldCondition> searchFieldConditionList = new ArrayList<>();
         SqlFederationAway sqlFederationAway = this.toFederationAway();
         if (!ObjectUtils.isEmpty(this.searchFields)) {
-            List<SearchField> searchFieldTemplateList = SearchFieldModuleFactory.getSearchFields(SearchFieldModuleIdentifier.valueOf(this.searchFieldModule));
-            Map<String, SearchField> searchFieldMap = searchFieldTemplateList.stream().collect(Collectors.toMap(SearchField::getField, v -> v));
+            List<SearchField> moduleSearchFieldList = SearchFieldModuleFactory.getSearchFields(SearchFieldModuleIdentifier.valueOf(this.searchFieldModule));
+            Map<String, SearchField> moduleSearchFieldMap = moduleSearchFieldList.stream().collect(Collectors.toMap(SearchField::getField, v -> v));
+
+            // check required fields present
+            if (moduleSearchFieldList.stream().anyMatch(SearchField::isRequired)) {
+                Set<String> searchFieldParameterSet = this.searchFields.stream().map(SearchFieldFilter::getField).collect(Collectors.toSet());
+                List<String> requiredSearchFieldList = moduleSearchFieldList.stream().filter(SearchField::isRequired).map(SearchField::getField).toList();
+                boolean allRequiredFieldsPresent = requiredSearchFieldList.stream().allMatch(searchFieldParameterSet::contains);
+                if (!allRequiredFieldsPresent) {
+                    throw new ApiException(StatusCodeConstants.SEARCH_FIELD_REQUIRED_NOT_PRESENT, requiredSearchFieldList);
+                }
+            }
             // @formatter:off
             this.searchFields.stream()
                     // ignore empty value
                     .filter(f -> !ObjectUtils.isEmpty(f.getValue()))
                     .map(filter -> {
                         // check field is in module
-                        if (!searchFieldMap.containsKey(filter.getField())) {
+                        if (!moduleSearchFieldMap.containsKey(filter.getField())) {
                             throw new ApiException(StatusCode.SEARCH_FIELD_NOT_IN_MODULE, filter.getField(), this.searchFieldModule);
                         }
                         // check operator is support
-                        searchFieldMap.get(filter.getField()).getOperators()
+                        moduleSearchFieldMap.get(filter.getField()).getOperators()
                                 .stream()
                                 .filter(operator -> operator.toString().equals(filter.getOperator()))
                                 .findAny()
