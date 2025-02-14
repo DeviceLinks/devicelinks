@@ -168,7 +168,9 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
                 if (searchColumn != null && !ObjectUtils.isEmpty(searchFieldCondition.getValue())) {
                     // convert condition value
                     Condition condition = Condition.withColumn(searchFieldCondition.getOperator(), searchColumn, searchFieldCondition.getValue());
-                    consumer.accept(condition);
+                    if (consumer != null) {
+                        consumer.accept(condition);
+                    }
                     this.appendCondition(!ObjectUtils.isEmpty(searchFieldCondition.getValue()), searchFieldCondition.getFederationAway(), condition);
                 }
             });
