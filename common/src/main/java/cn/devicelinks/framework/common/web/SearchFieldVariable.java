@@ -54,6 +54,7 @@ public enum SearchFieldVariable {
     FUNCTION_MODULE_IDENTIFIER("identifier", "模块标识符"),
 
     ATTRIBUTE_NAME("name", "属性名称"),
+    ATTRIBUTE_PARENT_ID("pid","属性上级ID"),
     ATTRIBUTE_DATA_TYPE("dataType", "数据类型"),
     ATTRIBUTE_IDENTIFIER("identifier","属性标识符"),
     ;

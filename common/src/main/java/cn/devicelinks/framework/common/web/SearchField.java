@@ -41,6 +41,7 @@ public class SearchField {
     private String optionApiDataCode;
     private List<SearchFieldOptionData> optionStaticData;
     private List<SearchFieldOperator> operators;
+    private boolean required;
 
     public static SearchField of() {
         return new SearchField();

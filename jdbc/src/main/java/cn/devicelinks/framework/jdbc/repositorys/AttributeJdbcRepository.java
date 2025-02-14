@@ -20,7 +20,13 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.*;
 import org.springframework.jdbc.core.JdbcOperations;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TAttribute.ATTRIBUTE;
 
@@ -32,7 +38,28 @@ import static cn.devicelinks.framework.jdbc.tables.TAttribute.ATTRIBUTE;
  */
 @RegisterBean
 public class AttributeJdbcRepository extends JdbcRepository<Attribute, String> implements AttributeRepository {
-	public AttributeJdbcRepository(JdbcOperations jdbcOperations) {
-		super(ATTRIBUTE, jdbcOperations);
-	}
+
+    public AttributeJdbcRepository(JdbcOperations jdbcOperations) {
+        super(ATTRIBUTE, jdbcOperations);
+    }
+
+    @Override
+    public PageResult<Attribute> getAttributesByPage(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
+        // @formatter:off
+        Condition[] conditions = searchFieldConditionList
+                .stream()
+                .map(condition -> {
+                    Column searchColumn = this.table.getColumn(condition.getColumnName());
+                    return Condition.withColumn(condition.getOperator(), searchColumn, condition.getValue());
+                })
+                .toArray(Condition[]::new);
+
+        FusionCondition fusionCondition = FusionCondition
+                .withConditions(conditions)
+                .sort(sortCondition)
+                .build();
+        // @formatter:on
+
+        return this.page(fusionCondition, pageQuery);
+    }
 }

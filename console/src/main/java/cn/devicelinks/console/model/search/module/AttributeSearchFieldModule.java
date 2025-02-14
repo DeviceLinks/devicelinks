@@ -33,6 +33,7 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
 
     SearchField ATTRIBUTE_PRODUCT_ID = SearchField.of(SearchFieldVariable.PRODUCT_ID)
             .setValueType(SearchFieldValueType.STRING)
+            .setRequired(true)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
@@ -43,12 +44,23 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
 
     SearchField ATTRIBUTE_MODULE_ID = SearchField.of(SearchFieldVariable.FUNCTION_MODULE_ID)
             .setValueType(SearchFieldValueType.STRING)
+            .setRequired(true)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
                     SearchFieldOperator.Like,
                     SearchFieldOperator.NotLike
+            ));
+
+    SearchField ATTRIBUTE_PARENT_ID = SearchField.of(SearchFieldVariable.ATTRIBUTE_PARENT_ID)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
             ));
 
     SearchField ATTRIBUTE_IDENTIFIER = SearchField.of(SearchFieldVariable.ATTRIBUTE_IDENTIFIER)
@@ -107,6 +119,7 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
         return List.of(
                 ATTRIBUTE_PRODUCT_ID,
                 ATTRIBUTE_MODULE_ID,
+                ATTRIBUTE_PARENT_ID,
                 ATTRIBUTE_IDENTIFIER,
                 ATTRIBUTE_DATA_TYPE,
                 ATTRIBUTE_NAME

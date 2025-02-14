@@ -22,6 +22,10 @@ import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.parser.SQLStatementParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -77,7 +81,12 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
     private static String appendWhereKeyWord(String sql) {
         sql = StringUtils.removeTrailingSpaces(sql);
         String whereKeyword = WhereBuilder.WHERE.trim();
-        if (!sql.contains(whereKeyword)) {
+
+        SQLStatementParser parser = new SQLStatementParser(sql);
+        SQLStatement stmt = parser.parseStatement();
+        SQLSelectQueryBlock query = (SQLSelectQueryBlock) ((SQLSelectStatement) stmt).getSelect().getQuery();
+
+        if (query.getWhere() == null) {
             sql += Constants.SPACE + whereKeyword + Constants.SPACE;
         }
         return sql;
@@ -159,7 +168,9 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
                 if (searchColumn != null && !ObjectUtils.isEmpty(searchFieldCondition.getValue())) {
                     // convert condition value
                     Condition condition = Condition.withColumn(searchFieldCondition.getOperator(), searchColumn, searchFieldCondition.getValue());
-                    consumer.accept(condition);
+                    if (consumer != null) {
+                        consumer.accept(condition);
+                    }
                     this.appendCondition(!ObjectUtils.isEmpty(searchFieldCondition.getValue()), searchFieldCondition.getFederationAway(), condition);
                 }
             });
