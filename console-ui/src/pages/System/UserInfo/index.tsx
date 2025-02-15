@@ -1,7 +1,6 @@
 import { PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
 import React, { useState } from 'react';
 import { pageUserApi } from './api';
-import { TABLE_COLUMNS } from './config';
 import Add from './modules/add';
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -14,7 +13,7 @@ const UserInfo: React.FC = () => {
       <ProCard direction="column" ghost gutter={[0, 16]}>
         <ProTable
           loading={loading}
-          columns={{ TABLE_COLUMNS }}
+          // columns={{ TABLE_COLUMNS }}
           // params 是需要自带的参数
           // 这个参数优先级更高，会覆盖查询表单的参数
           // params={params}
@@ -26,8 +25,6 @@ const UserInfo: React.FC = () => {
               current: number;
             },
           ) => {
-            // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-            // 如果需要转化参数可以在这里进行修改
             setLoading(true);
             const result: any = await pageUserApi(
               {

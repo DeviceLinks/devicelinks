@@ -32,8 +32,8 @@ export default () => {
         onCancel: () => console.log('run'),
       }}
       submitTimeout={2000}
-      onFinish={async (values) => {
-        await addUserApi({ data: values });
+      onFinish={async (values: any) => {
+        await addUserApi(values);
         message.success('新增成功');
         return true;
       }}
