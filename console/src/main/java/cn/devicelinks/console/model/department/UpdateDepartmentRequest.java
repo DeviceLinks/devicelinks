@@ -15,28 +15,32 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model;
+package cn.devicelinks.console.model.department;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 /**
- * 部门查询请求参数
+ * 更新部门请求实体
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
-public class DepartmentsQuery {
+public class UpdateDepartmentRequest {
 
+    @NotEmpty(message = "部门名称不可以为空")
     @Length(max = 30, message = "部门名称不可以超过30个字符")
     private String name;
 
-    @Length(max = 50, message = "部门标识符不可以超过50个字符")
-    private String identifier;
-
     @Length(max = 32, message = "部门上级ID不可以超过32个字符")
     private String pid;
-    
-    private boolean includeChildren;
+
+    @Range(min = 0, max = Integer.MAX_VALUE, message = "部门排序需要大于0并且小于" + Integer.MAX_VALUE)
+    private int sort;
+
+    @Length(max = 200, message = "部门描述不可以超过200个字符")
+    private String description;
 }

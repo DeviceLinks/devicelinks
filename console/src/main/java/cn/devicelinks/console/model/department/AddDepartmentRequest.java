@@ -15,7 +15,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model;
+package cn.devicelinks.console.model.department;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

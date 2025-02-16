@@ -15,33 +15,28 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model;
+package cn.devicelinks.console.model.department;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * 更新用户信息请求实体
+ * 部门查询请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
-public class UpdateUserRequest {
+public class DepartmentsQuery {
 
-    @NotEmpty(message = "用户名称不可以为空")
-    @Length(max = 30, message = "用户名称最大允许传递30个字符串")
-    private String username;
+    @Length(max = 30, message = "部门名称不可以超过30个字符")
+    private String name;
 
-    @Email(message = "邮箱地址格式非法")
-    private String email;
+    @Length(max = 50, message = "部门标识符不可以超过50个字符")
+    private String identifier;
 
-    @NotEmpty
-    private String departmentId;
-
-    private String phone;
-
-    private String mark;
+    @Length(max = 32, message = "部门上级ID不可以超过32个字符")
+    private String pid;
+    
+    private boolean includeChildren;
 }

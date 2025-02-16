@@ -21,6 +21,7 @@ import cn.devicelinks.framework.common.Constants;
 import com.google.common.base.CaseFormat;
 import org.springframework.util.ObjectUtils;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -29,6 +30,8 @@ import java.util.StringJoiner;
  * @since 1.0
  */
 public class StringUtils {
+    private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+
     /**
      * 将字符串转换为驼峰格式首字母大写
      *
@@ -129,5 +132,22 @@ public class StringUtils {
             return Constants.EMPTY_STRING;
         }
         return inputString.replaceAll("\\s+$", Constants.EMPTY_STRING);
+    }
+
+    /**
+     * 获取指定长度的随机字符串
+     *
+     * @param length 字符串长度
+     * @return 随机字符串
+     */
+    public static String getRandomString(int length) {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[length];
+        random.nextBytes(bytes);
+        StringBuilder sb = new StringBuilder(length);
+        for (byte aByte : bytes) {
+            sb.append(CHARS.charAt(Math.abs(aByte) % CHARS.length()));
+        }
+        return sb.toString();
     }
 }

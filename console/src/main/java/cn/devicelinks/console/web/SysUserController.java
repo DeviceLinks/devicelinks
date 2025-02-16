@@ -21,6 +21,8 @@ import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.model.*;
 import cn.devicelinks.console.model.page.PaginationQuery;
 import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.model.user.AddUserRequest;
+import cn.devicelinks.console.model.user.UpdateUserRequest;
 import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -31,6 +33,7 @@ import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +54,7 @@ import java.time.LocalDateTime;
 @RequestMapping(value = "/api/user")
 @RequiredArgsConstructor
 public class SysUserController {
-
+    private static final int ACTIVATE_TOKEN_LENGTH = 50;
     private final SysUserService userService;
 
     /**
@@ -111,7 +114,7 @@ public class SysUserController {
                 .setAccount(request.getAccount())
                 .setName(request.getUsername())
                 .setEmail(request.getEmail())
-                .setActivateToken(SecureRandomString.getActiveToken())
+                .setActivateToken(StringUtils.getRandomString(ACTIVATE_TOKEN_LENGTH))
                 .setIdentity(UserIdentity.User)
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
                 .setCreateBy(currentUser.getId())
