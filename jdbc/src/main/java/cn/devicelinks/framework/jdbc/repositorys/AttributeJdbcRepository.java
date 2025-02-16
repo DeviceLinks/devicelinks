@@ -23,7 +23,10 @@ import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.*;
+import cn.devicelinks.framework.jdbc.core.sql.Condition;
+import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;

@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common.pojos;
 
+import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -70,12 +71,22 @@ public class AttributeAddition implements Serializable {
      * 数据值映射
      */
     private Map<String, String> valueMap = new HashMap<>();
+    /**
+     * 数组单个元素的数量
+     */
+    private int elementCount;
+    /**
+     * 数组单个元素的数据类型
+     * <p>
+     * 单个元素的数据类型不支持{@link AttributeDataType#ARRAY}、{@link AttributeDataType#ENUM}
+     */
+    private AttributeDataType elementDataType;
 
     @Setter
     @Getter
     public static class ValueRange {
-        private int min;
-        private int max;
+        private Number min;
+        private Number max;
 
     }
 }

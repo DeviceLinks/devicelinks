@@ -52,4 +52,6 @@ public interface StatusCodeConstants {
     StatusCode PRODUCT_NOT_EXISTS = StatusCode.build("PRODUCT_NOT_EXISTS", "产品：%s，不存在.");
 
     StatusCode SEARCH_FIELD_REQUIRED_NOT_PRESENT = StatusCode.build("SEARCH_FIELD_REQUIRED_NOT_PRESENT", "检索字段：[%s]，必须全部传递.");
+
+    StatusCode ATTRIBUTE_NOT_FOUND = StatusCode.build("ATTRIBUTE_NOT_FOUND", "属性：%s，不存在.");
 }
