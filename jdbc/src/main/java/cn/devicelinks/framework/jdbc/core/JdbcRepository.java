@@ -409,4 +409,24 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         }
         return selectBuilder.build();
     }
+
+    /**
+     * Convert {@link SearchFieldCondition} List To {@link Condition} Array
+     *
+     * @param searchFieldConditionList searchFieldConditionList
+     * @return Condition Array
+     */
+    protected Condition[] searchFieldConditionToConditionArray(List<SearchFieldCondition> searchFieldConditionList) {
+        if (ObjectUtils.isEmpty(searchFieldConditionList)) {
+            return null;
+        }
+        // @formatter:off
+        return searchFieldConditionList
+                .stream()
+                .map(condition -> {
+                    Column searchColumn = this.table.getColumn(condition.getColumnName());
+                    return Condition.withColumn(condition.getOperator(), searchColumn, condition.getValue());
+                })
+                .toArray(Condition[]::new);
+    }
 }
