@@ -37,7 +37,7 @@ public class SearchFieldTest {
 
     @Test
     public void testGetSearchFields() {
-        List<SearchField> searchFieldList = SearchFieldModuleFactory.getSearchFields(SearchFieldModuleIdentifier.User);
+        List<SearchField> searchFieldList = SearchFieldModuleFactory.getSearchFields(SearchFieldModuleIdentifier.Product);
         System.out.println(JacksonUtils.objectToJson(searchFieldList));
     }
 }

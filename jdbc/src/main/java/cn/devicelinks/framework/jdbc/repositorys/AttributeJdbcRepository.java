@@ -20,7 +20,6 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
@@ -49,14 +48,7 @@ public class AttributeJdbcRepository extends JdbcRepository<Attribute, String> i
     @Override
     public PageResult<Attribute> getAttributesByPage(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
         // @formatter:off
-        Condition[] conditions = searchFieldConditionList
-                .stream()
-                .map(condition -> {
-                    Column searchColumn = this.table.getColumn(condition.getColumnName());
-                    return Condition.withColumn(condition.getOperator(), searchColumn, condition.getValue());
-                })
-                .toArray(Condition[]::new);
-
+        Condition[] conditions = searchFieldConditionToConditionArray(searchFieldConditionList);
         FusionCondition fusionCondition = FusionCondition
                 .withConditions(conditions)
                 .sort(sortCondition)
