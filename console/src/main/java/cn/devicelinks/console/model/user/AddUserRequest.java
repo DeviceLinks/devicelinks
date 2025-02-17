@@ -22,6 +22,7 @@ import cn.devicelinks.framework.common.web.validator.EnumValid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -35,10 +36,12 @@ import org.hibernate.validator.constraints.Length;
 public class AddUserRequest {
 
     @NotEmpty(message = "用户名称不可以为空")
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "用户名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")
     @Length(max = 30, message = "用户名称最大允许传递30个字符串")
     private String username;
 
     @NotEmpty(message = "用户账号不可以为空")
+    @Pattern(regexp = "^[a-zA-Z0-9@][a-zA-Z0-9_@]*$", message = "用户账号仅支持大小写字母、数字、下划线、@，且不允许以下划线开头。")
     @Length(max = 30, message = "用户账号最大允许传递30个字符串")
     private String account;
 
@@ -49,6 +52,7 @@ public class AddUserRequest {
     @Email(message = "邮箱地址格式非法")
     private String email;
 
+    @Pattern(regexp = "^1[3-9]\\d{9}$|^$", message = "请输入有效的手机号码")
     private String phone;
 
     private String departmentId;

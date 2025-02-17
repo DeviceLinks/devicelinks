@@ -19,6 +19,7 @@ package cn.devicelinks.console.model.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -32,6 +33,7 @@ import org.hibernate.validator.constraints.Length;
 public class UpdateUserRequest {
 
     @NotEmpty(message = "用户名称不可以为空")
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "用户名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")
     @Length(max = 30, message = "用户名称最大允许传递30个字符串")
     private String username;
 
@@ -41,6 +43,7 @@ public class UpdateUserRequest {
     @NotEmpty
     private String departmentId;
 
+    @Pattern(regexp = "^1[3-9]\\d{9}$|^$", message = "请输入有效的手机号码")
     private String phone;
 
     private String mark;
