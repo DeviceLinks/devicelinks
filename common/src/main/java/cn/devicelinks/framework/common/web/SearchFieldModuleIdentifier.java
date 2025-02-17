@@ -47,5 +47,9 @@ public enum SearchFieldModuleIdentifier {
     /**
      * 属性
      */
-    Attribute
+    Attribute,
+    /**
+     * 产品
+     */
+    Product
 }

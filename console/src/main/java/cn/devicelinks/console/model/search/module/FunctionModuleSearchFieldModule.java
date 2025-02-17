@@ -1,6 +1,7 @@
 package cn.devicelinks.console.model.search.module;
 
 import cn.devicelinks.framework.common.web.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
+@Component
 public class FunctionModuleSearchFieldModule implements SearchFieldModule {
 
     SearchField FUNCTION_MODULE_ID = SearchField.of(SearchFieldVariable.ID)

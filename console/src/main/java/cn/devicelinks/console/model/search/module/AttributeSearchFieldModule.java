@@ -6,6 +6,7 @@ import cn.devicelinks.framework.common.web.SearchField;
 import cn.devicelinks.framework.common.web.SearchFieldModule;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.common.web.SearchFieldVariable;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
+@Component
 public class AttributeSearchFieldModule implements SearchFieldModule {
 
     SearchFieldOptionData ATTRIBUTE_DATA_TYPE_STRING = SearchFieldOptionData.of().setLabel("字符串").setValue(AttributeDataType.STRING);

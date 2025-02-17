@@ -17,10 +17,12 @@
 
 package cn.devicelinks.console;
 
+import cn.devicelinks.console.annotation.RunTest;
 import cn.devicelinks.console.model.search.module.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.web.SearchField;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -30,9 +32,11 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
+@RunTest
 public class SearchFieldTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void testGetSearchFields() {
         List<SearchField> searchFieldList = SearchFieldModuleFactory.getSearchFields(SearchFieldModuleIdentifier.User);
         System.out.println(JacksonUtils.objectToJson(searchFieldList));
     }
