@@ -19,3 +19,9 @@ or (更推荐)
 ```bash
   npm run dev
 ```
+## OpenAPI 替换
+  1. 将 `config/openapi.json` 替换为你的 OpenAPI 配置文件
+  2. 运行
+```bash 
+  npm run openapi
+```
