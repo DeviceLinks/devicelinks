@@ -51,5 +51,9 @@ public enum SearchFieldValueType {
     /**
      * 时间
      */
-    TIME
+    TIME,
+    /**
+     * 枚举
+     */
+    ENUM
 }

@@ -19,7 +19,10 @@ package cn.devicelinks.framework.common.web;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.util.ObjectUtils;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,13 +36,18 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class SearchField {
+    /**
+     * 值类型为枚举时用于获取枚举中定义的对应"label"的字段
+     */
+    private static final String ENUM_OBJECT_LABEL_FIELD = "description";
     private String field;
     private String fieldText;
     private SearchFieldValueType valueType;
     private SearchFieldComponentType componentType;
-    private SearchFieldOptionDataSource optionDataSource;
+    private SearchFieldOptionDataSource optionDataSource = SearchFieldOptionDataSource.STATIC;
     private String optionApiDataCode;
     private List<SearchFieldOptionData> optionStaticData;
+    private Class<? extends Enum> enumClass;
     private List<SearchFieldOperator> operators;
     private boolean required;
 
@@ -49,5 +57,28 @@ public class SearchField {
 
     public static SearchField of(SearchFieldVariable variable) {
         return new SearchField().setField(variable.getField()).setFieldText(variable.getText());
+    }
+
+    public List<SearchFieldOptionData> getOptionStaticData() {
+        if (SearchFieldValueType.ENUM == this.valueType && this.enumClass != null) {
+            List<SearchFieldOptionData> optionData = new ArrayList<>();
+            for (Enum<?> enumConstant : this.enumClass.getEnumConstants()) {
+                try {
+                    Field field = enumConstant.getClass().getDeclaredField(ENUM_OBJECT_LABEL_FIELD);
+                    field.setAccessible(true);
+                    String description = (String) field.get(enumConstant);
+
+                    optionData.add(SearchFieldOptionData.of()
+                            .setValue(enumConstant.name())
+                            .setLabel(!ObjectUtils.isEmpty(description) ? description : enumConstant.toString()));
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    optionData.add(SearchFieldOptionData.of()
+                            .setValue(enumConstant.name())
+                            .setLabel(enumConstant.toString()));
+                }
+            }
+            return optionData;
+        }
+        return optionStaticData;
     }
 }

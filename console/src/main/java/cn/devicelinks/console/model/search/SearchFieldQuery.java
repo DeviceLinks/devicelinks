@@ -24,6 +24,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.common.web.SearchField;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.common.web.SearchFieldValueType;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
@@ -90,7 +91,18 @@ public class SearchFieldQuery {
                                 .filter(operator -> operator.toString().equals(filter.getOperator()))
                                 .findAny()
                                 .orElseThrow(() -> new ApiException(StatusCode.SEARCH_FIELD_OPERATOR_NOT_SUPPORT, filter.getField(), filter.getOperator()));
-                        return new SearchFieldCondition(sqlFederationAway, StringUtils.lowerCamelToLowerUnder(filter.getField()), this.toSqlQueryOperator(filter.getOperator()), filter.getValue());
+
+                        // if value type is enum, convert value to enum object
+                        SearchField searchField = moduleSearchFieldMap.get(filter.getField());
+                        Object filterValue = filter.getValue();
+                        if (SearchFieldValueType.ENUM == searchField.getValueType() && searchField.getEnumClass() != null) {
+                            try {
+                                filterValue = Enum.valueOf(searchField.getEnumClass(), filter.getValue().toString());
+                            } catch (Exception e) {
+                                throw new ApiException(StatusCodeConstants.SEARCH_FIELD_ENUM_VALUE_ILLEGAL, filter.getField(), filter.getValue());
+                            }
+                        }
+                        return new SearchFieldCondition(sqlFederationAway, StringUtils.lowerCamelToLowerUnder(filter.getField()), this.toSqlQueryOperator(filter.getOperator()), filterValue);
                     })
                     .forEach(searchFieldConditionList::add);
             // @formatter:on
