@@ -19,11 +19,8 @@ export async function postAuthLogin(
 
 /** 退出登录 POST /auth/logout */
 export async function postAuthLogout(options?: { [key: string]: any }) {
-  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
-    '/auth/logout',
-    {
-      method: 'POST',
-      ...(options || {}),
-    },
-  );
+  return request<API.ResponseResult>('/auth/logout', {
+    method: 'POST',
+    ...(options || {}),
+  });
 }

@@ -20,7 +20,7 @@ export async function postApiDepartment(
   },
   options?: { [key: string]: any },
 ) {
-  return request<Record<string, any>>('/api/department', {
+  return request<API.ResponseResult>('/api/department', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ export async function postApiDepartmentDepartmentId(
   options?: { [key: string]: any },
 ) {
   const { departmentId: param0, ...queryParams } = params;
-  return request<Record<string, any>>(`/api/department/${param0}`, {
+  return request<API.ResponseResult>(`/api/department/${param0}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export async function deleteApiDepartmentDepartmentId(
   options?: { [key: string]: any },
 ) {
   const { departmentId: param0, ...queryParams } = params;
-  return request<Record<string, any>>(`/api/department/${param0}`, {
+  return request<API.ResponseResult>(`/api/department/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),

@@ -49,17 +49,14 @@ export async function postApiOpenApiFunctionModule(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{ code: boolean; message: string; data: string; additional: Record<string, any> }>(
-    '/api/function/module',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<API.ResponseResult>('/api/function/module', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 查询功能模块详情 GET /api/function/module/${param0} */
@@ -92,18 +89,15 @@ export async function postApiOpenApiFunctionModuleModuleId(
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
-  return request<{ code: boolean; message: string; data: string; additional: Record<string, any> }>(
-    `/api/function/module/${param0}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...queryParams },
-      data: body,
-      ...(options || {}),
+  return request<API.ResponseResult>(`/api/function/module/${param0}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...queryParams },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 删除功能模块 DELETE /api/function/module/${param0} */
@@ -113,12 +107,9 @@ export async function deleteApiOpenApiFunctionModuleModuleId(
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
-  return request<{ code: boolean; message: string; data: string; additional: Record<string, any> }>(
-    `/api/function/module/${param0}`,
-    {
-      method: 'DELETE',
-      params: { ...queryParams },
-      ...(options || {}),
-    },
-  );
+  return request<API.ResponseResult>(`/api/function/module/${param0}`, {
+    method: 'DELETE',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
 }

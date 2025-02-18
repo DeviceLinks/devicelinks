@@ -106,6 +106,7 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
+      console.log(config, '222');
       if (PROXY_PREFIX) {
         config.url = `${PROXY_PREFIX}${config.url}`;
       }

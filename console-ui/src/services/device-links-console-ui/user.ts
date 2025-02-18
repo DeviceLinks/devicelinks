@@ -149,14 +149,11 @@ export async function postApiUserStatusUserId(
   options?: { [key: string]: any },
 ) {
   const { userId: param0, ...queryParams } = params;
-  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
-    `/api/user/status/${param0}`,
-    {
-      method: 'POST',
-      params: {
-        ...queryParams,
-      },
-      ...(options || {}),
+  return request<API.ResponseResult>(`/api/user/status/${param0}`, {
+    method: 'POST',
+    params: {
+      ...queryParams,
     },
-  );
+    ...(options || {}),
+  });
 }

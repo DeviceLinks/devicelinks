@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "devicelinks",
     "description": "",
@@ -7,7 +7,7 @@
   },
   "tags": [
     {
-      "name": "function"
+      "name": "functionModule"
     },
     {
       "name": "login"
@@ -35,7 +35,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "function"
+          "functionModule"
         ],
         "parameters": [
           {
@@ -43,9 +43,9 @@
             "in": "query",
             "description": "每页条数",
             "required": false,
-            "example": "10",
+            "example": 10,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -53,9 +53,9 @@
             "in": "query",
             "description": "当前页码",
             "required": false,
-            "example": "1",
+            "example": 1,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -174,13 +174,15 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
                       "type": "string",
                       "description": "消息"
                     },
                     "data": {
+                      "description": "响应数据",
                       "type": "object",
                       "properties": {
                         "page": {
@@ -270,7 +272,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "function"
+          "functionModule"
         ],
         "parameters": [
           {
@@ -324,29 +326,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "boolean",
-                      "description": "状态码"
-                    },
-                    "message": {
-                      "type": "string",
-                      "description": "消息"
-                    },
-                    "data": {
-                      "type": "string"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 }
               }
@@ -367,7 +349,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "function"
+          "functionModule"
         ],
         "parameters": [
           {
@@ -401,7 +383,8 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
                       "type": "string",
@@ -457,7 +440,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "function"
+          "functionModule"
         ],
         "parameters": [
           {
@@ -515,29 +498,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "boolean",
-                      "description": "状态码"
-                    },
-                    "message": {
-                      "type": "string",
-                      "description": "消息"
-                    },
-                    "data": {
-                      "type": "string"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 }
               }
@@ -556,7 +519,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "function"
+          "functionModule"
         ],
         "parameters": [
           {
@@ -587,29 +550,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "boolean",
-                      "description": "状态码"
-                    },
-                    "message": {
-                      "type": "string",
-                      "description": "消息"
-                    },
-                    "data": {
-                      "type": "string"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 }
               }
@@ -727,27 +670,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "null"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 },
                 "examples": {
@@ -844,10 +769,12 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "消息"
                     },
                     "data": {
                       "$ref": "#/components/schemas/User"
@@ -917,9 +844,9 @@
             "in": "query",
             "description": "每页条数",
             "required": false,
-            "example": "10",
+            "example": 10,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -927,9 +854,9 @@
             "in": "query",
             "description": "当前页码",
             "required": false,
-            "example": "1",
+            "example": 1,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -1053,12 +980,15 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "消息"
                     },
                     "data": {
+                      "description": "响应数据",
                       "type": "object",
                       "properties": {
                         "page": {
@@ -1234,10 +1164,12 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "消息"
                     },
                     "data": {
                       "$ref": "#/components/schemas/User"
@@ -1333,10 +1265,12 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "消息"
                     },
                     "data": {
                       "$ref": "#/components/schemas/User"
@@ -1441,27 +1375,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "null"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 },
                 "examples": {
@@ -1525,18 +1441,7 @@
                       "description": "消息"
                     },
                     "data": {
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/User"
-                        },
-                        "department": {
-                          "$ref": "#/components/schemas/Department"
-                        }
-                      },
-                      "required": [
-                        "user",
-                        "department"
-                      ],
+                      "description": "响应数据",
                       "$ref": "#/components/schemas/CurrentUser"
                     },
                     "additional": {
@@ -1620,9 +1525,9 @@
             "in": "query",
             "description": "每页条数",
             "required": false,
-            "example": "10",
+            "example": 10,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -1630,9 +1535,9 @@
             "in": "query",
             "description": "当前页码",
             "required": false,
-            "example": "1",
+            "example": 1,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -1701,7 +1606,7 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "boolean",
+                      "type": "string",
                       "description": "状态码"
                     },
                     "message": {
@@ -1729,8 +1634,11 @@
                           "description": "总条数"
                         },
                         "result": {
-                          "description": "分页数据列表",
-                          "$ref": "#/components/schemas/Product"
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Product"
+                          },
+                          "description": "分页数据列表"
                         }
                       },
                       "required": [
@@ -1787,6 +1695,105 @@
                       "additional": {}
                     }
                   }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "新增产品",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "名称"
+                  },
+                  "deviceType": {
+                    "type": "string",
+                    "description": "设备类型"
+                  },
+                  "networkingAway": {
+                    "type": "string",
+                    "description": "设备网络方式"
+                  },
+                  "accessGatewayProtocol": {
+                    "type": "string",
+                    "description": "接入网关协议，仅网关子设备类型传递该参数"
+                  },
+                  "dataFormat": {
+                    "type": "string",
+                    "description": "数据格式"
+                  },
+                  "authenticationMethod": {
+                    "type": "string",
+                    "description": "鉴权方式"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "描述"
+                  }
+                },
+                "required": [
+                  "name",
+                  "deviceType",
+                  "networkingAway",
+                  "accessGatewayProtocol",
+                  "dataFormat",
+                  "authenticationMethod",
+                  "description"
+                ]
+              },
+              "example": {
+                "name": "测试产品",
+                "deviceType": "Direct",
+                "networkingAway": "CellularNetwork",
+                "accessGatewayProtocol": "Mqtt",
+                "dataFormat": "Json",
+                "authenticationMethod": "MqttBasic",
+                "description": "产品描述信息.."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResult",
+                  "required": [
+                    "data"
+                  ]
                 }
               }
             },
@@ -1874,8 +1881,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "$ref": "#/components/schemas/ResponseResult",
+                  "required": [
+                    "data"
+                  ]
                 }
               }
             },
@@ -1955,8 +1964,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "$ref": "#/components/schemas/ResponseResult",
+                  "required": [
+                    "data"
+                  ]
                 }
               }
             },
@@ -2005,8 +2016,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "$ref": "#/components/schemas/ResponseResult",
+                  "required": [
+                    "data"
+                  ]
                 }
               }
             },
@@ -2058,10 +2071,12 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "消息"
                     },
                     "data": {
                       "$ref": "#/components/schemas/Department"
@@ -2288,9 +2303,9 @@
             "in": "query",
             "description": "每页条数",
             "required": false,
-            "example": "10",
+            "example": 10,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -2298,9 +2313,9 @@
             "in": "query",
             "description": "当前页码",
             "required": false,
-            "example": "1",
+            "example": 1,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           },
           {
@@ -2419,13 +2434,15 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
                       "type": "string",
                       "description": "消息"
                     },
                     "data": {
+                      "description": "响应数据",
                       "type": "object",
                       "properties": {
                         "page": {
@@ -2661,29 +2678,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "boolean",
-                      "description": "状态码"
-                    },
-                    "message": {
-                      "type": "string",
-                      "description": "消息"
-                    },
-                    "data": {
-                      "type": "string"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 }
               }
@@ -2738,7 +2735,7 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "boolean",
+                      "type": "string",
                       "description": "状态码"
                     },
                     "message": {
@@ -2927,29 +2924,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "boolean",
-                      "description": "状态码"
-                    },
-                    "message": {
-                      "type": "string",
-                      "description": "消息"
-                    },
-                    "data": {
-                      "type": "string"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
+                  "$ref": "#/components/schemas/ResponseResult",
                   "required": [
-                    "code",
-                    "message",
-                    "data",
-                    "additional"
+                    "data"
                   ]
                 }
               }
@@ -3154,7 +3131,8 @@
                   "type": "object",
                   "properties": {
                     "code": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "状态码"
                     },
                     "message": {
                       "type": "string",
@@ -3171,7 +3149,6 @@
                   "required": [
                     "code",
                     "message",
-                    "data",
                     "additional"
                   ]
                 }
@@ -3190,103 +3167,6 @@
   },
   "components": {
     "schemas": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID"
-          },
-          "name": {
-            "type": "string",
-            "description": "名称"
-          },
-          "account": {
-            "type": "string",
-            "description": "账号"
-          },
-          "email": {
-            "type": "string",
-            "description": "邮箱地址"
-          },
-          "phone": {
-            "type": "string",
-            "description": "手机号"
-          },
-          "pwd": {
-            "type": "string",
-            "description": "密码",
-            "nullable": true
-          },
-          "activateMethod": {
-            "type": "string",
-            "description": "激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接",
-            "nullable": true
-          },
-          "activateToken": {
-            "type": "string",
-            "description": "记录令牌",
-            "nullable": true
-          },
-          "departmentId": {
-            "type": "string",
-            "description": "所属部门ID",
-            "nullable": true
-          },
-          "identity": {
-            "type": "string",
-            "description": "身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员"
-          },
-          "lastLoginTime": {
-            "type": "string"
-          },
-          "lastChangePwdTime": {
-            "type": "string"
-          },
-          "enabled": {
-            "type": "boolean",
-            "description": "是否启用"
-          },
-          "deleted": {
-            "type": "boolean",
-            "description": "是否删除"
-          },
-          "createBy": {
-            "type": "string",
-            "description": "创建人",
-            "nullable": true
-          },
-          "createTime": {
-            "type": "string",
-            "description": "创建时间"
-          },
-          "mark": {
-            "type": "string",
-            "description": "备注",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "account",
-          "email",
-          "phone",
-          "activateMethod",
-          "activateToken",
-          "departmentId",
-          "identity",
-          "lastLoginTime",
-          "lastChangePwdTime",
-          "enabled",
-          "deleted",
-          "createBy",
-          "createTime",
-          "mark"
-        ],
-        "description": "用户信息",
-        "title": "用户模型"
-      },
       "SearchField": {
         "type": "object",
         "properties": {
@@ -3340,125 +3220,6 @@
           "searchFieldModule"
         ],
         "title": "检索字段查询模型"
-      },
-      "LoginResult": {
-        "type": "object",
-        "properties": {
-          "expires_in": {
-            "type": "number",
-            "description": "过期时间"
-          },
-          "message": {
-            "type": "string",
-            "description": "消息"
-          },
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "token": {
-            "type": "string",
-            "description": "认证token"
-          }
-        },
-        "title": "登录响应模型"
-      },
-      "PageResult": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "description": "当前页码"
-          },
-          "pageSize": {
-            "type": "integer",
-            "description": "每页条数"
-          },
-          "totalPages": {
-            "type": "integer",
-            "description": "总页数"
-          },
-          "totalRows": {
-            "type": "integer",
-            "description": "总条数"
-          },
-          "result": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "分页数据列表"
-          }
-        },
-        "required": [
-          "page",
-          "pageSize",
-          "totalPages",
-          "totalRows",
-          "result"
-        ],
-        "title": "分页数据模型"
-      },
-      "Department": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID"
-          },
-          "name": {
-            "type": "string",
-            "description": "部门名称"
-          },
-          "identifier": {
-            "type": "string",
-            "description": "标识符"
-          },
-          "pid": {
-            "type": "string",
-            "description": "上级ID",
-            "nullable": true
-          },
-          "sort": {
-            "type": "integer",
-            "description": "排序"
-          },
-          "level": {
-            "type": "integer",
-            "description": "等级"
-          },
-          "deleted": {
-            "type": "boolean",
-            "description": "是否删除"
-          },
-          "createBy": {
-            "type": "string",
-            "description": "创建人ID",
-            "nullable": true
-          },
-          "createTime": {
-            "type": "string",
-            "description": "创建时间"
-          },
-          "description": {
-            "type": "string",
-            "description": "描述",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "identifier",
-          "pid",
-          "sort",
-          "level",
-          "deleted",
-          "createBy",
-          "createTime",
-          "description"
-        ],
-        "title": "部门模型"
       },
       "CurrentUser": {
         "type": "object",
@@ -3564,19 +3325,31 @@
             "description": "是否删除"
           },
           "createBy": {
-            "type": "null",
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "创建人ID"
           },
           "createTime": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "创建时间"
           },
           "description": {
-            "type": "null",
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "描述"
           },
           "childAttributes": {
-            "type": "null",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
             "description": "子属性列表"
           }
         },
@@ -3723,6 +3496,302 @@
           "createTime"
         ],
         "title": "产品模型"
+      },
+      "ResponseResult": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "data": {
+            "type": [
+              "string",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "number",
+              "null"
+            ],
+            "description": "响应数据"
+          },
+          "additional": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data",
+          "additional"
+        ],
+        "title": "通用响应数据模型"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称"
+          },
+          "account": {
+            "type": "string",
+            "description": "账号"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱地址"
+          },
+          "phone": {
+            "type": "string",
+            "description": "手机号"
+          },
+          "pwd": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "密码"
+          },
+          "activateMethod": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接"
+          },
+          "activateToken": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "记录令牌"
+          },
+          "departmentId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "所属部门ID"
+          },
+          "identity": {
+            "type": "string",
+            "description": "身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员"
+          },
+          "lastLoginTime": {
+            "type": [
+              "string",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "number",
+              "null"
+            ],
+            "description": "最后登录时间"
+          },
+          "lastChangePwdTime": {
+            "type": [
+              "string",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "number",
+              "null"
+            ],
+            "description": "最后修改密码时间"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createBy": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "创建人"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间"
+          },
+          "mark": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "备注"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "account",
+          "email",
+          "phone",
+          "activateMethod",
+          "activateToken",
+          "departmentId",
+          "identity",
+          "lastLoginTime",
+          "lastChangePwdTime",
+          "enabled",
+          "deleted",
+          "createBy",
+          "createTime",
+          "mark"
+        ],
+        "description": "用户信息",
+        "title": "用户模型"
+      },
+      "LoginResult": {
+        "type": "object",
+        "properties": {
+          "expires_in": {
+            "type": "number",
+            "description": "过期时间"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "token": {
+            "type": "string",
+            "description": "认证token"
+          }
+        },
+        "title": "登录响应模型"
+      },
+      "PageResult": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "每页条数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "总页数"
+          },
+          "totalRows": {
+            "type": "integer",
+            "description": "总条数"
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "integer",
+                "boolean",
+                "array",
+                "object",
+                "number",
+                "null"
+              ]
+            },
+            "description": "分页数据列表"
+          }
+        },
+        "required": [
+          "page",
+          "pageSize",
+          "totalPages",
+          "totalRows",
+          "result"
+        ],
+        "title": "分页数据模型"
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "部门名称"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "标识符"
+          },
+          "pid": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "上级ID"
+          },
+          "sort": {
+            "type": "integer",
+            "description": "排序"
+          },
+          "level": {
+            "type": "integer",
+            "description": "等级"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createBy": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "创建人ID"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "描述"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "identifier",
+          "pid",
+          "sort",
+          "level",
+          "deleted",
+          "createBy",
+          "createTime",
+          "description"
+        ],
+        "title": "部门模型"
       }
     },
     "securitySchemes": {
@@ -3732,5 +3801,15 @@
       }
     }
   },
-  "servers": []
+  "servers": [
+    {
+      "url": "http://localhost:8000/dev",
+      "description": "本地前端研发"
+    }
+  ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
 }

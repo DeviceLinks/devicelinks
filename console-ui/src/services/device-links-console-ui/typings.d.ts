@@ -29,11 +29,11 @@ declare namespace API {
     /** 创建人ID */
     createBy: any;
     /** 创建时间 */
-    createTime: string;
+    createTime: any;
     /** 描述 */
     description: any;
     /** 子属性列表 */
-    childAttributes: any;
+    childAttributes: Attribute[];
   };
 
   type CurrentUser = {
@@ -68,7 +68,7 @@ declare namespace API {
     /** 标识符 */
     identifier: string;
     /** 上级ID */
-    pid: string;
+    pid: any;
     /** 排序 */
     sort: number;
     /** 等级 */
@@ -76,11 +76,11 @@ declare namespace API {
     /** 是否删除 */
     deleted: boolean;
     /** 创建人ID */
-    createBy: string;
+    createBy: any;
     /** 创建时间 */
     createTime: string;
     /** 描述 */
-    description: string;
+    description: any;
   };
 
   type FunctionModule = {
@@ -107,9 +107,9 @@ declare namespace API {
 
   type getApi_openAPI_functionModuleParams = {
     /** 每页条数 */
-    pageSize?: string;
+    pageSize?: number;
     /** 当前页码 */
-    page?: string;
+    page?: number;
     /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
     sortProperty?: string;
     /** 排序顺序，ASC：正序；DESC：倒序 */
@@ -123,9 +123,9 @@ declare namespace API {
 
   type getApiAttributeParams = {
     /** 每页条数 */
-    pageSize?: string;
+    pageSize?: number;
     /** 当前页码 */
-    page?: string;
+    page?: number;
     /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
     sortProperty?: string;
     /** 排序顺序，ASC：正序；DESC：倒序 */
@@ -144,9 +144,9 @@ declare namespace API {
 
   type getApiProductParams = {
     /** 每页条数 */
-    pageSize?: string;
+    pageSize?: number;
     /** 当前页码 */
-    page?: string;
+    page?: number;
     /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
     sortProperty?: string;
     /** 排序顺序，ASC：正序；DESC：倒序 */
@@ -155,9 +155,9 @@ declare namespace API {
 
   type getApiUserParams = {
     /** 每页条数 */
-    pageSize?: string;
+    pageSize?: number;
     /** 当前页码 */
-    page?: string;
+    page?: number;
     /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
     sortProperty?: string;
     /** 排序顺序，ASC：正序；DESC：倒序 */
@@ -185,7 +185,7 @@ declare namespace API {
     /** 总条数 */
     totalRows: number;
     /** 分页数据列表 */
-    result: string[];
+    result: any[];
   };
 
   type postApi_openAPI_functionModuleModuleIdParams = {
@@ -255,6 +255,16 @@ declare namespace API {
     createTime: string;
   };
 
+  type ResponseResult = {
+    /** 状态码 */
+    code: string;
+    /** 消息 */
+    message: string;
+    /** 响应数据 */
+    data: any;
+    additional: Record<string, any>;
+  };
+
   type SearchField = {
     /** 检索字段模块，User/Device/Log/Notification */
     searchFieldModule: string;
@@ -276,26 +286,28 @@ declare namespace API {
     /** 手机号 */
     phone: string;
     /** 密码 */
-    pwd?: string;
+    pwd?: any;
     /** 激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接 */
-    activateMethod: string;
+    activateMethod: any;
     /** 记录令牌 */
-    activateToken: string;
+    activateToken: any;
     /** 所属部门ID */
-    departmentId: string;
+    departmentId: any;
     /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: string;
-    lastLoginTime: string;
-    lastChangePwdTime: string;
+    /** 最后登录时间 */
+    lastLoginTime: any;
+    /** 最后修改密码时间 */
+    lastChangePwdTime: any;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 创建人 */
-    createBy: string;
+    createBy: any;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark: string;
+    mark: any;
   };
 }
