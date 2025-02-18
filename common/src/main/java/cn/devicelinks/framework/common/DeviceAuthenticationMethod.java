@@ -17,39 +17,25 @@
 
 package cn.devicelinks.framework.common;
 
+import lombok.Getter;
+
 /**
  * 设备鉴权方式
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
 public enum DeviceAuthenticationMethod {
-    /**
-     * 一型一密
-     * <p>
-     * 根据ProductKey以及ProductSecret进行鉴权
-     */
-    ProductCredential,
-    /**
-     * 一机一密
-     * <p>
-     * 根据ProductSecret、DeviceCode、DeviceSecret进行鉴权
-     */
-    DeviceCredential,
-    /**
-     * 请求令牌
-     */
-    AccessToken,
-    /**
-     * MQTT基础认证
-     * <p>
-     * 客户端ID、用户名、密码
-     */
-    MqttBasic,
-    /**
-     * X.509证书
-     * <p>
-     * PEM格式证书
-     */
-    X509
+    ProductCredential("一型一密"),
+    DeviceCredential("一机一密"),
+    AccessToken("AccessToken"),
+    MqttBasic("MQTT Basic"),
+    X509("X.509");
+
+    private final String description;
+
+    DeviceAuthenticationMethod(String description) {
+        this.description = description;
+    }
 }

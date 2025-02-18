@@ -15,10 +15,6 @@ import java.util.List;
 @Component
 public class DeviceSearchFieldModule implements SearchFieldModule {
 
-    SearchFieldOptionData DEVICE_TYPE_DIRECT = SearchFieldOptionData.of().setLabel("直接连接").setValue(DeviceType.Direct);
-    SearchFieldOptionData DEVICE_TYPE_GATEWAY = SearchFieldOptionData.of().setLabel("网关设备").setValue(DeviceType.Gateway);
-    SearchFieldOptionData DEVICE_TYPE_GATEWAY_SUB = SearchFieldOptionData.of().setLabel("网关子设备").setValue(DeviceType.GatewaySub);
-
     SearchField DEVICE_ID = SearchField.of(SearchFieldVariable.ID)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
@@ -50,14 +46,10 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField DEVICE_TYPE = SearchField.of(SearchFieldVariable.DEVICE_TYPE)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    DEVICE_TYPE_DIRECT,
-                    DEVICE_TYPE_GATEWAY,
-                    DEVICE_TYPE_GATEWAY_SUB
-            )).setOperators(List.of(
+            .setEnumClass(DeviceType.class)
+            .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
                     SearchFieldOperator.In,

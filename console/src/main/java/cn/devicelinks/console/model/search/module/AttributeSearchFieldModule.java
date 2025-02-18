@@ -19,20 +19,6 @@ import java.util.List;
 @Component
 public class AttributeSearchFieldModule implements SearchFieldModule {
 
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_STRING = SearchFieldOptionData.of().setLabel("字符串").setValue(AttributeDataType.STRING);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_INTEGER = SearchFieldOptionData.of().setLabel("整形").setValue(AttributeDataType.INT32);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_LONG = SearchFieldOptionData.of().setLabel("长整型").setValue(AttributeDataType.LONG64);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_FLOAT = SearchFieldOptionData.of().setLabel("单精度").setValue(AttributeDataType.FLOAT);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_DOUBLE = SearchFieldOptionData.of().setLabel("双精度").setValue(AttributeDataType.DOUBLE);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_BOOLEAN = SearchFieldOptionData.of().setLabel("布尔").setValue(AttributeDataType.BOOLEAN);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_ENUM = SearchFieldOptionData.of().setLabel("枚举").setValue(AttributeDataType.ENUM);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_DATE = SearchFieldOptionData.of().setLabel("日期").setValue(AttributeDataType.DATE);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_DATETIME = SearchFieldOptionData.of().setLabel("日期时间").setValue(AttributeDataType.DATETIME);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_TIME = SearchFieldOptionData.of().setLabel("时间").setValue(AttributeDataType.TIME);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_TIMESTAMP = SearchFieldOptionData.of().setLabel("时间戳").setValue(AttributeDataType.TIMESTAMP);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_OBJECT = SearchFieldOptionData.of().setLabel("对象").setValue(AttributeDataType.OBJECT);
-    SearchFieldOptionData ATTRIBUTE_DATA_TYPE_ARRAY = SearchFieldOptionData.of().setLabel("数组").setValue(AttributeDataType.ARRAY);
-
     SearchField ATTRIBUTE_PRODUCT_ID = SearchField.of(SearchFieldVariable.PRODUCT_ID)
             .setValueType(SearchFieldValueType.STRING)
             .setRequired(true)
@@ -76,24 +62,9 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField ATTRIBUTE_DATA_TYPE = SearchField.of(SearchFieldVariable.ATTRIBUTE_DATA_TYPE)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    ATTRIBUTE_DATA_TYPE_STRING,
-                    ATTRIBUTE_DATA_TYPE_INTEGER,
-                    ATTRIBUTE_DATA_TYPE_LONG,
-                    ATTRIBUTE_DATA_TYPE_FLOAT,
-                    ATTRIBUTE_DATA_TYPE_DOUBLE,
-                    ATTRIBUTE_DATA_TYPE_BOOLEAN,
-                    ATTRIBUTE_DATA_TYPE_DATE,
-                    ATTRIBUTE_DATA_TYPE_TIME,
-                    ATTRIBUTE_DATA_TYPE_DATETIME,
-                    ATTRIBUTE_DATA_TYPE_TIMESTAMP,
-                    ATTRIBUTE_DATA_TYPE_ENUM,
-                    ATTRIBUTE_DATA_TYPE_ARRAY,
-                    ATTRIBUTE_DATA_TYPE_OBJECT
-            ))
+            .setEnumClass(AttributeDataType.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,

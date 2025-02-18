@@ -17,6 +17,8 @@
 
 package cn.devicelinks.framework.common;
 
+import lombok.Getter;
+
 /**
  * 数据格式
  * <p>
@@ -25,21 +27,15 @@ package cn.devicelinks.framework.common;
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
 public enum DataFormat {
-    /**
-     * JSON数据格式
-     * <p>
-     * 如：{"deviceCode":"xxxx","reportTime":"xxxx"}
-     */
-    Json,
-    /**
-     * 字节
-     */
-    Bytes,
-    /**
-     * 十六进制数据格式
-     * <p>
-     * 如：685a68b337010200100213812
-     */
-    Hex
+    Json("JSON数据格式"),
+    Bytes("字节"),
+    Hex("十六进制数据格式");
+
+    private final String description;
+
+    DataFormat(String description) {
+        this.description = description;
+    }
 }

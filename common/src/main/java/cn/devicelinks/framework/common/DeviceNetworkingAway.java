@@ -17,23 +17,23 @@
 
 package cn.devicelinks.framework.common;
 
+import lombok.Getter;
+
 /**
  * 设备网络方式
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
 public enum DeviceNetworkingAway {
-    /**
-     * Wi-Fi
-     */
-    WiFi,
-    /**
-     * 蜂窝网络（2G/3G/4G/5G）
-     */
-    CellularNetwork,
-    /**
-     * 以太网
-     */
-    Ethernet
+    WiFi("Wi-Fi"),
+    CellularNetwork("蜂窝网络（2G/3G/4G/5G）"),
+    Ethernet("以太网");
+
+    private final String description;
+
+    DeviceNetworkingAway(String description) {
+        this.description = description;
+    }
 }

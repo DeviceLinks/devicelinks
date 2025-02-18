@@ -27,64 +27,24 @@ import lombok.Getter;
  */
 @Getter
 public enum LogAction {
-    /**
-     * 登录
-     */
-    Login(true, true),
-    /**
-     * 登出
-     */
-    Logout(true, true),
-    /**
-     * 新增
-     */
-    Add(false, true),
-    /**
-     * 编辑
-     */
-    Update(true, true),
-    /**
-     * 更新启用/状态
-     */
-    UpdateStatus(true, true),
-    /**
-     * 修改密码
-     */
-    ChangePwd(true, true),
-    /**
-     * 删除
-     */
-    Delete(true, false),
-    /**
-     * 绑定
-     */
-    Bind(false, true),
-    /**
-     * 解绑
-     */
-    Unbind(true, false),
-    /**
-     * 发布
-     */
-    Publish(true, true),
-    /**
-     * 重新生成KeySecret
-     */
-    RegenerateKeySecret(true, true);
-    /**
-     * 是否存在操作之前的数据
-     * <p>
-     * 如：当动作为"Add"时，则不存在操作之前的数据了；当动作为"Update"时，则存在操作之前的数据
-     */
+    Login("登录", true, true),
+    Logout("登出", true, true),
+    Add("新增", false, true),
+    Update("编辑", true, true),
+    UpdateStatus("更新状态", true, true),
+    ChangePwd("修改密码", true, true),
+    Delete("删除", true, false),
+    Bind("绑定", false, true),
+    Unbind("解绑", true, false),
+    Publish("发布", true, true),
+    RegenerateKeySecret("重新生成KeySecret", true, true);
+
+    private final String description;
     private final boolean haveBeforeData;
-    /**
-     * 是否存在操作之后的数据
-     * <p>
-     * 如：当动作为"Delete"时（物理删除），则不存在操作之前的数据
-     */
     private final boolean haveAfterData;
 
-    LogAction(boolean haveBeforeData, boolean haveAfterData) {
+    LogAction(String description, boolean haveBeforeData, boolean haveAfterData) {
+        this.description = description;
         this.haveBeforeData = haveBeforeData;
         this.haveAfterData = haveAfterData;
     }

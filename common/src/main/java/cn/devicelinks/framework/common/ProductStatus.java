@@ -17,19 +17,22 @@
 
 package cn.devicelinks.framework.common;
 
+import lombok.Getter;
+
 /**
  * 产品状态
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
 public enum ProductStatus {
-    /**
-     * 开发中
-     */
-    Development,
-    /**
-     * 已发布
-     */
-    Published
+    Development("开发中"),
+    Published("已发布");
+
+    private final String description;
+
+    ProductStatus(String description) {
+        this.description = description;
+    }
 }

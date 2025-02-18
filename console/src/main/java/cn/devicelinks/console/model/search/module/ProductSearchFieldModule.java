@@ -15,36 +15,8 @@ import java.util.List;
 @Component
 public class ProductSearchFieldModule implements SearchFieldModule {
 
-    SearchFieldOptionData PRODUCT_DEVICE_TYPE_DIRECT = SearchFieldOptionData.of().setLabel("直接连接").setValue(DeviceType.Direct);
-    SearchFieldOptionData PRODUCT_DEVICE_TYPE_GATEWAY = SearchFieldOptionData.of().setLabel("网关设备").setValue(DeviceType.Gateway);
-    SearchFieldOptionData PRODUCT_DEVICE_TYPE_GATEWAY_SUB = SearchFieldOptionData.of().setLabel("网关子设备").setValue(DeviceType.GatewaySub);
-
-    SearchFieldOptionData PRODUCT_NETWORKING_AWAY_WIFI = SearchFieldOptionData.of().setLabel("WIFI").setValue(DeviceNetworkingAway.WiFi);
-    SearchFieldOptionData PRODUCT_NETWORKING_AWAY_CELLULAR_NETWORK = SearchFieldOptionData.of().setLabel("蜂窝网络（2G/3G/4G/5G）").setValue(DeviceNetworkingAway.CellularNetwork);
-    SearchFieldOptionData PRODUCT_NETWORKING_AWAY_ETHERNET = SearchFieldOptionData.of().setLabel("以太网").setValue(DeviceNetworkingAway.Ethernet);
-
-    SearchFieldOptionData PRODUCT_ACCESS_GATEWAY_PROTOCOL_MQTT = SearchFieldOptionData.of().setLabel("MQTT").setValue(AccessGatewayProtocol.Mqtt);
-    SearchFieldOptionData PRODUCT_ACCESS_GATEWAY_PROTOCOL_MODBUS = SearchFieldOptionData.of().setLabel("Modbus").setValue(AccessGatewayProtocol.Modbus);
-    SearchFieldOptionData PRODUCT_ACCESS_GATEWAY_PROTOCOL_REST = SearchFieldOptionData.of().setLabel("REST").setValue(AccessGatewayProtocol.Rest);
-    SearchFieldOptionData PRODUCT_ACCESS_GATEWAY_PROTOCOL_SOCKET = SearchFieldOptionData.of().setLabel("Socket").setValue(AccessGatewayProtocol.Socket);
-    SearchFieldOptionData PRODUCT_ACCESS_GATEWAY_PROTOCOL_GRPC = SearchFieldOptionData.of().setLabel("gRPC").setValue(AccessGatewayProtocol.Grpc);
-    SearchFieldOptionData PRODUCT_ACCESS_GATEWAY_PROTOCOL_BLE = SearchFieldOptionData.of().setLabel("BLE").setValue(AccessGatewayProtocol.Ble);
-
-    SearchFieldOptionData PRODUCT_DATA_FORMAT_JSON = SearchFieldOptionData.of().setLabel("JSON").setValue(DataFormat.Json);
-    SearchFieldOptionData PRODUCT_DATA_FORMAT_BYTES = SearchFieldOptionData.of().setLabel("Bytes").setValue(DataFormat.Bytes);
-    SearchFieldOptionData PRODUCT_DATA_FORMAT_HEX = SearchFieldOptionData.of().setLabel("Hex").setValue(DataFormat.Hex);
-
-    SearchFieldOptionData PRODUCT_AUTHENTICATION_METHOD_PRODUCT_CREDENTIAL = SearchFieldOptionData.of().setLabel("一型一密").setValue(DeviceAuthenticationMethod.ProductCredential);
-    SearchFieldOptionData PRODUCT_AUTHENTICATION_METHOD_DEVICE_CREDENTIAL = SearchFieldOptionData.of().setLabel("一机一密").setValue(DeviceAuthenticationMethod.DeviceCredential);
-    SearchFieldOptionData PRODUCT_AUTHENTICATION_METHOD_ACCESS_TOKEN = SearchFieldOptionData.of().setLabel("请求令牌").setValue(DeviceAuthenticationMethod.AccessToken);
-    SearchFieldOptionData PRODUCT_AUTHENTICATION_METHOD_MQTT_BASIC = SearchFieldOptionData.of().setLabel("MQTT基础认证").setValue(DeviceAuthenticationMethod.MqttBasic);
-    SearchFieldOptionData PRODUCT_AUTHENTICATION_METHOD_X_509 = SearchFieldOptionData.of().setLabel("X.509").setValue(DeviceAuthenticationMethod.X509);
-
     SearchFieldOptionData PRODUCT_DYNAMIC_REGISTRATION_YES = SearchFieldOptionData.of().setLabel("是").setValue(Boolean.TRUE);
     SearchFieldOptionData PRODUCT_DYNAMIC_REGISTRATION_NO = SearchFieldOptionData.of().setLabel("否").setValue(Boolean.FALSE);
-
-    SearchFieldOptionData PRODUCT_STATUS_DEVELOPMENT = SearchFieldOptionData.of().setLabel("开发中").setValue(ProductStatus.Development);
-    SearchFieldOptionData PRODUCT_STATUS_PUBLISHED = SearchFieldOptionData.of().setLabel("已发布").setValue(ProductStatus.Published);
 
 
     SearchField PRODUCT_ID = SearchField.of(SearchFieldVariable.ID)
@@ -67,14 +39,9 @@ public class ProductSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField PRODUCT_DEVICE_TYPE = SearchField.of(SearchFieldVariable.PRODUCT_DEVICE_TYPE)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    PRODUCT_DEVICE_TYPE_DIRECT,
-                    PRODUCT_DEVICE_TYPE_GATEWAY,
-                    PRODUCT_DEVICE_TYPE_GATEWAY_SUB
-            ))
+            .setEnumClass(DeviceType.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
@@ -83,15 +50,9 @@ public class ProductSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField PRODUCT_NETWORKING_AWAY = SearchField.of(SearchFieldVariable.PRODUCT_NETWORKING_AWAY)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    PRODUCT_NETWORKING_AWAY_WIFI,
-                    PRODUCT_NETWORKING_AWAY_CELLULAR_NETWORK,
-                    PRODUCT_NETWORKING_AWAY_ETHERNET
-
-            ))
+            .setEnumClass(DeviceNetworkingAway.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
@@ -100,18 +61,9 @@ public class ProductSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField PRODUCT_ACCESS_GATEWAY_PROTOCOL = SearchField.of(SearchFieldVariable.PRODUCT_ACCESS_GATEWAY_PROTOCOL)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    PRODUCT_ACCESS_GATEWAY_PROTOCOL_MQTT,
-                    PRODUCT_ACCESS_GATEWAY_PROTOCOL_MODBUS,
-                    PRODUCT_ACCESS_GATEWAY_PROTOCOL_REST,
-                    PRODUCT_ACCESS_GATEWAY_PROTOCOL_SOCKET,
-                    PRODUCT_ACCESS_GATEWAY_PROTOCOL_GRPC,
-                    PRODUCT_ACCESS_GATEWAY_PROTOCOL_BLE
-
-            ))
+            .setEnumClass(AccessGatewayProtocol.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
@@ -120,14 +72,9 @@ public class ProductSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField PRODUCT_DATA_FORMAT = SearchField.of(SearchFieldVariable.PRODUCT_DATA_FORMAT)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    PRODUCT_DATA_FORMAT_JSON,
-                    PRODUCT_DATA_FORMAT_BYTES,
-                    PRODUCT_DATA_FORMAT_HEX
-            ))
+            .setEnumClass(DataFormat.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
@@ -136,16 +83,9 @@ public class ProductSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField PRODUCT_AUTHENTICATION_METHOD = SearchField.of(SearchFieldVariable.PRODUCT_AUTHENTICATION_METHOD)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    PRODUCT_AUTHENTICATION_METHOD_PRODUCT_CREDENTIAL,
-                    PRODUCT_AUTHENTICATION_METHOD_DEVICE_CREDENTIAL,
-                    PRODUCT_AUTHENTICATION_METHOD_ACCESS_TOKEN,
-                    PRODUCT_AUTHENTICATION_METHOD_MQTT_BASIC,
-                    PRODUCT_AUTHENTICATION_METHOD_X_509
-            ))
+            .setEnumClass(DeviceAuthenticationMethod.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
@@ -167,13 +107,9 @@ public class ProductSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField PRODUCT_STATUS = SearchField.of(SearchFieldVariable.PRODUCT_STATUS)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    PRODUCT_STATUS_DEVELOPMENT,
-                    PRODUCT_STATUS_PUBLISHED
-            ))
+            .setEnumClass(ProductStatus.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,

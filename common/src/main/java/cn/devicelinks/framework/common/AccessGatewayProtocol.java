@@ -17,17 +17,26 @@
 
 package cn.devicelinks.framework.common;
 
+import lombok.Getter;
+
 /**
  * 设备接入网关协议
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
 public enum AccessGatewayProtocol {
-    Mqtt,
-    Modbus,
-    Rest,
-    Socket,
-    Grpc,
-    Ble
+    Mqtt("MQTT协议"),
+    Modbus("Modbus协议"),
+    Rest("Http协议"),
+    Socket("Socket协议"),
+    Grpc("gRPC协议"),
+    Ble("BLE协议");
+
+    private final String description;
+
+    AccessGatewayProtocol(String description) {
+        this.description = description;
+    }
 }

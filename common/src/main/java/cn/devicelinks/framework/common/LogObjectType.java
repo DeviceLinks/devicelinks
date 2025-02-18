@@ -17,39 +17,27 @@
 
 package cn.devicelinks.framework.common;
 
+import lombok.Getter;
+
 /**
  * 记录日志的对象类型定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
 public enum LogObjectType {
-    /**
-     * 用户
-     */
-    User,
-    /**
-     * 部门
-     */
-    Department,
-    /**
-     * 设备
-     */
-    Device,
-    /**
-     * 产品
-     */
-    Product,
-    /**
-     * OTA
-     */
-    Ota,
-    /**
-     * 功能模块
-     */
-    FunctionModule,
-    /**
-     * 属性
-     */
-    Attribute
+    User("用户"),
+    Department("部门"),
+    Device("设备"),
+    Product("产品"),
+    Ota("OTA"),
+    FunctionModule("功能模块"),
+    Attribute("属性");
+
+    private final String description;
+
+    LogObjectType(String description) {
+        this.description = description;
+    }
 }

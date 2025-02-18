@@ -17,63 +17,66 @@
 
 package cn.devicelinks.framework.common;
 
-/**
- * 属性数据类型
- *
- * @author 恒宇少年
- * @since 1.0
- */
+import lombok.Getter;
+
+@Getter
 public enum AttributeDataType {
     /**
      * 整型
      */
-    INT32,
+    INT32("整型"),
     /**
      * 长整型
      */
-    LONG64,
+    LONG64("长整型"),
     /**
      * 浮点型
      */
-    FLOAT,
+    FLOAT("浮点型"),
     /**
      * 双精度浮点型
      */
-    DOUBLE,
+    DOUBLE("双精度浮点型"),
     /**
      * 枚举
      */
-    ENUM,
+    ENUM("枚举"),
     /**
      * 布尔
      */
-    BOOLEAN,
+    BOOLEAN("布尔"),
     /**
      * 字符串
      */
-    STRING,
+    STRING("字符串"),
     /**
      * 日期
      */
-    DATE,
+    DATE("日期"),
     /**
      * 日期时间
      */
-    DATETIME,
+    DATETIME("日期时间"),
     /**
      * 时间
      */
-    TIME,
+    TIME("时间"),
     /**
      * 时间戳
      */
-    TIMESTAMP,
+    TIMESTAMP("时间戳"),
     /**
      * 对象
      */
-    OBJECT,
+    OBJECT("对象"),
     /**
      * 数组
      */
-    ARRAY
+    ARRAY("数组");
+
+    private final String description;
+
+    AttributeDataType(String description) {
+        this.description = description;
+    }
 }

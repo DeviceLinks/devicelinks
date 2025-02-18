@@ -15,9 +15,6 @@ import java.util.List;
 @Component
 public class UserSearchFieldModule implements SearchFieldModule {
 
-    SearchFieldOptionData USER_ACTIVATE_METHOD_SEND_URL_EMAIL = SearchFieldOptionData.of().setLabel("向邮箱发送激活邮件").setValue(UserActivateMethod.SendUrlToEmail);
-    SearchFieldOptionData USER_ACTIVATE_METHOD_SHOW_URL = SearchFieldOptionData.of().setLabel("显示激活链接").setValue(UserActivateMethod.ShowUrl);
-
     SearchField USER_ID = SearchField.of(SearchFieldVariable.ID)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
@@ -69,13 +66,9 @@ public class UserSearchFieldModule implements SearchFieldModule {
             ));
 
     SearchField USER_ACTIVATE_METHOD = SearchField.of(SearchFieldVariable.USER_ACTIVATE_METHOD)
-            .setValueType(SearchFieldValueType.STRING)
+            .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
-            .setOptionDataSource(SearchFieldOptionDataSource.STATIC)
-            .setOptionStaticData(List.of(
-                    USER_ACTIVATE_METHOD_SEND_URL_EMAIL,
-                    USER_ACTIVATE_METHOD_SHOW_URL
-            ))
+            .setEnumClass(UserActivateMethod.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo
