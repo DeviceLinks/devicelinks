@@ -45,6 +45,7 @@ public enum SearchFieldVariable {
     DEVICE_LAST_ONLINE_TIME("lastOnlineTime", "最后上线时间"),
     DEVICE_LAST_REPORT_TIME("lastReportTime", "最后上报时间"),
 
+    LOG_USER_ID("userId", "用户ID"),
     LOG_ACTION("action", "动作"),
     LOG_OBJECT_TYPE("objectType", "对象类型"),
     LOG_OBJECT_ID("objectId", "对象ID"),

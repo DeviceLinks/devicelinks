@@ -19,6 +19,12 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+
+import java.util.List;
 
 /**
  * The {@link SysLog} Repository
@@ -27,5 +33,13 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @since 1.0
  */
 public interface SysLogRepository extends Repository<SysLog, String> {
-	//...
+    /**
+     * 分页获取日志列表
+     *
+     * @param searchFieldConditionList 检索条件列表
+     * @param pageQuery     分页参数
+     * @param sortCondition 排序参数
+     * @return 日志列表 {@link SysLog}
+     */
+    PageResult<SysLog> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
 }

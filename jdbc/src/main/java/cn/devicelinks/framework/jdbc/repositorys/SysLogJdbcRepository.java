@@ -20,7 +20,15 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.Condition;
+import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import org.springframework.jdbc.core.JdbcOperations;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TSysLog.SYS_LOG;
 
@@ -32,7 +40,20 @@ import static cn.devicelinks.framework.jdbc.tables.TSysLog.SYS_LOG;
  */
 @RegisterBean
 public class SysLogJdbcRepository extends JdbcRepository<SysLog, String> implements SysLogRepository {
-	public SysLogJdbcRepository(JdbcOperations jdbcOperations) {
-		super(SYS_LOG, jdbcOperations);
-	}
+    public SysLogJdbcRepository(JdbcOperations jdbcOperations) {
+        super(SYS_LOG, jdbcOperations);
+    }
+
+    @Override
+    public PageResult<SysLog> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
+        // @formatter:off
+        Condition[] conditions = searchFieldConditionToConditionArray(searchFieldConditionList);
+        FusionCondition fusionCondition = FusionCondition
+                .withConditions(conditions)
+                .sort(sortCondition)
+                .build();
+        // @formatter:on
+
+        return this.page(fusionCondition, pageQuery);
+    }
 }

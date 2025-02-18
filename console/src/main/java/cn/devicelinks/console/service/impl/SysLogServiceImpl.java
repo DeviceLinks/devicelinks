@@ -17,9 +17,12 @@
 
 package cn.devicelinks.console.service.impl;
 
+import cn.devicelinks.console.model.page.PaginationQuery;
+import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.repositorys.SysLogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,5 +39,10 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String, SysLogRep
         implements SysLogService {
     public SysLogServiceImpl(SysLogRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public PageResult<SysLog> getByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
+        return this.repository.getByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 }

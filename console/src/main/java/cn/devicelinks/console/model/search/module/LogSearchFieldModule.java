@@ -34,10 +34,23 @@ public class LogSearchFieldModule implements SearchFieldModule {
     SearchFieldOptionData LOG_ACTION_CHANGE_PWD = SearchFieldOptionData.of().setLabel("修改密码").setValue(LogAction.ChangePwd);
     SearchFieldOptionData LOG_ACTION_BIND = SearchFieldOptionData.of().setLabel("绑定").setValue(LogAction.Bind);
     SearchFieldOptionData LOG_ACTION_UNBIND = SearchFieldOptionData.of().setLabel("解绑").setValue(LogAction.Unbind);
+    SearchFieldOptionData LOG_ACTION_PUBLISH = SearchFieldOptionData.of().setLabel("发布").setValue(LogAction.Publish);
+    SearchFieldOptionData LOG_ACTION_REGENERATE_KEY_SECRET = SearchFieldOptionData.of().setLabel("重新生成KeySecret").setValue(LogAction.RegenerateKeySecret);
+
 
 
     SearchFieldOptionData LOG_SUCCESS_TRUE = SearchFieldOptionData.of().setLabel("成功").setValue(true);
     SearchFieldOptionData LOG_SUCCESS_FALSE = SearchFieldOptionData.of().setLabel("失败").setValue(false);
+
+    SearchField LOG_USER_ID = SearchField.of(SearchFieldVariable.LOG_USER_ID)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn)
+            );
 
     SearchField LOG_ACTION = SearchField.of(SearchFieldVariable.LOG_ACTION)
             .setValueType(SearchFieldValueType.STRING)
@@ -53,7 +66,9 @@ public class LogSearchFieldModule implements SearchFieldModule {
                     LOG_ACTION_UPDATE_ATTRIBUTE,
                     LOG_ACTION_CHANGE_PWD,
                     LOG_ACTION_BIND,
-                    LOG_ACTION_UNBIND
+                    LOG_ACTION_UNBIND,
+                    LOG_ACTION_PUBLISH,
+                    LOG_ACTION_REGENERATE_KEY_SECRET
             ))
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
@@ -88,8 +103,8 @@ public class LogSearchFieldModule implements SearchFieldModule {
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
-                    SearchFieldOperator.Like,
-                    SearchFieldOperator.NotLike
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
             ));
 
     SearchField LOG_MSG = SearchField.of(SearchFieldVariable.LOG_MSG)
@@ -123,6 +138,7 @@ public class LogSearchFieldModule implements SearchFieldModule {
     @Override
     public List<SearchField> getSearchFields() {
         return List.of(
+                LOG_USER_ID,
                 LOG_ACTION,
                 LOG_OBJECT_TYPE,
                 LOG_OBJECT_ID,

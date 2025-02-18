@@ -17,8 +17,11 @@
 
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.console.model.page.PaginationQuery;
+import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
 /**
  * 操作日志业务逻辑接口定义
@@ -27,5 +30,12 @@ import cn.devicelinks.framework.jdbc.BaseService;
  * @since 1.0
  */
 public interface SysLogService extends BaseService<SysLog, String> {
-
+    /**
+     * 分页获取日志列表
+     *
+     * @param paginationQuery  分页查询参数
+     * @param searchFieldQuery 检索字段查询参数
+     * @return 日志列表 {@link SysLog}
+     */
+    PageResult<SysLog> getByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
 }
