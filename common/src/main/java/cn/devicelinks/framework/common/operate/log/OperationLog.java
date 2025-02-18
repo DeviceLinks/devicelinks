@@ -30,6 +30,15 @@ import java.lang.annotation.*;
 
 /**
  * 操作日志注解
+ * <p>
+ * 操作日志支持通过SpEL表达式来解析数据，可以直接配置代码来协助解析
+ * 为了方便使用操作日志，其中内置了一些变量，如下所示：
+ * - "#px"：参数对象，索引从0开始；如想要使用第一个参数时为"#p0"，以此类推。
+ * - "#before": 前置数据；在目标方法之前执行，支持SpEL表达式。依据{@link #object()}以及{@link LogAction#isHaveBeforeData()}
+ * - "#after": 后置数据；在目标方法之后执行，支持SpEL表达式。依据{@link #object()}以及{@link LogAction#isHaveAfterData()}
+ * - "#result": 目标方法返回值；目标方法执行成功之后会将方法的返回值作为整个对象设置到变量集合中，可以直接通过"{#result.xxx}"来获取，支持多层级获取
+ * - "#executionSucceed"：目标方法是否执行成功；该值是boolean类型的，目标方法执行成功返回{@link Boolean#TRUE}，目标方法执行过程中遇到异常则返回{@link Boolean#FALSE}
+ * - "#pre": 前置数据；用于附加字段加载前置数据，可以直接使用"{#pre.xxx}"来获取，支持多层级获取
  *
  * @author 恒宇少年
  * @since 1.0
@@ -91,11 +100,11 @@ public @interface OperationLog {
      * 操作描述
      * 支持SpEL表达式
      * <p>
-     * 只有在目标方法执行成功后解析
+     * 无论目标方法执行成功还是失败都会解析，可以通过"{#executionSucceed}"来判断是否执行成功
      *
      * @return 操作描述SpEL表达式，解析后为本次操作的文字描述
      */
-    String msg() default "";
+    String msg() default Constants.EMPTY_STRING;
 
     /**
      * 附加字段列表

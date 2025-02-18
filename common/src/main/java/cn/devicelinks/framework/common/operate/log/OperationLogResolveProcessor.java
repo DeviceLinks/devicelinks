@@ -89,7 +89,7 @@ public class OperationLogResolveProcessor {
             Object activateData = evaluator.parseExpression(this.evaluationContext, Object.class, extractor.getActivateDataTemplate());
             this.operationLogObject.setActivateData(!ObjectUtils.isEmpty(activateData) ? JacksonUtils.objectToJson(activateData) : null);
         }
-        if (this.executionSucceed && !ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
+        if (!ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
             this.operationLogObject.setMsg(evaluator.parseExpression(this.evaluationContext, String.class, extractor.getMsgTemplate()));
         }
         RequestContext requestContext = RequestContextHolder.getContext();
