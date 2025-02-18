@@ -1,3 +1,4 @@
+import { postApiUser } from '@/services/device-links-console-ui/user';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   ModalForm,
@@ -8,9 +9,11 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Button, Form, message } from 'antd';
-import { postApiUser } from '@/services/device-links-console-ui/user';
-
-export default () => {
+interface Props {
+  refresh: () => void;
+}
+export default (prop: Props) => {
+  const { refresh } = prop;
   const [form] = Form.useForm<{ name: string; username: string; activateMethod: string }>();
   return (
     <ModalForm<{
@@ -35,6 +38,7 @@ export default () => {
       onFinish={async (values: any) => {
         await postApiUser(values);
         message.success('新增成功');
+        refresh();
         return true;
       }}
     >

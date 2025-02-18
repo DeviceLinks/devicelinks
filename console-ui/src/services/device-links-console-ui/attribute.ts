@@ -2,44 +2,6 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 查询属性列表 GET /api/attribute */
-export async function getApiAttribute(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getApiAttributeParams,
-  body: {
-    /** 检索字段模块，User/Device/Log/Notification */
-    searchFieldModule: string;
-    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
-    searchMatch: string;
-    /** 检索字段列表 */
-    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
-  },
-  options?: { [key: string]: any },
-) {
-  return request<{
-    code: string;
-    message: string;
-    data: {
-      page?: number;
-      pageSize?: number;
-      totalPages?: number;
-      totalRows?: number;
-      result?: API.Attribute[];
-    };
-    additional: Record<string, any>;
-  }>('/api/attribute', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {
-      ...params,
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 新增属性 **单个INT32类型属性：**
 ```json
 {
@@ -271,18 +233,18 @@ export async function postApiAttribute(
     moduleId: string;
     /** 属性基本信息 */
     info: {
-      name?: string;
-      identifier?: string;
-      dataType?: string;
+      name: string;
+      identifier: string;
+      dataType: string;
       addition: {
-        unitId?: string;
-        dataLength?: number;
-        valueRange: { min?: number; max?: number };
+        unitId: string;
+        dataLength: number;
+        valueRange: { min: number; max: number };
         valueMap?: Record<string, any>;
-        elementCount?: number;
-        elementDataType?: string;
+        elementCount: number;
+        elementDataType: string;
       };
-      description?: string;
+      description: string;
     };
     /** 子属性列表 */
     childAttributes: string[];
@@ -329,18 +291,18 @@ export async function postApiAttributeAttributeId(
     moduleId: string;
     /** 属性基本信息 */
     info: {
-      name?: string;
-      identifier?: string;
-      dataType?: string;
+      name: string;
+      identifier: string;
+      dataType: string;
       addition: {
-        unitId?: string;
-        dataLength?: number;
-        valueRange: { min?: number; max?: number };
+        unitId: string;
+        dataLength: number;
+        valueRange: { min: number; max: number };
         valueMap?: Record<string, any>;
-        elementCount?: number;
-        elementDataType?: string;
+        elementCount: number;
+        elementDataType: string;
       };
-      description?: string;
+      description: string;
     };
     /** 子属性列表 */
     childAttributes: string[];
@@ -374,6 +336,44 @@ export async function deleteApiAttributeAttributeId(
   return request<API.ResponseResult>(`/api/attribute/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 查询属性列表 POST /api/attribute/filter */
+export async function postApiAttributeFilter(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postApiAttributeFilterParams,
+  body: {
+    /** 检索字段模块，User/Device/Log/Notification */
+    searchFieldModule: string;
+    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
+    searchMatch: string;
+    /** 检索字段列表 */
+    searchFields?: { field: string; operator: string; value: (string | number)[] }[];
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{
+    code: string;
+    message: string;
+    data: {
+      page: number;
+      pageSize: number;
+      totalPages: number;
+      totalRows: number;
+      result: API.Attribute[];
+    };
+    additional: Record<string, any>;
+  }>('/api/attribute/filter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {
+      ...params,
+    },
+    data: body,
     ...(options || {}),
   });
 }

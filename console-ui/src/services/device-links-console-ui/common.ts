@@ -14,9 +14,9 @@ export async function getApiCommonSearchField(
     valueType: string;
     componentType: string;
     optionDataSource: string;
-    optionApiDataCode: any;
-    optionStaticData: { label?: string; value?: string }[];
-    operators: { label?: string; value?: string }[];
+    optionApiDataCode: null;
+    optionStaticData: { label: string; value: string }[];
+    operators: { label: string; value: string }[];
   }>('/api/common/search/field', {
     method: 'GET',
     params: {

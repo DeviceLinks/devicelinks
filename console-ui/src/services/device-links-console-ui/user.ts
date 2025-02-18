@@ -2,44 +2,6 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 分页查询用户 GET /api/user */
-export async function getApiUser(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getApiUserParams,
-  body: {
-    /** 检索字段模块，User/Device/Log/Notification */
-    searchFieldModule: string;
-    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
-    searchMatch: string;
-    /** 检索字段列表 */
-    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
-  },
-  options?: { [key: string]: any },
-) {
-  return request<{
-    code: string;
-    message: string;
-    data: {
-      page?: number;
-      pageSize?: number;
-      totalPages?: number;
-      totalRows?: number;
-      result?: API.User[];
-    };
-    additional: Record<string, any>;
-  }>('/api/user', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: {
-      ...params,
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 新增用户 POST /api/user */
 export async function postApiUser(
   body: {
@@ -125,6 +87,44 @@ export async function deleteApiUserUserId(
   }>(`/api/user/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 查询用户列表 POST /api/user/filter */
+export async function postApiUserFilter(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postApiUserFilterParams,
+  body: {
+    /** 检索字段模块，User/Device/Log/Notification */
+    searchFieldModule: string;
+    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
+    searchMatch: string;
+    /** 检索字段列表 */
+    searchFields?: { field: string; operator: string; value: (string | number)[] }[];
+  },
+  options?: { [key: string]: any },
+) {
+  return request<{
+    code: string;
+    message: string;
+    data: {
+      page: number;
+      pageSize: number;
+      totalPages: number;
+      totalRows: number;
+      result: API.User[];
+    };
+    additional: Record<string, any>;
+  }>('/api/user/filter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: {
+      ...params,
+    },
+    data: body,
     ...(options || {}),
   });
 }
