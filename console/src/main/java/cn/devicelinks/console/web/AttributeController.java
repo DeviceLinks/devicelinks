@@ -41,7 +41,7 @@ public class AttributeController {
      * @return 返回成功响应 {@link ApiResponse}，其中包含符合条件的属性列表。
      * @throws ApiException 如果在处理请求时发生错误，例如查询失败或参数验证失败。
      */
-    @GetMapping
+    @PostMapping(value = "/filter")
     public ApiResponse getAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                               @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<Attribute> pageResult = this.attributeService.getAttributesByPage(paginationQuery, searchFieldQuery);

@@ -6,10 +6,7 @@ import cn.devicelinks.console.service.ProductService;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -35,7 +32,7 @@ public class ProductController {
      * @return 返回一个 {@link ApiResponse} 对象，包含符合给定条件的分页产品列表。
      * 响应中包括分页元数据和产品列表。
      */
-    @GetMapping
+    @PostMapping(value = "/filter")
     public ApiResponse getProductByPageable(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) {
         return ApiResponse.success(this.productService.getPageByPageable(paginationQuery, searchFieldQuery));
     }

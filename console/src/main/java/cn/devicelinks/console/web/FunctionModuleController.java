@@ -50,7 +50,7 @@ public class FunctionModuleController {
      * 包含符合查询条件的功能模块的分页结果。
      * @throws ApiException 如果在获取功能模块列表时发生错误。
      */
-    @GetMapping
+    @PostMapping(value = "/filter")
     public ApiResponse getFunctionModuleByPageable(@Valid PaginationQuery paginationQuery,
                                                    @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<FunctionModule> pageResult = this.functionModuleService.getFunctionModulesByPage(paginationQuery, searchFieldQuery);

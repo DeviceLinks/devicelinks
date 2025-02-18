@@ -64,7 +64,7 @@ public class SysUserController {
      * @param searchFieldQuery 搜索字段查询参数 {@link SearchFieldQuery}
      * @return 用户列表 {@link UserDTO}
      */
-    @GetMapping
+    @PostMapping(value = "/filter")
     @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse getUsers(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.userService.getUsers(searchFieldQuery, paginationQuery));
