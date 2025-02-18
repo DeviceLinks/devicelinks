@@ -15,32 +15,36 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model;
+package cn.devicelinks.console.model.user;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 
 /**
- * 更新部门请求实体
+ * 更新用户信息请求实体
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
-public class UpdateDepartmentRequest {
+public class UpdateUserRequest {
 
-    @NotEmpty(message = "部门名称不可以为空")
-    @Length(max = 30, message = "部门名称不可以超过30个字符")
-    private String name;
+    @NotEmpty(message = "用户名称不可以为空")
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "用户名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")
+    @Length(max = 30, message = "用户名称最大允许传递30个字符串")
+    private String username;
 
-    @Length(max = 32, message = "部门上级ID不可以超过32个字符")
-    private String pid;
+    @Email(message = "邮箱地址格式非法")
+    private String email;
 
-    @Range(min = 0, max = Integer.MAX_VALUE, message = "部门排序需要大于0并且小于" + Integer.MAX_VALUE)
-    private int sort;
+    @NotEmpty
+    private String departmentId;
 
-    @Length(max = 200, message = "部门描述不可以超过200个字符")
-    private String description;
+    @Pattern(regexp = "^1[3-9]\\d{9}$|^$", message = "请输入有效的手机号码")
+    private String phone;
+
+    private String mark;
 }

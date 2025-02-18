@@ -37,25 +37,40 @@ public enum SearchFieldVariable {
     USER_PHONE("phone", "手机号"),
     USER_EMAIL("email", "邮箱地址"),
     USER_ACTIVATE_METHOD("activateMethod", "激活方式"),
+
     DEVICE_CODE("deviceCode", "设备号"),
     DEVICE_NAME("name", "设备名称"),
     DEVICE_TYPE("deviceType", "设备类型"),
     DEVICE_ACTIVATION_TIME("activationTime", "激活时间"),
     DEVICE_LAST_ONLINE_TIME("lastOnlineTime", "最后上线时间"),
     DEVICE_LAST_REPORT_TIME("lastReportTime", "最后上报时间"),
+
     LOG_ACTION("action", "动作"),
     LOG_OBJECT_TYPE("objectType", "对象类型"),
     LOG_OBJECT_ID("objectId", "对象ID"),
     LOG_MSG("msg", "日志内容"),
     LOG_SUCCESS("success", "是否成功"),
-    PRODUCT_ID("productId", "产品ID"),
+
+
     FUNCTION_MODULE_ID("moduleId", "功能模块ID"),
     FUNCTION_MODULE_NAME("name", "模块名称"),
     FUNCTION_MODULE_IDENTIFIER("identifier", "模块标识符"),
 
     ATTRIBUTE_NAME("name", "属性名称"),
+    ATTRIBUTE_PARENT_ID("pid", "属性上级ID"),
     ATTRIBUTE_DATA_TYPE("dataType", "数据类型"),
-    ATTRIBUTE_IDENTIFIER("identifier","属性标识符"),
+    ATTRIBUTE_IDENTIFIER("identifier", "属性标识符"),
+
+    PRODUCT_ID("productId", "产品ID"),
+    PRODUCT_NAME("name", "产品名称"),
+    PRODUCT_DEVICE_TYPE("deviceType", "设备类型"),
+    PRODUCT_NETWORKING_AWAY("networkingAway", "联网方式"),
+    PRODUCT_ACCESS_GATEWAY_PROTOCOL("accessGatewayProtocol", "接入网关协议"),
+    PRODUCT_DATA_FORMAT("dataFormat", "数据格式"),
+    PRODUCT_AUTHENTICATION_METHOD("authenticationMethod", "鉴权方式"),
+    PRODUCT_DYNAMIC_REGISTRATION("dynamicRegistration", "是否动态注册"),
+    PRODUCT_STATUS("status", "状态")
+
     ;
     private final String field;
     private final String text;

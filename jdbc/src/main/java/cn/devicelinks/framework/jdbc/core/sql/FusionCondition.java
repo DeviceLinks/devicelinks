@@ -77,18 +77,18 @@ public class FusionCondition {
     }
 
     public static class FusionConditionBuilder {
-        private List<Condition> conditions = new ArrayList<>();
-        private List<ConditionGroup> conditionGroups = new ArrayList<>();
+        private final List<Condition> conditions = new ArrayList<>();
+        private final List<ConditionGroup> conditionGroups = new ArrayList<>();
         private SortCondition sort;
         private LimitCondition limit;
 
         public FusionConditionBuilder conditionGroups(ConditionGroup... conditionGroups) {
-            this.conditionGroups = List.of(conditionGroups);
+            this.conditionGroups.addAll(List.of(conditionGroups));
             return this;
         }
 
         public FusionConditionBuilder conditions(Condition... conditions) {
-            this.conditions = List.of(conditions);
+            this.conditions.addAll(List.of(conditions));
             return this;
         }
 

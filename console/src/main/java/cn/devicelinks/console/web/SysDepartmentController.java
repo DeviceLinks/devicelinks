@@ -18,9 +18,9 @@
 package cn.devicelinks.console.web;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.model.AddDepartmentRequest;
+import cn.devicelinks.console.model.department.AddDepartmentRequest;
 import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.UpdateDepartmentRequest;
+import cn.devicelinks.console.model.department.UpdateDepartmentRequest;
 import cn.devicelinks.console.service.SysDepartmentService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;

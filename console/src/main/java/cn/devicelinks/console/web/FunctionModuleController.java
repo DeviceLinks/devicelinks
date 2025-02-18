@@ -1,9 +1,9 @@
 package cn.devicelinks.console.web;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.model.AddFunctionModuleRequest;
+import cn.devicelinks.console.model.function.AddFunctionModuleRequest;
 import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.UpdateFunctionModuleRequest;
+import cn.devicelinks.console.model.function.UpdateFunctionModuleRequest;
 import cn.devicelinks.console.model.page.PaginationQuery;
 import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.FunctionModuleService;

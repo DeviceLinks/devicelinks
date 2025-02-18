@@ -3,6 +3,7 @@ package cn.devicelinks.console.model.search.module;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.web.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
+@Component
 public class LogSearchFieldModule implements SearchFieldModule {
 
     SearchFieldOptionData LOG_OBJECT_TYPE_USER = SearchFieldOptionData.of().setLabel("用户").setValue(LogObjectType.User);

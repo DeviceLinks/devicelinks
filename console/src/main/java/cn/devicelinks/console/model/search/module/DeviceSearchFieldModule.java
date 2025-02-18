@@ -2,6 +2,7 @@ package cn.devicelinks.console.model.search.module;
 
 import cn.devicelinks.framework.common.DeviceType;
 import cn.devicelinks.framework.common.web.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
+@Component
 public class DeviceSearchFieldModule implements SearchFieldModule {
 
     SearchFieldOptionData DEVICE_TYPE_DIRECT = SearchFieldOptionData.of().setLabel("直接连接").setValue(DeviceType.Direct);

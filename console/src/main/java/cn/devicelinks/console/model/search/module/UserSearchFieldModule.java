@@ -2,6 +2,7 @@ package cn.devicelinks.console.model.search.module;
 
 import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.web.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
+@Component
 public class UserSearchFieldModule implements SearchFieldModule {
 
     SearchFieldOptionData USER_ACTIVATE_METHOD_SEND_URL_EMAIL = SearchFieldOptionData.of().setLabel("向邮箱发送激活邮件").setValue(UserActivateMethod.SendUrlToEmail);
