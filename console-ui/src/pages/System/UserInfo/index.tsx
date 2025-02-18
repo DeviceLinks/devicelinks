@@ -1,7 +1,7 @@
 import { PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
 import React, { useState } from 'react';
-import { pageUserApi } from './api';
 import Add from './modules/add';
+import { getApiUser } from '@/services/device-links-console-ui/user';
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   return (
@@ -26,13 +26,14 @@ const UserInfo: React.FC = () => {
             },
           ) => {
             setLoading(true);
-            const result: any = await pageUserApi(
+            const result: any = await getApiUser(
               {
                 page: params.current,
                 pageSize: params.pageSize,
               },
               {
                 searchFieldModule: 'User',
+                searchMatch: 'ANY',
               },
             );
             setLoading(false);

@@ -8,7 +8,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Button, Form, message } from 'antd';
-import { addUserApi } from '../api';
+import { postApiUser } from '@/services/device-links-console-ui/user';
 
 export default () => {
   const [form] = Form.useForm<{ name: string; username: string; activateMethod: string }>();
@@ -33,7 +33,7 @@ export default () => {
       }}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        await addUserApi(values);
+        await postApiUser(values);
         message.success('新增成功');
         return true;
       }}
