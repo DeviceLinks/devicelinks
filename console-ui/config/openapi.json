@@ -7,279 +7,36 @@
   },
   "tags": [
     {
+      "name": "function"
+    },
+    {
       "name": "login"
     },
     {
       "name": "user"
     },
     {
+      "name": "product"
+    },
+    {
       "name": "department"
     },
     {
       "name": "common"
+    },
+    {
+      "name": "attribute"
     }
   ],
   "paths": {
-    "/auth/login": {
-      "post": {
-        "summary": "登录",
-        "deprecated": false,
-        "description": "",
-        "tags": ["login"],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "用户名",
-            "required": true,
-            "example": "admin",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "密码，16位小写md5加密后的值",
-            "required": true,
-            "example": "7a57a5a743894a0e",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "expires_in": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "token": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["expires_in", "message", "success", "token"],
-                  "$ref": "#/components/schemas/LoginResult"
-                },
-                "examples": {
-                  "1": {
-                    "summary": "成功示例",
-                    "value": {
-                      "expires_in": 7200,
-                      "message": "login success",
-                      "success": true,
-                      "token": "eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg"
-                    }
-                  }
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "summary": "退出登录",
-        "deprecated": false,
-        "description": "",
-        "tags": ["login"],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": false,
-            "example": "Bearer eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "null"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
-                  "required": ["code", "message", "data", "additional"]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "成功示例",
-                    "value": {
-                      "code": "SUCCESS",
-                      "message": "success",
-                      "data": null,
-                      "additional": {}
-                    }
-                  }
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/user": {
-      "post": {
-        "summary": "新增用户",
-        "deprecated": false,
-        "description": "",
-        "tags": ["user"],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "description": "用户名",
-                    "type": "string"
-                  },
-                  "account": {
-                    "description": "账号",
-                    "type": "string"
-                  },
-                  "email": {
-                    "description": "邮箱地址",
-                    "type": "string"
-                  },
-                  "phone": {
-                    "description": "手机号",
-                    "type": "string"
-                  },
-                  "departmentId": {
-                    "description": "所属部门ID",
-                    "type": "string"
-                  },
-                  "activateMethod": {
-                    "description": "激活方式",
-                    "type": "string"
-                  },
-                  "mark": {
-                    "description": "备注",
-                    "type": "string"
-                  }
-                },
-                "required": ["username", "account", "activateMethod"]
-              },
-              "example": "{\n    \"username\":\"恒宇少年\", // 用户名\n    \"account\":\"yuqiyu\", // 账号\n    \"email\":\"hengboy@minbox.org\", //邮箱地址\n    \"phone\":\"\", // 手机号\n    \"departmentId\":\"\", //所属部门ID\n    \"activateMethod\":\"SendUrlToEmail\", // 激活方式\n    \"mark\":\"\" //备注\n}"
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/User"
-                    },
-                    "additional": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
-                  "required": ["code", "message", "data", "additional"]
-                },
-                "examples": {
-                  "1": {
-                    "summary": "成功示例",
-                    "value": {
-                      "code": "SUCCESS",
-                      "message": "success",
-                      "data": {
-                        "id": "c460883ac80b4f499cf8ec03432d5876",
-                        "name": "恒宇少年",
-                        "account": "yuqiyu",
-                        "email": "hengboy@minbox.org",
-                        "phone": null,
-                        "pwd": null,
-                        "activateMethod": null,
-                        "activateToken": "d414lY14kiEHNIVBZ_ysYplE5hGrKLqJWcyxBZdZ_SXQ2zY6Uo",
-                        "departmentId": "cb4ad62ad53911efa7700242c0a8d704",
-                        "identity": "User",
-                        "lastLoginTime": null,
-                        "lastChangePwdTime": null,
-                        "enabled": false,
-                        "deleted": false,
-                        "createBy": "c31377a505e14fd2b52da54486ccaa4e",
-                        "createTime": "2025-01-21T14:49:58.78654",
-                        "mark": null
-                      },
-                      "additional": {}
-                    }
-                  }
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      },
+    "/api/function/module": {
       "get": {
-        "summary": "分页查询用户",
+        "summary": "查询功能模块列表",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "function"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -333,6 +90,637 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "searchFieldModule": {
+                    "type": "string",
+                    "description": "检索字段模块，User/Device/Log/Notification"
+                  },
+                  "searchMatch": {
+                    "type": "string",
+                    "description": "检索字段之间的匹配方式，ALL：所有；ANY：任意"
+                  },
+                  "searchFields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "description": "检索字段"
+                        },
+                        "operator": {
+                          "type": "string",
+                          "description": "检索运算符，详见检索字段列表接口返回值"
+                        },
+                        "value": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "description": "匹配检索值列表"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ]
+                    },
+                    "description": "检索字段列表"
+                  }
+                },
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
+              },
+              "example": {
+                "searchFieldModule": "FunctionModule",
+                "searchMatch": "ALL",
+                "searchFields": [
+                  {
+                    "field": "productId",
+                    "operator": "EqualTo",
+                    "value": "101189666270609425"
+                  },
+                  {
+                    "field": "name",
+                    "operator": "Like",
+                    "value": "位置"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "description": "当前页码"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "每页条数"
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "description": "总页数"
+                        },
+                        "totalRows": {
+                          "type": "integer",
+                          "description": "总条数"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FunctionModule"
+                          },
+                          "description": "分页数据列表"
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ]
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "page": 1,
+                        "pageSize": 10,
+                        "totalPages": 1,
+                        "totalRows": 1,
+                        "result": [
+                          {
+                            "id": "156a891ac35b11ef91220242ac110004",
+                            "productId": "101189666270609425",
+                            "name": "位置汇报",
+                            "identifier": "Location",
+                            "deleted": false,
+                            "createBy": "1",
+                            "createTime": "2024-12-26T15:29:04"
+                          }
+                        ]
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "添加功能模块",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "function"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string",
+                    "title": "产品ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "title": "功能模块名称"
+                  },
+                  "identifier": {
+                    "type": "string",
+                    "title": "功能模块标识符"
+                  }
+                },
+                "required": [
+                  "productId",
+                  "name",
+                  "identifier"
+                ]
+              },
+              "example": {
+                "productId": "101189666270609425",
+                "name": "测试功能模块",
+                "identifier": "TestModule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/function/module/{moduleId}": {
+      "get": {
+        "summary": "查询功能模块详情",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "function"
+        ],
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "description": "功能模块ID",
+            "required": true,
+            "example": "156a891ac35b11ef91220242ac110004",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/FunctionModule"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "id": "156a891ac35b11ef91220242ac110004",
+                        "productId": "101189666270609425",
+                        "name": "位置汇报",
+                        "identifier": "Location",
+                        "deleted": false,
+                        "createBy": "1",
+                        "createTime": "2024-12-26T15:29:04"
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "更新功能模块",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "function"
+        ],
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "description": "功能模块ID",
+            "required": true,
+            "example": "920fe87a8eeb4a38ba1b6db1f00586e6",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "功能模块名称"
+                  },
+                  "identifier": {
+                    "type": "string",
+                    "title": "功能模块标识符"
+                  }
+                },
+                "required": [
+                  "name",
+                  "identifier"
+                ]
+              },
+              "example": {
+                "name": "测试功能模块2",
+                "identifier": "TestModule2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "删除功能模块",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "function"
+        ],
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "description": "功能模块ID",
+            "required": true,
+            "example": "7d9bdfb394c2482f99006fb610955c09",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "登录",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "login"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "用户名",
+            "required": true,
+            "example": "admin",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "密码，16位小写md5加密后的值",
+            "required": true,
+            "example": "7a57a5a743894a0e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "expires_in": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "expires_in",
+                    "message",
+                    "success",
+                    "token"
+                  ],
+                  "$ref": "#/components/schemas/LoginResult"
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "expires_in": 7200,
+                      "message": "login success",
+                      "success": true,
+                      "token": "eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "退出登录",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "login"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": false,
+            "example": "Bearer eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -348,6 +736,330 @@
                       "type": "string"
                     },
                     "data": {
+                      "type": "null"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": null,
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user": {
+      "post": {
+        "summary": "新增用户",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "description": "用户名",
+                    "type": "string"
+                  },
+                  "account": {
+                    "description": "账号",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "邮箱地址",
+                    "type": "string"
+                  },
+                  "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                  },
+                  "departmentId": {
+                    "description": "所属部门ID",
+                    "type": "string"
+                  },
+                  "activateMethod": {
+                    "description": "激活方式",
+                    "type": "string"
+                  },
+                  "mark": {
+                    "description": "备注",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "account",
+                  "activateMethod"
+                ]
+              },
+              "example": "{\n    \"username\":\"恒宇少年\", // 用户名\n    \"account\":\"yuqiyu\", // 账号\n    \"email\":\"hengboy@minbox.org\", //邮箱地址\n    \"phone\":\"\", // 手机号\n    \"departmentId\":\"\", //所属部门ID\n    \"activateMethod\":\"SendUrlToEmail\", // 激活方式\n    \"mark\":\"\" //备注\n}"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "id": "c460883ac80b4f499cf8ec03432d5876",
+                        "name": "恒宇少年",
+                        "account": "yuqiyu",
+                        "email": "hengboy@minbox.org",
+                        "phone": null,
+                        "pwd": null,
+                        "activateMethod": null,
+                        "activateToken": "d414lY14kiEHNIVBZ_ysYplE5hGrKLqJWcyxBZdZ_SXQ2zY6Uo",
+                        "departmentId": "cb4ad62ad53911efa7700242c0a8d704",
+                        "identity": "User",
+                        "lastLoginTime": null,
+                        "lastChangePwdTime": null,
+                        "enabled": false,
+                        "deleted": false,
+                        "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                        "createTime": "2025-01-21T14:49:58.78654",
+                        "mark": null
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "分页查询用户",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "当前页码",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortProperty",
+            "in": "query",
+            "description": "排序属性，接口返回值\"result\"中的属性都可以作为排序字段",
+            "required": false,
+            "example": "createTime",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "description": "排序顺序，ASC：正序；DESC：倒序",
+            "required": false,
+            "example": "DESC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "searchFieldModule": {
+                    "type": "string",
+                    "description": "检索字段模块，User/Device/Log/Notification"
+                  },
+                  "searchMatch": {
+                    "type": "string",
+                    "description": "检索字段之间的匹配方式，ALL：所有；ANY：任意"
+                  },
+                  "searchFields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "description": "检索字段"
+                        },
+                        "operator": {
+                          "type": "string",
+                          "description": "检索运算符，详见检索字段列表接口返回值"
+                        },
+                        "value": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "description": "匹配检索值列表"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ]
+                    },
+                    "description": "检索字段列表"
+                  }
+                },
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
+              },
+              "example": {
+                "searchFieldModule": "User",
+                "searchMatch": "ALL",
+                "searchFields": [
+                  {
+                    "field": "name",
+                    "operator": "Like",
+                    "value": "少年"
+                  },
+                  {
+                    "field": "account",
+                    "operator": "NotEqualTo",
+                    "value": "admin"
+                  },
+                  {
+                    "field": "email",
+                    "operator": "Like",
+                    "value": "minbox"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
                       "properties": {
                         "page": {
                           "type": "integer",
@@ -370,18 +1082,28 @@
                           "items": {
                             "$ref": "#/components/schemas/User"
                           },
-                          "description": "用户列表"
+                          "description": "分页数据列表"
                         }
                       },
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
-                      "type": "object"
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ]
                     },
                     "additional": {
                       "type": "object",
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -438,7 +1160,9 @@
         "summary": "更新用户",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -489,7 +1213,13 @@
                     "type": "string"
                   }
                 },
-                "required": ["username", "email", "phone", "departmentId", "mark"]
+                "required": [
+                  "username",
+                  "email",
+                  "phone",
+                  "departmentId",
+                  "mark"
+                ]
               },
               "example": "{\n    \"username\":\"恒宇少年\", // 用户名\n    \"account\":\"yuqiyu\", // 账号\n    \"email\":\"hengboy@minbox.org\", //邮箱地址\n    \"phone\":\"\", // 手机号\n    \"departmentId\":\"\", //所属部门ID\n    \"activateMethod\":\"SendUrlToEmail\", // 激活方式\n    \"mark\":\"\" //备注\n}"
             }
@@ -517,7 +1247,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -563,7 +1298,9 @@
         "summary": "删除用户",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -609,7 +1346,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -657,7 +1399,9 @@
         "summary": "启用 / 禁用",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -713,7 +1457,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -743,7 +1492,9 @@
         "summary": "获取登录人信息",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "Authorization",
@@ -782,7 +1533,10 @@
                           "$ref": "#/components/schemas/Department"
                         }
                       },
-                      "required": ["user", "department"],
+                      "required": [
+                        "user",
+                        "department"
+                      ],
                       "$ref": "#/components/schemas/CurrentUser"
                     },
                     "additional": {
@@ -790,7 +1544,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -847,12 +1606,208 @@
         ]
       }
     },
+    "/api/product": {
+      "get": {
+        "summary": "查询产品列表",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "当前页码",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortProperty",
+            "in": "query",
+            "description": "排序属性，接口返回值\"result\"中的属性都可以作为排序字段",
+            "required": false,
+            "example": "createTime",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "description": "排序顺序，ASC：正序；DESC：倒序",
+            "required": false,
+            "example": "DESC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchField"
+              },
+              "example": {
+                "searchFieldModule": "Product",
+                "searchMatch": "ALL",
+                "searchFields": [
+                  {
+                    "field": "id",
+                    "operator": "EqualTo",
+                    "value": "101189666270609425"
+                  },
+                  {
+                    "field": "name",
+                    "operator": "Like",
+                    "value": "终端"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "description": "响应数据",
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "description": "当前页码"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "每页条数"
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "description": "总页数"
+                        },
+                        "totalRows": {
+                          "type": "integer",
+                          "description": "总条数"
+                        },
+                        "result": {
+                          "description": "分页数据列表",
+                          "$ref": "#/components/schemas/Product"
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ]
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "page": 1,
+                        "pageSize": 10,
+                        "totalPages": 1,
+                        "totalRows": 1,
+                        "result": [
+                          {
+                            "id": "101189666270609425",
+                            "name": "车载终端",
+                            "productKey": "1",
+                            "productSecret": "1",
+                            "deviceType": "Direct",
+                            "networkingAway": "CellularNetwork",
+                            "accessGatewayProtocol": null,
+                            "dataFormat": "Hex",
+                            "authenticationMethod": "ProductCredential",
+                            "dynamicRegistration": false,
+                            "status": "Development",
+                            "deleted": false,
+                            "description": null,
+                            "createBy": "c31377a505e14fd2b52da54486ccaa4e",
+                            "createTime": "2025-01-15T15:10:28"
+                          }
+                        ]
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/department": {
       "post": {
         "summary": "新增部门",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "Authorization",
@@ -897,7 +1852,10 @@
                     "description": "描述"
                   }
                 },
-                "required": ["identifier", "name"]
+                "required": [
+                  "identifier",
+                  "name"
+                ]
               },
               "example": {
                 "name": null,
@@ -936,7 +1894,9 @@
         "summary": "更新部门",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "departmentId",
@@ -982,7 +1942,9 @@
                     "description": "描述"
                   }
                 },
-                "required": ["name"]
+                "required": [
+                  "name"
+                ]
               }
             }
           }
@@ -1011,7 +1973,9 @@
         "summary": "删除部门",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "departmentId",
@@ -1059,7 +2023,9 @@
         "summary": "获取信息",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "departmentId",
@@ -1105,7 +2071,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -1146,12 +2117,14 @@
         "summary": "查询检索字段",
         "deprecated": false,
         "description": "",
-        "tags": ["common"],
+        "tags": [
+          "common"
+        ],
         "parameters": [
           {
             "name": "module",
             "in": "query",
-            "description": "功能模块，取值：Device、User、Log、Notification",
+            "description": "功能模块，取值：Device、User、Log、Notification、FunctionModule、Attribute",
             "required": false,
             "example": "User",
             "schema": {
@@ -1216,7 +2189,10 @@
                             "description": "取值"
                           }
                         },
-                        "required": ["label", "value"]
+                        "required": [
+                          "label",
+                          "value"
+                        ]
                       },
                       "description": "数据源为STATIC时的静态数据"
                     },
@@ -1234,7 +2210,10 @@
                             "description": "运算符取值"
                           }
                         },
-                        "required": ["label", "value"]
+                        "required": [
+                          "label",
+                          "value"
+                        ]
                       },
                       "description": "支持的运算法"
                     }
@@ -1294,123 +2273,923 @@
           }
         ]
       }
+    },
+    "/api/attribute": {
+      "get": {
+        "summary": "查询属性列表",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "当前页码",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortProperty",
+            "in": "query",
+            "description": "排序属性，接口返回值\"result\"中的属性都可以作为排序字段",
+            "required": false,
+            "example": "createTime",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "description": "排序顺序，ASC：正序；DESC：倒序",
+            "required": false,
+            "example": "DESC",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "searchFieldModule": {
+                    "type": "string",
+                    "description": "检索字段模块，User/Device/Log/Notification"
+                  },
+                  "searchMatch": {
+                    "type": "string",
+                    "description": "检索字段之间的匹配方式，ALL：所有；ANY：任意"
+                  },
+                  "searchFields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "description": "检索字段"
+                        },
+                        "operator": {
+                          "type": "string",
+                          "description": "检索运算符，详见检索字段列表接口返回值"
+                        },
+                        "value": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "description": "匹配检索值列表"
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ]
+                    },
+                    "description": "检索字段列表"
+                  }
+                },
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
+              },
+              "example": {
+                "searchFieldModule": "Attribute",
+                "searchMatch": "ALL",
+                "searchFields": [
+                  {
+                    "field": "productId",
+                    "operator": "EqualTo",
+                    "value": "101189666270609425"
+                  },
+                  {
+                    "field": "moduleId",
+                    "operator": "EqualTo",
+                    "value": "156a891ac35b11ef91220242ac110004"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "description": "当前页码"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "每页条数"
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "description": "总页数"
+                        },
+                        "totalRows": {
+                          "type": "integer",
+                          "description": "总条数"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Attribute"
+                          },
+                          "description": "分页数据列表"
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ]
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "新增属性",
+        "deprecated": false,
+        "description": "**单个INT32类型属性：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试int属性\",\n        \"identifier\": \"testInt\",\n        \"dataType\": \"INT32\",\n        \"addition\": {\n            \"unitId\": \"\",\n            \"valueRange\": {\n                \"min\": 100,\n                \"max\": 2000\n            }\n        },\n        \"description\": \"测试int属性\"\n    }\n}\n```\n\n**数组中单个元素STRING类型：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试array属性\",\n        \"identifier\": \"testArray\",\n        \"dataType\": \"ARRAY\",\n        \"addition\": {\n            \"elementCount\": 10,\n            \"elementDataType\": \"STRING\"\n        },\n        \"description\": \"测试Array属性\"\n    }\n}\n```\n\n**数组中单个元素OBJECT类型，每个元素配置两个子属性：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试array属性\",\n        \"identifier\": \"testArray\",\n        \"dataType\": \"ARRAY\",\n        \"addition\": {\n            \"elementCount\": 10,\n            \"elementDataType\": \"OBJECT\"\n        },\n        \"description\": \"测试Array属性\"\n    },\n    \"childAttributes\": [\n        {\n            \"name\": \"数组元素string属性\",\n            \"identifier\": \"elementString\",\n            \"dataType\": \"STRING\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"dataLength\": 10240\n            },\n            \"description\": \"数组中单个元素的属性\"\n        },\n        {\n            \"name\": \"数组元素int属性\",\n            \"identifier\": \"elementInt\",\n            \"dataType\": \"INT32\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10,\n                    \"max\": 1000\n                }\n            },\n            \"description\": \"数组中单个元素的属性\"\n        }\n    ]\n}\n```\n\n**OBJECT对象属性以及子属性：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试对象属性\",\n        \"identifier\": \"testObject\",\n        \"dataType\": \"OBJECT\",\n        \"description\": \"测试对象属性\"\n    },\n    \"childAttributes\": [\n        {\n            \"name\": \"测试String属性\",\n            \"identifier\": \"subString\",\n            \"dataType\": \"STRING\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"dataLength\": 10240\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试int属性\",\n            \"identifier\": \"subInt\",\n            \"dataType\": \"INT32\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10,\n                    \"max\": 1000\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试long属性\",\n            \"identifier\": \"subLong\",\n            \"dataType\": \"LONG64\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10,\n                    \"max\": 1000\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试float属性\",\n            \"identifier\": \"subFloat\",\n            \"dataType\": \"FLOAT\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10.0,\n                    \"max\": 1000.0\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试double属性\",\n            \"identifier\": \"subDouble\",\n            \"dataType\": \"DOUBLE\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10.00,\n                    \"max\": 1000.00\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试enum属性\",\n            \"identifier\": \"subEnum\",\n            \"dataType\": \"ENUM\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueMap\": {\n                    \"enum1\": \"枚举1\",\n                    \"enum2\": \"枚举2\",\n                    \"enum3\": \"枚举3\"\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试boolean属性\",\n            \"identifier\": \"subBoolean\",\n            \"dataType\": \"BOOLEAN\",\n            \"addition\": {\n                \"unitId\": \"\",\n                \"valueMap\": {\n                    \"0\": \"关闭\",\n                    \"1\": \"打开\"\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试Date属性\",\n            \"identifier\": \"subDate\",\n            \"dataType\": \"DATE\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试DateTime属性\",\n            \"identifier\": \"subDateTime\",\n            \"dataType\": \"DATETIME\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试Time属性\",\n            \"identifier\": \"subTime\",\n            \"dataType\": \"TIME\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试Timestamp属性\",\n            \"identifier\": \"subTimestamp\",\n            \"dataType\": \"TIMESTAMP\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        }\n    ]\n}\n```\n",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string",
+                    "description": "产品ID"
+                  },
+                  "moduleId": {
+                    "type": "string",
+                    "description": "功能模块ID"
+                  },
+                  "info": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "属性名称"
+                      },
+                      "identifier": {
+                        "type": "string",
+                        "description": "属性标识符"
+                      },
+                      "dataType": {
+                        "type": "string",
+                        "description": "属性数据类型"
+                      },
+                      "addition": {
+                        "type": "object",
+                        "properties": {
+                          "unitId": {
+                            "type": "string",
+                            "description": "单位ID"
+                          },
+                          "dataLength": {
+                            "type": "integer",
+                            "description": "数据长度"
+                          },
+                          "valueRange": {
+                            "type": "object",
+                            "properties": {
+                              "min": {
+                                "type": "integer",
+                                "description": "最小值"
+                              },
+                              "max": {
+                                "type": "integer",
+                                "description": "最大值"
+                              }
+                            },
+                            "required": [
+                              "min",
+                              "max"
+                            ],
+                            "description": "值范围"
+                          },
+                          "valueMap": {
+                            "type": "object",
+                            "properties": {},
+                            "description": "值集合"
+                          },
+                          "elementCount": {
+                            "type": "integer",
+                            "description": "数组中的元素数量"
+                          },
+                          "elementDataType": {
+                            "type": "string",
+                            "description": "数组中元素的数据类型"
+                          }
+                        },
+                        "required": [
+                          "unitId",
+                          "valueRange",
+                          "elementCount",
+                          "elementDataType",
+                          "dataLength"
+                        ],
+                        "description": "附加信息"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "描述"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "identifier",
+                      "dataType",
+                      "addition",
+                      "description"
+                    ],
+                    "description": "属性基本信息"
+                  },
+                  "childAttributes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "子属性列表"
+                  }
+                },
+                "required": [
+                  "productId",
+                  "moduleId",
+                  "info",
+                  "childAttributes"
+                ]
+              },
+              "example": {
+                "productId": "101189666270609425",
+                "moduleId": "156a891ac35b11ef91220242ac110004",
+                "info": {
+                  "name": "测试array属性",
+                  "identifier": "testArray",
+                  "dataType": "ARRAY",
+                  "addition": {
+                    "elementCount": 10,
+                    "elementDataType": "OBJECT"
+                  },
+                  "description": "测试Array属性",
+                  "childAttributes": [
+                    {
+                      "name": "数组元素string属性",
+                      "identifier": "elementString",
+                      "dataType": "STRING",
+                      "addition": {
+                        "unitId": "516363ecd4ab11efa7700242c0a8d704",
+                        "dataLength": 10240
+                      },
+                      "description": "数组中单个元素的属性"
+                    },
+                    {
+                      "name": "数组元素int属性",
+                      "identifier": "elementInt",
+                      "dataType": "INT32",
+                      "addition": {
+                        "unitId": "516363ecd4ab11efa7700242c0a8d704",
+                        "valueRange": {
+                          "min": 10,
+                          "max": 1000
+                        }
+                      },
+                      "description": "数组中单个元素的属性"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/attribute/{attributeId}": {
+      "get": {
+        "summary": "查询属性详情",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "attributeId",
+            "in": "path",
+            "description": "属性ID",
+            "required": true,
+            "example": "101084785836818486",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Attribute"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "id": "101084785836818486",
+                        "productId": "101189666270609425",
+                        "moduleId": "156a891ac35b11ef91220242ac110004",
+                        "pid": null,
+                        "name": "扩展信息",
+                        "identifier": "extra",
+                        "dataType": "OBJECT",
+                        "addition": null,
+                        "enabled": true,
+                        "deleted": false,
+                        "createBy": null,
+                        "createTime": "2024-12-23T11:33:01",
+                        "description": null,
+                        "childAttributes": [
+                          {
+                            "id": "101084785836818487",
+                            "productId": "101189666270609425",
+                            "moduleId": "156a891ac35b11ef91220242ac110004",
+                            "pid": "101084785836818486",
+                            "name": "速度",
+                            "identifier": "speed",
+                            "dataType": "INT32",
+                            "addition": {
+                              "unitId": "101084785836818492",
+                              "step": 1,
+                              "dataLength": 0,
+                              "valueRange": {
+                                "min": 0,
+                                "max": 200
+                              },
+                              "valueMap": {}
+                            },
+                            "enabled": true,
+                            "deleted": false,
+                            "createBy": null,
+                            "createTime": "2024-12-23T11:34:29",
+                            "description": null
+                          },
+                          {
+                            "id": "101084785836818488",
+                            "productId": "101189666270609425",
+                            "moduleId": "156a891ac35b11ef91220242ac110004",
+                            "pid": "101084785836818486",
+                            "name": "油量",
+                            "identifier": "oil",
+                            "dataType": "INT32",
+                            "addition": {
+                              "step": 1,
+                              "dataLength": 0,
+                              "valueRange": {
+                                "min": 0,
+                                "max": 65535
+                              },
+                              "valueMap": {}
+                            },
+                            "enabled": true,
+                            "deleted": false,
+                            "createBy": null,
+                            "createTime": "2024-12-23T13:45:29",
+                            "description": null
+                          },
+                          {
+                            "id": "101084785836818489",
+                            "productId": "101189666270609425",
+                            "moduleId": "156a891ac35b11ef91220242ac110004",
+                            "pid": "101084785836818486",
+                            "name": "Acc开关量",
+                            "identifier": "accFlag",
+                            "dataType": "BOOLEAN",
+                            "addition": {
+                              "step": 0,
+                              "dataLength": 0,
+                              "valueMap": {
+                                "0": "关闭",
+                                "1": "开启"
+                              }
+                            },
+                            "enabled": true,
+                            "deleted": false,
+                            "createBy": null,
+                            "createTime": "2024-12-23T13:46:43",
+                            "description": null
+                          },
+                          {
+                            "id": "101084785836818490",
+                            "productId": "101189666270609425",
+                            "moduleId": "156a891ac35b11ef91220242ac110004",
+                            "pid": "101084785836818486",
+                            "name": "行驶方向",
+                            "identifier": "angle",
+                            "dataType": "INT32",
+                            "addition": {
+                              "unitId": "101084785836818587",
+                              "step": 1,
+                              "dataLength": 0,
+                              "valueRange": {
+                                "min": 0,
+                                "max": 360
+                              },
+                              "valueMap": {}
+                            },
+                            "enabled": true,
+                            "deleted": false,
+                            "createBy": null,
+                            "createTime": "2024-12-23T13:49:10",
+                            "description": null
+                          }
+                        ]
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "删除属性",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "attributeId",
+            "in": "path",
+            "description": "属性ID",
+            "required": true,
+            "example": "101084785836818497",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "boolean",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "更新属性",
+        "deprecated": false,
+        "description": "更新属性Body的请求json数据格式与新增属性一致，可参考新增数据的json数据格式",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "attributeId",
+            "in": "path",
+            "description": "属性ID",
+            "required": true,
+            "example": "bc868f0a25814bd495efd4fdaaa90bc0",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string",
+                    "description": "产品ID"
+                  },
+                  "moduleId": {
+                    "type": "string",
+                    "description": "功能模块ID"
+                  },
+                  "info": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "属性名称"
+                      },
+                      "identifier": {
+                        "type": "string",
+                        "description": "属性标识符"
+                      },
+                      "dataType": {
+                        "type": "string",
+                        "description": "属性数据类型"
+                      },
+                      "addition": {
+                        "type": "object",
+                        "properties": {
+                          "unitId": {
+                            "type": "string",
+                            "description": "单位ID"
+                          },
+                          "dataLength": {
+                            "type": "integer",
+                            "description": "数据长度"
+                          },
+                          "valueRange": {
+                            "type": "object",
+                            "properties": {
+                              "min": {
+                                "type": "integer",
+                                "description": "最小值"
+                              },
+                              "max": {
+                                "type": "integer",
+                                "description": "最大值"
+                              }
+                            },
+                            "required": [
+                              "min",
+                              "max"
+                            ],
+                            "description": "值范围"
+                          },
+                          "valueMap": {
+                            "type": "object",
+                            "properties": {},
+                            "description": "值集合"
+                          },
+                          "elementCount": {
+                            "type": "integer",
+                            "description": "数组中的元素数量"
+                          },
+                          "elementDataType": {
+                            "type": "string",
+                            "description": "数组中元素的数据类型"
+                          }
+                        },
+                        "required": [
+                          "unitId",
+                          "valueRange",
+                          "elementCount",
+                          "elementDataType",
+                          "dataLength"
+                        ],
+                        "description": "附加信息"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "描述"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "identifier",
+                      "dataType",
+                      "addition",
+                      "description"
+                    ],
+                    "description": "属性基本信息"
+                  },
+                  "childAttributes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "子属性列表"
+                  }
+                },
+                "required": [
+                  "productId",
+                  "moduleId",
+                  "info",
+                  "childAttributes"
+                ]
+              },
+              "example": {
+                "productId": "101189666270609425",
+                "moduleId": "156a891ac35b11ef91220242ac110004",
+                "info": {
+                  "name": "测试array属性",
+                  "identifier": "testArray",
+                  "dataType": "ARRAY",
+                  "addition": {
+                    "elementCount": 10,
+                    "elementDataType": "OBJECT"
+                  },
+                  "description": "测试Array属性"
+                },
+                "childAttributes": [
+                  {
+                    "name": "数组元素string属性",
+                    "identifier": "elementString",
+                    "dataType": "STRING",
+                    "addition": {
+                      "unitId": "516363ecd4ab11efa7700242c0a8d704",
+                      "dataLength": 10240
+                    },
+                    "description": "数组中单个元素的属性"
+                  },
+                  {
+                    "name": "数组元素int属性",
+                    "identifier": "elementInt",
+                    "dataType": "INT32",
+                    "addition": {
+                      "unitId": "516363ecd4ab11efa7700242c0a8d704",
+                      "valueRange": {
+                        "min": 10,
+                        "max": 1000
+                      }
+                    },
+                    "description": "数组中单个元素的属性"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Attribute"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
-      "LoginResult": {
-        "type": "object",
-        "properties": {
-          "expires_in": {
-            "type": "number",
-            "description": "过期时间"
-          },
-          "message": {
-            "type": "string",
-            "description": "消息"
-          },
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "token": {
-            "type": "string",
-            "description": "认证token"
-          }
-        },
-        "title": "登录数据模型"
-      },
-      "PageResult": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "description": "当前页码"
-          },
-          "pageSize": {
-            "type": "integer",
-            "description": "每页条数"
-          },
-          "totalPages": {
-            "type": "integer",
-            "description": "总页数"
-          },
-          "totalRows": {
-            "type": "integer",
-            "description": "总条数"
-          },
-          "result": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "用户列表"
-          }
-        },
-        "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
-        "title": "分页数据模型"
-      },
-      "Department": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID"
-          },
-          "name": {
-            "type": "string",
-            "description": "部门名称"
-          },
-          "identifier": {
-            "type": "string",
-            "description": "标识符"
-          },
-          "pid": {
-            "type": "string",
-            "description": "上级ID",
-            "nullable": true
-          },
-          "sort": {
-            "type": "integer",
-            "description": "排序"
-          },
-          "level": {
-            "type": "integer",
-            "description": "等级"
-          },
-          "deleted": {
-            "type": "boolean",
-            "description": "是否删除"
-          },
-          "createBy": {
-            "type": "string",
-            "description": "创建人ID",
-            "nullable": true
-          },
-          "createTime": {
-            "type": "string",
-            "description": "创建时间"
-          },
-          "description": {
-            "type": "string",
-            "description": "描述",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "identifier",
-          "pid",
-          "sort",
-          "level",
-          "deleted",
-          "createBy",
-          "createTime",
-          "description"
-        ],
-        "title": "部门数据模型"
-      },
       "User": {
         "type": "object",
         "properties": {
@@ -1506,7 +3285,7 @@
           "mark"
         ],
         "description": "用户信息",
-        "title": "用户"
+        "title": "用户模型"
       },
       "SearchField": {
         "type": "object",
@@ -1547,13 +3326,139 @@
                   "description": "匹配检索值列表"
                 }
               },
-              "required": ["field", "operator", "value"]
+              "required": [
+                "field",
+                "operator",
+                "value"
+              ]
             },
             "description": "检索字段列表"
           }
         },
-        "required": ["searchMatch", "searchFieldModule"],
-        "title": "检索字段查询实体"
+        "required": [
+          "searchMatch",
+          "searchFieldModule"
+        ],
+        "title": "检索字段查询模型"
+      },
+      "LoginResult": {
+        "type": "object",
+        "properties": {
+          "expires_in": {
+            "type": "number",
+            "description": "过期时间"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "token": {
+            "type": "string",
+            "description": "认证token"
+          }
+        },
+        "title": "登录响应模型"
+      },
+      "PageResult": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "每页条数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "总页数"
+          },
+          "totalRows": {
+            "type": "integer",
+            "description": "总条数"
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "分页数据列表"
+          }
+        },
+        "required": [
+          "page",
+          "pageSize",
+          "totalPages",
+          "totalRows",
+          "result"
+        ],
+        "title": "分页数据模型"
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "部门名称"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "标识符"
+          },
+          "pid": {
+            "type": "string",
+            "description": "上级ID",
+            "nullable": true
+          },
+          "sort": {
+            "type": "integer",
+            "description": "排序"
+          },
+          "level": {
+            "type": "integer",
+            "description": "等级"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createBy": {
+            "type": "string",
+            "description": "创建人ID",
+            "nullable": true
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间"
+          },
+          "description": {
+            "type": "string",
+            "description": "描述",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "identifier",
+          "pid",
+          "sort",
+          "level",
+          "deleted",
+          "createBy",
+          "createTime",
+          "description"
+        ],
+        "title": "部门模型"
       },
       "CurrentUser": {
         "type": "object",
@@ -1565,8 +3470,259 @@
             "$ref": "#/components/schemas/Department"
           }
         },
-        "required": ["user", "department"],
-        "title": "当前登录用户信息"
+        "required": [
+          "user",
+          "department"
+        ],
+        "title": "当前登录用户模型"
+      },
+      "Attribute": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "属性ID"
+          },
+          "productId": {
+            "type": "string",
+            "description": "产品ID"
+          },
+          "moduleId": {
+            "type": "string",
+            "description": "功能模块ID"
+          },
+          "pid": {
+            "type": "string",
+            "description": "上级ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "属性名称"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "属性标识符"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "数据类型"
+          },
+          "addition": {
+            "type": "object",
+            "properties": {
+              "unitId": {
+                "type": "string",
+                "description": "单位ID"
+              },
+              "step": {
+                "type": "integer",
+                "description": "步长"
+              },
+              "dataLength": {
+                "type": "integer",
+                "description": "数据长度"
+              },
+              "valueRange": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "integer",
+                    "title": "最小值"
+                  },
+                  "max": {
+                    "type": "integer",
+                    "title": "最大值"
+                  }
+                },
+                "required": [
+                  "min",
+                  "max"
+                ],
+                "description": "值范围"
+              },
+              "valueMap": {
+                "type": "object",
+                "properties": {},
+                "description": "值Map"
+              }
+            },
+            "required": [
+              "unitId",
+              "step",
+              "dataLength",
+              "valueRange",
+              "valueMap"
+            ],
+            "description": "附加信息"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createBy": {
+            "type": "null",
+            "description": "创建人ID"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间"
+          },
+          "description": {
+            "type": "null",
+            "description": "描述"
+          },
+          "childAttributes": {
+            "type": "null",
+            "description": "子属性列表"
+          }
+        },
+        "required": [
+          "id",
+          "productId",
+          "moduleId",
+          "pid",
+          "name",
+          "identifier",
+          "dataType",
+          "addition",
+          "enabled",
+          "deleted",
+          "createBy",
+          "createTime",
+          "description",
+          "childAttributes"
+        ],
+        "title": "属性模型"
+      },
+      "FunctionModule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "功能模块ID"
+          },
+          "productId": {
+            "type": "string",
+            "description": "产品ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "功能模块名称"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "功能模块标识符"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createBy": {
+            "type": "string",
+            "description": "创建人ID"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间"
+          }
+        },
+        "required": [
+          "id",
+          "productId",
+          "name",
+          "identifier",
+          "deleted",
+          "createBy",
+          "createTime"
+        ],
+        "title": "功能模块模型"
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "产品名称"
+          },
+          "productKey": {
+            "type": "string",
+            "description": "产品Key"
+          },
+          "productSecret": {
+            "type": "string",
+            "description": "产品Secret"
+          },
+          "deviceType": {
+            "type": "string",
+            "description": "设备类型，Direct：直连设备；Gateway：网关设备；Gateway-Sub：网关子设备"
+          },
+          "networkingAway": {
+            "type": "string",
+            "description": "联网方式，WiFi：Wi-Fi，CellularNetwork：蜂窝网络（2G/3G/4G/5G），Ethernet：以太网"
+          },
+          "accessGatewayProtocol": {
+            "type": "null",
+            "description": "接入网关协议，Mqtt；Modbus；Rest；Socket；Grpc；Ble"
+          },
+          "dataFormat": {
+            "type": "string",
+            "description": "数据格式，Json：json；Bytes：字节；Hex：十六进制"
+          },
+          "authenticationMethod": {
+            "type": "string",
+            "description": "鉴权方式，ProductCredential：一型一密；DeviceCredential：一机一密；AccessToken：访问令牌；MqttBasic：mqtt基础认证；X509：X.509"
+          },
+          "dynamicRegistration": {
+            "type": "boolean",
+            "description": "是否开启动态注册（仅适用一型一密）"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态，Development：开发中，Published：已发布"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "description": {
+            "type": "null",
+            "description": "描述"
+          },
+          "createBy": {
+            "type": "string",
+            "description": "创建人"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "productKey",
+          "productSecret",
+          "deviceType",
+          "networkingAway",
+          "accessGatewayProtocol",
+          "dataFormat",
+          "authenticationMethod",
+          "dynamicRegistration",
+          "status",
+          "deleted",
+          "description",
+          "createBy",
+          "createTime"
+        ],
+        "title": "产品模型"
       }
     },
     "securitySchemes": {
@@ -1576,15 +3732,5 @@
       }
     }
   },
-  "servers": [
-    {
-      "url": "http://localhost:8000/dev",
-      "description": "本地研发"
-    }
-  ],
-  "security": [
-    {
-      "bearer": []
-    }
-  ]
+  "servers": []
 }

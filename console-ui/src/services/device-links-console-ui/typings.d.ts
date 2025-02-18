@@ -1,7 +1,54 @@
 declare namespace API {
+  type Attribute = {
+    /** 属性ID */
+    id: string;
+    /** 产品ID */
+    productId: string;
+    /** 功能模块ID */
+    moduleId: string;
+    /** 上级ID */
+    pid: string;
+    /** 属性名称 */
+    name: string;
+    /** 属性标识符 */
+    identifier: string;
+    /** 数据类型 */
+    dataType: string;
+    /** 附加信息 */
+    addition: {
+      unitId?: string;
+      step?: number;
+      dataLength?: number;
+      valueRange: { min?: number; max?: number };
+      valueMap?: Record<string, any>;
+    };
+    /** 是否启用 */
+    enabled: boolean;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 创建人ID */
+    createBy: any;
+    /** 创建时间 */
+    createTime: string;
+    /** 描述 */
+    description: any;
+    /** 子属性列表 */
+    childAttributes: any;
+  };
+
   type CurrentUser = {
     user: User;
     department: Department;
+  };
+
+  type deleteApi_openAPI_functionModuleModuleIdParams = {
+    /** 功能模块ID */
+    moduleId: string;
+  };
+
+  type deleteApiAttributeAttributeIdParams = {
+    /** 属性ID */
+    attributeId: string;
   };
 
   type deleteApiDepartmentDepartmentIdParams = {
@@ -36,14 +83,74 @@ declare namespace API {
     description: string;
   };
 
+  type FunctionModule = {
+    /** 功能模块ID */
+    id: string;
+    /** 产品ID */
+    productId: string;
+    /** 功能模块名称 */
+    name: string;
+    /** 功能模块标识符 */
+    identifier: string;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 创建人ID */
+    createBy: string;
+    /** 创建时间 */
+    createTime: string;
+  };
+
+  type getApi_openAPI_functionModuleModuleIdParams = {
+    /** 功能模块ID */
+    moduleId: string;
+  };
+
+  type getApi_openAPI_functionModuleParams = {
+    /** 每页条数 */
+    pageSize?: string;
+    /** 当前页码 */
+    page?: string;
+    /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
+    sortProperty?: string;
+    /** 排序顺序，ASC：正序；DESC：倒序 */
+    sortDirection?: string;
+  };
+
+  type getApiAttributeAttributeIdParams = {
+    /** 属性ID */
+    attributeId: string;
+  };
+
+  type getApiAttributeParams = {
+    /** 每页条数 */
+    pageSize?: string;
+    /** 当前页码 */
+    page?: string;
+    /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
+    sortProperty?: string;
+    /** 排序顺序，ASC：正序；DESC：倒序 */
+    sortDirection?: string;
+  };
+
   type getApiCommonSearchFieldParams = {
-    /** 功能模块，取值：Device、User、Log、Notification */
+    /** 功能模块，取值：Device、User、Log、Notification、FunctionModule、Attribute */
     module?: string;
   };
 
   type getApiDepartmentDepartmentIdParams = {
     /** 部门ID */
     departmentId: string;
+  };
+
+  type getApiProductParams = {
+    /** 每页条数 */
+    pageSize?: string;
+    /** 当前页码 */
+    page?: string;
+    /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
+    sortProperty?: string;
+    /** 排序顺序，ASC：正序；DESC：倒序 */
+    sortDirection?: string;
   };
 
   type getApiUserParams = {
@@ -77,8 +184,18 @@ declare namespace API {
     totalPages: number;
     /** 总条数 */
     totalRows: number;
-    /** 用户列表 */
+    /** 分页数据列表 */
     result: string[];
+  };
+
+  type postApi_openAPI_functionModuleModuleIdParams = {
+    /** 功能模块ID */
+    moduleId: string;
+  };
+
+  type postApiAttributeAttributeIdParams = {
+    /** 属性ID */
+    attributeId: string;
   };
 
   type postApiDepartmentDepartmentIdParams = {
@@ -103,6 +220,39 @@ declare namespace API {
     username: string;
     /** 密码，16位小写md5加密后的值 */
     password: string;
+  };
+
+  type Product = {
+    /** ID */
+    id: string;
+    /** 产品名称 */
+    name: string;
+    /** 产品Key */
+    productKey: string;
+    /** 产品Secret */
+    productSecret: string;
+    /** 设备类型，Direct：直连设备；Gateway：网关设备；Gateway-Sub：网关子设备 */
+    deviceType: string;
+    /** 联网方式，WiFi：Wi-Fi，CellularNetwork：蜂窝网络（2G/3G/4G/5G），Ethernet：以太网 */
+    networkingAway: string;
+    /** 接入网关协议，Mqtt；Modbus；Rest；Socket；Grpc；Ble */
+    accessGatewayProtocol: any;
+    /** 数据格式，Json：json；Bytes：字节；Hex：十六进制 */
+    dataFormat: string;
+    /** 鉴权方式，ProductCredential：一型一密；DeviceCredential：一机一密；AccessToken：访问令牌；MqttBasic：mqtt基础认证；X509：X.509 */
+    authenticationMethod: string;
+    /** 是否开启动态注册（仅适用一型一密） */
+    dynamicRegistration: boolean;
+    /** 状态，Development：开发中，Published：已发布 */
+    status: string;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 描述 */
+    description: any;
+    /** 创建人 */
+    createBy: string;
+    /** 创建时间 */
+    createTime: string;
   };
 
   type SearchField = {
