@@ -50,8 +50,11 @@ public interface StatusCodeConstants {
      * Product
      */
     StatusCode PRODUCT_NOT_EXISTS = StatusCode.build("PRODUCT_NOT_EXISTS", "产品：%s，不存在.");
-
+    StatusCode PRODUCT_ALREADY_EXISTS = StatusCode.build("PRODUCT_ALREADY_EXISTS", "产品：%s，已经存在，请检查名称、ProductKey是否重复.");
     StatusCode SEARCH_FIELD_REQUIRED_NOT_PRESENT = StatusCode.build("SEARCH_FIELD_REQUIRED_NOT_PRESENT", "检索字段：[%s]，必须全部传递.");
+    StatusCode PRODUCT_NOT_IN_DEVELOPMENT_STATUS = StatusCode.build("PRODUCT_NOT_IN_DEVELOPMENT_STATUS", "产品：%s，不在开发状态，无法操作.");
+    StatusCode PRODUCT_PUBLISHED = StatusCode.build("PRODUCT_PUBLISHED", "产品：%s，已发布，无法操作.");
+    StatusCode PRODUCT_HAS_RELATED_DEVICES = StatusCode.build("PRODUCT_HAS_RELATED_DEVICES", "产品：%s，存在关联的设备，无法删除.");
 
     StatusCode ATTRIBUTE_NOT_FOUND = StatusCode.build("ATTRIBUTE_NOT_FOUND", "属性：%s，不存在.");
 }

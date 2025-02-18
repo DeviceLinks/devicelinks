@@ -30,7 +30,7 @@ public class LogSearchFieldModule implements SearchFieldModule {
     SearchFieldOptionData LOG_ACTION_UPDATE = SearchFieldOptionData.of().setLabel("修改").setValue(LogAction.Update);
     SearchFieldOptionData LOG_ACTION_DELETE = SearchFieldOptionData.of().setLabel("删除").setValue(LogAction.Delete);
     SearchFieldOptionData LOG_ACTION_UPDATE_STATUS = SearchFieldOptionData.of().setLabel("修改状态").setValue(LogAction.UpdateStatus);
-    SearchFieldOptionData LOG_ACTION_UPDATE_ATTRIBUTE = SearchFieldOptionData.of().setLabel("修改属性").setValue(LogAction.UpdateAttribute);
+    SearchFieldOptionData LOG_ACTION_UPDATE_ATTRIBUTE = SearchFieldOptionData.of().setLabel("修改属性").setValue(LogAction.Update);
     SearchFieldOptionData LOG_ACTION_CHANGE_PWD = SearchFieldOptionData.of().setLabel("修改密码").setValue(LogAction.ChangePwd);
     SearchFieldOptionData LOG_ACTION_BIND = SearchFieldOptionData.of().setLabel("绑定").setValue(LogAction.Bind);
     SearchFieldOptionData LOG_ACTION_UNBIND = SearchFieldOptionData.of().setLabel("解绑").setValue(LogAction.Unbind);

@@ -48,10 +48,6 @@ public enum LogAction {
      */
     UpdateStatus(true, true),
     /**
-     * 变更属性
-     */
-    UpdateAttribute(true, true),
-    /**
      * 修改密码
      */
     ChangePwd(true, true),
@@ -67,7 +63,14 @@ public enum LogAction {
      * 解绑
      */
     Unbind(true, false),
-    ;
+    /**
+     * 发布
+     */
+    Publish(true, true),
+    /**
+     * 重新生成KeySecret
+     */
+    RegenerateKeySecret(true, true);
     /**
      * 是否存在操作之前的数据
      * <p>

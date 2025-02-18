@@ -73,8 +73,8 @@ public final class ConditionGroup {
         return withCondition(SqlFederationAway.AND, SqlFederationAway.AND, conditions);
     }
 
-    public static ConditionGroup withCondition(SqlFederationAway federationAway, Condition... conditions) {
-        return withCondition(SqlFederationAway.AND, federationAway, conditions);
+    public static ConditionGroup withCondition(SqlFederationAway conditionFederationAway, Condition... conditions) {
+        return withCondition(SqlFederationAway.AND, conditionFederationAway, conditions);
     }
 
     public static ConditionGroup withCondition(SqlFederationAway groupFederationAway, SqlFederationAway conditionFederationAway, Condition... conditions) {

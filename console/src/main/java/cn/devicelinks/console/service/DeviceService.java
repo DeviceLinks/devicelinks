@@ -20,6 +20,8 @@ package cn.devicelinks.console.service;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.BaseService;
 
+import java.util.List;
+
 /**
  * 设备业务逻辑接口定义
  *
@@ -27,5 +29,11 @@ import cn.devicelinks.framework.jdbc.BaseService;
  * @since 1.0
  */
 public interface DeviceService extends BaseService<Device, String> {
-
+    /**
+     * 查询指定产品下的所有设备
+     *
+     * @param productId 产品ID {@link Device#getProductId()}
+     * @return 设备列表 {@link Device}
+     */
+    List<Device> selectByProductId(String productId);
 }

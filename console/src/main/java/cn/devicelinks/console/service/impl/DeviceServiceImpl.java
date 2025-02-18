@@ -23,6 +23,11 @@ import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
 
 /**
  * 设备业务逻辑接口实现类
@@ -35,5 +40,11 @@ import org.springframework.stereotype.Service;
 public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRepository> implements DeviceService {
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public List<Device> selectByProductId(String productId) {
+        Assert.hasText(productId, "productId不能为空");
+        return this.repository.select(DEVICE.PRODUCT_ID.eq(productId), DEVICE.DELETED.eq(Boolean.FALSE));
     }
 }
