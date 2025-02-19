@@ -50,8 +50,8 @@ public class AttributeJdbcRepository extends JdbcRepository<Attribute, String> i
         // @formatter:off
         Condition[] conditions = searchFieldConditionToConditionArray(searchFieldConditionList);
         FusionCondition fusionCondition = FusionCondition
-                .withConditions(conditions)
-                .sort(sortCondition)
+                .withSort(sortCondition)
+                .conditions(conditions)
                 .build();
         // @formatter:on
 

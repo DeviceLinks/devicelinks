@@ -17,8 +17,11 @@
 
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.console.model.page.PaginationQuery;
+import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
 import java.util.List;
 
@@ -29,6 +32,15 @@ import java.util.List;
  * @since 1.0
  */
 public interface DeviceService extends BaseService<Device, String> {
+    /**
+     * 分页获取设备列表
+     *
+     * @param paginationQuery  分页查询参数 {@link PaginationQuery}
+     * @param searchFieldQuery 搜索字段查询参数 {@link SearchFieldQuery}
+     * @return 返回 {@link PageResult} 包含设备列表和分页信息，或 {@link PageResult} 包含错误信息。
+     */
+    PageResult<Device> selectByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
+
     /**
      * 查询指定产品下的所有设备
      *

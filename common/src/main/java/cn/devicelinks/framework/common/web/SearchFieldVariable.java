@@ -29,6 +29,7 @@ import lombok.Getter;
 public enum SearchFieldVariable {
     ID("id", "ID"),
     DELETED("deleted", "是否删除"),
+    ENABLED("enabled", "是否启用"),
     CREATE_BY("createBy", "创建人ID"),
     CREATE_TIME("createTime", "创建时间"),
 
@@ -41,6 +42,7 @@ public enum SearchFieldVariable {
     DEVICE_CODE("deviceCode", "设备号"),
     DEVICE_NAME("name", "设备名称"),
     DEVICE_TYPE("deviceType", "设备类型"),
+    DEVICE_STATUS("status", "设备状态"),
     DEVICE_ACTIVATION_TIME("activationTime", "激活时间"),
     DEVICE_LAST_ONLINE_TIME("lastOnlineTime", "最后上线时间"),
     DEVICE_LAST_REPORT_TIME("lastReportTime", "最后上报时间"),

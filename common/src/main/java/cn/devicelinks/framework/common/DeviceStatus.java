@@ -27,7 +27,7 @@ public enum DeviceStatus {
     /**
      * 未激活，设备从未连接并上报数据
      */
-    NotActivated,
+    NotActivate,
     /**
      * 已激活，在线
      */

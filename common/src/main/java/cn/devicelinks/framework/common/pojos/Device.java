@@ -43,7 +43,6 @@ public class Device implements Serializable {
     private String departmentId;
     private String productId;
     private String deviceCode;
-    private String deviceSecret;
     private DeviceType deviceType;
     private String name;
     private DeviceStatus status;

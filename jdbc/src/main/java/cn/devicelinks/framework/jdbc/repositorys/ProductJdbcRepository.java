@@ -49,9 +49,9 @@ public class ProductJdbcRepository extends JdbcRepository<Product, String> imple
         // @formatter:off
         Condition[] conditions = searchFieldConditionToConditionArray(searchFieldConditionList);
         FusionCondition fusionCondition = FusionCondition
-                .withConditions(conditions)
+                .withSort(sortCondition)
+                .conditions(conditions)
                 .conditions(PRODUCT.DELETED.eq(Boolean.FALSE))
-                .sort(sortCondition)
                 .build();
         // @formatter:on
         return this.page(fusionCondition, pageQuery);

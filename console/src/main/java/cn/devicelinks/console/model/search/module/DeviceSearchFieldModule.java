@@ -1,5 +1,6 @@
 package cn.devicelinks.console.model.search.module;
 
+import cn.devicelinks.framework.common.DeviceStatus;
 import cn.devicelinks.framework.common.DeviceType;
 import cn.devicelinks.framework.common.web.*;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,12 @@ import java.util.List;
 @Component
 public class DeviceSearchFieldModule implements SearchFieldModule {
 
+    SearchFieldOptionData ENABLED_BOOLEAN_TRUE = SearchFieldOptionData.of().setLabel("启用").setValue(Boolean.TRUE);
+    SearchFieldOptionData ENABLED_BOOLEAN_FALSE = SearchFieldOptionData.of().setLabel("禁用").setValue(Boolean.FALSE);
+    SearchFieldOptionData DELETED_BOOLEAN_TRUE = SearchFieldOptionData.of().setLabel("已删除").setValue(Boolean.TRUE);
+    SearchFieldOptionData DELETED_BOOLEAN_FALSE = SearchFieldOptionData.of().setLabel("未删除").setValue(Boolean.FALSE);
+
+
     SearchField DEVICE_ID = SearchField.of(SearchFieldVariable.ID)
             .setValueType(SearchFieldValueType.STRING)
             .setComponentType(SearchFieldComponentType.INPUT)
@@ -24,6 +31,17 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.Like,
                     SearchFieldOperator.NotLike
             ));
+
+    SearchField DEVICE_PRODUCT_ID = SearchField.of(SearchFieldVariable.PRODUCT_ID)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
+            ));
+
 
     SearchField DEVICE_CODE = SearchField.of(SearchFieldVariable.DEVICE_CODE)
             .setValueType(SearchFieldValueType.STRING)
@@ -49,6 +67,17 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
             .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
             .setEnumClass(DeviceType.class)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.In,
+                    SearchFieldOperator.NotIn
+            ));
+
+    SearchField DEVICE_STATUS = SearchField.of(SearchFieldVariable.DEVICE_STATUS)
+            .setValueType(SearchFieldValueType.ENUM)
+            .setComponentType(SearchFieldComponentType.SELECT)
+            .setEnumClass(DeviceStatus.class)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
@@ -86,6 +115,30 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.LessThanOrEqualTo
             ));
 
+    SearchField DEVICE_ENABLED = SearchField.of(SearchFieldVariable.ENABLED)
+            .setValueType(SearchFieldValueType.BOOLEAN)
+            .setComponentType(SearchFieldComponentType.SELECT)
+            .setOptionStaticData(List.of(
+                    ENABLED_BOOLEAN_TRUE,
+                    ENABLED_BOOLEAN_FALSE
+            ))
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo
+            ));
+
+    SearchField DEVICE_DELETED = SearchField.of(SearchFieldVariable.DELETED)
+            .setValueType(SearchFieldValueType.BOOLEAN)
+            .setComponentType(SearchFieldComponentType.SELECT)
+            .setOptionStaticData(List.of(
+                    DELETED_BOOLEAN_TRUE,
+                    DELETED_BOOLEAN_FALSE
+            ))
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo
+            ));
+
     @Override
     public SearchFieldModuleIdentifier supportIdentifier() {
         return SearchFieldModuleIdentifier.Device;
@@ -95,12 +148,16 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
     public List<SearchField> getSearchFields() {
         return List.of(
                 DEVICE_ID,
+                DEVICE_PRODUCT_ID,
                 DEVICE_CODE,
                 DEVICE_NAME,
                 DEVICE_TYPE,
+                DEVICE_STATUS,
                 DEVICE_ACTIVATION_TIME,
                 DEVICE_LAST_ONLINE_TIME,
-                DEVICE_LAST_REPORT_TIME
+                DEVICE_LAST_REPORT_TIME,
+                DEVICE_ENABLED,
+                DEVICE_DELETED
         );
     }
 }

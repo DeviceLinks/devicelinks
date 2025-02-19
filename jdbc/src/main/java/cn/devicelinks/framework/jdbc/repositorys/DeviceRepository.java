@@ -19,6 +19,12 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+
+import java.util.List;
 
 /**
  * The {@link Device} Repository
@@ -27,5 +33,13 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @since 1.0
  */
 public interface DeviceRepository extends Repository<Device, String> {
-	//...
+    /**
+     * 根据条件查询并分页
+     *
+     * @param searchFieldConditionList 搜索条件列表
+     * @param pageQuery                分页查询参数
+     * @param sortCondition            排序条件
+     * @return 返回一个 {@link PageResult} 对象，包含符合条件的 {@link Device} 列表和分页信息。
+     */
+    PageResult<Device> selectByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
 }

@@ -49,8 +49,8 @@ public class SysLogJdbcRepository extends JdbcRepository<SysLog, String> impleme
         // @formatter:off
         Condition[] conditions = searchFieldConditionToConditionArray(searchFieldConditionList);
         FusionCondition fusionCondition = FusionCondition
-                .withConditions(conditions)
-                .sort(sortCondition)
+                .withSort(sortCondition)
+                .conditions(conditions)
                 .build();
         // @formatter:on
 

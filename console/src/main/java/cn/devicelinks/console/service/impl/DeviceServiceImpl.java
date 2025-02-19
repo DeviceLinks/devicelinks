@@ -17,9 +17,12 @@
 
 package cn.devicelinks.console.service.impl;
 
+import cn.devicelinks.console.model.page.PaginationQuery;
+import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.DeviceService;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,11 @@ import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
 public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRepository> implements DeviceService {
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public PageResult<Device> selectByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
+        return this.repository.selectByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 
     @Override
