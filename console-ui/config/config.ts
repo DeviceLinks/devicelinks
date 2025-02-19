@@ -163,4 +163,7 @@ export default defineConfig({
     PROXY_PREFIX: PROXY_PREFIX,
   },
   tailwindcss: {},
+  history: {
+    type: 'hash',
+  },
 });
