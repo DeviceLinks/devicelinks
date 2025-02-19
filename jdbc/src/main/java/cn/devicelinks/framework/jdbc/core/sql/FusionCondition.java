@@ -19,6 +19,7 @@ package cn.devicelinks.framework.jdbc.core.sql;
 
 import lombok.Getter;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +77,11 @@ public class FusionCondition {
         return new FusionConditionBuilder().limit(limit);
     }
 
+    public static FusionConditionBuilder withSort(SortCondition sort) {
+        Assert.notNull(sort, "Sort must not be null");
+        return new FusionConditionBuilder().sort(sort);
+    }
+
     public static class FusionConditionBuilder {
         private final List<Condition> conditions = new ArrayList<>();
         private final List<ConditionGroup> conditionGroups = new ArrayList<>();
@@ -83,12 +89,16 @@ public class FusionCondition {
         private LimitCondition limit;
 
         public FusionConditionBuilder conditionGroups(ConditionGroup... conditionGroups) {
-            this.conditionGroups.addAll(List.of(conditionGroups));
+            if (!ObjectUtils.isEmpty(conditionGroups)) {
+                this.conditionGroups.addAll(List.of(conditionGroups));
+            }
             return this;
         }
 
         public FusionConditionBuilder conditions(Condition... conditions) {
-            this.conditions.addAll(List.of(conditions));
+            if (!ObjectUtils.isEmpty(conditions)) {
+                this.conditions.addAll(List.of(conditions));
+            }
             return this;
         }
 
