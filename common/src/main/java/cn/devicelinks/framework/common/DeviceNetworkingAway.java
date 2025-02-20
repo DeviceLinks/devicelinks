@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 /**
@@ -26,6 +27,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@ApiEnum
 public enum DeviceNetworkingAway {
     WiFi("Wi-Fi"),
     CellularNetwork("蜂窝网络（2G/3G/4G/5G）"),

@@ -17,35 +17,46 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级策略重试间隔
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaUpgradeStrategyRetryInterval {
     /**
      * 不重试
      */
-    Not,
+    Not("不重试"),
     /**
      * 立即重试
      */
-    Immediately,
+    Immediately("立即重试"),
     /**
      * 10分钟后重试
      */
-    Minute10,
+    Minute10("10分钟后重试"),
     /**
      * 30分钟后重试
      */
-    Minute30,
+    Minute30("30分钟后重试"),
     /**
      * 1小时后重试
      */
-    Hour1,
+    Hour1("1小时后重试"),
     /**
      * 24小时后重试
      */
-    Hour24
+    Hour24("24小时后重试"),
+    ;
+    private final String description;
+
+    OtaUpgradeStrategyRetryInterval(String description) {
+        this.description = description;
+    }
 }

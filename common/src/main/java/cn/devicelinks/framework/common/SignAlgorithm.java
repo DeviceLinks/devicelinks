@@ -17,13 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA签名算法
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SignAlgorithm {
-    MD5,
-    SHA256
+    /**
+     * MD5算法
+     */
+    MD5("MD5"),
+    /**
+     * SHA-256算法
+     */
+    SHA256("SHA-256");
+
+    private final String description;
+
+    SignAlgorithm(String description) {
+        this.description = description;
+    }
 }

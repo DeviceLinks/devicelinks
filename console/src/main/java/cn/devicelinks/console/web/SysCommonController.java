@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console.web;
 
+import cn.devicelinks.console.utils.ApiEnumScanner;
 import cn.devicelinks.console.model.GetSearchFieldQuery;
 import cn.devicelinks.console.model.search.module.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -50,5 +51,18 @@ public class SysCommonController {
         SearchFieldModuleIdentifier identifier = SearchFieldModuleIdentifier.valueOf(query.getModule());
         List<SearchField> searchFieldTemplateList = SearchFieldModuleFactory.getSearchFields(identifier);
         return ApiResponse.success(searchFieldTemplateList);
+    }
+
+    /**
+     * 获取定义的全部枚举
+     * <p>
+     * 返回枚举的值定义以及对应的描述信息
+     *
+     * @return {@link ApiResponse}
+     * @throws ApiException 如果查询过程中发生错误，例如参数无效或数据库查询失败，将抛出 {@link ApiException} 异常。
+     */
+    @GetMapping(value = "/enums")
+    public ApiResponse getEnums() throws ApiException {
+        return ApiResponse.success(ApiEnumScanner.getAllApiEnums());
     }
 }

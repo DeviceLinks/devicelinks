@@ -17,23 +17,33 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 通知匹配用户方式
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum NotificationMatchUserAway {
     /**
      * 全部用户
      */
-    All,
+    All("全部用户"),
     /**
      * 全部管理员
      */
-    AllAdmin,
+    AllAdmin("全部管理员"),
     /**
      * 指定用户列表
      */
-    SpecifyUser
+    SpecifyUser("指定用户");
+    private final String description;
+
+    NotificationMatchUserAway(String description) {
+        this.description = description;
+    }
 }

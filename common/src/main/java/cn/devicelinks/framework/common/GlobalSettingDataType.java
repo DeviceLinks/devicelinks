@@ -17,39 +17,50 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 全局参数数据类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum GlobalSettingDataType {
     /**
      * 年月日时分秒
      */
-    DateTime,
+    DateTime("年月日时分秒"),
     /**
      * 年月日
      */
-    Date,
+    Date("年月日"),
     /**
      * 时分秒
      */
-    Time,
+    Time("时分秒"),
     /**
      * true/false
      */
-    Bool,
+    Bool("布尔"),
     /**
      * string
      */
-    String,
+    String("字符串"),
     /**
      * 整数
      */
-    Number,
+    Number("整型"),
     /**
      * 浮点类型
      */
-    Decimal
+    Decimal("浮点类型");
+
+    private final String description;
+
+    GlobalSettingDataType(java.lang.String description) {
+        this.description = description;
+    }
 }

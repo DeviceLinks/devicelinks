@@ -17,17 +17,29 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
+ * OTA 升级批次类型
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaUpgradeBatchType {
     /**
      * 验证升级包
      */
-    VerifyPackage,
+    VerifyPackage("验证升级包"),
     /**
      * 批量升级
      */
-    BatchUpgrade
+    BatchUpgrade("批量升级");
+    
+    private final String description;
+
+    OtaUpgradeBatchType(String description) {
+        this.description = description;
+    }
 }

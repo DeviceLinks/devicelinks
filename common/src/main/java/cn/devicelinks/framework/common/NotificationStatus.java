@@ -17,27 +17,38 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 通知状态
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum NotificationStatus {
     /**
      * 激活
      */
-    Activation,
+    Activation("已激活"),
     /**
      * 已清除
      */
-    Cleared,
+    Cleared("已清除"),
     /**
      * 已确认
      */
-    Confirmed,
+    Confirmed("已确认"),
     /**
      * 未确认
      */
-    Unconfirmed
+    Unconfirmed("未确认");
+
+    private final String description;
+
+    NotificationStatus(String description) {
+        this.description = description;
+    }
 }

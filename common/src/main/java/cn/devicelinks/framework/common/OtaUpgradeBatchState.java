@@ -17,31 +17,42 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级批次状态
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaUpgradeBatchState {
     /**
      * 待升级
      */
-    Wait,
+    Wait("待升级"),
     /**
      * 升级中
      */
-    Upgrading,
+    Upgrading("升级中"),
     /**
      * 已完成
      */
-    Completed,
+    Completed("已完成"),
     /**
      * 已取消
      */
-    Cancelled,
+    Cancelled("已取消"),
     /**
      * 未完成
      */
-    Unfinished
+    Unfinished("未完成");
+
+    private final String description;
+
+    OtaUpgradeBatchState(String description) {
+        this.description = description;
+    }
 }

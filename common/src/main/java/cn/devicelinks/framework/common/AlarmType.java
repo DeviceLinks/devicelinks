@@ -17,27 +17,38 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 告警类型定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum AlarmType {
     /**
      * 湿度过低
      */
-    LowHumidity,
+    LowHumidity("湿度过低"),
     /**
      * 湿度过高
      */
-    HighHumidity,
+    HighHumidity("湿度过高"),
     /**
      * 温度过高
      */
-    HighTemperature,
+    HighTemperature("温度过高"),
     /**
      * 温度过低
      */
-    LowTemperature,
+    LowTemperature("温度过低");
+
+    private final String description;
+
+    AlarmType(String description) {
+        this.description = description;
+    }
 }

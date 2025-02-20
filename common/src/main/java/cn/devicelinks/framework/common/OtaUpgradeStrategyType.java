@@ -17,19 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级策略类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaUpgradeStrategyType {
     /**
      * 立即升级
      */
-    Immediately,
+    Immediately("立即升级"),
     /**
      * 定时升级
      */
-    Schedule
+    Schedule("定时升级"),
+    ;
+    private final String description;
+
+    OtaUpgradeStrategyType(String description) {
+        this.description = description;
+    }
 }

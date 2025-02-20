@@ -53,4 +53,8 @@ public interface Constants {
      * 空字节
      */
     byte EMPTY_BYTE = 0b00000000;
+    /**
+     * 值类型为枚举时用于获取枚举中定义的对应"label"的字段
+     */
+    String ENUM_OBJECT_LABEL_FIELD = "description";
 }

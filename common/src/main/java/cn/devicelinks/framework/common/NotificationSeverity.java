@@ -17,31 +17,42 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 通知严重性
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum NotificationSeverity {
     /**
      * 严重
      */
-    Danger,
+    Danger("严重"),
     /**
      * 重要
      */
-    Important,
+    Important("重要"),
     /**
      * 次要
      */
-    Secondary,
+    Secondary("次要"),
     /**
      * 警告
      */
-    Warn,
+    Warn("警告"),
     /**
      * 不确定
      */
-    Uncertain
+    Uncertain("不确定");
+
+    private final String description;
+
+    NotificationSeverity(String description) {
+        this.description = description;
+    }
 }

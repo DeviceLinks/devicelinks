@@ -17,15 +17,25 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 通知类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum NotificationType {
     /**
      * 平台
      */
-    Platform
+    Platform("平台");
+    private final String description;
+
+    NotificationType(String description) {
+        this.description = description;
+    }
 }

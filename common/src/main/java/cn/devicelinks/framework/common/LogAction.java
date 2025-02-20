@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 /**
@@ -26,6 +27,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@ApiEnum
 public enum LogAction {
     Login("登录", true, true),
     Logout("登出", true, true),

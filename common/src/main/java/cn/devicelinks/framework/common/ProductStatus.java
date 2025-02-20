@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 /**
@@ -26,6 +27,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@ApiEnum
 public enum ProductStatus {
     Development("开发中"),
     Published("已发布");
