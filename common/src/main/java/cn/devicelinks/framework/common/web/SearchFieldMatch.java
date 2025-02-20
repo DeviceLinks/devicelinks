@@ -15,7 +15,10 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.model.search;
+package cn.devicelinks.framework.common.web;
+
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
 
 /**
  * 检索字段匹配方式
@@ -23,13 +26,21 @@ package cn.devicelinks.console.model.search;
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SearchFieldMatch {
     /**
      * 全部
      */
-    ALL,
+    ALL("全部匹配"),
     /**
      * 任意
      */
-    ANY
+    ANY("任意匹配");
+    
+    private final String description;
+
+    SearchFieldMatch(String description) {
+        this.description = description;
+    }
 }

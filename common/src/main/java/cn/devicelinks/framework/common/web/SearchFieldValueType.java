@@ -17,43 +17,54 @@
 
 package cn.devicelinks.framework.common.web;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 检索字段值类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SearchFieldValueType {
     /**
      * 字符串
      */
-    STRING,
+    STRING("字符串"),
     /**
      * 整数
      */
-    INTEGER,
+    INTEGER("整数"),
     /**
      * 浮点数
      */
-    FLOAT,
+    FLOAT("浮点型"),
     /**
      * 布尔
      */
-    BOOLEAN,
+    BOOLEAN("布尔型"),
     /**
      * 日期
      */
-    DATE,
+    DATE("日期"),
     /**
      * 日期时间
      */
-    DATE_TIME,
+    DATE_TIME("日期时间"),
     /**
      * 时间
      */
-    TIME,
+    TIME("时间"),
     /**
      * 枚举
      */
-    ENUM
+    ENUM("枚举")
+    ;
+    private final String description;
+
+    SearchFieldValueType(String description) {
+        this.description = description;
+    }
 }

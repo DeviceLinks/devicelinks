@@ -23,6 +23,7 @@ import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.common.web.SearchField;
+import cn.devicelinks.framework.common.web.SearchFieldMatch;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.common.web.SearchFieldValueType;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
