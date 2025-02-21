@@ -30,6 +30,10 @@ public interface StatusCodeConstants {
     StatusCode SEARCH_FIELD_ENUM_VALUE_ILLEGAL = StatusCode.build("SEARCH_FIELD_ENUM_VALUE_ILLEGAL", "检索字段：[%s]，枚举值：[%s]，并未定义，请检查是否有效.");
     StatusCode SEARCH_FIELD_REQUIRED_NOT_PRESENT = StatusCode.build("SEARCH_FIELD_REQUIRED_NOT_PRESENT", "检索字段：[%s]，必须全部传递.");
 
+    StatusCode GLOBAL_SETTING_NOT_FOUND = StatusCode.build("GLOBAL_SETTING_NOT_FOUND", "全局设置：%s，不存在.");
+    StatusCode GLOBAL_SETTING_VALUE_TYPE_MISMATCH = StatusCode.build("GLOBAL_SETTING_VALUE_TYPE_MISMATCH", "全局设置[%s]，数据类型不匹配，请检查数据格式是否正确.");
+    StatusCode GLOBAL_SETTING_VALUE_TYPE_NOT_SUPPORT = StatusCode.build("GLOBAL_SETTING_VALUE_TYPE_NOT_SUPPORT", "全局设置[%s]，数据类型：[%s]，不在支持的数据");
+
     /**
      * User
      */

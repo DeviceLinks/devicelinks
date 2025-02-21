@@ -40,7 +40,7 @@ public class SysGlobalSetting implements Serializable {
     private String id;
     private String name;
     private String flag;
-    private String defaultValue;
+    private String value;
     private GlobalSettingDataType dataType;
     private boolean multivalued;
     private boolean allowSelfSet;

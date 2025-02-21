@@ -44,7 +44,7 @@ public class TSysGlobalSetting extends TableImpl {
 	public final Column ID = Column.withName("id").primaryKey().build();
 	public final Column NAME = Column.withName("name").build();
 	public final Column FLAG = Column.withName("flag").build();
-	public final Column DEFAULT_VALUE = Column.withName("default_value").build();
+	public final Column VALUE = Column.withName("value").build();
 	public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.GLOBAL_SETTING_DATA_TYPE).build();
 	public final Column MULTIVALUED = Column.withName("multivalued").booleanValue().build();
 	public final Column ALLOW_SELF_SET = Column.withName("allow_self_set").booleanValue().build();
@@ -54,6 +54,6 @@ public class TSysGlobalSetting extends TableImpl {
 
 	@Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, FLAG, DEFAULT_VALUE, DATA_TYPE, MULTIVALUED, ALLOW_SELF_SET, ENABLED, CREATE_TIME, MARK);
+        return List.of(ID, NAME, FLAG, VALUE, DATA_TYPE, MULTIVALUED, ALLOW_SELF_SET, ENABLED, CREATE_TIME, MARK);
     }
 }

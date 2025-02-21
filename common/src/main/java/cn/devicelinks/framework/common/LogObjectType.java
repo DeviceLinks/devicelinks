@@ -35,6 +35,7 @@ public enum LogObjectType {
     Product("产品"),
     Ota("OTA"),
     FunctionModule("功能模块"),
+    GlobalSetting("全局参数"),
     Attribute("属性");
 
     private final String description;
