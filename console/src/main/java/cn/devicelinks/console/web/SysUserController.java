@@ -102,6 +102,7 @@ public class SysUserController {
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.User,
             objectId = "{#executionSucceed ? #result.data.id : #p0.account}",
+            msg = "{#executionSucceed ? '用户添加成功' : '用户添加失败'}",
             activateData = "{#p0}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
@@ -137,6 +138,7 @@ public class SysUserController {
             objectType = LogObjectType.User,
             objectId = "{#p0}",
             object = "{@sysUserServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed ? '用户更新成功' : '用户更新失败'}",
             activateData = "{#p1}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
@@ -164,6 +166,7 @@ public class SysUserController {
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
+            msg = "{#executionSucceed ? '用户删除成功' : '用户删除失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
     @DeleteMapping(value = "/{userId}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
@@ -185,6 +188,7 @@ public class SysUserController {
     @OperationLog(action = LogAction.UpdateStatus,
             objectType = LogObjectType.User,
             objectId = "{#p0}",
+            msg = "{#executionSucceed ? '用户状态更新成功' : '用户状态更新失败'}",
             activateData = "{#p1}")
     @PostMapping(value = "/status/{userId}")
     @PreAuthorize("hasAuthority('SystemAdmin')")

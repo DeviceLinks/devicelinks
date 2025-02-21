@@ -74,6 +74,7 @@ public class AttributeController {
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.Attribute,
             objectId = "{#executionSucceed? #result.data.id : #p0.name}",
+            msg = "{#executionSucceed? '属性添加成功' : '属性添加失败'}",
             activateData = "{#p0}")
     public ApiResponse addAttribute(@Valid @RequestBody AddAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.attributeService.addAttribute(request));
@@ -92,10 +93,11 @@ public class AttributeController {
             objectType = LogObjectType.Attribute,
             objectId = "{#p0}",
             object = "{@attributeServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '属性更新成功' : '属性更新失败'}",
             activateData = "{#p1}")
     public ApiResponse updateAttribute(@PathVariable("attributeId") @NotEmpty @Length(max = 32) String attributeId,
                                        @Valid @RequestBody UpdateAttributeRequest request) throws ApiException {
-        return ApiResponse.success(this.attributeService.updateAttribute(attributeId,request));
+        return ApiResponse.success(this.attributeService.updateAttribute(attributeId, request));
     }
 
     /**
@@ -111,6 +113,7 @@ public class AttributeController {
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.Attribute,
             objectId = "{#p0}",
+            msg = "{#executionSucceed? '属性删除成功' : '属性删除失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
     public ApiResponse deleteAttribute(@Length(max = 32) @PathVariable String attributeId) throws ApiException {
         return ApiResponse.success(this.attributeService.deleteAttribute(attributeId));

@@ -92,6 +92,7 @@ public class FunctionModuleController {
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.FunctionModule,
             objectId = "{#executionSucceed ? #result.data.id : #p0.name}",
+            msg = "{#executionSucceed ? '添加功能模块成功' : '添加功能模块失败'}",
             activateData = "{#p0}")
     public ApiResponse addFunctionModule(@Valid @RequestBody AddFunctionModuleRequest request) throws ApiException {
         SysUser currentUser = UserDetailsContext.getCurrentUser();
@@ -122,6 +123,7 @@ public class FunctionModuleController {
             objectType = LogObjectType.FunctionModule,
             objectId = "{#p0}",
             object = "{@functionModuleServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed ? '更新功能模块成功' : '更新功能模块失败'}",
             activateData = "{#p1}")
     public ApiResponse updateFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId,
                                             @Valid @RequestBody UpdateFunctionModuleRequest request) throws ApiException {
@@ -152,6 +154,7 @@ public class FunctionModuleController {
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.FunctionModule,
             objectId = "{#p0}",
+            msg = "{#executionSucceed ? '删除功能模块成功' : '删除功能模块失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
     public ApiResponse deleteFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId) throws ApiException {
         FunctionModule storedModule = this.functionModuleService.selectById(moduleId);
