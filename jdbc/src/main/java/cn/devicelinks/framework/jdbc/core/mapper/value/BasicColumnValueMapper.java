@@ -49,6 +49,10 @@ public interface BasicColumnValueMapper {
      */
     LocalDateTimeColumnValueMapper LOCAL_DATE_TIME = new LocalDateTimeColumnValueMapper();
     /**
+     * {@link Types#TIMESTAMP}类型列值映射器
+     */
+    TimestampColumnValueMapper TIMESTAMP = new TimestampColumnValueMapper();
+    /**
      * 将{@link Types#DATE}类型列值转换为{@link java.time.LocalDate}的映射器
      */
     LocalDateColumnValueMapper LOCAL_DATE = new LocalDateColumnValueMapper();

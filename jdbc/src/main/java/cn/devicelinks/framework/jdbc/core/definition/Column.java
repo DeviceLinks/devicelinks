@@ -343,6 +343,12 @@ public class Column {
             return this;
         }
 
+        public ColumnBuilder timestamp() {
+            this.sqlType = Types.TIMESTAMP;
+            this.columnValueMapper = BasicColumnValueMapper.TIMESTAMP;
+            return this;
+        }
+
         public Column build() {
             return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper);
         }
