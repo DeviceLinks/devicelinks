@@ -45,6 +45,10 @@ public interface BasicColumnValueMapper {
      */
     IntegerColumnValueMapper INTEGER = new IntegerColumnValueMapper();
     /**
+     * {@link Types#BIGINT}类型列值映射器
+     */
+    LongColumnValueMapper LONG = new LongColumnValueMapper();
+    /**
      * 将{@link Types#TIMESTAMP}类型列值转换为{@link java.time.LocalDateTime}的映射器
      */
     LocalDateTimeColumnValueMapper LOCAL_DATE_TIME = new LocalDateTimeColumnValueMapper();

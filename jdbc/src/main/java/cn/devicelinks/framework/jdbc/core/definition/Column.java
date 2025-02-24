@@ -325,6 +325,12 @@ public class Column {
             return this;
         }
 
+        public ColumnBuilder longValue() {
+            this.sqlType = Types.BIGINT;
+            this.columnValueMapper = BasicColumnValueMapper.LONG;
+            return this;
+        }
+
         public ColumnBuilder localDateValue() {
             this.sqlType = Types.DATE;
             this.columnValueMapper = BasicColumnValueMapper.LOCAL_DATE;
