@@ -74,6 +74,11 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper NOTIFICATION_PUSH_AWAY = new EnumColumnValueMapper(NotificationPushAway.class);
     EnumColumnValueMapper ACCESS_GATEWAY_PROTOCOL = new EnumColumnValueMapper(AccessGatewayProtocol.class);
     EnumColumnValueMapper NOTIFICATION_TYPE_IDENTIFIER = new EnumColumnValueMapper(NotificationTypeIdentifier.class);
+    EnumColumnValueMapper DEVICE_DESIRED_OPERATION_TYPE = new EnumColumnValueMapper(DeviceDesiredOperationType.class);
+    EnumColumnValueMapper DEVICE_DESIRED_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceDesiredOperationSource.class);
+    EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_TYPE = new EnumColumnValueMapper(DeviceShadowHistoryOperationType.class);
+    EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceShadowHistoryOperationSource.class);
+    EnumColumnValueMapper DEVICE_SHADOW_STATUS = new EnumColumnValueMapper(DeviceShadowStatus.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);

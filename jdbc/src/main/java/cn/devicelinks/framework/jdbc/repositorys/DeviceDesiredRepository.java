@@ -15,35 +15,17 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.framework.common.pojos;
+package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.DeviceLinksVersion;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import cn.devicelinks.framework.common.pojos.DeviceDesired;
+import cn.devicelinks.framework.jdbc.core.Repository;
 
 /**
- * 属性期望值
+ * The {@link DeviceDesired} Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@Data
-@Accessors(chain = true)
-public class AttributeDesired implements Serializable {
-    @Serial
-    private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    private String id;
-    private String deviceId;
-    private String moduleId;
-    private String attributeId;
-    private String attributeValue;
-    private int version;
-    private boolean pulled;
-    private LocalDateTime pullTime;
-    private String createBy;
-    private LocalDateTime createTime;
+public interface DeviceDesiredRepository extends Repository<DeviceDesired, String> {
+	//...
 }

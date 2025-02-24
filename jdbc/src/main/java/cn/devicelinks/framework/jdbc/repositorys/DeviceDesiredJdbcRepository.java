@@ -18,21 +18,21 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
-import cn.devicelinks.framework.common.pojos.AttributeDesired;
+import cn.devicelinks.framework.common.pojos.DeviceDesired;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 
-import static cn.devicelinks.framework.jdbc.tables.TAttributeDesired.ATTRIBUTE_DESIRED;
+import static cn.devicelinks.framework.jdbc.tables.TDeviceDesired.DEVICE_DESIRED;
 
 /**
- * The {@link AttributeDesired} JDBC Repository
+ * The {@link DeviceDesired} JDBC Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @RegisterBean
-public class AttributeDesiredJdbcRepository extends JdbcRepository<AttributeDesired, String> implements AttributeDesiredRepository {
-	public AttributeDesiredJdbcRepository(JdbcOperations jdbcOperations) {
-		super(ATTRIBUTE_DESIRED, jdbcOperations);
+public class DeviceDesiredJdbcRepository extends JdbcRepository<DeviceDesired, String> implements DeviceDesiredRepository {
+	public DeviceDesiredJdbcRepository(JdbcOperations jdbcOperations) {
+		super(DEVICE_DESIRED, jdbcOperations);
 	}
 }

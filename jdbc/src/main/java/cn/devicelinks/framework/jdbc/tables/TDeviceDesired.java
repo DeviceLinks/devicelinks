@@ -18,7 +18,8 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.pojos.AttributeDesired;
+import cn.devicelinks.framework.common.pojos.DeviceDesired;
+import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 
@@ -26,33 +27,33 @@ import java.io.Serial;
 import java.util.List;
 
 /**
- * The {@link AttributeDesired} TableImpl
+ * The {@link DeviceDesired} TableImpl
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class TAttributeDesired extends TableImpl {
+public class TDeviceDesired extends TableImpl {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TAttributeDesired ATTRIBUTE_DESIRED = new TAttributeDesired("attribute_desired");
+    public static final TDeviceDesired DEVICE_DESIRED = new TDeviceDesired("device_desired");
 
-    private TAttributeDesired(String tableName) {
+    private TDeviceDesired(String tableName) {
         super(tableName);
     }
 
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column DEVICE_ID = Column.withName("device_id").build();
-    public final Column MODULE_ID = Column.withName("module_id").build();
-    public final Column ATTRIBUTE_ID = Column.withName("attribute_id").build();
-    public final Column ATTRIBUTE_VALUE = Column.withName("attribute_value").build();
+    public final Column DESIRED_DOCUMENT = Column.withName("desired_document").typeMapper(ColumnValueMappers.JSON_MAP).build();
     public final Column VERSION = Column.withName("version").intValue().build();
-    public final Column PULLED = Column.withName("pulled").booleanValue().build();
-    public final Column PULL_TIME = Column.withName("pull_time").localDateTimeValue().build();
+    public final Column OPERATION_TYPE = Column.withName("operation_type").typeMapper(ColumnValueMappers.DEVICE_DESIRED_OPERATION_TYPE).build();
+    public final Column OPERATION_SOURCE = Column.withName("operation_source").typeMapper(ColumnValueMappers.DEVICE_DESIRED_OPERATION_SOURCE).build();
+    public final Column EFFECTIVE_TIME = Column.withName("effective_time").localDateTimeValue().build();
+    public final Column EXPIRE_TIME = Column.withName("expire_time").localDateTimeValue().build();
     public final Column CREATE_BY = Column.withName("create_by").build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, ATTRIBUTE_VALUE, VERSION, PULLED, PULL_TIME, CREATE_BY, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, DESIRED_DOCUMENT, OPERATION_TYPE, OPERATION_SOURCE, VERSION, EFFECTIVE_TIME, EXPIRE_TIME, CREATE_BY, CREATE_TIME);
     }
 }
