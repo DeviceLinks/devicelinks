@@ -33,15 +33,14 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-public class DeviceTelemetry implements Serializable {
+public class Telemetry implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
     private String id;
     private String deviceId;
-    private String attributeId;
-    private String key;
-    private String latestValue;
-    private LocalDateTime latestReportTime;
+    private String metric;
+    private String value;
+    private Long timestamp;
     private LocalDateTime createTime;
 }

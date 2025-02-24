@@ -20,37 +20,35 @@ package cn.devicelinks.framework.jdbc.tables;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
-import cn.devicelinks.framework.jdbc.ColumnValueMappers;
-import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
+import cn.devicelinks.framework.common.pojos.Telemetry;
 
 import java.io.Serial;
 import java.util.List;
 
 /**
- * The {@link DeviceTelemetry} TableImpl
+ * The {@link Telemetry} TableImpl
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class TDeviceTelemetry extends TableImpl {
-	@Serial
+public class TTelemetry extends TableImpl {
+    @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-	public static final TDeviceTelemetry DEVICE_TELEMETRY = new TDeviceTelemetry("device_telemetry");
+    public static final TTelemetry TELEMETRY = new TTelemetry("telemetry");
 
-	private TDeviceTelemetry(String tableName) {
+    private TTelemetry(String tableName) {
         super(tableName);
     }
 
-	public final Column ID = Column.withName("id").primaryKey().build();
-	public final Column DEVICE_ID = Column.withName("device_id").build();
-	public final Column ATTRIBUTE_ID = Column.withName("attribute_id").build();
-	public final Column KEY = Column.withName("key").build();
-	public final Column LATEST_VALUE = Column.withName("latest_value").build();
-	public final Column LATEST_REPORT_TIME = Column.withName("latest_report_time").localDateTimeValue().build();
-	public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column ID = Column.withName("id").primaryKey().build();
+    public final Column DEVICE_ID = Column.withName("device_id").build();
+    public final Column METRIC = Column.withName("metric").build();
+    public final Column VALUE = Column.withName("value").build();
+    public final Column TIMESTAMP = Column.withName("timestamp").timestamp().build();
+    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
-	@Override
+    @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, ATTRIBUTE_ID, KEY, LATEST_VALUE, LATEST_REPORT_TIME, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, METRIC, VALUE, TIMESTAMP, CREATE_TIME);
     }
 }
