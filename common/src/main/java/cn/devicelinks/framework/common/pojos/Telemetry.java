@@ -18,6 +18,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.TelemetryMetricType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -39,8 +40,10 @@ public class Telemetry implements Serializable {
 
     private String id;
     private String deviceId;
-    private String metric;
-    private String value;
-    private Long timestamp;
+    private TelemetryMetricType metricType;
+    private String metricKey;
+    private String metricValue;
+    private TelemetryAddition addition;
+    private Long lastUpdateTimestamp;
     private LocalDateTime createTime;
 }

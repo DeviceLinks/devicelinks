@@ -79,6 +79,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_TYPE = new EnumColumnValueMapper(DeviceShadowHistoryOperationType.class);
     EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceShadowHistoryOperationSource.class);
     EnumColumnValueMapper DEVICE_SHADOW_STATUS = new EnumColumnValueMapper(DeviceShadowStatus.class);
+    EnumColumnValueMapper TELEMETRY_METRIC_TYPE = new EnumColumnValueMapper(TelemetryMetricType.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);
@@ -91,6 +92,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper OTA_FILE_ADDITION = new JSONObjectValueMapper(OtaFileAddition.class);
     JSONObjectValueMapper OTA_UPGRADE_BATCH_ADDITION = new JSONObjectValueMapper(OtaUpgradeBatchAddition.class);
     JSONObjectValueMapper SYS_LOG_ADDITION = new JSONObjectValueMapper(SysLogAddition.class);
+    JSONObjectValueMapper TELEMETRY_ADDITION = new JSONObjectValueMapper(TelemetryAddition.class);
 
 
     // ------------------------------------Customize Mappers---------------------------------------//

@@ -18,6 +18,7 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 import cn.devicelinks.framework.common.pojos.Telemetry;
@@ -42,13 +43,15 @@ public class TTelemetry extends TableImpl {
 
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column DEVICE_ID = Column.withName("device_id").build();
-    public final Column METRIC = Column.withName("metric").build();
-    public final Column VALUE = Column.withName("value").build();
-    public final Column TIMESTAMP = Column.withName("timestamp").timestamp().build();
+    public final Column METRIC_TYPE = Column.withName("metric_type").typeMapper(ColumnValueMappers.TELEMETRY_METRIC_TYPE).build();
+    public final Column METRIC_KEY = Column.withName("metric_Key").build();
+    public final Column METRIC_VALUE = Column.withName("metric_value").build();
+    public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.TELEMETRY_ADDITION).build();
+    public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").timestamp().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, METRIC, VALUE, TIMESTAMP, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, METRIC_TYPE, METRIC_KEY, METRIC_VALUE, ADDITION, LAST_UPDATE_TIMESTAMP, CREATE_TIME);
     }
 }
