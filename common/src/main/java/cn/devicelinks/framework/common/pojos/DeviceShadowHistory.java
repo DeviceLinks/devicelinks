@@ -29,10 +29,9 @@ public class DeviceShadowHistory implements Serializable {
     private DeviceShadowHistoryOperationType operationType;
     private long previousVersion;
     private long currentVersion;
-    private Map<String, Object> shadowDocument;
+    private Map<String, Object> shadowData;
     private Map<String, Object> delta;
     private Long operationTimestamp;
     private DeviceShadowHistoryOperationSource operationSource;
-    private String createBy;
     private LocalDateTime createTime;
 }

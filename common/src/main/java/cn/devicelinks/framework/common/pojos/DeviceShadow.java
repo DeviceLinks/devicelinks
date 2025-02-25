@@ -24,10 +24,12 @@ public class DeviceShadow implements Serializable {
 
     private String id;
     private String deviceId;
-    private Map<String, Object> shadowDocument;
-    private long version;
+    private Map<String, Object> reportedState;
+    private Map<String, Object> desiredState;
+    private long reportedVersion;
+    private long desiredVersion;
     private DeviceShadowStatus status;
     private Long lastUpdateTimestamp;
-    private String createBy;
+    private Long lastSyncTimestamp;
     private LocalDateTime createTime;
 }

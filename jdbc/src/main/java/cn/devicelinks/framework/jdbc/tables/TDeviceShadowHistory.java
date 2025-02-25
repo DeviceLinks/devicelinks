@@ -30,15 +30,14 @@ public class TDeviceShadowHistory extends TableImpl {
     public final Column OPERATION_TYPE = Column.withName("operation_type").typeMapper(ColumnValueMappers.DEVICE_SHADOW_HISTORY_OPERATION_TYPE).build();
     public final Column PREVIOUS_VERSION = Column.withName("previous_version").longValue().build();
     public final Column CURRENT_VERSION = Column.withName("current_version").longValue().build();
-    public final Column SHADOW_DOCUMENT = Column.withName("shadow_document").typeMapper(ColumnValueMappers.JSON_MAP).build();
+    public final Column SHADOW_DATA = Column.withName("shadow_data").typeMapper(ColumnValueMappers.JSON_MAP).build();
     public final Column DELTA = Column.withName("delta").typeMapper(ColumnValueMappers.JSON_MAP).build();
     public final Column OPERATION_TIMESTAMP = Column.withName("operation_timestamp").timestamp().build();
     public final Column OPERATION_SOURCE = Column.withName("operation_source").typeMapper(ColumnValueMappers.DEVICE_SHADOW_HISTORY_OPERATION_SOURCE).build();
-    public final Column CREATE_BY = Column.withName("create_by").build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, SHADOW_NAME, OPERATION_TYPE, PREVIOUS_VERSION, CURRENT_VERSION, SHADOW_DOCUMENT, DELTA, OPERATION_TIMESTAMP, OPERATION_SOURCE, CREATE_BY, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, SHADOW_NAME, OPERATION_TYPE, PREVIOUS_VERSION, CURRENT_VERSION, SHADOW_DATA, DELTA, OPERATION_TIMESTAMP, OPERATION_SOURCE, CREATE_TIME);
     }
 }
