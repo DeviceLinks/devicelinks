@@ -1,13 +1,13 @@
 package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.model.attribute.AddAttributeRequest;
-import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.attribute.AttributeInfoRequest;
-import cn.devicelinks.console.model.attribute.UpdateAttributeRequest;
-import cn.devicelinks.console.model.converter.AttributeConverter;
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.request.AddAttributeRequest;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.request.AttributeInfoRequest;
+import cn.devicelinks.console.web.request.UpdateAttributeRequest;
+import cn.devicelinks.console.web.converter.AttributeConverter;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.service.AttributeService;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.exception.ApiException;

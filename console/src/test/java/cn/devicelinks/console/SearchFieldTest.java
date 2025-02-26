@@ -18,7 +18,7 @@
 package cn.devicelinks.console;
 
 import cn.devicelinks.console.annotation.RunTest;
-import cn.devicelinks.console.model.search.module.SearchFieldModuleFactory;
+import cn.devicelinks.console.web.search.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.web.SearchField;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;

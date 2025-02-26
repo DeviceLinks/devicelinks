@@ -1,7 +1,7 @@
 package cn.devicelinks.console.service;
 
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;

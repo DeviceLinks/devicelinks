@@ -1,8 +1,8 @@
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.FunctionModule;

@@ -65,7 +65,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper OTA_UPGRADE_STRATEGY_TYPE = new EnumColumnValueMapper(OtaUpgradeStrategyType.class);
     EnumColumnValueMapper OTA_UPGRADE_STRATEGY_RETRY_INTERVAL = new EnumColumnValueMapper(OtaUpgradeStrategyRetryInterval.class);
     EnumColumnValueMapper OTA_PACKAGE_DOWNLOAD_PROTOCOL = new EnumColumnValueMapper(OtaPackageDownloadProtocol.class);
-    EnumColumnValueMapper GLOBAL_SETTING_DATA_TYPE = new EnumColumnValueMapper(GlobalSettingDataType.class);
+    EnumColumnValueMapper SYS_SETTING_DATA_TYPE = new EnumColumnValueMapper(SysSettingDataType.class);
     EnumColumnValueMapper DEVICE_TYPE = new EnumColumnValueMapper(DeviceType.class);
     EnumColumnValueMapper NOTIFICATION_STATUS = new EnumColumnValueMapper(NotificationStatus.class);
     EnumColumnValueMapper NOTIFICATION_SEVERITY = new EnumColumnValueMapper(NotificationSeverity.class);

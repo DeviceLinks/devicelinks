@@ -15,32 +15,17 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.framework.common;
+package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.ApiEnum;
-import lombok.Getter;
+import cn.devicelinks.framework.common.pojos.SysSetting;
+import cn.devicelinks.framework.jdbc.core.Repository;
 
 /**
- * 记录日志的对象类型定义
+ * The {@link SysSetting} Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@Getter
-@ApiEnum
-public enum LogObjectType {
-    User("用户"),
-    Department("部门"),
-    Device("设备"),
-    Product("产品"),
-    Ota("OTA"),
-    FunctionModule("功能模块"),
-    GlobalSetting("系统参数"),
-    Attribute("属性");
-
-    private final String description;
-
-    LogObjectType(String description) {
-        this.description = description;
-    }
+public interface SysSettingRepository extends Repository<SysSetting, String> {
+	//...
 }

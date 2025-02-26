@@ -1,9 +1,9 @@
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.product.RegenerateKeySecretResponse;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.response.RegenerateKeySecretResponse;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.service.DeviceService;
 import cn.devicelinks.console.service.ProductService;
 import cn.devicelinks.framework.common.ProductStatus;

@@ -17,8 +17,8 @@
 
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;

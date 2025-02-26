@@ -358,7 +358,7 @@ create table sys_file
 )
     comment '文件基本信息表';
 
-create table sys_global_setting
+create table sys_setting
 (
     id             varchar(32)                        not null comment 'ID'
         primary key,
@@ -371,10 +371,10 @@ create table sys_global_setting
     enabled        bit      default b'1'              not null comment '是否启用',
     create_time    datetime default CURRENT_TIMESTAMP not null comment '添加时间',
     mark           varchar(200)                       null comment '备注',
-    constraint sys_global_setting_flag_uindex
+    constraint sys_setting_flag_uindex
         unique (flag)
 )
-    comment '全局参数' row_format = DYNAMIC;
+    comment '系统参数' row_format = DYNAMIC;
 
 create table sys_log
 (

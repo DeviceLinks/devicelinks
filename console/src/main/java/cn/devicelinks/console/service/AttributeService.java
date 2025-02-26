@@ -1,9 +1,9 @@
 package cn.devicelinks.console.service;
 
-import cn.devicelinks.console.model.attribute.AddAttributeRequest;
-import cn.devicelinks.console.model.attribute.UpdateAttributeRequest;
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.request.AddAttributeRequest;
+import cn.devicelinks.console.web.request.UpdateAttributeRequest;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;

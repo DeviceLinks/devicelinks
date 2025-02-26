@@ -21,26 +21,46 @@ import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 /**
- * 记录日志的对象类型定义
+ * 系统参数数据类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Getter
 @ApiEnum
-public enum LogObjectType {
-    User("用户"),
-    Department("部门"),
-    Device("设备"),
-    Product("产品"),
-    Ota("OTA"),
-    FunctionModule("功能模块"),
-    GlobalSetting("系统参数"),
-    Attribute("属性");
+public enum SysSettingDataType {
+    /**
+     * 年月日时分秒
+     */
+    DateTime("年月日时分秒"),
+    /**
+     * 年月日
+     */
+    Date("年月日"),
+    /**
+     * 时分秒
+     */
+    Time("时分秒"),
+    /**
+     * true/false
+     */
+    Bool("布尔"),
+    /**
+     * string
+     */
+    String("字符串"),
+    /**
+     * 整数
+     */
+    Number("整型"),
+    /**
+     * 浮点类型
+     */
+    Decimal("浮点类型");
 
     private final String description;
 
-    LogObjectType(String description) {
+    SysSettingDataType(java.lang.String description) {
         this.description = description;
     }
 }

@@ -15,32 +15,23 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.framework.common;
+package cn.devicelinks.console.web.query;
 
-import cn.devicelinks.framework.common.annotation.ApiEnum;
-import lombok.Getter;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.common.web.validator.EnumValid;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
 /**
- * 记录日志的对象类型定义
+ * 获取检索字段请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@Getter
-@ApiEnum
-public enum LogObjectType {
-    User("用户"),
-    Department("部门"),
-    Device("设备"),
-    Product("产品"),
-    Ota("OTA"),
-    FunctionModule("功能模块"),
-    GlobalSetting("系统参数"),
-    Attribute("属性");
+@Data
+public class GetSearchFieldQuery {
 
-    private final String description;
-
-    LogObjectType(String description) {
-        this.description = description;
-    }
+    @NotEmpty
+    @EnumValid(target = SearchFieldModuleIdentifier.class, message = "检索字段模块不允许传递非法值")
+    private String module;
 }

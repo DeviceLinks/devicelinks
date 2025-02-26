@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.model.StatusCodeConstants;
+import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.service.SysDepartmentService;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
