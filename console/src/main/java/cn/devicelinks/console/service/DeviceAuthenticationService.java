@@ -14,6 +14,30 @@ import cn.devicelinks.framework.jdbc.BaseService;
  */
 public interface DeviceAuthenticationService extends BaseService<DeviceAuthentication, String> {
     /**
+     * 通过AccessToken查询鉴权信息
+     *
+     * @param accessToken 请求令牌
+     * @return 鉴权信息 {@link DeviceAuthentication}
+     */
+    DeviceAuthentication selectByAccessToken(String accessToken);
+
+    /**
+     * 通过clientId查询鉴权信息
+     *
+     * @param clientId 客户端ID {@link DeviceAuthenticationAddition.MqttBasic#getClientId()}
+     * @return 鉴权信息 {@link DeviceAuthentication}
+     */
+    DeviceAuthentication selectByClientId(String clientId);
+
+    /**
+     * 通过deviceKey查询鉴权信息
+     *
+     * @param deviceKey    设备Key {@link DeviceAuthenticationAddition.DeviceCredential#getDeviceKey()}
+     * @return 鉴权信息 {@link DeviceAuthentication}
+     */
+    DeviceAuthentication selectByDeviceKey(String deviceKey);
+
+    /**
      * 保存设备鉴权信息
      *
      * @param device                 设备信息 {@link Device}

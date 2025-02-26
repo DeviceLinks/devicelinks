@@ -23,10 +23,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
-import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.common.pojos.SysDepartment;
+import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.common.utils.X509Utils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -113,6 +110,10 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
                 if (ObjectUtils.isEmpty(authenticationAddition.getAccessToken())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_ACCESS_TOKEN, authenticationAddition.getAccessToken());
                 }
+                DeviceAuthentication accessTokenAuthentication = this.deviceAuthenticationService.selectByAccessToken(authenticationAddition.getAccessToken());
+                if (accessTokenAuthentication != null) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_ACCESS_TOKEN_ALREADY_EXISTS, authenticationAddition.getAccessToken());
+                }
                 break;
             case MqttBasic:
                 // Validate MQTT Basic authentication
@@ -120,11 +121,19 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
                 if (mqttBasic == null || ObjectUtils.isEmpty(mqttBasic.getUsername()) || ObjectUtils.isEmpty(mqttBasic.getPassword())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_MQTT_BASIC_AUTH, mqttBasic);
                 }
+                DeviceAuthentication mqttBasicAuthentication = this.deviceAuthenticationService.selectByClientId(mqttBasic.getClientId());
+                if (mqttBasicAuthentication != null) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS, mqttBasic.getClientId());
+                }
                 break;
             case DeviceCredential:
                 DeviceAuthenticationAddition.DeviceCredential deviceCredential = authenticationAddition.getDeviceCredential();
                 if (deviceCredential == null || ObjectUtils.isEmpty(deviceCredential.getDeviceKey()) || ObjectUtils.isEmpty(deviceCredential.getDeviceSecret())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_CREDENTIAL, deviceCredential);
+                }
+                DeviceAuthentication deviceCredentialAuthentication = this.deviceAuthenticationService.selectByDeviceKey(deviceCredential.getDeviceKey());
+                if (deviceCredentialAuthentication != null) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS, deviceCredential);
                 }
                 break;
             case X509:

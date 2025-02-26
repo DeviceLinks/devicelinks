@@ -25,6 +25,21 @@ public class DeviceAuthenticationServiceImpl extends BaseServiceImpl<DeviceAuthe
     }
 
     @Override
+    public DeviceAuthentication selectByAccessToken(String accessToken) {
+        return this.repository.selectByAccessToken(accessToken);
+    }
+
+    @Override
+    public DeviceAuthentication selectByClientId(String clientId) {
+        return this.repository.selectByClientId(clientId);
+    }
+
+    @Override
+    public DeviceAuthentication selectByDeviceKey(String deviceKey) {
+        return this.repository.selectByDeviceKey(deviceKey);
+    }
+
+    @Override
     public DeviceAuthentication saveAuthentication(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
         // @formatter:off
         DeviceAuthentication authentication = new DeviceAuthentication()

@@ -20,7 +20,11 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAuthentication;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TDeviceAuthentication.DEVICE_AUTHENTICATION;
 
@@ -32,7 +36,55 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAuthentication.DEVICE_
  */
 @RegisterBean
 public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceAuthentication, String> implements DeviceAuthenticationRepository {
-	public DeviceAuthenticationJdbcRepository(JdbcOperations jdbcOperations) {
-		super(DEVICE_AUTHENTICATION, jdbcOperations);
-	}
+    public DeviceAuthenticationJdbcRepository(JdbcOperations jdbcOperations) {
+        super(DEVICE_AUTHENTICATION, jdbcOperations);
+    }
+
+    @Override
+    public DeviceAuthentication selectByAccessToken(String accessToken) {
+        if (ObjectUtils.isEmpty(accessToken)) {
+            throw new IllegalArgumentException("accessToken can't be null");
+        }
+        // @formatter:off
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
+                .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.accessToken') = ?", accessToken)
+                .resultType(DeviceAuthentication.class)
+                .build();
+        // @formatter:on
+        List<DeviceAuthentication> authenticationList = this.dynamicSelect(wrapper.dynamic(), wrapper.parameters());
+        return authenticationList.isEmpty() ? null : authenticationList.getFirst();
+    }
+
+    @Override
+    public DeviceAuthentication selectByClientId(String clientId) {
+        if (ObjectUtils.isEmpty(clientId)) {
+            throw new IllegalArgumentException("clientId can't be null");
+        }
+        // @formatter:off
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
+                .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.mqttBasic.clientId') = ?", clientId)
+                .resultType(DeviceAuthentication.class)
+                .build();
+        // @formatter:on
+        List<DeviceAuthentication> authenticationList = this.dynamicSelect(wrapper.dynamic(), wrapper.parameters());
+        return authenticationList.isEmpty() ? null : authenticationList.getFirst();
+    }
+
+    @Override
+    public DeviceAuthentication selectByDeviceKey(String deviceKey) {
+        if (ObjectUtils.isEmpty(deviceKey)) {
+            throw new IllegalArgumentException("deviceKey can't be null");
+        }
+        // @formatter:off
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
+                .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.deviceCredential.deviceKey') = ?", deviceKey)
+                .resultType(DeviceAuthentication.class)
+                .build();
+        // @formatter:on
+        List<DeviceAuthentication> authenticationList = this.dynamicSelect(wrapper.dynamic(), wrapper.parameters());
+        return authenticationList.isEmpty() ? null : authenticationList.getFirst();
+    }
 }

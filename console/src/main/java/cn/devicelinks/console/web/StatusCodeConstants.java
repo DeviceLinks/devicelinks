@@ -72,4 +72,5 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS = StatusCode.build("DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS", "MQTT客户端ID已经存在.");
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");
     StatusCode INVALID_DEVICE_CREDENTIAL = StatusCode.build("INVALID_DEVICE_CREDENTIAL", "无效的一机一密凭证");
+    StatusCode DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS = StatusCode.build("DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS", "设备Key已经存在.");
 }
