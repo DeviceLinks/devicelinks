@@ -19,7 +19,9 @@ package cn.devicelinks.console.service;
 
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
@@ -48,4 +50,14 @@ public interface DeviceService extends BaseService<Device, String> {
      * @return 设备列表 {@link Device}
      */
     List<Device> selectByProductId(String productId);
+
+    /**
+     * 添加一个新的设备
+     *
+     * @param device                 要添加的设备 {@link Device}
+     * @param authenticationMethod   认证方法 {@link DeviceAuthenticationMethod}
+     * @param authenticationAddition 认证附加信息 {@link DeviceAuthenticationAddition}
+     * @return 返回添加的设备 {@link Device}
+     */
+    Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
 }

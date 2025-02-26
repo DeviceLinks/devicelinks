@@ -44,11 +44,20 @@ public class DeviceAuthenticationAddition implements Serializable {
 
     private MqttBasic mqttBasic;
 
+    private DeviceCredential deviceCredential;
+
     @Data
     @Accessors(chain = true)
     public static class MqttBasic {
         private String clientId;
         private String username;
         private String password;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class DeviceCredential {
+        private String deviceKey;
+        private String deviceSecret;
     }
 }
