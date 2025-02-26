@@ -30,7 +30,7 @@ public class TDeviceShadowHistory extends TableImpl {
     public final Column OPERATION_TYPE = Column.withName("operation_type").typeMapper(ColumnValueMappers.DEVICE_SHADOW_HISTORY_OPERATION_TYPE).build();
     public final Column PREVIOUS_VERSION = Column.withName("previous_version").longValue().build();
     public final Column CURRENT_VERSION = Column.withName("current_version").longValue().build();
-    public final Column SHADOW_DATA = Column.withName("shadow_data").typeMapper(ColumnValueMappers.JSON_MAP).build();
+    public final Column SHADOW_DATA = Column.withName("shadow_data").typeMapper(ColumnValueMappers.DEVICE_SHADOW_DATA_ADDITION).build();
     public final Column DELTA = Column.withName("delta").typeMapper(ColumnValueMappers.JSON_MAP).build();
     public final Column OPERATION_TIMESTAMP = Column.withName("operation_timestamp").timestamp().build();
     public final Column OPERATION_SOURCE = Column.withName("operation_source").typeMapper(ColumnValueMappers.DEVICE_SHADOW_HISTORY_OPERATION_SOURCE).build();

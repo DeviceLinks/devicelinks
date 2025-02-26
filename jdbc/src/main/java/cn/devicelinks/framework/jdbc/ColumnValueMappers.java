@@ -93,6 +93,9 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper OTA_UPGRADE_BATCH_ADDITION = new JSONObjectValueMapper(OtaUpgradeBatchAddition.class);
     JSONObjectValueMapper SYS_LOG_ADDITION = new JSONObjectValueMapper(SysLogAddition.class);
     JSONObjectValueMapper TELEMETRY_ADDITION = new JSONObjectValueMapper(TelemetryAddition.class);
+    JSONObjectValueMapper DEVICE_SHADOW_STATE_ADDITION = new JSONObjectValueMapper(DeviceShadowStateAddition.class);
+    JSONObjectValueMapper DEVICE_SHADOW_DATA_ADDITION = new JSONObjectValueMapper(DeviceShadowDataAddition.class);
+
 
 
     // ------------------------------------Customize Mappers---------------------------------------//

@@ -26,8 +26,8 @@ public class TDeviceShadow extends TableImpl {
 
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column DEVICE_ID = Column.withName("device_id").build();
-    public final Column REPORTED_STATE = Column.withName("reported_state").typeMapper(ColumnValueMappers.JSON_MAP).build();
-    public final Column DESIRED_STATE = Column.withName("desired_state").typeMapper(ColumnValueMappers.JSON_MAP).build();
+    public final Column REPORTED_STATE = Column.withName("reported_state").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATE_ADDITION).build();
+    public final Column DESIRED_STATE = Column.withName("desired_state").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATE_ADDITION).build();
     public final Column REPORTED_VERSION = Column.withName("reported_version").longValue().build();
     public final Column DESIRED_VERSION = Column.withName("desired_version").longValue().build();
     public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATUS).build();

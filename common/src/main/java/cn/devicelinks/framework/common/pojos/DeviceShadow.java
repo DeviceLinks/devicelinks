@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * 设备影子
@@ -24,8 +23,8 @@ public class DeviceShadow implements Serializable {
 
     private String id;
     private String deviceId;
-    private Map<String, Object> reportedState;
-    private Map<String, Object> desiredState;
+    private DeviceShadowStateAddition reportedState;
+    private DeviceShadowStateAddition desiredState;
     private long reportedVersion;
     private long desiredVersion;
     private DeviceShadowStatus status;
