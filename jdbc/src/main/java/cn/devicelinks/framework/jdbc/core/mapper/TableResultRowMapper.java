@@ -30,4 +30,8 @@ public class TableResultRowMapper<T> extends ResultRowMapper<T> {
     public TableResultRowMapper(Table table, Class<T> mapEntityClass) {
         super(new EntityStructure(table, mapEntityClass));
     }
+
+    public TableResultRowMapper(EntityStructure structure) {
+        super(structure);
+    }
 }

@@ -26,6 +26,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Nullable;
@@ -34,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 数据行与实体封装映射器
@@ -48,10 +50,21 @@ public class ResultRowMapper<T> implements RowMapper<T> {
     static Logger logger = LoggerFactory.getLogger(ResultRowMapper.class);
     @Getter
     private final List<Map<String, Object>> allRowValueMap;
-    private final EntityStructure structure;
+    private Map<String, Column> columnMap;
+    private final Class<T> mapEntityClass;
+
+    public ResultRowMapper(List<Column> columnList, Class<T> mapEntityClass) {
+        if (!ObjectUtils.isEmpty(columnList)) {
+            this.columnMap = columnList.stream().collect(Collectors.toMap(Column::getName, v -> v));
+        }
+        this.mapEntityClass = mapEntityClass;
+        this.allRowValueMap = new ArrayList<>();
+    }
 
     public ResultRowMapper(EntityStructure structure) {
-        this.structure = structure;
+        Assert.notNull(structure, "EntityStructure must not be null.");
+        this.mapEntityClass = (Class<T>) structure.getEntityClass();
+        this.columnMap = structure.getColumns().stream().collect(Collectors.toMap(Column::getName, v -> v));
         this.allRowValueMap = new ArrayList<>();
     }
 
@@ -66,7 +79,7 @@ public class ResultRowMapper<T> implements RowMapper<T> {
     public T mapRow(@Nullable ResultSet rs, int rowNum) throws SQLException {
         try {
             // Instance Result Object
-            Class<?> mapEntityClass = this.structure.getEntityClass();
+            Class<?> mapEntityClass = this.mapEntityClass;
             Object mapEntityObject = mapEntityClass.getConstructor().newInstance();
             Map<String, Object> rowValueMap = new HashMap<>();
             Map<String, Object> setMethodValueMap = new HashMap<>();
@@ -75,11 +88,11 @@ public class ResultRowMapper<T> implements RowMapper<T> {
                     .forEach(field -> {
                         String alias = field.isAnnotationPresent(Alias.class) ? field.getAnnotation(Alias.class).value() : null;
                         String columnName = StringUtils.lowerCamelToLowerUnder(!ObjectUtils.isEmpty(alias) ? alias : field.getName());
-                        Column column = this.structure.getColumn(columnName);
-                        if (column == null) {
-                            logger.warn("ResultType: [{}], Column: [{}] is not defined.", mapEntityClass.getName(), columnName);
+                        if (!this.columnMap.containsKey(columnName)) {
+                            logger.warn("ResultType: [{}], Column: [{}] is not defined.", this.mapEntityClass.getName(), columnName);
                             return;
                         }
+                        Column column = this.columnMap.get(columnName);
                         // Get the converted column value
                         Object columnValue;
                         try {

@@ -371,7 +371,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         }
         // Query Current Page Results
         String pageQuerySql = this.formatSql(pageQuery.getCurrentPageQuerySql(dynamic.getSql()));
-        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(this.structure);
+        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getColumns(), (Class<R>) dynamic.getRowMappingClass());
         List<R> resultList = this.jdbcRepositoryOperations.query(pageQuerySql, resultRowMapper, parameterValues);
         builder
                 .totalRows(totalRows)
@@ -388,7 +388,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         if (dynamic.isModifying()) {
             throw new DeviceLinksException("不允许执行Modifying自定义SQL的数据查询.");
         }
-        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(this.structure);
+        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getColumns(), (Class<R>) dynamic.getRowMappingClass());
         return this.jdbcRepositoryOperations.query(this.formatSql(dynamic.getSql()), resultRowMapper, parameterValues);
     }
 
@@ -435,7 +435,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
      * @return {@link ConditionSql}
      */
     private ConditionSql toConditionSql(FusionCondition condition) {
-        ConditionSql.SelectBuilder selectBuilder = ConditionSql.select(this.table).resultType(this.structure.getEntityClass());
+        ConditionSql.SelectBuilder selectBuilder = ConditionSql.select(this.table).structure(this.structure);
         if (!ObjectUtils.isEmpty(condition.getConditions())) {
             selectBuilder.conditions(conditions -> conditions.addAll(condition.getConditions()));
         }

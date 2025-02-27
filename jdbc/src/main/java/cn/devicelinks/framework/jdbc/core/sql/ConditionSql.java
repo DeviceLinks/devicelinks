@@ -18,6 +18,7 @@
 package cn.devicelinks.framework.jdbc.core.sql;
 
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.mapper.TableResultRowMapper;
 import cn.devicelinks.framework.jdbc.core.utils.SqlParameterValueUtils;
@@ -82,6 +83,8 @@ public class ConditionSql {
         private final List<ConditionGroup> conditionGroups = new ArrayList<>();
         private SortCondition sort;
         private LimitCondition limit;
+        private EntityStructure structure;
+        private Class<?> resultType;
 
         public SelectBuilder(Table table) {
             Assert.notNull(table, "table must not be null");
@@ -91,7 +94,7 @@ public class ConditionSql {
 
         public SelectBuilder resultType(Class<?> resultType) {
             Assert.notNull(resultType, "resultType must not be null");
-            this.rowMapper = new TableResultRowMapper<>(this.table, resultType);
+            this.resultType = resultType;
             return this;
         }
 
@@ -129,8 +132,18 @@ public class ConditionSql {
             return this;
         }
 
+        public SelectBuilder structure(EntityStructure structure) {
+            Assert.notNull(structure, "structure must not be null");
+            this.structure = structure;
+            return this;
+        }
+
         public ConditionSql build() {
-            Assert.notNull(this.rowMapper, "resultType must not be null");
+            if (this.structure != null) {
+                this.rowMapper = new TableResultRowMapper(this.structure);
+            } else {
+                this.rowMapper = new TableResultRowMapper<>(this.table, resultType);
+            }
             // @formatter:off
             WhereBuilder whereBuilder = WhereBuilder
                     .withTable(this.table)
