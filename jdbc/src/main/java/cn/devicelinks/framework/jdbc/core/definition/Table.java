@@ -29,6 +29,9 @@ import java.util.List;
  * @since 1.0
  */
 public interface Table extends Serializable {
+
+    String getTableName();
+
     Column getPk();
 
     boolean containsColumn(String columnName);

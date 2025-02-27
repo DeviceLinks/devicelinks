@@ -21,6 +21,7 @@ import cn.devicelinks.framework.common.utils.ObjectClassUtils;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.core.annotation.Alias;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 数据行与实体封装映射器
@@ -48,14 +48,10 @@ public class ResultRowMapper<T> implements RowMapper<T> {
     static Logger logger = LoggerFactory.getLogger(ResultRowMapper.class);
     @Getter
     private final List<Map<String, Object>> allRowValueMap;
-    private Map<String, Column> columnMap;
-    private final Class<T> mapEntityClass;
+    private final EntityStructure structure;
 
-    public ResultRowMapper(List<Column> columnList, Class<T> mapEntityClass) {
-        if (!ObjectUtils.isEmpty(columnList)) {
-            this.columnMap = columnList.stream().collect(Collectors.toMap(Column::getName, v -> v));
-        }
-        this.mapEntityClass = mapEntityClass;
+    public ResultRowMapper(EntityStructure structure) {
+        this.structure = structure;
         this.allRowValueMap = new ArrayList<>();
     }
 
@@ -64,25 +60,26 @@ public class ResultRowMapper<T> implements RowMapper<T> {
      *
      * @param rs     {@link ResultSet}
      * @param rowNum 当前行的索引
-     * @return 映射封装后的对象，类型为{@link #mapEntityClass}
+     * @return 映射封装后的对象，类型为{@link EntityStructure#getEntityClass()}
      */
     @Override
     public T mapRow(@Nullable ResultSet rs, int rowNum) throws SQLException {
         try {
             // Instance Result Object
-            Object mapEntityObject = this.mapEntityClass.getConstructor().newInstance();
+            Class<?> mapEntityClass = this.structure.getEntityClass();
+            Object mapEntityObject = mapEntityClass.getConstructor().newInstance();
             Map<String, Object> rowValueMap = new HashMap<>();
             Map<String, Object> setMethodValueMap = new HashMap<>();
-            Field[] fields = ObjectClassUtils.getClassFields(this.mapEntityClass);
+            Field[] fields = ObjectClassUtils.getClassFields(mapEntityClass);
             Arrays.stream(fields)
                     .forEach(field -> {
                         String alias = field.isAnnotationPresent(Alias.class) ? field.getAnnotation(Alias.class).value() : null;
                         String columnName = StringUtils.lowerCamelToLowerUnder(!ObjectUtils.isEmpty(alias) ? alias : field.getName());
-                        if (!this.columnMap.containsKey(columnName)) {
-                            logger.warn("ResultType: [{}], Column: [{}] is not defined.", this.mapEntityClass.getName(), columnName);
+                        Column column = this.structure.getColumn(columnName);
+                        if (column == null) {
+                            logger.warn("ResultType: [{}], Column: [{}] is not defined.", mapEntityClass.getName(), columnName);
                             return;
                         }
-                        Column column = this.columnMap.get(columnName);
                         // Get the converted column value
                         Object columnValue;
                         try {

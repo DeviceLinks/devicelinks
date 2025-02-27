@@ -166,6 +166,7 @@ public abstract class TableImpl implements Table {
         // @formatter:on
     }
 
+    @Override
     public String getTableName() {
         return tableName;
     }

@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.jdbc.core.mapper;
 
+import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 
 /**
@@ -27,6 +28,6 @@ import cn.devicelinks.framework.jdbc.core.definition.Table;
  */
 public class TableResultRowMapper<T> extends ResultRowMapper<T> {
     public TableResultRowMapper(Table table, Class<T> mapEntityClass) {
-        super(table.getColumns(), mapEntityClass);
+        super(new EntityStructure(table, mapEntityClass));
     }
 }

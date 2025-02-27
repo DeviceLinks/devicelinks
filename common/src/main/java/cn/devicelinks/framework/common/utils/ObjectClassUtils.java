@@ -17,7 +17,6 @@
 
 package cn.devicelinks.framework.common.utils;
 
-import cn.devicelinks.framework.common.exception.DeviceLinksException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
@@ -27,7 +26,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -46,41 +44,8 @@ public class ObjectClassUtils {
     private static final String IS_BOOLEAN_METHOD_PREFIX = "is";
     private static final String SET_METHOD_PREFIX = "set";
 
-    public static String getIsMethodName(String fieldUpperCamelName) {
-        return IS_BOOLEAN_METHOD_PREFIX + fieldUpperCamelName;
-    }
-
-    public static String getGetMethodName(String fieldUpperCamelName) {
-        return GET_METHOD_PREFIX + fieldUpperCamelName;
-    }
-
     public static String getSetMethodName(String fieldUpperCamelName) {
         return SET_METHOD_PREFIX + fieldUpperCamelName;
-    }
-
-    /**
-     * 获取对象字段的值
-     *
-     * @param object 目标对象
-     * @return 字段与值的映射集合
-     */
-    public static Map<String, Object> getClassFieldValues(Object object) {
-        Field[] fields = getClassFields(object.getClass());
-        Map<String, Object> values = new HashMap<>();
-        Arrays.stream(fields).forEach(field -> {
-            String methodName = getGetMethodName(StringUtils.lowerUnderToUpperCamel(field.getName()));
-            Method method;
-            try {
-                method = object.getClass().getMethod(methodName);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-            Object methodValue = ReflectionUtils.invokeMethod(method, object);
-            if (methodValue != null) {
-                values.put(field.getName(), methodValue);
-            }
-        });
-        return values;
     }
 
     /**
@@ -132,22 +97,6 @@ public class ObjectClassUtils {
     }
 
     /**
-     * 执行指定对象的全部Get方法并返回每个方法的执行结果
-     *
-     * @param object 执行Get方法的目标对象
-     * @return Get方法执行结果集合
-     */
-    public static Map<String, Object> invokeObjectGetMethod(Object object) {
-        Method[] getMethods = getClassGetMethod(object.getClass());
-        Map<String, Object> getMethodValueMap = new HashMap<>();
-        Arrays.stream(getMethods).forEach(getMethod -> {
-            Object methodResultValue = ReflectionUtils.invokeMethod(getMethod, object);
-            getMethodValueMap.put(getMethod.getName(), methodResultValue);
-        });
-        return getMethodValueMap;
-    }
-
-    /**
      * 执行指定对象的Set方法
      *
      * @param object                执行Set方法的目标对象
@@ -174,42 +123,5 @@ public class ObjectClassUtils {
                 }
             }
         });
-    }
-
-    /**
-     * 设置对象中字段的值
-     *
-     * @param object     目标对象
-     * @param field      字段名称
-     * @param fieldValue 字段值
-     */
-    public static void invokeObjectSetMethod(Object object, String field, Object fieldValue) {
-        String setMethodName = ObjectClassUtils.getSetMethodName(StringUtils.lowerCamelToUpperCamel(field));
-        Method setMethod = ReflectionUtils.findMethod(object.getClass(), setMethodName, fieldValue.getClass());
-
-        if (setMethod == null) {
-            setMethod = ReflectionUtils.findMethod(object.getClass().getSuperclass(), setMethodName, fieldValue.getClass());
-        }
-
-        if (setMethod != null) {
-            ReflectionUtils.invokeMethod(setMethod, object, fieldValue);
-        } else {
-            logger.error("Setter method [{}] not found in class [{}].", setMethodName, object.getClass().getName());
-        }
-    }
-
-    /**
-     * 获取指定类型的对象实例
-     *
-     * @param clazz 对象类型
-     * @param <O>   具体的对象类型
-     * @return 对象实例
-     */
-    public static <O> O getClassInstance(Class<O> clazz) {
-        try {
-            return clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw new DeviceLinksException("Unable to create instance of type " + clazz.getName(), e);
-        }
     }
 }
