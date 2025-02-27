@@ -132,10 +132,15 @@ public class SqlParameterValueUtils {
                     return true;
                 })
                 .map(tableColumn -> {
-                    String getMethodName = Types.BOOLEAN == tableColumn.getSqlType()
-                            ? ObjectClassUtils.getIsMethodName(tableColumn.getUpperCamelName())
-                            : ObjectClassUtils.getGetMethodName(tableColumn.getUpperCamelName());
+                    String getMethodName = ObjectClassUtils.getGetMethodName(tableColumn.getUpperCamelName());
                     Object getMethodResult = getMethodResultMap.get(getMethodName);
+                    // If it is a boolean type, try using both acquisition methods, because the Boolean object type uses getXxx instead of isXxx.
+                    if (Types.BOOLEAN == tableColumn.getSqlType()) {
+                        getMethodResult = getMethodResultMap.get(ObjectClassUtils.getIsMethodName(tableColumn.getUpperCamelName()));
+                        if (getMethodResult == null) {
+                            getMethodResult = getMethodResultMap.get(ObjectClassUtils.getGetMethodName(tableColumn.getUpperCamelName()));
+                        }
+                    }
                     Object convertedValue = tableColumn.toColumnValue(getMethodResult);
                     return new SqlParameterValue(tableColumn.getSqlType(), convertedValue);
                 })

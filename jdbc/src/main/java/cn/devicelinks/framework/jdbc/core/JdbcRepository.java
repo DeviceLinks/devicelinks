@@ -19,12 +19,9 @@ package cn.devicelinks.framework.jdbc.core;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
-import cn.devicelinks.framework.common.utils.ObjectClassUtils;
-import cn.devicelinks.framework.common.utils.ObjectIdUtils;
-import cn.devicelinks.framework.common.utils.SnowflakeIdUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
-import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.common.utils.*;
 import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
+import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.mapper.ResultRowMapper;
 import cn.devicelinks.framework.jdbc.core.page.DefaultPageResult;
@@ -43,10 +40,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.sql.Types;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -82,6 +78,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         List<Column> insertableColumns = this.table.getInsertableColumns();
         Map<String, Object> methodValueMap = ObjectClassUtils.invokeObjectGetMethod(object);
 
+        // If the ID is not set, it is automatically generated based on the policy
         Column pkColumn = this.table.getPk();
         if (pkColumn == null) {
             log.warn("对象：[{}]，中没有定义主键，无法自动生成主键值。", object.getClass().getName());
@@ -92,7 +89,34 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
             // If no ID value is passed, it is automatically generated based on the policy
             methodValueMap.put(pkGetMethodName,
                     Objects.requireNonNullElse(methodValueMap.get(pkGetMethodName), generateId(pkColumn.getIdGenerationStrategy())));
+            // Set the ID to the object
+            ObjectClassUtils.invokeObjectSetMethod(object, StringUtils.lowerUnderToLowerCamel(pkColumn.getName()), methodValueMap.get(pkGetMethodName));
         }
+
+        // Set default value for nullable columns
+        Field[] objectFields = ObjectClassUtils.getClassFields(object.getClass());
+        insertableColumns.forEach(column -> {
+            if (column.getDefaultValueSupplier() == null) {
+                return;
+            }
+            String getMethodName = Types.BOOLEAN == column.getSqlType() ? ObjectClassUtils.getIsMethodName(column.getUpperCamelName()) :
+                    ObjectClassUtils.getGetMethodName(column.getUpperCamelName());
+            // If no value is set, the default value is used
+            if (Objects.isNull(methodValueMap.get(getMethodName))) {
+                methodValueMap.put(getMethodName, column.getDefaultValueSupplier().get());
+            }
+            // If the field is boolean type, set default value as false
+            if (Types.BOOLEAN == column.getSqlType()) {
+                String fieldName = StringUtils.lowerUnderToLowerCamel(column.getName());
+                Optional<Field> fieldOptional = Arrays.stream(objectFields).filter(field -> field.getName().equals(fieldName)).findFirst();
+                if (fieldOptional.isPresent()) {
+                    Field field = fieldOptional.get();
+                    if (boolean.class.equals(field.getType()) && methodValueMap.get(getMethodName) == Boolean.FALSE) {
+                        methodValueMap.put(getMethodName, column.getDefaultValueSupplier().get());
+                    }
+                }
+            }
+        });
 
         String insertSql = this.table.getInsertSql();
         SqlParameterValue[] sqlParameterValues = SqlParameterValueUtils.getWithTableColumn(insertableColumns, methodValueMap);

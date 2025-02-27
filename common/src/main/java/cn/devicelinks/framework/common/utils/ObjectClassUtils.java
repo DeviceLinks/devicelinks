@@ -177,6 +177,28 @@ public class ObjectClassUtils {
     }
 
     /**
+     * 设置对象中字段的值
+     *
+     * @param object     目标对象
+     * @param field      字段名称
+     * @param fieldValue 字段值
+     */
+    public static void invokeObjectSetMethod(Object object, String field, Object fieldValue) {
+        String setMethodName = ObjectClassUtils.getSetMethodName(StringUtils.lowerCamelToUpperCamel(field));
+        Method setMethod = ReflectionUtils.findMethod(object.getClass(), setMethodName, fieldValue.getClass());
+
+        if (setMethod == null) {
+            setMethod = ReflectionUtils.findMethod(object.getClass().getSuperclass(), setMethodName, fieldValue.getClass());
+        }
+
+        if (setMethod != null) {
+            ReflectionUtils.invokeMethod(setMethod, object, fieldValue);
+        } else {
+            logger.error("Setter method [{}] not found in class [{}].", setMethodName, object.getClass().getName());
+        }
+    }
+
+    /**
      * 获取指定类型的对象实例
      *
      * @param clazz 对象类型

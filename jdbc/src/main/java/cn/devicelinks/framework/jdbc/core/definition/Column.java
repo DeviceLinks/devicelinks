@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * 数据库表中单个列定义
@@ -67,6 +68,10 @@ public class Column {
      * The PrivateKey generation strategy for the column value
      */
     private IdGenerationStrategy idGenerationStrategy;
+    /**
+     * Get the default value, only used for insert data
+     */
+    private Supplier<Object> defaultValueSupplier;
 
     /**
      * Create {@link ColumnBuilder} Instance
@@ -279,6 +284,7 @@ public class Column {
         private int sqlType;
         private ColumnValueMapper columnValueMapper;
         private IdGenerationStrategy idGenerationStrategy;
+        private Supplier<Object> defaultValueSupplier;
 
         public ColumnBuilder(String name) {
             Assert.hasText(name, "The Column name must not be empty.");
@@ -369,8 +375,13 @@ public class Column {
             return this;
         }
 
+        public ColumnBuilder defaultValue(Supplier<Object> defaultValueSupplier) {
+            this.defaultValueSupplier = defaultValueSupplier;
+            return this;
+        }
+
         public Column build() {
-            return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper, idGenerationStrategy);
+            return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper, idGenerationStrategy, defaultValueSupplier);
         }
     }
 }
