@@ -24,6 +24,7 @@ import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.common.pojos.SysSetting;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,7 +50,7 @@ public class TSysSetting extends TableImpl {
 	public final Column MULTIVALUED = Column.withName("multivalued").booleanValue().build();
 	public final Column ALLOW_SELF_SET = Column.withName("allow_self_set").booleanValue().build();
 	public final Column ENABLED = Column.withName("enabled").booleanValue().build();
-	public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+	public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 	public final Column MARK = Column.withName("mark").build();
 
 	@Override

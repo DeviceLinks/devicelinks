@@ -18,10 +18,10 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.web.request.AddDepartmentRequest;
-import cn.devicelinks.console.web.StatusCodeConstants;
-import cn.devicelinks.console.web.request.UpdateDepartmentRequest;
 import cn.devicelinks.console.service.SysDepartmentService;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.request.AddDepartmentRequest;
+import cn.devicelinks.console.web.request.UpdateDepartmentRequest;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -34,8 +34,6 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * 部门相关接口
@@ -84,8 +82,7 @@ public class SysDepartmentController {
                 .setSort(request.getSort())
                 .setLevel(request.getLevel())
                 .setDescription(request.getDescription())
-                .setCreateBy(currentUser.getId())
-                .setCreateTime(LocalDateTime.now());
+                .setCreateBy(currentUser.getId());
         // @formatter:off
         department = this.departmentService.addDepartment(department);
         return ApiResponse.success(department);

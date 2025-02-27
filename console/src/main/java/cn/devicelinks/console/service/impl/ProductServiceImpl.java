@@ -1,17 +1,16 @@
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.web.StatusCodeConstants;
-import cn.devicelinks.console.web.query.PaginationQuery;
-import cn.devicelinks.console.web.response.RegenerateKeySecretResponse;
-import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.service.DeviceService;
 import cn.devicelinks.console.service.ProductService;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.response.RegenerateKeySecretResponse;
 import cn.devicelinks.framework.common.ProductStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.Product;
 import cn.devicelinks.framework.common.utils.StringUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -55,10 +54,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
             throw new ApiException(StatusCodeConstants.PRODUCT_ALREADY_EXISTS, product.getName());
         }
         // @formatter:off
-        product.setId(UUIDUtils.generateNoDelimiter())
-                .setProductKey(StringUtils.getRandomString(PRODUCT_KEY_LENGTH))
-                .setProductSecret(StringUtils.getRandomString(PRODUCT_SECRET_LENGTH))
-                .setDeleted(Boolean.FALSE);
+        product.setProductKey(StringUtils.getRandomString(PRODUCT_KEY_LENGTH))
+                .setProductSecret(StringUtils.getRandomString(PRODUCT_SECRET_LENGTH));
         // @formatter:on
         this.repository.insert(product);
         return product;

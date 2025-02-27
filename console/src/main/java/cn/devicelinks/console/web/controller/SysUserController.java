@@ -18,16 +18,15 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddUserRequest;
 import cn.devicelinks.console.web.request.UpdateUserRequest;
-import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.UserActivateMethod;
-import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -41,8 +40,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * 系统用户接口控制器
@@ -116,10 +113,8 @@ public class SysUserController {
                 .setName(request.getUsername())
                 .setEmail(request.getEmail())
                 .setActivateToken(StringUtils.getRandomString(ACTIVATE_TOKEN_LENGTH))
-                .setIdentity(UserIdentity.User)
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
                 .setCreateBy(currentUser.getId())
-                .setCreateTime(LocalDateTime.now())
                 .setMark(request.getMark());
         // @formatter:on
         user = this.userService.addUser(user, UserActivateMethod.valueOf(request.getActivateMethod()));

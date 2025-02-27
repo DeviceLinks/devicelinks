@@ -7,7 +7,6 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceRequest;
 import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
-import cn.devicelinks.framework.common.DeviceStatus;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -15,15 +14,12 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 /**
  * 设备接口控制器
@@ -68,14 +64,7 @@ public class DeviceController {
     public ApiResponse addDevice(@Valid @RequestBody AddDeviceRequest request) throws ApiException {
         Device device = DeviceConverter.INSTANCE.fromAddDeviceRequest(request);
         SysUser currentUser = UserDetailsContext.getCurrentUser();
-        // @formatter:off
-        device.setCreateBy(currentUser.getId())
-                .setId(UUIDUtils.generateNoDelimiter())
-                .setCreateTime(LocalDateTime.now())
-                .setStatus(DeviceStatus.NotActivate)
-                .setEnabled(Boolean.TRUE)
-                .setDeleted(Boolean.FALSE);
-        // @formatter:on
+        device.setCreateBy(currentUser.getId());
         DeviceAuthenticationMethod authenticationMethod = DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod());
         device = this.deviceService.addDevice(device, authenticationMethod, request.getAuthenticationAddition());
         return ApiResponse.success(device);

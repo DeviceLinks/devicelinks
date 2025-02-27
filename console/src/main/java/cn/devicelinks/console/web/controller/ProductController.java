@@ -1,12 +1,12 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
+import cn.devicelinks.console.service.ProductService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddProductRequest;
 import cn.devicelinks.console.web.request.UpdateProductRequest;
-import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.service.ProductService;
 import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -17,8 +17,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * 产品接口控制器
@@ -93,7 +91,6 @@ public class ProductController {
                 .setAuthenticationMethod(DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod()))
                 .setStatus(ProductStatus.Development)
                 .setCreateBy(currentUserId)
-                .setCreateTime(LocalDateTime.now())
                 .setDescription(request.getDescription());
         // @formatter:on
         return ApiResponse.success(this.productService.addProduct(product));

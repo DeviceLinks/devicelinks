@@ -48,7 +48,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Objects;
@@ -140,13 +139,12 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
         this.userSessionService.insert(userSession);
         // save user login log
         SysLog userLoginLog = new SysLog()
-                .setId(ObjectIdUtils.generateId())
                 .setUserId(user.getId())
                 .setSessionId(userSession.getId())
                 .setAction(LogAction.Login)
                 .setObjectType(LogObjectType.User)
                 .setObjectId(user.getId())
-                .setSuccess(true)
+                .setSuccess(Boolean.TRUE)
                 .setMsg(LOGIN_SUCCESS_MSG)
                 .setAddition(new SysLogAddition()
                         .setIpAddress(ipAddress)
@@ -158,8 +156,7 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                             put("account", user.getAccount());
                             put("identity", user.getIdentity());
                         }}
-                ))
-                .setCreateTime(LocalDateTime.now());
+                ));
         this.logService.insert(userLoginLog);
         // @formatter:on
     }

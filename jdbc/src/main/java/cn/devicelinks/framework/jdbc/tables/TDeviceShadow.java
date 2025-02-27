@@ -1,12 +1,14 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.DeviceShadowStatus;
 import cn.devicelinks.framework.common.pojos.DeviceShadow;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -30,10 +32,10 @@ public class TDeviceShadow extends TableImpl {
     public final Column DESIRED_STATE = Column.withName("desired_state").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATE_ADDITION).build();
     public final Column REPORTED_VERSION = Column.withName("reported_version").longValue().build();
     public final Column DESIRED_VERSION = Column.withName("desired_version").longValue().build();
-    public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATUS).build();
+    public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATUS).defaultValue(() -> DeviceShadowStatus.Normal).build();
     public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").timestamp().build();
     public final Column LAST_SYNC_TIMESTAMP = Column.withName("last_sync_timestamp").timestamp().build();
-    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {

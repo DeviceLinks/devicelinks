@@ -17,14 +17,13 @@
 
 package cn.devicelinks.console.service.impl;
 
+import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.service.SysUserService;
 import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -60,7 +59,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
         if (storedUser != null) {
             throw new ApiException(StatusCodeConstants.USER_ALREADY_EXISTS);
         }
-        sysUser.setId(UUIDUtils.generateNoDelimiter());
         this.insert(sysUser);
         if (UserActivateMethod.SendUrlToEmail == userActivateMethod) {
             // TODO 通过发送邮件方式激活时，需要向邮箱发送账号激活邮件

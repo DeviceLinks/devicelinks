@@ -24,6 +24,7 @@ import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,10 +50,10 @@ public class TAttribute extends TableImpl {
     public final Column IDENTIFIER = Column.withName("identifier").build();
     public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.ATTRIBUTE_DATA_TYPE).build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.ATTRIBUTE_ADDITION).build();
-    public final Column ENABLED = Column.withName("enabled").booleanValue().build();
-    public final Column DELETED = Column.withName("deleted").booleanValue().build();
+    public final Column ENABLED = Column.withName("enabled").booleanValue().defaultValue(() -> Boolean.TRUE).build();
+    public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();
-    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
     public final Column DESCRIPTION = Column.withName("description").build();
 
     @Override

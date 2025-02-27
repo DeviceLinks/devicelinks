@@ -24,7 +24,6 @@ import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.minbox.framework.util.StackTraceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,6 @@ public class OperationLogStorageSupport implements OperationLogStorage {
 
         // @formatter:off
         SysLog operateLog = new SysLog()
-                .setId(UUIDUtils.generateNoDelimiter())
                 .setUserId(object.getOperatorId())
                 .setSessionId(object.getSessionId())
                 .setAction(object.getAction())

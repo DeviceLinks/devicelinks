@@ -1,12 +1,12 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.web.request.AddFunctionModuleRequest;
+import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.web.StatusCodeConstants;
-import cn.devicelinks.console.web.request.UpdateFunctionModuleRequest;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.service.FunctionModuleService;
+import cn.devicelinks.console.web.request.AddFunctionModuleRequest;
+import cn.devicelinks.console.web.request.UpdateFunctionModuleRequest;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -20,8 +20,6 @@ import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * 功能模块接口控制器
@@ -101,8 +99,7 @@ public class FunctionModuleController {
                 .setProductId(request.getProductId())
                 .setName(request.getName())
                 .setIdentifier(request.getIdentifier())
-                .setCreateBy(currentUser.getId())
-                .setCreateTime(LocalDateTime.now());
+                .setCreateBy(currentUser.getId());
         // @formatter:on
         module = this.functionModuleService.addFunctionModule(module);
         return ApiResponse.success(module);
