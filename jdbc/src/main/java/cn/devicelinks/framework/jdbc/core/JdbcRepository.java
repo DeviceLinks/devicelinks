@@ -20,7 +20,11 @@ package cn.devicelinks.framework.jdbc.core;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
 import cn.devicelinks.framework.common.utils.ObjectClassUtils;
+import cn.devicelinks.framework.common.utils.ObjectIdUtils;
+import cn.devicelinks.framework.common.utils.SnowflakeIdUtils;
+import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.mapper.ResultRowMapper;
 import cn.devicelinks.framework.jdbc.core.page.DefaultPageResult;
@@ -42,6 +46,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 /**
@@ -76,6 +81,19 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         Assert.notNull(object, "目标新增对象不可以为null.");
         List<Column> insertableColumns = this.table.getInsertableColumns();
         Map<String, Object> methodValueMap = ObjectClassUtils.invokeObjectGetMethod(object);
+
+        Column pkColumn = this.table.getPk();
+        if (pkColumn == null) {
+            log.warn("对象：[{}]，中没有定义主键，无法自动生成主键值。", object.getClass().getName());
+        }
+        if (pkColumn != null && pkColumn.getIdGenerationStrategy() != null) {
+            // Primary key field getter method name
+            String pkGetMethodName = ObjectClassUtils.getGetMethodName(pkColumn.getUpperCamelName());
+            // If no ID value is passed, it is automatically generated based on the policy
+            methodValueMap.put(pkGetMethodName,
+                    Objects.requireNonNullElse(methodValueMap.get(pkGetMethodName), generateId(pkColumn.getIdGenerationStrategy())));
+        }
+
         String insertSql = this.table.getInsertSql();
         SqlParameterValue[] sqlParameterValues = SqlParameterValueUtils.getWithTableColumn(insertableColumns, methodValueMap);
         return this.jdbcRepositoryOperations.insert(insertSql, Arrays.asList(sqlParameterValues));
@@ -428,5 +446,21 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
                     return Condition.withColumn(condition.getOperator(), searchColumn, condition.getValue());
                 })
                 .toArray(Condition[]::new);
+        // @formatter:on
+    }
+
+    /**
+     * Generate Primary Key Value
+     *
+     * @param strategy ID Generator strategy {@link IdGenerationStrategy}
+     * @return Primary Key Value
+     */
+    private String generateId(IdGenerationStrategy strategy) {
+        return switch (strategy) {
+            case UUID -> UUIDUtils.generateNoDelimiter();
+            case SNOWFLAKE -> SnowflakeIdUtils.generateId();
+            case OBJECT_ID -> ObjectIdUtils.generateId();
+            case AUTO_INCREMENT, NONE -> null;
+        };
     }
 }

@@ -17,6 +17,8 @@
 
 package cn.devicelinks.framework.common.utils;
 
+import lombok.Getter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.net.NetworkInterface;
@@ -33,10 +35,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 生成结果的长度为：24位，与MongoID生成规则类似
  *
  * @author 恒宇少年
- * @see #next()
+ * @see #generateId()
  * @since 1.0
  */
-public class IDGenerator implements Comparable<IDGenerator>, Serializable {
+@Getter
+public class ObjectIdUtils implements Comparable<ObjectIdUtils>, Serializable {
     @Serial
     private static final long serialVersionUID = 440848443996694196L;
 
@@ -56,8 +59,8 @@ public class IDGenerator implements Comparable<IDGenerator>, Serializable {
     private final short processIdentifier;
     private final int counter;
 
-    public static String next() {
-        return new IDGenerator().toString();
+    public static String generateId() {
+        return new ObjectIdUtils().toString();
     }
 
 
@@ -105,36 +108,36 @@ public class IDGenerator implements Comparable<IDGenerator>, Serializable {
     }
 
 
-    public static IDGenerator createFromLegacyFormat(final int time, final int machine, final int inc) {
-        return new IDGenerator(time, machine, inc);
+    public static ObjectIdUtils createFromLegacyFormat(final int time, final int machine, final int inc) {
+        return new ObjectIdUtils(time, machine, inc);
     }
 
-    public IDGenerator() {
+    public ObjectIdUtils() {
         this(new Date());
     }
 
 
-    public IDGenerator(final Date date) {
+    public ObjectIdUtils(final Date date) {
         this(dateToTimestampSeconds(date), MACHINE_IDENTIFIER, PROCESS_IDENTIFIER, NEXT_COUNTER.getAndIncrement(), false);
     }
 
 
-    public IDGenerator(final Date date, final int counter) {
+    public ObjectIdUtils(final Date date, final int counter) {
         this(date, MACHINE_IDENTIFIER, PROCESS_IDENTIFIER, counter);
     }
 
 
-    public IDGenerator(final Date date, final int machineIdentifier, final short processIdentifier, final int counter) {
+    public ObjectIdUtils(final Date date, final int machineIdentifier, final short processIdentifier, final int counter) {
         this(dateToTimestampSeconds(date), machineIdentifier, processIdentifier, counter);
     }
 
 
-    public IDGenerator(final int timestamp, final int machineIdentifier, final short processIdentifier, final int counter) {
+    public ObjectIdUtils(final int timestamp, final int machineIdentifier, final short processIdentifier, final int counter) {
         this(timestamp, machineIdentifier, processIdentifier, counter, true);
     }
 
-    private IDGenerator(final int timestamp, final int machineIdentifier, final short processIdentifier, final int counter,
-                        final boolean checkCounter) {
+    private ObjectIdUtils(final int timestamp, final int machineIdentifier, final short processIdentifier, final int counter,
+                          final boolean checkCounter) {
         if ((machineIdentifier & 0xff000000) != 0) {
             throw new IllegalArgumentException("The machine identifier must be between 0 and 16777215 (it must fit in three bytes).");
         }
@@ -148,22 +151,22 @@ public class IDGenerator implements Comparable<IDGenerator>, Serializable {
     }
 
 
-    public IDGenerator(final String hexString) {
+    public ObjectIdUtils(final String hexString) {
         this(parseHexString(hexString));
     }
 
 
-    public IDGenerator(final byte[] bytes) {
+    public ObjectIdUtils(final byte[] bytes) {
         this(ByteBuffer.wrap(notNull("bytes", bytes)));
     }
 
 
-    IDGenerator(final int timestamp, final int machineAndProcessIdentifier, final int counter) {
+    ObjectIdUtils(final int timestamp, final int machineAndProcessIdentifier, final int counter) {
         this(legacyToBytes(timestamp, machineAndProcessIdentifier, counter));
     }
 
 
-    public IDGenerator(final ByteBuffer buffer) {
+    public ObjectIdUtils(final ByteBuffer buffer) {
         notNull("buffer", buffer);
         isTrueArgument("buffer.remaining() >=12", buffer.remaining() >= 12);
 
@@ -214,22 +217,6 @@ public class IDGenerator implements Comparable<IDGenerator>, Serializable {
         buffer.put(int0(counter));
     }
 
-    public int getTimestamp() {
-        return timestamp;
-    }
-
-    public int getMachineIdentifier() {
-        return machineIdentifier;
-    }
-
-    public short getProcessIdentifier() {
-        return processIdentifier;
-    }
-
-    public int getCounter() {
-        return counter;
-    }
-
     public Date getDate() {
         return new Date(timestamp * 1000L);
     }
@@ -253,7 +240,7 @@ public class IDGenerator implements Comparable<IDGenerator>, Serializable {
             return false;
         }
 
-        IDGenerator IdGenerator = (IDGenerator) o;
+        ObjectIdUtils IdGenerator = (ObjectIdUtils) o;
 
         if (counter != IdGenerator.counter) {
             return false;
@@ -281,7 +268,7 @@ public class IDGenerator implements Comparable<IDGenerator>, Serializable {
     }
 
     @Override
-    public int compareTo(final IDGenerator other) {
+    public int compareTo(final ObjectIdUtils other) {
         if (other == null) {
             throw new NullPointerException();
         }

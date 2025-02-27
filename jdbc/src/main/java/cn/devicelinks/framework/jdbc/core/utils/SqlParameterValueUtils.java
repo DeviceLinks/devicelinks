@@ -19,6 +19,7 @@ package cn.devicelinks.framework.jdbc.core.utils;
 
 import cn.devicelinks.framework.common.utils.ObjectClassUtils;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
@@ -124,6 +125,12 @@ public class SqlParameterValueUtils {
     public static SqlParameterValue[] getWithTableColumn(List<Column> columns, Map<String, Object> getMethodResultMap) {
         // @formatter:off
         return columns.stream()
+                .filter(column -> {
+                    if (column.isPk() && IdGenerationStrategy.AUTO_INCREMENT == column.getIdGenerationStrategy()) {
+                        return false;
+                    }
+                    return true;
+                })
                 .map(tableColumn -> {
                     String getMethodName = Types.BOOLEAN == tableColumn.getSqlType()
                             ? ObjectClassUtils.getIsMethodName(tableColumn.getUpperCamelName())

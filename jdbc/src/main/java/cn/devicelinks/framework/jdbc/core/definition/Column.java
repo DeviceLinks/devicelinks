@@ -18,6 +18,7 @@
 package cn.devicelinks.framework.jdbc.core.definition;
 
 import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.mapper.value.BasicColumnValueMapper;
 import cn.devicelinks.framework.jdbc.core.mapper.value.ColumnValueMapper;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
@@ -35,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 数据库表中单个列定义
@@ -61,6 +63,10 @@ public class Column {
 
     @Getter(AccessLevel.PRIVATE)
     private ColumnValueMapper columnValueMapper;
+    /**
+     * The PrivateKey generation strategy for the column value
+     */
+    private IdGenerationStrategy idGenerationStrategy;
 
     /**
      * Create {@link ColumnBuilder} Instance
@@ -272,6 +278,7 @@ public class Column {
         private boolean updatable;
         private int sqlType;
         private ColumnValueMapper columnValueMapper;
+        private IdGenerationStrategy idGenerationStrategy;
 
         public ColumnBuilder(String name) {
             Assert.hasText(name, "The Column name must not be empty.");
@@ -284,6 +291,13 @@ public class Column {
 
         public ColumnBuilder primaryKey() {
             this.primaryKey = true;
+            this.idGenerationStrategy = IdGenerationStrategy.OBJECT_ID;
+            return this;
+        }
+
+        public ColumnBuilder primaryKey(IdGenerationStrategy idGenerationStrategy) {
+            this.primaryKey = true;
+            this.idGenerationStrategy = Objects.requireNonNullElse(idGenerationStrategy, IdGenerationStrategy.OBJECT_ID);
             return this;
         }
 
@@ -356,7 +370,7 @@ public class Column {
         }
 
         public Column build() {
-            return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper);
+            return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper, idGenerationStrategy);
         }
     }
 }
