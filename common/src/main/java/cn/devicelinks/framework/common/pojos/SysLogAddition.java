@@ -24,7 +24,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 日志附加信息
@@ -43,20 +42,8 @@ public class SysLogAddition implements Serializable {
     private String browser;
     private String location;
     private String os;
-    private List<ObjectField> objectFields;
+    private String beforeObject;
+    private String afterObject;
     private String failureReason;
     private String failureStackTrace;
-
-    /**
-     * 操作日志字段
-     */
-    @Data
-    @Accessors(chain = true)
-    public static class ObjectField {
-        private String field;
-        private String fieldName;
-        private Object beforeValue;
-        private Object afterValue;
-        private boolean different;
-    }
 }

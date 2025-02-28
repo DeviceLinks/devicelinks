@@ -33,68 +33,36 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 public class OperationLogObject {
-    /**
-     * 会话ID
-     */
+
     private String sessionId;
-    /**
-     * 操作动作
-     */
+
     private LogAction action;
-    /**
-     * 操作对象类型
-     */
+
     private LogObjectType objectType;
-    /**
-     * 操作对象ID
-     */
+
     private String objectId;
-    /**
-     * 操作对象
-     */
-    private String object;
-    /**
-     * 操作对象字段列表
-     */
-    private String objectFields;
-    /**
-     * 操作的活动数据
-     */
+
+    private Object beforeObject;
+
+    private Object afterObject;
+
     private String activateData;
-    /**
-     * 操作描述
-     */
+
     private String msg;
-    /**
-     * 目标方法是否执行成功
-     */
+
     private boolean executionSucceed;
-    /**
-     * 日志所关联的操作人编号
-     */
+
     private String operatorId;
-    /**
-     * IP地址
-     */
+
     private String ipAddress;
-    /**
-     * 浏览器
-     */
+
     private String browser;
-    /**
-     * 操作系统
-     */
+
     private String os;
-    /**
-     * 失败原因
-     */
+
     private String failureReason;
-    /**
-     * 失败异常对象实例
-     */
+
     private Throwable failureCause;
-    /**
-     * 日志生成的时间
-     */
+
     private LocalDateTime time = LocalDateTime.now();
 }

@@ -29,25 +29,21 @@ import lombok.Getter;
 @Getter
 @ApiEnum
 public enum LogAction {
-    Login("登录", true, true),
-    Logout("登出", true, true),
-    Add("新增", false, true),
-    Update("编辑", true, true),
-    UpdateStatus("更新状态", true, true),
-    ChangePwd("修改密码", true, true),
-    Delete("删除", true, false),
-    Bind("绑定", false, true),
-    Unbind("解绑", true, false),
-    Publish("发布", true, true),
-    RegenerateKeySecret("重新生成KeySecret", true, true);
+    Login("登录"),
+    Logout("登出"),
+    Add("新增"),
+    Update("编辑"),
+    UpdateStatus("更新状态"),
+    ChangePwd("修改密码"),
+    Delete("删除"),
+    Bind("绑定"),
+    Unbind("解绑"),
+    Publish("发布"),
+    RegenerateKeySecret("重新生成KeySecret");
 
     private final String description;
-    private final boolean haveBeforeData;
-    private final boolean haveAfterData;
 
-    LogAction(String description, boolean haveBeforeData, boolean haveAfterData) {
+    LogAction(String description) {
         this.description = description;
-        this.haveBeforeData = haveBeforeData;
-        this.haveAfterData = haveAfterData;
     }
 }

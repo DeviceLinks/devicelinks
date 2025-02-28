@@ -18,7 +18,6 @@
 package cn.devicelinks.console.adaptation;
 
 import cn.devicelinks.console.service.SysLogService;
-import cn.devicelinks.framework.common.operate.log.ObjectFieldDifferentValue;
 import cn.devicelinks.framework.common.operate.log.OperationLogObject;
 import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
 import cn.devicelinks.framework.common.pojos.SysLog;
@@ -28,9 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.minbox.framework.util.StackTraceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-
-import java.util.List;
 
 /**
  * 操作日志数据存储实现类
@@ -46,23 +42,6 @@ public class OperationLogStorageSupport implements OperationLogStorage {
 
     @Override
     public void storage(OperationLogObject object) {
-        List<SysLogAddition.ObjectField> objectFields = null;
-        if (!ObjectUtils.isEmpty(object.getObjectFields())) {
-
-            List<ObjectFieldDifferentValue> fieldDifferentValueList = JacksonUtils.jsonToList(object.getObjectFields(), ObjectFieldDifferentValue.class);
-            if (!ObjectUtils.isEmpty(fieldDifferentValueList)) {
-                objectFields = fieldDifferentValueList.stream()
-                        .map(fdv ->
-                                new SysLogAddition.ObjectField()
-                                        .setField(fdv.getField())
-                                        .setFieldName(fdv.getFieldName())
-                                        .setBeforeValue(fdv.getBeforeValue())
-                                        .setAfterValue(fdv.getAfterValue())
-                                        .setDifferent(fdv.isDifferent()))
-                        .toList();
-            }
-        }
-
         // @formatter:off
         SysLog operateLog = new SysLog()
                 .setUserId(object.getOperatorId())
@@ -80,7 +59,9 @@ public class OperationLogStorageSupport implements OperationLogStorage {
                                 .setBrowser(object.getBrowser())
                                 .setFailureReason(object.getFailureReason())
                                 .setFailureStackTrace(object.getFailureCause() != null ? StackTraceUtil.getStackTrace(object.getFailureCause()) : null)
-                                .setObjectFields(objectFields))
+                                .setBeforeObject(object.getBeforeObject() != null ? JacksonUtils.objectToJson(object.getBeforeObject()) : null)
+                                .setAfterObject(object.getAfterObject() != null ? JacksonUtils.objectToJson(object.getAfterObject()) : null)
+                )
                 .setActivityData(object.getActivateData());
         // @formatter:on
         this.logService.insert(operateLog);

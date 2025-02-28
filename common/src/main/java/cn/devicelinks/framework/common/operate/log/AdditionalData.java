@@ -17,38 +17,47 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.lang.annotation.*;
 
 /**
- * 操作字段区别值定义类
+ * 附加数据
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ObjectFieldDifferentValue {
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface AdditionalData {
     /**
-     * 字段
+     * 附加数据的唯一Key
+     * <p>
+     * 如果重复配置则会覆盖数据
+     *
+     * @return 附加数据Key
      */
-    private String field;
+    String key();
+
     /**
-     * 字段名称
+     * 附加数据加载时机
+     *
+     * @return {@link AdditionalDataLoadTime}
      */
-    private String fieldName;
+    AdditionalDataLoadTime loadTime() default AdditionalDataLoadTime.All;
+
     /**
-     * 操作之前的字段值
+     * 前置条件
+     * 支持SpEL表达式
+     *
+     * @return 解析后的值为 {@link Boolean} 类型，当为"true"时才会执行后续{@link #data()}
      */
-    private Object beforeValue;
+    String condition() default "true";
+
     /**
-     * 操作之后的字段值
+     * 附加数据查询表达式
+     * 支持SpEL表达式
+     *
+     * @return 操作字段获取值的SpEL表达式，解析后可以提取到字段的值
      */
-    private Object afterValue;
-    /**
-     * 操作之前与之后是否不同
-     */
-    private boolean different;
+    String data();
 }
