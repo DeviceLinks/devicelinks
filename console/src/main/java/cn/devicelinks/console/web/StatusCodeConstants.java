@@ -66,8 +66,10 @@ public interface StatusCodeConstants {
     StatusCode ATTRIBUTE_NOT_FOUND = StatusCode.build("ATTRIBUTE_NOT_FOUND", "属性：%s，不存在.");
 
     StatusCode DEVICE_ALREADY_EXISTS = StatusCode.build("DEVICE_ALREADY_EXISTS", "设备：%s，已经存在，请检查产品下设备唯一码是否重复.");
+    StatusCode DEVICE_NOT_EXISTS = StatusCode.build("DEVICE_NOT_EXISTS", "设备：%s，不存在.");
     StatusCode INVALID_DEVICE_ACCESS_TOKEN = StatusCode.build("INVALID_DEVICE_ACCESS_TOKEN", "无效的设备请求令牌：%s.");
     StatusCode DEVICE_ACCESS_TOKEN_ALREADY_EXISTS = StatusCode.build("DEVICE_ACCESS_TOKEN_ALREADY_EXISTS", "设备请求令牌已经存在.");
+    StatusCode DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE = StatusCode.build("DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE", "设备：%s，目前处于启用状态，不允许删除.");
     StatusCode INVALID_DEVICE_MQTT_BASIC_AUTH = StatusCode.build("INVALID_DEVICE_MQTT_BASIC_AUTH", "无效的MQTT Basic Auth.");
     StatusCode DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS = StatusCode.build("DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS", "MQTT客户端ID已经存在.");
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");

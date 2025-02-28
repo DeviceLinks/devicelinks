@@ -2,10 +2,12 @@ package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.DeviceService;
+import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.converter.DeviceConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceRequest;
 import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -15,11 +17,9 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 设备接口控制器
@@ -40,7 +40,7 @@ public class DeviceController {
      * @param paginationQuery  分页查询参数 {@link PaginationQuery}
      * @param searchFieldQuery 搜索字段查询参数 {@link SearchFieldQuery}
      * @return 返回 {@link ApiResponse} 包含设备列表和分页信息，或 {@link ApiResponse} 包含错误信息。
-     * @throws ApiException 如果在处理请求时发生错误，例如查询失败或参数验证失败。
+     * @throws ApiException 抛出处理过程中遇到的异常
      */
     @PostMapping(value = "/filter")
     public ApiResponse getDeviceListByPageable(@Valid PaginationQuery paginationQuery,
@@ -53,7 +53,7 @@ public class DeviceController {
      *
      * @param request 添加设备请求 {@link AddDeviceRequest}
      * @return 返回 {@link ApiResponse} 包含操作状态码和消息。成功时无额外数据返回。
-     * @throws ApiException 如果在处理请求时发生错误，例如参数验证失败。
+     * @throws ApiException 抛出处理过程中遇到的异常
      */
     @PostMapping
     @OperationLog(action = LogAction.Add,
@@ -68,5 +68,74 @@ public class DeviceController {
         DeviceAuthenticationMethod authenticationMethod = DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod());
         device = this.deviceService.addDevice(device, authenticationMethod, request.getAuthenticationAddition());
         return ApiResponse.success(device);
+    }
+
+    /**
+     * 更新设备信息
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @param request  更新设备请求实体 {@link UpdateDeviceRequest}
+     * @return 返回更新后的设备信息
+     * @throws ApiException 抛出处理过程中遇到的异常
+     */
+    @PostMapping(value = "/{deviceId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.Device,
+            objectId = "{#executionSucceed ? #result.data.id : #p0}",
+            msg = "{#executionSucceed ? '设备更新成功' : '设备更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDevice(@PathVariable("deviceId") String deviceId,
+                                    @Valid @RequestBody UpdateDeviceRequest request) throws ApiException {
+        Device device = this.deviceService.selectById(deviceId);
+        if (device == null || device.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        // @formatter:off
+        device.setName(request.getName())
+                .setTags(request.getTags())
+                .setMark(request.getMark());
+        // @formatter:on
+        device = this.deviceService.updateDevice(device);
+        return ApiResponse.success(device);
+    }
+
+    /**
+     * 删除设备信息
+     * <p>
+     * 仅已禁用的设备允许删除
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return 删除后的设备信息
+     * @throws ApiException 抛出处理过程中遇到的异常
+     */
+    @DeleteMapping(value = "/{deviceId}")
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.Device,
+            objectId = "{#p0}",
+            msg = "{#executionSucceed ? '设备删除成功' : '设备删除失败'}",
+            activateData = "{#executionSucceed ? #result.data : #p0}")
+    public ApiResponse deleteDevice(@PathVariable("deviceId") String deviceId) throws ApiException {
+        Device deletedDevice = this.deviceService.deleteDevice(deviceId);
+        return ApiResponse.success(deletedDevice);
+    }
+
+    /**
+     * 启用/禁用设备
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @param enabled  是否启用 {@link Device#isEnabled()}
+     * @return {@link ApiResponse}
+     * @throws ApiException 抛出处理过程中遇到的异常
+     */
+    @PostMapping(value = "/{deviceId}/enabled")
+    @OperationLog(action = LogAction.UpdateStatus,
+            objectType = LogObjectType.Device,
+            objectId = "{#p0}",
+            msg = "{#executionSucceed ? '设备启用状态更新成功' : '设备启用状态更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDeviceStatus(@PathVariable("deviceId") String deviceId,
+                                          @NotNull Boolean enabled) throws ApiException {
+        this.deviceService.updateEnabled(deviceId, enabled);
+        return ApiResponse.success();
     }
 }

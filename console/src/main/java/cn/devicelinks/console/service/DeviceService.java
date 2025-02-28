@@ -60,4 +60,28 @@ public interface DeviceService extends BaseService<Device, String> {
      * @return 返回添加的设备 {@link Device}
      */
     Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
+
+    /**
+     * 更新设备信息
+     *
+     * @param device 待更新的设备信息 {@link Device}
+     * @return 更新后的设备信息 {@link Device}
+     */
+    Device updateDevice(Device device);
+
+    /**
+     * 删除设备信息
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return 已删除的设备信息 {@link Device}
+     */
+    Device deleteDevice(String deviceId);
+
+    /**
+     * 更新设备启用状态
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @param enabled  启用状态 {@link Device#isEnabled()}
+     */
+    void updateEnabled(String deviceId, boolean enabled);
 }

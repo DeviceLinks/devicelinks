@@ -27,6 +27,7 @@ import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.common.utils.X509Utils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
@@ -73,23 +75,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
     @Override
     public Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
-        // @formatter:off
-        Device storedDevice = this.repository.selectOne(
-                DEVICE.DEVICE_CODE.eq(device.getDeviceCode()),
-                DEVICE.PRODUCT_ID.eq(device.getProductId()),
-                DEVICE.DELETED.eq(Boolean.FALSE));
-        // @formatter:on
-        if (storedDevice != null) {
-            throw new ApiException(StatusCodeConstants.DEVICE_ALREADY_EXISTS, device.getDeviceCode());
-        }
-        Product product = this.productService.selectById(device.getProductId());
-        if (product == null || product.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, device.getProductId());
-        }
-        SysDepartment department = this.departmentService.selectById(device.getDepartmentId());
-        if (department == null || department.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEPARTMENT_NOT_FOUND, device.getDepartmentId());
-        }
+        this.checkData(device, false);
+
         // validate authentication data
         this.validateAuthentication(authenticationMethod, authenticationAddition);
 
@@ -143,6 +130,80 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported authentication method");
+        }
+    }
+
+    @Override
+    public Device updateDevice(Device device) {
+        this.checkData(device, true);
+        this.repository.update(device);
+        return device;
+    }
+
+    @Override
+    public Device deleteDevice(String deviceId) {
+        Device device = this.selectById(deviceId);
+        if (device == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        if (device.isEnabled()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE, device.getDeviceCode());
+        }
+        this.repository.update(List.of(DEVICE.DELETED.set(Boolean.TRUE)), DEVICE.ID.eq(device.getId()));
+        return device;
+    }
+
+    @Override
+    public void updateEnabled(String deviceId, boolean enabled) {
+        Device device = this.selectById(deviceId);
+        if (device == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        this.repository.update(List.of(DEVICE.ENABLED.set(enabled)), DEVICE.ID.eq(device.getId()));
+    }
+
+    private void checkData(Device device, boolean doUpdate) {
+        // check product exists
+        Product product = this.productService.selectById(device.getProductId());
+        if (product == null || product.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, device.getProductId());
+        }
+
+        // check department exists
+        SysDepartment department = this.departmentService.selectById(device.getDepartmentId());
+        if (department == null || department.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEPARTMENT_NOT_FOUND, device.getDepartmentId());
+        }
+
+        // check already exists
+        List<ConditionGroup> conditionGroups = new ArrayList<>();
+
+        // update
+        if (doUpdate) {
+            conditionGroups.add(
+                    ConditionGroup.withCondition(
+                            DEVICE.PRODUCT_ID.eq(device.getProductId()),
+                            DEVICE.DEVICE_CODE.eq(device.getDeviceCode()),
+                            DEVICE.DELETED.eq(Boolean.FALSE)
+                    )
+            );
+            conditionGroups.add(ConditionGroup.withCondition(DEVICE.ID.neq(device.getId())));
+        }
+        // insert
+        else {
+            conditionGroups.add(
+                    ConditionGroup.withCondition(
+                            DEVICE.PRODUCT_ID.eq(device.getProductId()),
+                            DEVICE.DEVICE_CODE.eq(device.getDeviceCode()),
+                            DEVICE.DELETED.eq(Boolean.FALSE)
+                    )
+            );
+        }
+        // @formatter:off
+        Device storedDevice = this.repository.selectOne(conditionGroups.toArray(ConditionGroup[]::new));
+        // @formatter:on
+        if (storedDevice != null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_ALREADY_EXISTS, device.getDeviceCode());
         }
     }
 }
