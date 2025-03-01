@@ -22,5 +22,10 @@ public class TelemetryAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
-    private AttributeDataType dataType;
+    private TelemetryMetadata metadata;
+
+    @Data
+    public static class TelemetryMetadata {
+        private AttributeDataType dataType;
+    }
 }

@@ -72,8 +72,12 @@ public enum SearchFieldVariable {
     PRODUCT_DATA_FORMAT("dataFormat", "数据格式"),
     PRODUCT_AUTHENTICATION_METHOD("authenticationMethod", "鉴权方式"),
     PRODUCT_DYNAMIC_REGISTRATION("dynamicRegistration", "是否动态注册"),
-    PRODUCT_STATUS("status", "状态")
+    PRODUCT_STATUS("status", "状态"),
 
+    DEVICE_ID("deviceId", "设备ID"),
+    TELEMETRY_METRIC_TYPE("metricType", "遥测数据类型"),
+    TELEMETRY_METRIC_KEY("key", "遥测数据Key"),
+    TELEMETRY_LAST_UPDATE_TIMESTAMP("lastUpdateTime", "最后更新时间"),
     ;
     private final String field;
     private final String text;

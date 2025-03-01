@@ -46,9 +46,9 @@ public class TTelemetry extends TableImpl {
     public final Column DEVICE_ID = Column.withName("device_id").build();
     public final Column METRIC_TYPE = Column.withName("metric_type").typeMapper(ColumnValueMappers.TELEMETRY_METRIC_TYPE).build();
     public final Column METRIC_KEY = Column.withName("metric_key").build();
-    public final Column METRIC_VALUE = Column.withName("metric_value").build();
+    public final Column METRIC_VALUE = Column.withName("metric_value").typeMapper(ColumnValueMappers.JSON_MAP).build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.TELEMETRY_ADDITION).build();
-    public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").timestamp().build();
+    public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").longValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override

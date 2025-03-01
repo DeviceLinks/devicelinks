@@ -57,6 +57,10 @@ public enum SearchFieldModuleIdentifier {
      * 产品
      */
     Product("产品模块"),
+    /**
+     * 遥测数据
+     */
+    Telemetry("遥测数据")
     ;
 
     private final String description;

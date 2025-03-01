@@ -25,6 +25,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * 设备遥测数据
@@ -42,7 +43,7 @@ public class Telemetry implements Serializable {
     private String deviceId;
     private TelemetryMetricType metricType;
     private String metricKey;
-    private String metricValue;
+    private Map<String, Object> metricValue;
     private TelemetryAddition addition;
     private Long lastUpdateTimestamp;
     private LocalDateTime createTime;
