@@ -2,6 +2,8 @@ server:
   port: ${DEVICELINKS_CONSOLE_PORT:13650}
 
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     url: jdbc:mysql://${MYSQL_SERVICE_HOST}:${MYSQL_SERVICE_PORT:3306}/${MYSQL_SERVICE_DB_NAME:devicelinks}?${MYSQL_SERVICE_DB_PARAM:characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false}
     username: ${MYSQL_SERVICE_USERNAME}
