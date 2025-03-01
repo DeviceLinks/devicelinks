@@ -82,7 +82,8 @@ public class DeviceController {
     @OperationLog(action = LogAction.Update,
             objectType = LogObjectType.Device,
             objectId = "{#executionSucceed ? #result.data.id : #p0}",
-            msg = "{#executionSucceed ? '设备更新成功' : '设备更新失败'}",
+            object = "{@deviceServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed ? '设备更成功' : '设备更新失败'}",
             activateData = "{#p1}")
     public ApiResponse updateDevice(@PathVariable("deviceId") String deviceId,
                                     @Valid @RequestBody UpdateDeviceRequest request) throws ApiException {
