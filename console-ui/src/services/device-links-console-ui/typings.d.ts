@@ -31,11 +31,11 @@ declare namespace API {
     /** 是否删除 */
     deleted: boolean;
     /** 创建人ID */
-    createBy: any;
+    createBy: string;
     /** 创建时间 */
-    createTime: any;
+    createTime: string;
     /** 描述 */
-    description: any;
+    description: string;
     /** 子属性列表 */
     childAttributes: Attribute[];
   };
@@ -86,7 +86,7 @@ declare namespace API {
     /** 标识符 */
     identifier: string;
     /** 上级ID */
-    pid: any;
+    pid: string;
     /** 排序 */
     sort: number;
     /** 等级 */
@@ -94,11 +94,11 @@ declare namespace API {
     /** 是否删除 */
     deleted: boolean;
     /** 创建人ID */
-    createBy: any;
+    createBy: string;
     /** 创建时间 */
     createTime: string;
     /** 描述 */
-    description: any;
+    description: string;
   };
 
   type Device = {
@@ -260,22 +260,22 @@ declare namespace API {
     /** 操作对象ID */
     objectId: string;
     /** 日志内容 */
-    msg: any;
+    msg: string;
     /** 是否操作成功 */
     success: boolean;
     /** 附加信息 */
     addition: {
-      ipAddress?: any;
-      browser?: any;
-      os?: any;
+      ipAddress?: string;
+      browser?: string;
+      os?: string;
       location?: string;
       failureReason?: string;
       failureStackTrace?: string;
       objectFields?: {
         field?: string;
         fieldName?: string;
-        beforeValue?: any;
-        afterValue?: any;
+        beforeValue?: string;
+        afterValue?: string;
         different?: boolean;
       }[];
     };
@@ -340,7 +340,7 @@ declare namespace API {
     /** 总条数 */
     totalRows: number;
     /** 分页数据列表 */
-    result: any[];
+    result: string[];
   };
 
   type PlatformType = Enum[];
@@ -500,7 +500,7 @@ declare namespace API {
     /** 联网方式 */
     networkingAway: string;
     /** 接入网关协议 */
-    accessGatewayProtocol: any;
+    accessGatewayProtocol: string;
     /** 数据格式 */
     dataFormat: string;
     /** 鉴权方式 */
@@ -512,7 +512,7 @@ declare namespace API {
     /** 是否删除 */
     deleted: boolean;
     /** 描述 */
-    description: any;
+    description: string;
     /** 创建人 */
     createBy: string;
     /** 创建时间 */
@@ -526,8 +526,7 @@ declare namespace API {
     code: string;
     /** 消息 */
     message: string;
-    /** 响应数据 */
-    data: any;
+    data: string;
     additional: Record<string, any>;
   };
 
@@ -589,29 +588,27 @@ declare namespace API {
     /** 手机号 */
     phone: string;
     /** 密码 */
-    pwd?: any;
+    pwd?: string;
     /** 激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接 */
-    activateMethod: any;
+    activateMethod: string;
     /** 记录令牌 */
-    activateToken: any;
+    activateToken: string;
     /** 所属部门ID */
-    departmentId: any;
+    departmentId: string;
     /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: string;
-    /** 最后登录时间 */
-    lastLoginTime: any;
-    /** 最后修改密码时间 */
-    lastChangePwdTime: any;
+    lastLoginTime: string;
+    lastChangePwdTime: string;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 创建人 */
-    createBy: any;
+    createBy: string;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark: any;
+    mark: string;
   };
 
   type UserActivateMethod = Enum[];
