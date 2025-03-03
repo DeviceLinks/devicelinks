@@ -2,10 +2,10 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 查询日志列表 POST /api/log/filter */
-export async function postApiLogFilter(
+/** 查询设备列表 POST /api/device/filter */
+export async function postApiDeviceFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postApiLogFilterParams,
+  params: API.postApiDeviceFilterParams,
   body: {
     /** 检索字段模块，User/Device/Log/Notification */
     searchFieldModule: string;
@@ -24,10 +24,10 @@ export async function postApiLogFilter(
       pageSize?: number;
       totalPages?: number;
       totalRows?: number;
-      result?: API.Log[];
+      result?: API.Device[];
     };
     additional: Record<string, any>;
-  }>('/api/log/filter', {
+  }>('/api/device/filter', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

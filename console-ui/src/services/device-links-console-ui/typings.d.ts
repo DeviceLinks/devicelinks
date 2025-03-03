@@ -16,22 +16,22 @@ declare namespace API {
     dataType: string;
     /** 附加信息 */
     addition: {
-      unitId: string;
-      step: number;
-      dataLength: number;
-      valueRange: { min: number; max: number };
-      valueMap: Record<string, any>;
+      unitId?: string;
+      step?: number;
+      dataLength?: number;
+      valueRange: { min?: number; max?: number };
+      valueMap?: Record<string, any>;
     };
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 创建人ID */
-    createBy: string;
+    createBy: any;
     /** 创建时间 */
-    createTime: string;
+    createTime: any;
     /** 描述 */
-    description: string;
+    description: any;
     /** 子属性列表 */
     childAttributes: Attribute[];
   };
@@ -73,7 +73,7 @@ declare namespace API {
     /** 标识符 */
     identifier: string;
     /** 上级ID */
-    pid: string;
+    pid: any;
     /** 排序 */
     sort: number;
     /** 等级 */
@@ -81,11 +81,48 @@ declare namespace API {
     /** 是否删除 */
     deleted: boolean;
     /** 创建人ID */
-    createBy: string;
+    createBy: any;
     /** 创建时间 */
     createTime: string;
     /** 描述 */
-    description: string;
+    description: any;
+  };
+
+  type Device = {
+    /** 设备ID */
+    id: string;
+    /** 设备所属部门ID */
+    departmentId: string;
+    /** 产品ID */
+    productId: string;
+    /** 设备号 */
+    deviceCode: string;
+    /** 设备类型 */
+    deviceType: string;
+    /** 设备名称 */
+    name: string;
+    /** 设备状态 */
+    status: string;
+    /** 设备标签 */
+    tags: any;
+    /** 激活时间 */
+    activationTime: any;
+    /** 最后上线时间 */
+    lastOnlineTime: any;
+    /** 最后上报时间 */
+    lastReportTime: any;
+    /** 是否启用 */
+    enabled: boolean;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 附加信息 */
+    addition: any;
+    /** 创建人ID */
+    createBy: string;
+    /** 创建时间 */
+    createTime: string;
+    /** 备注 */
+    mark: any;
   };
 
   type FunctionModule = {
@@ -106,7 +143,6 @@ declare namespace API {
   };
 
   type getApi_openAPI_functionModuleModuleIdParams = {
-    /** 功能模块ID */
     moduleId: string;
   };
 
@@ -130,6 +166,45 @@ declare namespace API {
     productId: string;
   };
 
+  type Log = {
+    /** 日志ID */
+    id: string;
+    /** 用户ID */
+    userId: string;
+    /** 会话ID */
+    sessionId: string;
+    /** 操作动作 */
+    action: string;
+    /** 操作对象类型 */
+    objectType: string;
+    /** 操作对象ID */
+    objectId: string;
+    /** 日志内容 */
+    msg: any;
+    /** 是否操作成功 */
+    success: boolean;
+    /** 附加信息 */
+    addition: {
+      ipAddress?: any;
+      browser?: any;
+      os?: any;
+      location?: string;
+      failureReason?: string;
+      failureStackTrace?: string;
+      objectFields?: {
+        field?: string;
+        fieldName?: string;
+        beforeValue?: any;
+        afterValue?: any;
+        different?: boolean;
+      }[];
+    };
+    /** 活动数据 */
+    activityData: string;
+    /** 操作时间 */
+    createTime: string;
+  };
+
   type LoginResult = {
     /** 过期时间 */
     expires_in?: number;
@@ -139,6 +214,13 @@ declare namespace API {
     success?: boolean;
     /** 认证token */
     token?: string;
+  };
+
+  type PageParams = {
+    /** 当前页 */
+    current?: number;
+    /** 当前页数量 */
+    pageSize?: number;
   };
 
   type PageResult = {
@@ -151,7 +233,7 @@ declare namespace API {
     /** 总条数 */
     totalRows: number;
     /** 分页数据列表 */
-    result: string[];
+    result: any[];
   };
 
   type postApi_openAPI_functionModuleFilterParams = {
@@ -166,7 +248,6 @@ declare namespace API {
   };
 
   type postApi_openAPI_functionModuleModuleIdParams = {
-    /** 功能模块ID */
     moduleId: string;
   };
 
@@ -189,6 +270,17 @@ declare namespace API {
   type postApiDepartmentDepartmentIdParams = {
     /** 部门ID */
     departmentId: string;
+  };
+
+  type postApiDeviceFilterParams = {
+    /** 每页条数 */
+    pageSize?: number;
+    /** 当前页码 */
+    page?: number;
+    /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
+    sortProperty?: string;
+    /** 排序顺序，ASC：正序；DESC：倒序 */
+    sortDirection?: string;
   };
 
   type postApiLogFilterParams = {
@@ -272,7 +364,7 @@ declare namespace API {
     /** 联网方式，WiFi：Wi-Fi，CellularNetwork：蜂窝网络（2G/3G/4G/5G），Ethernet：以太网 */
     networkingAway: string;
     /** 接入网关协议，Mqtt；Modbus；Rest；Socket；Grpc；Ble */
-    accessGatewayProtocol: null;
+    accessGatewayProtocol: any;
     /** 数据格式，Json：json；Bytes：字节；Hex：十六进制 */
     dataFormat: string;
     /** 鉴权方式，ProductCredential：一型一密；DeviceCredential：一机一密；AccessToken：访问令牌；MqttBasic：mqtt基础认证；X509：X.509 */
@@ -284,7 +376,7 @@ declare namespace API {
     /** 是否删除 */
     deleted: boolean;
     /** 描述 */
-    description: null;
+    description: any;
     /** 创建人 */
     createBy: string;
     /** 创建时间 */
@@ -296,47 +388,9 @@ declare namespace API {
     code: string;
     /** 消息 */
     message: string;
-    data: string;
+    /** 响应数据 */
+    data: any;
     additional: Record<string, any>;
-  };
-
-  type rizhimoxing = {
-    /** 日志ID */
-    id: string;
-    /** 用户ID */
-    userId: string;
-    /** 会话ID */
-    sessionId: string;
-    /** 操作动作 */
-    action: string;
-    /** 操作对象类型 */
-    objectType: string;
-    /** 操作对象ID */
-    objectId: string;
-    /** 日志内容 */
-    msg: string;
-    /** 是否操作成功 */
-    success: boolean;
-    /** 附加信息 */
-    addition: {
-      ipAddress: string;
-      browser: string;
-      os: string;
-      location: string;
-      failureReason: string;
-      failureStackTrace: string;
-      objectFields: {
-        field: string;
-        fieldName: string;
-        beforeValue: string;
-        afterValue: string;
-        different: string;
-      }[];
-    };
-    /** 活动数据 */
-    activityData: string;
-    /** 操作时间 */
-    createTime: string;
   };
 
   type SearchField = {
@@ -345,7 +399,7 @@ declare namespace API {
     /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
     searchMatch: string;
     /** 检索字段列表 */
-    searchFields?: { field: string; operator: string; value: (string | number)[] }[];
+    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
   };
 
   type User = {
@@ -360,26 +414,28 @@ declare namespace API {
     /** 手机号 */
     phone: string;
     /** 密码 */
-    pwd?: string;
+    pwd?: any;
     /** 激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接 */
-    activateMethod: string;
+    activateMethod: any;
     /** 记录令牌 */
-    activateToken: string;
+    activateToken: any;
     /** 所属部门ID */
-    departmentId: string;
+    departmentId: any;
     /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: string;
-    lastLoginTime: string;
-    lastChangePwdTime: string;
+    /** 最后登录时间 */
+    lastLoginTime: any;
+    /** 最后修改密码时间 */
+    lastChangePwdTime: any;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 创建人 */
-    createBy: string;
+    createBy: any;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark: string;
+    mark: any;
   };
 }
