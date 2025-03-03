@@ -113,6 +113,19 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
         }
     };
 
+    ColumnValueMapper<Object,String> JSON_OBJECT = new ColumnValueMapper<>() {
+        @Override
+        public String toColumn(Object originalValue, String columnName) {
+            return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.objectToJson(originalValue) : null;
+        }
+
+        @Override
+        public Object fromColumn(ResultSet rs, String columnName) throws SQLException {
+            String columnValue = rs.getString(columnName);
+            return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.jsonToObject(columnValue, Object.class) : null;
+        }
+    };
+
     ColumnValueMapper<List<String>, String> STRING_JOINER = new ColumnValueMapper<>() {
         @Override
         public String toColumn(List<String> originalValue, String columnName) {
