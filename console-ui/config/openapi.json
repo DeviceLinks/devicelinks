@@ -3881,7 +3881,6 @@
                       "description": "字段中文描述"
                     },
                     "valueType": {
-                      "description": "字段值类型",
                       "$ref": "#/components/schemas/SearchFieldValueType"
                     },
                     "componentType": {
@@ -7711,738 +7710,127 @@
         "type": "object",
         "properties": {
           "AttributeDataType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/AttributeDataType"
           },
           "OtaUpgradeStrategyRetryInterval": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeStrategyRetryInterval"
           },
           "SearchFieldComponentType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SearchFieldComponentType"
           },
           "SessionStatus": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SessionStatus"
           },
           "NotificationPushAway": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/NotificationPushAway"
           },
           "NotificationType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/NotificationType"
           },
           "AlarmType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/AlarmType"
           },
           "SearchFieldOperator": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SearchFieldOperator"
           },
           "OtaUpgradeBatchMethod": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeBatchMethod"
           },
           "UserActivateMethod": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/UserActivateMethod"
           },
           "DeviceType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/DeviceType"
           },
           "OtaUpgradeBatchScope": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeBatchScope"
           },
           "NotificationSeverity": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/NotificationSeverity1"
           },
           "ProductStatus": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/ProductStatus"
           },
           "DeviceNetworkingAway": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/DeviceNetworkingAway"
           },
           "SearchFieldValueType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SearchFieldValueType"
           },
           "PlatformType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/PlatformType"
           },
           "AccessGatewayProtocol": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/AccessGatewayProtocol"
           },
           "DeviceStatus": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/DeviceStatus"
           },
           "OtaUpgradeStrategyType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeStrategyType"
           },
           "SearchFieldOptionDataSource": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SearchFieldOptionDataSource"
           },
           "SearchFieldModuleIdentifier": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SearchFieldModuleIdentifier"
           },
           "OtaUpgradeBatchType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeBatchType"
           },
           "GlobalSettingDataType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/GlobalSettingDataType"
           },
           "SignatureAlgorithm": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SignatureAlgorithm"
           },
           "NotificationMatchUserAway": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/NotificationMatchUserAway"
           },
           "LogAction": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/LogAction"
           },
           "DeviceAuthenticationMethod": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/DeviceAuthenticationMethod"
           },
           "NotificationTypeIdentifier": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/NotificationTypeIdentifier"
           },
           "SignAlgorithm": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SignAlgorithm"
           },
           "DataFormat": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/DataFormat"
           },
           "OtaPackageType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaPackageType"
           },
           "OtaUpgradeProgressState": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeProgressState"
           },
           "OtaPackageDownloadProtocol": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaPackageDownloadProtocol"
           },
           "EntityAction": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/EntityAction"
           },
           "NotificationStatus": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/NotificationStatus"
           },
           "SearchFieldMatch": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/SearchFieldMatch"
           },
           "OTAFileSource": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OTAFileSource"
           },
           "LogObjectType": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/LogObjectType"
           },
           "OtaUpgradeBatchState": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/OtaUpgradeBatchState"
           },
           "UserIdentity": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
+            "$ref": "#/components/schemas/UserIdentity"
           }
         },
         "required": [
@@ -8451,7 +7839,6 @@
           "SearchFieldComponentType",
           "SessionStatus",
           "NotificationPushAway",
-          "NotificationType",
           "AlarmType",
           "SearchFieldOperator",
           "OtaUpgradeBatchMethod",
@@ -8486,8 +7873,27 @@
           "OTAFileSource",
           "LogObjectType",
           "OtaUpgradeBatchState",
-          "UserIdentity"
+          "UserIdentity",
+          "NotificationType"
         ]
+      },
+      "NotificationType": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EnumItem"
+        }
+      },
+      "DeviceStatus": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EnumItem"
+        }
+      },
+      "OtaUpgradeStrategyType": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EnumItem"
+        }
       },
       "SearchField": {
         "type": "object",

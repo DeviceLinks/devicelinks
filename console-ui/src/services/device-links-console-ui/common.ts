@@ -7,49 +7,7 @@ export async function getApiCommonEnums(options?: { [key: string]: any }) {
   return request<{
     code: string;
     message: string;
-    data: {
-      AttributeDataType?: { label?: string; value?: string }[];
-      OtaUpgradeStrategyRetryInterval?: { label?: string; value?: string }[];
-      SearchFieldComponentType?: { label?: string; value?: string }[];
-      SessionStatus?: { label?: string; value?: string }[];
-      NotificationPushAway?: { label?: string; value?: string }[];
-      NotificationType?: { label?: string; value?: string }[];
-      AlarmType?: { label?: string; value?: string }[];
-      SearchFieldOperator?: { label?: string; value?: string }[];
-      OtaUpgradeBatchMethod?: { label?: string; value?: string }[];
-      UserActivateMethod?: { label?: string; value?: string }[];
-      DeviceType?: { label?: string; value?: string }[];
-      OtaUpgradeBatchScope?: { label?: string; value?: string }[];
-      NotificationSeverity?: { label?: string; value?: string }[];
-      ProductStatus?: { label?: string; value?: string }[];
-      DeviceNetworkingAway?: { label?: string; value?: string }[];
-      SearchFieldValueType?: { label?: string; value?: string }[];
-      PlatformType?: { label?: string; value?: string }[];
-      AccessGatewayProtocol?: { label?: string; value?: string }[];
-      DeviceStatus?: { label?: string; value?: string }[];
-      OtaUpgradeStrategyType?: { label?: string; value?: string }[];
-      SearchFieldOptionDataSource?: { label?: string; value?: string }[];
-      SearchFieldModuleIdentifier?: { label?: string; value?: string }[];
-      OtaUpgradeBatchType?: { label?: string; value?: string }[];
-      GlobalSettingDataType?: { label?: string; value?: string }[];
-      SignatureAlgorithm?: { label?: string; value?: string }[];
-      NotificationMatchUserAway?: { label?: string; value?: string }[];
-      LogAction?: { label?: string; value?: string }[];
-      DeviceAuthenticationMethod?: { label?: string; value?: string }[];
-      NotificationTypeIdentifier?: { label?: string; value?: string }[];
-      SignAlgorithm?: { label?: string; value?: string }[];
-      DataFormat?: { label?: string; value?: string }[];
-      OtaPackageType?: { label?: string; value?: string }[];
-      OtaUpgradeProgressState?: { label?: string; value?: string }[];
-      OtaPackageDownloadProtocol?: { label?: string; value?: string }[];
-      EntityAction?: { label?: string; value?: string }[];
-      NotificationStatus?: { label?: string; value?: string }[];
-      SearchFieldMatch?: { label?: string; value?: string }[];
-      OTAFileSource?: { label?: string; value?: string }[];
-      LogObjectType?: { label?: string; value?: string }[];
-      OtaUpgradeBatchState?: { label?: string; value?: string }[];
-      UserIdentity?: { label?: string; value?: string }[];
-    };
+    data: API.Enum;
     additional: Record<string, any>;
   }>('/api/common/enums', {
     method: 'GET',

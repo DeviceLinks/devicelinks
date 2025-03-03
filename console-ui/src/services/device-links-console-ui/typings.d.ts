@@ -1,7 +1,7 @@
 declare namespace API {
-  type AccessGatewayProtocol = Enum[];
+  type AccessGatewayProtocol = EnumItem[];
 
-  type AlarmType = Enum[];
+  type AlarmType = EnumItem[];
 
   type Attribute = {
     /** 属性ID */
@@ -40,14 +40,14 @@ declare namespace API {
     childAttributes: Attribute[];
   };
 
-  type AttributeDataType = Enum[];
+  type AttributeDataType = EnumItem[];
 
   type CurrentUser = {
     user: User;
     department: Department;
   };
 
-  type DataFormat = Enum[];
+  type DataFormat = EnumItem[];
 
   type deleteApi_openAPI_functionModuleModuleIdParams = {
     /** 功能模块ID */
@@ -160,15 +160,61 @@ declare namespace API {
     createTime: string;
   };
 
-  type DeviceAuthenticationMethod = Enum[];
+  type DeviceAuthenticationMethod = EnumItem[];
 
-  type DeviceNetworkingAway = Enum[];
+  type DeviceNetworkingAway = EnumItem[];
 
-  type DeviceType = Enum[];
+  type DeviceStatus = EnumItem[];
 
-  type EntityAction = Enum[];
+  type DeviceType = EnumItem[];
+
+  type EntityAction = EnumItem[];
 
   type Enum = {
+    AttributeDataType: AttributeDataType;
+    OtaUpgradeStrategyRetryInterval: OtaUpgradeStrategyRetryInterval;
+    SearchFieldComponentType: SearchFieldComponentType;
+    SessionStatus: SessionStatus;
+    NotificationPushAway: NotificationPushAway;
+    NotificationType: NotificationType;
+    AlarmType: AlarmType;
+    SearchFieldOperator: SearchFieldOperator;
+    OtaUpgradeBatchMethod: OtaUpgradeBatchMethod;
+    UserActivateMethod: UserActivateMethod;
+    DeviceType: DeviceType;
+    OtaUpgradeBatchScope: OtaUpgradeBatchScope;
+    NotificationSeverity: NotificationSeverity1;
+    ProductStatus: ProductStatus;
+    DeviceNetworkingAway: DeviceNetworkingAway;
+    SearchFieldValueType: SearchFieldValueType;
+    PlatformType: PlatformType;
+    AccessGatewayProtocol: AccessGatewayProtocol;
+    DeviceStatus: DeviceStatus;
+    OtaUpgradeStrategyType: OtaUpgradeStrategyType;
+    SearchFieldOptionDataSource: SearchFieldOptionDataSource;
+    SearchFieldModuleIdentifier: SearchFieldModuleIdentifier;
+    OtaUpgradeBatchType: OtaUpgradeBatchType;
+    GlobalSettingDataType: GlobalSettingDataType;
+    SignatureAlgorithm: SignatureAlgorithm;
+    NotificationMatchUserAway: NotificationMatchUserAway;
+    LogAction: LogAction;
+    DeviceAuthenticationMethod: DeviceAuthenticationMethod;
+    NotificationTypeIdentifier: NotificationTypeIdentifier;
+    SignAlgorithm: SignAlgorithm;
+    DataFormat: DataFormat;
+    OtaPackageType: OtaPackageType;
+    OtaUpgradeProgressState: OtaUpgradeProgressState;
+    OtaPackageDownloadProtocol: OtaPackageDownloadProtocol;
+    EntityAction: EntityAction;
+    NotificationStatus: NotificationStatus;
+    SearchFieldMatch: SearchFieldMatch;
+    OTAFileSource: OTAFileSource;
+    LogObjectType: LogObjectType;
+    OtaUpgradeBatchState: OtaUpgradeBatchState;
+    UserIdentity: UserIdentity;
+  };
+
+  type EnumItem = {
     /** 枚举描述 */
     label: string;
     /** 枚举值 */
@@ -244,7 +290,7 @@ declare namespace API {
     mark: string;
   };
 
-  type GlobalSettingDataType = Enum[];
+  type GlobalSettingDataType = EnumItem[];
 
   type Log = {
     /** 日志ID */
@@ -285,7 +331,7 @@ declare namespace API {
     createTime: string;
   };
 
-  type LogAction = Enum[];
+  type LogAction = EnumItem[];
 
   type LoginResult = {
     /** 过期时间 */
@@ -298,37 +344,41 @@ declare namespace API {
     token?: string;
   };
 
-  type LogObjectType = Enum[];
+  type LogObjectType = EnumItem[];
 
-  type NotificationMatchUserAway = Enum[];
+  type NotificationMatchUserAway = EnumItem[];
 
-  type NotificationPushAway = Enum[];
+  type NotificationPushAway = EnumItem[];
 
-  type NotificationSeverity = Enum[];
+  type NotificationSeverity = EnumItem[];
 
-  type NotificationSeverity1 = Enum[];
+  type NotificationSeverity1 = EnumItem[];
 
-  type NotificationStatus = Enum[];
+  type NotificationStatus = EnumItem[];
 
-  type NotificationTypeIdentifier = Enum[];
+  type NotificationType = EnumItem[];
 
-  type OTAFileSource = Enum[];
+  type NotificationTypeIdentifier = EnumItem[];
 
-  type OtaPackageDownloadProtocol = Enum[];
+  type OTAFileSource = EnumItem[];
 
-  type OtaPackageType = Enum[];
+  type OtaPackageDownloadProtocol = EnumItem[];
 
-  type OtaUpgradeBatchMethod = Enum[];
+  type OtaPackageType = EnumItem[];
 
-  type OtaUpgradeBatchScope = Enum[];
+  type OtaUpgradeBatchMethod = EnumItem[];
 
-  type OtaUpgradeBatchState = Enum[];
+  type OtaUpgradeBatchScope = EnumItem[];
 
-  type OtaUpgradeBatchType = Enum[];
+  type OtaUpgradeBatchState = EnumItem[];
 
-  type OtaUpgradeProgressState = Enum[];
+  type OtaUpgradeBatchType = EnumItem[];
 
-  type OtaUpgradeStrategyRetryInterval = Enum[];
+  type OtaUpgradeProgressState = EnumItem[];
+
+  type OtaUpgradeStrategyRetryInterval = EnumItem[];
+
+  type OtaUpgradeStrategyType = EnumItem[];
 
   type PageResult = {
     /** 当前页码 */
@@ -343,7 +393,7 @@ declare namespace API {
     result: string[];
   };
 
-  type PlatformType = Enum[];
+  type PlatformType = EnumItem[];
 
   type postApi_openAPI_functionModuleFilterParams = {
     /** 每页条数 */
@@ -519,7 +569,7 @@ declare namespace API {
     createTime: string;
   };
 
-  type ProductStatus = Enum[];
+  type ProductStatus = EnumItem[];
 
   type ResponseResult = {
     /** 状态码 */
@@ -539,23 +589,23 @@ declare namespace API {
     searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
   };
 
-  type SearchFieldComponentType = Enum[];
+  type SearchFieldComponentType = EnumItem[];
 
-  type SearchFieldMatch = Enum[];
+  type SearchFieldMatch = EnumItem[];
 
-  type SearchFieldModuleIdentifier = Enum[];
+  type SearchFieldModuleIdentifier = EnumItem[];
 
-  type SearchFieldOperator = Enum[];
+  type SearchFieldOperator = EnumItem[];
 
-  type SearchFieldOptionDataSource = Enum[];
+  type SearchFieldOptionDataSource = EnumItem[];
 
-  type SearchFieldValueType = Enum[];
+  type SearchFieldValueType = EnumItem[];
 
-  type SessionStatus = Enum[];
+  type SessionStatus = EnumItem[];
 
-  type SignAlgorithm = Enum[];
+  type SignAlgorithm = EnumItem[];
 
-  type SignatureAlgorithm = Enum[];
+  type SignatureAlgorithm = EnumItem[];
 
   type Telemetry = {
     /** ID */
@@ -611,7 +661,7 @@ declare namespace API {
     mark: string;
   };
 
-  type UserActivateMethod = Enum[];
+  type UserActivateMethod = EnumItem[];
 
-  type UserIdentity = Enum[];
+  type UserIdentity = EnumItem[];
 }
