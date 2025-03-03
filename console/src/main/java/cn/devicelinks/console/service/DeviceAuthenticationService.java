@@ -14,6 +14,14 @@ import cn.devicelinks.framework.jdbc.BaseService;
  */
 public interface DeviceAuthenticationService extends BaseService<DeviceAuthentication, String> {
     /**
+     * 查询设备凭证
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return {@link DeviceAuthentication}
+     */
+    DeviceAuthentication selectByDeviceId(String deviceId);
+
+    /**
      * 通过AccessToken查询鉴权信息
      *
      * @param accessToken 请求令牌
@@ -32,7 +40,7 @@ public interface DeviceAuthenticationService extends BaseService<DeviceAuthentic
     /**
      * 通过deviceKey查询鉴权信息
      *
-     * @param deviceKey    设备Key {@link DeviceAuthenticationAddition.DeviceCredential#getDeviceKey()}
+     * @param deviceKey 设备Key {@link DeviceAuthenticationAddition.DeviceCredential#getDeviceKey()}
      * @return 鉴权信息 {@link DeviceAuthentication}
      */
     DeviceAuthentication selectByDeviceKey(String deviceKey);
@@ -40,10 +48,20 @@ public interface DeviceAuthenticationService extends BaseService<DeviceAuthentic
     /**
      * 保存设备鉴权信息
      *
-     * @param device                 设备信息 {@link Device}
+     * @param deviceId               设备ID {@link DeviceAuthentication#getDeviceId()}
      * @param authenticationMethod   鉴权方式 {@link DeviceAuthenticationMethod}
      * @param authenticationAddition 鉴权附加数据 {@link DeviceAuthenticationAddition}
      * @return 返回保存的鉴权信息 {@link DeviceAuthentication}
      */
-    DeviceAuthentication saveAuthentication(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
+    DeviceAuthentication addAuthentication(String deviceId, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
+
+    /**
+     * 更新设备鉴权信息
+     *
+     * @param deviceId               设备ID {@link Device#getId()}
+     * @param authenticationMethod   鉴权方式 {@link DeviceAuthenticationMethod}
+     * @param authenticationAddition 鉴权附加数据 {@link DeviceAuthenticationAddition}
+     * @return 返回保存的鉴权信息 {@link DeviceAuthentication}
+     */
+    DeviceAuthentication updateAuthentication(String deviceId, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
 }
