@@ -24,6 +24,7 @@ import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.common.pojos.SysLog;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class TSysLog extends TableImpl {
     public final Column SUCCESS = Column.withName("success").booleanValue().build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.SYS_LOG_ADDITION).build();
     public final Column ACTIVITY_DATA = Column.withName("activity_data").build();
-    public final Column OPERATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column OPERATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {

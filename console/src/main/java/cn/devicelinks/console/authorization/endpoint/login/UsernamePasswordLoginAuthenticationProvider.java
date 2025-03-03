@@ -21,7 +21,10 @@ import cn.devicelinks.console.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.console.service.SysUserSessionService;
-import cn.devicelinks.framework.common.*;
+import cn.devicelinks.framework.common.LogAction;
+import cn.devicelinks.framework.common.LogObjectType;
+import cn.devicelinks.framework.common.PlatformType;
+import cn.devicelinks.framework.common.SessionStatus;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import cn.devicelinks.framework.common.pojos.SysLog;
@@ -30,7 +33,7 @@ import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
+import cn.devicelinks.framework.common.utils.ObjectIdUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -45,7 +48,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Objects;
@@ -108,7 +110,7 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
         loginAuthenticationToken.eraseCredentials();
         deviceLinksUserDetails.eraseCredentials();
 
-        String sessionId = UUIDUtils.generateNoDelimiter();
+        String sessionId = ObjectIdUtils.generateId();
         deviceLinksUserDetails.setSessionId(sessionId);
 
         this.tokenRepository.save(token, deviceLinksUserDetails);
@@ -137,13 +139,12 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
         this.userSessionService.insert(userSession);
         // save user login log
         SysLog userLoginLog = new SysLog()
-                .setId(UUIDUtils.generateNoDelimiter())
                 .setUserId(user.getId())
                 .setSessionId(userSession.getId())
                 .setAction(LogAction.Login)
                 .setObjectType(LogObjectType.User)
                 .setObjectId(user.getId())
-                .setSuccess(true)
+                .setSuccess(Boolean.TRUE)
                 .setMsg(LOGIN_SUCCESS_MSG)
                 .setAddition(new SysLogAddition()
                         .setIpAddress(ipAddress)
@@ -155,8 +156,7 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
                             put("account", user.getAccount());
                             put("identity", user.getIdentity());
                         }}
-                ))
-                .setCreateTime(LocalDateTime.now());
+                ));
         this.logService.insert(userLoginLog);
         // @formatter:on
     }

@@ -17,27 +17,38 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 通知推送方式
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum NotificationPushAway {
     /**
      * Web端
      */
-    Web,
+    Web("Web端"),
     /**
      * 邮件
      */
-    Email,
+    Email("邮件"),
     /**
      * 微信消息
      */
-    Weixin,
+    Weixin("微信消息"),
     /**
      * 短信通知
      */
-    Sms
+    Sms("短信通知");
+
+    private final String description;
+
+    NotificationPushAway(String description) {
+        this.description = description;
+    }
 }

@@ -18,21 +18,41 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
-import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
+import cn.devicelinks.framework.common.pojos.Telemetry;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.Condition;
+import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import org.springframework.jdbc.core.JdbcOperations;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceTelemetry.DEVICE_TELEMETRY;
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.tables.TTelemetry.TELEMETRY;
 
 /**
- * The {@link DeviceTelemetry} JDBC Repository
+ * The {@link Telemetry} JDBC Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @RegisterBean
-public class DeviceTelemetryJdbcRepository extends JdbcRepository<DeviceTelemetry, String> implements DeviceTelemetryRepository {
-	public DeviceTelemetryJdbcRepository(JdbcOperations jdbcOperations) {
-		super(DEVICE_TELEMETRY, jdbcOperations);
-	}
+public class DeviceTelemetryJdbcRepository extends JdbcRepository<Telemetry, String> implements TelemetryRepository {
+    public DeviceTelemetryJdbcRepository(JdbcOperations jdbcOperations) {
+        super(TELEMETRY, jdbcOperations);
+    }
+
+    @Override
+    public PageResult<Telemetry> getTelemetryByPage(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
+        // @formatter:off
+        Condition[] conditions = this.searchFieldConditionToConditionArray(searchFieldConditionList);
+        FusionCondition fusionCondition = FusionCondition
+                .withConditions(conditions)
+                .sort(sortCondition)
+                .build();
+        // @formatter:on
+        return this.page(fusionCondition, pageQuery);
+    }
 }

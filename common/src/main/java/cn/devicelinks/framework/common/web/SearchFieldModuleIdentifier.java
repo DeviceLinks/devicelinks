@@ -17,39 +17,55 @@
 
 package cn.devicelinks.framework.common.web;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 检索字段模块
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SearchFieldModuleIdentifier {
     /**
      * 用户
      */
-    User,
+    User("用户模块"),
     /**
      * 设备
      */
-    Device,
+    Device("设备模块"),
     /**
      * 日志
      */
-    Log,
+    Log("日志模块"),
     /**
      * 通知
      */
-    Notification,
+    Notification("通知模块"),
     /**
      * 功能模块
      */
-    FunctionModule,
+    FunctionModule("产品功能模块"),
     /**
      * 属性
      */
-    Attribute,
+    Attribute("属性模块"),
     /**
      * 产品
      */
-    Product
+    Product("产品模块"),
+    /**
+     * 遥测数据
+     */
+    Telemetry("遥测数据")
+    ;
+
+    private final String description;
+
+    SearchFieldModuleIdentifier(String description) {
+        this.description = description;
+    }
 }

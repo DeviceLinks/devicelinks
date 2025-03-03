@@ -17,27 +17,38 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 通知类型标识符
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum NotificationTypeIdentifier {
     /**
      * 告警
      */
-    Alarm,
+    Alarm("告警"),
     /**
      * 设备生命周期
      */
-    DeviceLifecycle,
+    DeviceLifecycle("设备生命周期"),
     /**
      * 实体动作
      */
-    DataEntityAction,
+    DataEntityAction("实体动作"),
     /**
      * 规则引擎故障
      */
-    RuleEngineFailure
+    RuleEngineFailure("规则引擎故障");
+    
+    private final String description;
+
+    NotificationTypeIdentifier(String description) {
+        this.description = description;
+    }
 }

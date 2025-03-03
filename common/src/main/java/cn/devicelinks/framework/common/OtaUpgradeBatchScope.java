@@ -17,31 +17,42 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级批次升级范围
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaUpgradeBatchScope {
     /**
      * 全部设备
      */
-    All,
+    All("全部设备"),
     /**
      * 定向升级
      */
-    Direction,
+    Direction("定向升级"),
     /**
      * 区域升级
      */
-    Area,
+    Area("区域升级"),
     /**
      * 灰度升级
      */
-    Grayscale,
+    Grayscale("灰度升级"),
     /**
      * 分组升级
      */
-    Group
+    Group("分组升级");
+
+    private final String description;
+
+    OtaUpgradeBatchScope(String description) {
+        this.description = description;
+    }
 }

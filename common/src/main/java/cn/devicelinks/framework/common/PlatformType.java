@@ -17,19 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 平台类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum PlatformType {
     /**
      * 电脑端
      */
-    Pc,
+    Pc("电脑端"),
     /**
      * App端
      */
-    App
+    App("App端");
+    
+    private final String description;
+
+    PlatformType(String description) {
+        this.description = description;
+    }
 }

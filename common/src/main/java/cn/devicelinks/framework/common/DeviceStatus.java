@@ -17,23 +17,34 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 设备状态
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum DeviceStatus {
     /**
      * 未激活，设备从未连接并上报数据
      */
-    NotActivate,
+    NotActivate("未激活"),
     /**
      * 已激活，在线
      */
-    Online,
+    Online("在线"),
     /**
      * 已激活，离线
      */
-    Offline,
+    Offline("离线");
+
+    private final String description;
+
+    DeviceStatus(String description) {
+        this.description = description;
+    }
 }

@@ -19,8 +19,10 @@ package cn.devicelinks.framework.jdbc.core;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
-import cn.devicelinks.framework.common.utils.ObjectClassUtils;
+import cn.devicelinks.framework.common.utils.*;
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.mapper.ResultRowMapper;
 import cn.devicelinks.framework.jdbc.core.page.DefaultPageResult;
@@ -39,9 +41,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.sql.Types;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -61,23 +63,61 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
     private static final int MAP_ENTITY_GENERIC_INDEX = 0;
     protected Table table;
     protected RepositoryOperations jdbcRepositoryOperations;
-    private final Class mapEntityClass;
-    private final SqlPrinter sqlPrinter = new ConsoleSqlPrinter(this.getClass());
+    private final EntityStructure structure;
 
     public JdbcRepository(Table table, JdbcOperations jdbcOperations) {
         this.table = table;
+        // Extract the entity type from the generic and create an EntityStructure object instance
         ResolvableType resolvableType = ResolvableType.forClass(this.getClass()).getSuperType();
-        this.mapEntityClass = resolvableType.getGeneric(MAP_ENTITY_GENERIC_INDEX).resolve();
-        this.jdbcRepositoryOperations = new JdbcRepositoryOperations(jdbcOperations, this.sqlPrinter);
+        Class<?> entityCLass = resolvableType.getGeneric(MAP_ENTITY_GENERIC_INDEX).resolve();
+        this.structure = new EntityStructure(table, entityCLass);
+        // Create an instance of the ConsoleSqlPrinter object
+        SqlPrinter sqlPrinter = new ConsoleSqlPrinter(this.getClass());
+        this.jdbcRepositoryOperations = new JdbcRepositoryOperations(jdbcOperations, sqlPrinter);
     }
 
     @Override
     public int insert(T object) {
         Assert.notNull(object, "目标新增对象不可以为null.");
-        List<Column> insertableColumns = this.table.getInsertableColumns();
-        Map<String, Object> methodValueMap = ObjectClassUtils.invokeObjectGetMethod(object);
+        List<Column> insertableColumns = this.structure.getInsertableColumns();
+
+        Map<String, Object> fieldValueMap = this.structure.getFieldValue(object);
+
+        // If the ID is not set, it is automatically generated based on the policy
+        Column pkColumn = this.structure.getPrimaryKey();
+        if (pkColumn == null) {
+            log.warn("对象：[{}]，中没有定义主键，无法自动生成主键值。", object.getClass().getName());
+        }
+        if (pkColumn != null && pkColumn.getIdGenerationStrategy() != null) {
+            // If no ID value is passed, it is automatically generated based on the policy
+            String primaryKeyFieldName = this.structure.getPrimaryKeyFieldName();
+            fieldValueMap.put(primaryKeyFieldName,
+                    Objects.requireNonNullElse(fieldValueMap.get(primaryKeyFieldName), generateId(pkColumn.getIdGenerationStrategy())));
+            // Set the ID to the object
+            this.structure.setFieldValue(primaryKeyFieldName, object, fieldValueMap.get(primaryKeyFieldName));
+        }
+
+        // Set default value for nullable columns
+        insertableColumns.forEach(column -> {
+            if (column.getDefaultValueSupplier() == null) {
+                return;
+            }
+            Field field = this.structure.getFieldByColumnName(column.getName());
+            String fieldName = field.getName();
+            // If no value is set, the default value is used
+            if (Objects.isNull(fieldValueMap.get(fieldName))) {
+                fieldValueMap.put(fieldName, column.getDefaultValueSupplier().get());
+            }
+            // If the field is boolean type, set default value as false
+            if (Types.BOOLEAN == column.getSqlType()) {
+                if (boolean.class.equals(field.getType()) && fieldValueMap.get(fieldName) == Boolean.FALSE) {
+                    fieldValueMap.put(fieldName, column.getDefaultValueSupplier().get());
+                }
+            }
+        });
+
         String insertSql = this.table.getInsertSql();
-        SqlParameterValue[] sqlParameterValues = SqlParameterValueUtils.getWithTableColumn(insertableColumns, methodValueMap);
+        SqlParameterValue[] sqlParameterValues = SqlParameterValueUtils.getWithTableColumn(insertableColumns, fieldValueMap);
         return this.jdbcRepositoryOperations.insert(insertSql, Arrays.asList(sqlParameterValues));
     }
 
@@ -87,7 +127,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         // @formatter:off
         ConditionSql conditionSql = ConditionSql
                 .delete(this.table)
-                .condition(this.table.getPk().eq(pk))
+                .condition(this.structure.getPrimaryKey().eq(pk))
                 .build();
         // @formatter:on
         return this.jdbcRepositoryOperations.delete(conditionSql.getSql(), conditionSql.getSqlParameterValues());
@@ -134,12 +174,13 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
     @Override
     public int update(T object) {
         Assert.notNull(object, "目标更新对象不可以为null.");
-        Column pkColumn = this.table.getPk();
-        Map<String, Object> methodValueMap = ObjectClassUtils.invokeObjectGetMethod(object);
-        Object pkValue = methodValueMap.get(ObjectClassUtils.getGetMethodName(pkColumn.getUpperCamelName()));
-        List<Column> updatableColumnList = this.table.getUpdatableColumns();
-        SqlParameterValue[] parameterValues = SqlParameterValueUtils.getWithTableColumn(updatableColumnList, methodValueMap);
-        updatableColumnList.add(this.table.getPk());
+        Column pkColumn = this.structure.getPrimaryKey();
+        Map<String, Object> fieldValueMap = this.structure.getFieldValue(object);
+        String primaryKeyName = this.structure.getPrimaryKeyFieldName();
+        Object pkValue = fieldValueMap.get(primaryKeyName);
+        List<Column> updatableColumnList = this.structure.getUpdatableColumns();
+        SqlParameterValue[] parameterValues = SqlParameterValueUtils.getWithTableColumn(updatableColumnList, fieldValueMap);
+        updatableColumnList.add(this.structure.getPrimaryKey());
         // @formatter:off
         ConditionSql conditionSql = ConditionSql
                 .update(this.table)
@@ -209,7 +250,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
     @Override
     public T selectOne(PK pk) {
         Assert.notNull(pk, "主键值不可以为null.");
-        return this.selectOne(this.table.getPk().eq(pk));
+        return this.selectOne(this.structure.getPrimaryKey().eq(pk));
     }
 
     @Override
@@ -394,7 +435,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
      * @return {@link ConditionSql}
      */
     private ConditionSql toConditionSql(FusionCondition condition) {
-        ConditionSql.SelectBuilder selectBuilder = ConditionSql.select(this.table).resultType(this.mapEntityClass);
+        ConditionSql.SelectBuilder selectBuilder = ConditionSql.select(this.table).structure(this.structure);
         if (!ObjectUtils.isEmpty(condition.getConditions())) {
             selectBuilder.conditions(conditions -> conditions.addAll(condition.getConditions()));
         }
@@ -428,5 +469,21 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
                     return Condition.withColumn(condition.getOperator(), searchColumn, condition.getValue());
                 })
                 .toArray(Condition[]::new);
+        // @formatter:on
+    }
+
+    /**
+     * Generate Primary Key Value
+     *
+     * @param strategy ID Generator strategy {@link IdGenerationStrategy}
+     * @return Primary Key Value
+     */
+    private String generateId(IdGenerationStrategy strategy) {
+        return switch (strategy) {
+            case UUID -> UUIDUtils.generateNoDelimiter();
+            case SNOWFLAKE -> SnowflakeIdUtils.generateId();
+            case OBJECT_ID -> ObjectIdUtils.generateId();
+            case AUTO_INCREMENT, NONE -> null;
+        };
     }
 }

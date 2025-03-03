@@ -18,12 +18,14 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.common.pojos.SysUser;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -50,13 +52,13 @@ public class TSysUser extends TableImpl {
     public final Column ACTIVATE_METHOD = Column.withName("activate_method").typeMapper(ColumnValueMappers.USER_ACTIVATE_METHOD).build();
     public final Column ACTIVATE_TOKEN = Column.withName("activate_token").build();
     public final Column DEPARTMENT_ID = Column.withName("department_id").build();
-    public final Column IDENTITY = Column.withName("identity").typeMapper(ColumnValueMappers.USER_IDENTITY).build();
+    public final Column IDENTITY = Column.withName("identity").typeMapper(ColumnValueMappers.USER_IDENTITY).defaultValue(() -> UserIdentity.User).build();
     public final Column LAST_LOGIN_TIME = Column.withName("last_login_time").localDateTimeValue().build();
     public final Column LAST_CHANGE_PWD_TIME = Column.withName("last_change_pwd_time").localDateTimeValue().build();
-    public final Column ENABLED = Column.withName("enabled").booleanValue().build();
-    public final Column DELETED = Column.withName("deleted").booleanValue().build();
+    public final Column ENABLED = Column.withName("enabled").booleanValue().defaultValue(() -> Boolean.TRUE).build();
+    public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();
-    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().build();
+    public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
     public final Column MARK = Column.withName("mark").build();
 
     @Override

@@ -17,27 +17,39 @@
 
 package cn.devicelinks.framework.common.web;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 检索字段前端组件类型定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SearchFieldComponentType {
     /**
      * 输入框
      */
-    INPUT,
+    INPUT("文本输入框"),
     /**
      * 下拉框
      */
-    SELECT,
+    SELECT("下拉框"),
     /**
      * 日期
      */
-    DATE,
+    DATE("日期"),
     /**
      * 日期时间
      */
-    DATE_TIME
+    DATE_TIME("日期时间"),
+    ;
+
+    private final String description;
+
+    SearchFieldComponentType(String description) {
+        this.description = description;
+    }
 }

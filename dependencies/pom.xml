@@ -33,14 +33,13 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minbox-framework.version>1.0.8</minbox-framework.version>
-        <spring-boot.version>3.4.2</spring-boot.version>
-        <spring-cloud.version>2023.0.3</spring-cloud.version>
-        <spring-framework.version>6.2.2</spring-framework.version>
-        <spring-security.version>6.4.2</spring-security.version>
+        <spring-boot.version>3.4.3</spring-boot.version>
+        <spring-framework.version>6.2.3</spring-framework.version>
+        <spring-security.version>6.4.3</spring-security.version>
         <guava.version>33.2.1-jre</guava.version>
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
         <ssh-agent.version>1.0.4</ssh-agent.version>
-        <netty.version>4.1.111.Final</netty.version>
+        <netty.version>4.1.118.Final</netty.version>
         <jackson.version>2.18.1</jackson.version>
         <jakarta.version>6.1.0</jakarta.version>
         <jakarta-validation-api.version>3.1.0</jakarta-validation-api.version>
@@ -109,14 +108,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <!--SpringCloud-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

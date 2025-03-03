@@ -25,6 +25,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cn.devicelinks.framework.common.Constants.ENUM_OBJECT_LABEL_FIELD;
+
 /**
  * 检索字段模板
  * <p>
@@ -36,10 +38,6 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class SearchField {
-    /**
-     * 值类型为枚举时用于获取枚举中定义的对应"label"的字段
-     */
-    private static final String ENUM_OBJECT_LABEL_FIELD = "description";
     private String field;
     private String fieldText;
     private SearchFieldValueType valueType;

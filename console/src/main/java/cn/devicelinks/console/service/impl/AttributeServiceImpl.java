@@ -1,18 +1,17 @@
 package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.model.attribute.AddAttributeRequest;
-import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.attribute.AttributeInfoRequest;
-import cn.devicelinks.console.model.attribute.UpdateAttributeRequest;
-import cn.devicelinks.console.model.converter.AttributeConverter;
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.AttributeService;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.converter.AttributeConverter;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.request.AddAttributeRequest;
+import cn.devicelinks.console.web.request.AttributeInfoRequest;
+import cn.devicelinks.console.web.request.UpdateAttributeRequest;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
@@ -22,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,12 +97,9 @@ public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, Att
         String currentUserId = UserDetailsContext.getUserId();
         Attribute attribute = AttributeConverter.INSTANCE.fromAttributeInfo(attributeInfo);
         attribute
-                .setId(UUIDUtils.generateNoDelimiter())
                 .setProductId(productId)
                 .setModuleId(moduleId)
-                .setEnabled(Boolean.TRUE)
-                .setCreateBy(currentUserId)
-                .setCreateTime(LocalDateTime.now());
+                .setCreateBy(currentUserId);
         return attribute;
     }
 

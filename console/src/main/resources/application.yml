@@ -1,6 +1,8 @@
 server:
   port: 13650
 spring:
+  main:
+    allow-circular-references: true
   profiles:
     active: develop
 

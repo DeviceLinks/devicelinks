@@ -17,23 +17,34 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 用户身份
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum UserIdentity {
     /**
      * 系统管理员
      */
-    SystemAdmin,
+    SystemAdmin("系统管理员"),
     /**
      * 租户管理员
      */
-    TenantAdmin,
+    TenantAdmin("租户管理员"),
     /**
      * 普通用户
      */
-    User
+    User("普通用户");
+    
+    private final String description;
+
+    UserIdentity(String description) {
+        this.description = description;
+    }
 }

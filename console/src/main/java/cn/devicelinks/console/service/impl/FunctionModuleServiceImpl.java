@@ -1,13 +1,12 @@
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.model.StatusCodeConstants;
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
 import cn.devicelinks.console.service.FunctionModuleService;
+import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -64,7 +63,6 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
         if (product == null) {
             throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, functionModule.getProductId());
         }
-        functionModule.setId(UUIDUtils.generateNoDelimiter());
         this.repository.insert(functionModule);
         return functionModule;
     }

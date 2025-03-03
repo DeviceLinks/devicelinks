@@ -21,10 +21,12 @@ import cn.devicelinks.framework.common.utils.ObjectClassUtils;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.core.annotation.Alias;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Nullable;
@@ -59,21 +61,29 @@ public class ResultRowMapper<T> implements RowMapper<T> {
         this.allRowValueMap = new ArrayList<>();
     }
 
+    public ResultRowMapper(EntityStructure structure) {
+        Assert.notNull(structure, "EntityStructure must not be null.");
+        this.mapEntityClass = (Class<T>) structure.getEntityClass();
+        this.columnMap = structure.getColumns().stream().collect(Collectors.toMap(Column::getName, v -> v));
+        this.allRowValueMap = new ArrayList<>();
+    }
+
     /**
      * 映射封装返回对象
      *
      * @param rs     {@link ResultSet}
      * @param rowNum 当前行的索引
-     * @return 映射封装后的对象，类型为{@link #mapEntityClass}
+     * @return 映射封装后的对象，类型为{@link EntityStructure#getEntityClass()}
      */
     @Override
     public T mapRow(@Nullable ResultSet rs, int rowNum) throws SQLException {
         try {
             // Instance Result Object
-            Object mapEntityObject = this.mapEntityClass.getConstructor().newInstance();
+            Class<?> mapEntityClass = this.mapEntityClass;
+            Object mapEntityObject = mapEntityClass.getConstructor().newInstance();
             Map<String, Object> rowValueMap = new HashMap<>();
             Map<String, Object> setMethodValueMap = new HashMap<>();
-            Field[] fields = ObjectClassUtils.getClassFields(this.mapEntityClass);
+            Field[] fields = ObjectClassUtils.getClassFields(mapEntityClass);
             Arrays.stream(fields)
                     .forEach(field -> {
                         String alias = field.isAnnotationPresent(Alias.class) ? field.getAnnotation(Alias.class).value() : null;

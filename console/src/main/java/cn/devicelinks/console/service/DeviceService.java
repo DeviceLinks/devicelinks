@@ -17,9 +17,11 @@
 
 package cn.devicelinks.console.service;
 
-import cn.devicelinks.console.model.page.PaginationQuery;
-import cn.devicelinks.console.model.search.SearchFieldQuery;
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
@@ -48,4 +50,38 @@ public interface DeviceService extends BaseService<Device, String> {
      * @return 设备列表 {@link Device}
      */
     List<Device> selectByProductId(String productId);
+
+    /**
+     * 添加一个新的设备
+     *
+     * @param device                 要添加的设备 {@link Device}
+     * @param authenticationMethod   认证方法 {@link DeviceAuthenticationMethod}
+     * @param authenticationAddition 认证附加信息 {@link DeviceAuthenticationAddition}
+     * @return 返回添加的设备 {@link Device}
+     */
+    Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
+
+    /**
+     * 更新设备信息
+     *
+     * @param device 待更新的设备信息 {@link Device}
+     * @return 更新后的设备信息 {@link Device}
+     */
+    Device updateDevice(Device device);
+
+    /**
+     * 删除设备信息
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return 已删除的设备信息 {@link Device}
+     */
+    Device deleteDevice(String deviceId);
+
+    /**
+     * 更新设备启用状态
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @param enabled  启用状态 {@link Device#isEnabled()}
+     */
+    void updateEnabled(String deviceId, boolean enabled);
 }

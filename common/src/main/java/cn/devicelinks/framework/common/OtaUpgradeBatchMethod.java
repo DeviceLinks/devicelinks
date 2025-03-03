@@ -17,19 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级批次升级方式
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaUpgradeBatchMethod {
     /**
      * 静态升级
      */
-    Static,
+    Static("静态升级"),
     /**
      * 动态升级
      */
-    Dynamic
+    Dynamic("动态升级");
+
+    private final String description;
+
+    OtaUpgradeBatchMethod(String description) {
+        this.description = description;
+    }
 }

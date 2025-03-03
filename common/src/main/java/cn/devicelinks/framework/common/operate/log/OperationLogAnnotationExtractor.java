@@ -20,7 +20,6 @@ package cn.devicelinks.framework.common.operate.log;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.Variables;
-import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.support.AopUtils;
@@ -30,11 +29,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * 操作日志注解提取器
@@ -59,8 +54,7 @@ public class OperationLogAnnotationExtractor {
     private String activateDataTemplate;
     private Object[] arguments;
     private Parameter[] parameters;
-    private Map<String, ObjectField> objectFieldMap;
-    private final Map<String, ObjectAdditionField> additionFieldMap = new HashMap<>();
+    private final List<AdditionalData> preAdditionDataList = new ArrayList<>();
 
     public OperationLogAnnotationExtractor(MethodInvocation invocation) {
         this.targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
@@ -77,21 +71,9 @@ public class OperationLogAnnotationExtractor {
             this.arguments = invocation.getArguments();
             this.parameters = this.specificMethod.getParameters();
 
-            if (!ObjectUtils.isEmpty(objectTemplate)) {
-                List<ObjectField> objectFields = ObjectField.getFields(this.objectType, this.action);
-                // @formatter:off
-                this.objectFieldMap = !ObjectUtils.isEmpty(objectFields) ?
-                        objectFields.stream().collect(Collectors.toMap(ObjectField::getField, v -> v)) :
-                        Maps.newHashMap();
-                // @formatter:on
-            }
-            ObjectAdditionField[] additionFields = operationLog.additionFields();
+            AdditionalData[] additionFields = operationLog.additional();
             if (!ObjectUtils.isEmpty(additionFields)) {
-                Arrays.stream(additionFields).forEach(additionField -> {
-                    ObjectField objectField = additionField.field();
-                    this.objectFieldMap.put(objectField.getField(), objectField);
-                    this.additionFieldMap.put(objectField.getField(), additionField);
-                });
+                this.preAdditionDataList.addAll(Arrays.asList(additionFields));
             }
         }
     }

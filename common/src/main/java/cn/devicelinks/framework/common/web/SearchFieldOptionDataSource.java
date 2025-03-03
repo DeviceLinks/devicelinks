@@ -17,19 +17,29 @@
 
 package cn.devicelinks.framework.common.web;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 检索字段选项数据源
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SearchFieldOptionDataSource {
     /**
      * 接口查询
      */
-    API,
+    API("接口查询"),
     /**
      * 静态数据
      */
-    STATIC
+    STATIC("静态数据");
+    private final String description;
+
+    SearchFieldOptionDataSource(String description) {
+        this.description = description;
+    }
 }

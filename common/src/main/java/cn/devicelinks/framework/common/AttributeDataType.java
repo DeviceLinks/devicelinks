@@ -17,9 +17,11 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 @Getter
+@ApiEnum
 public enum AttributeDataType {
     /**
      * 整型

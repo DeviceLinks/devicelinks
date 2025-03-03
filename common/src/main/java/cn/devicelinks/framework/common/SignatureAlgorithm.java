@@ -17,17 +17,28 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 签名算法枚举
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SignatureAlgorithm {
-    SHA1withRSA,
-    SHA1withDSA,
-    SHA256withRSA,
-    SHA256withDSA,
-    SHA512withDSA,
-    MD5withRSA;
+    SHA1withRSA("SHA1 with RSA"),
+    SHA1withDSA("SHA1 with DSA"),
+    SHA256withRSA("SHA256 with RSA"),
+    SHA256withDSA("SHA256 with DSA"),
+    SHA512withDSA("SHA512 with DSA"),
+    MD5withRSA("MD5 with RSA"),
+    ;
+    private final String description;
+
+    SignatureAlgorithm(String description) {
+        this.description = description;
+    }
 }

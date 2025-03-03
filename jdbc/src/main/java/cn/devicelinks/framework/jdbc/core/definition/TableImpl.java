@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.jdbc.core.definition;
 
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Arrays;
@@ -149,9 +150,13 @@ public abstract class TableImpl implements Table {
         // @formatter:off
         return this.getColumns().stream()
                 .filter(tableColumn -> {
-                    if(filterInsertable) {
+                    if (filterInsertable) {
+                        // Exclude primary key columns with auto increment strategy to avoid duplicate values in the insert statement.
+                        if (tableColumn.isPk() && IdGenerationStrategy.AUTO_INCREMENT == tableColumn.getIdGenerationStrategy()) {
+                            return false;
+                        }
                         return tableColumn.isInsertable();
-                    } else if(filterUpdatable) {
+                    } else if (filterUpdatable) {
                         return tableColumn.isUpdatable();
                     }
                     return true;
@@ -161,6 +166,7 @@ public abstract class TableImpl implements Table {
         // @formatter:on
     }
 
+    @Override
     public String getTableName() {
         return tableName;
     }

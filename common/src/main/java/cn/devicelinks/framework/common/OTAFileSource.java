@@ -17,19 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA文件来源
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OTAFileSource {
     /**
      * 二进制文件
      */
-    Binary,
+    Binary("二进制文件"),
     /**
      * 外部URL
      */
-    Url
+    Url("外部URL");
+
+    private final String description;
+
+    OTAFileSource(String description) {
+        this.description = description;
+    }
 }

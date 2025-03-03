@@ -17,13 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级包下载协议
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaPackageDownloadProtocol {
-    Http,
-    Mqtt
+    /**
+     * HTTP协议
+     */
+    Http("HTTP协议"),
+    /**
+     * MQTT协议
+     */
+    Mqtt("MQTT协议");
+    
+    private final String description;
+    
+    OtaPackageDownloadProtocol(String description) {
+        this.description = description;
+    }
 }

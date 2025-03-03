@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common.web;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
@@ -28,6 +29,7 @@ import lombok.Getter;
  */
 @Getter
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+@ApiEnum
 public enum SearchFieldOperator {
     /**
      * 等于
@@ -69,11 +71,11 @@ public enum SearchFieldOperator {
      * 不模糊匹配
      */
     NotLike("不模糊匹配", "NotLike");
-    private final String label;
+    private final String description;
     private final String value;
 
-    SearchFieldOperator(String label, String value) {
-        this.label = label;
+    SearchFieldOperator(String description, String value) {
+        this.description = description;
         this.value = value;
     }
 }

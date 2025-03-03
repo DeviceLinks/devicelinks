@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 /**
@@ -26,6 +27,7 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@ApiEnum
 public enum LogObjectType {
     User("用户"),
     Department("部门"),
@@ -33,6 +35,7 @@ public enum LogObjectType {
     Product("产品"),
     Ota("OTA"),
     FunctionModule("功能模块"),
+    GlobalSetting("系统参数"),
     Attribute("属性");
 
     private final String description;

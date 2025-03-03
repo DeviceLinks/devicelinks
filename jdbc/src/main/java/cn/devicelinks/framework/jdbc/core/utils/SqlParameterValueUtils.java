@@ -17,7 +17,8 @@
 
 package cn.devicelinks.framework.jdbc.core.utils;
 
-import cn.devicelinks.framework.common.utils.ObjectClassUtils;
+import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
@@ -28,7 +29,6 @@ import cn.devicelinks.framework.jdbc.core.sql.operator.SqlQueryOperator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.SqlParameterValue;
 
-import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -117,19 +117,23 @@ public class SqlParameterValueUtils {
     /**
      * 根据表列定义{@link Column}转换{@link SqlParameterValue}
      *
-     * @param columns            {@link Column} 对象列表
-     * @param getMethodResultMap 列对应字段{@link java.lang.reflect.Field}的对象Get方法值集合
+     * @param columns       {@link Column} 对象列表
+     * @param fieldValueMap 字段与值的关系集合
      * @return {@link SqlParameterValue} 对象列表
      */
-    public static SqlParameterValue[] getWithTableColumn(List<Column> columns, Map<String, Object> getMethodResultMap) {
+    public static SqlParameterValue[] getWithTableColumn(List<Column> columns, Map<String, Object> fieldValueMap) {
         // @formatter:off
         return columns.stream()
+                .filter(column -> {
+                    if (column.isPk() && IdGenerationStrategy.AUTO_INCREMENT == column.getIdGenerationStrategy()) {
+                        return false;
+                    }
+                    return true;
+                })
                 .map(tableColumn -> {
-                    String getMethodName = Types.BOOLEAN == tableColumn.getSqlType()
-                            ? ObjectClassUtils.getIsMethodName(tableColumn.getUpperCamelName())
-                            : ObjectClassUtils.getGetMethodName(tableColumn.getUpperCamelName());
-                    Object getMethodResult = getMethodResultMap.get(getMethodName);
-                    Object convertedValue = tableColumn.toColumnValue(getMethodResult);
+                    String fieldName = StringUtils.lowerUnderToLowerCamel(tableColumn.getName());
+                    Object fieldValue = fieldValueMap.get(fieldName);
+                    Object convertedValue = tableColumn.toColumnValue(fieldValue);
                     return new SqlParameterValue(tableColumn.getSqlType(), convertedValue);
                 })
                 .toArray(SqlParameterValue[]::new);

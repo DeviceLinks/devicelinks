@@ -65,7 +65,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper OTA_UPGRADE_STRATEGY_TYPE = new EnumColumnValueMapper(OtaUpgradeStrategyType.class);
     EnumColumnValueMapper OTA_UPGRADE_STRATEGY_RETRY_INTERVAL = new EnumColumnValueMapper(OtaUpgradeStrategyRetryInterval.class);
     EnumColumnValueMapper OTA_PACKAGE_DOWNLOAD_PROTOCOL = new EnumColumnValueMapper(OtaPackageDownloadProtocol.class);
-    EnumColumnValueMapper GLOBAL_SETTING_DATA_TYPE = new EnumColumnValueMapper(GlobalSettingDataType.class);
+    EnumColumnValueMapper SYS_SETTING_DATA_TYPE = new EnumColumnValueMapper(SysSettingDataType.class);
     EnumColumnValueMapper DEVICE_TYPE = new EnumColumnValueMapper(DeviceType.class);
     EnumColumnValueMapper NOTIFICATION_STATUS = new EnumColumnValueMapper(NotificationStatus.class);
     EnumColumnValueMapper NOTIFICATION_SEVERITY = new EnumColumnValueMapper(NotificationSeverity.class);
@@ -74,6 +74,12 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper NOTIFICATION_PUSH_AWAY = new EnumColumnValueMapper(NotificationPushAway.class);
     EnumColumnValueMapper ACCESS_GATEWAY_PROTOCOL = new EnumColumnValueMapper(AccessGatewayProtocol.class);
     EnumColumnValueMapper NOTIFICATION_TYPE_IDENTIFIER = new EnumColumnValueMapper(NotificationTypeIdentifier.class);
+    EnumColumnValueMapper DEVICE_DESIRED_OPERATION_TYPE = new EnumColumnValueMapper(DeviceDesiredOperationType.class);
+    EnumColumnValueMapper DEVICE_DESIRED_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceDesiredOperationSource.class);
+    EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_TYPE = new EnumColumnValueMapper(DeviceShadowHistoryOperationType.class);
+    EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceShadowHistoryOperationSource.class);
+    EnumColumnValueMapper DEVICE_SHADOW_STATUS = new EnumColumnValueMapper(DeviceShadowStatus.class);
+    EnumColumnValueMapper TELEMETRY_METRIC_TYPE = new EnumColumnValueMapper(TelemetryMetricType.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);
@@ -86,6 +92,10 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper OTA_FILE_ADDITION = new JSONObjectValueMapper(OtaFileAddition.class);
     JSONObjectValueMapper OTA_UPGRADE_BATCH_ADDITION = new JSONObjectValueMapper(OtaUpgradeBatchAddition.class);
     JSONObjectValueMapper SYS_LOG_ADDITION = new JSONObjectValueMapper(SysLogAddition.class);
+    JSONObjectValueMapper TELEMETRY_ADDITION = new JSONObjectValueMapper(TelemetryAddition.class);
+    JSONObjectValueMapper DEVICE_SHADOW_STATE_ADDITION = new JSONObjectValueMapper(DeviceShadowStateAddition.class);
+    JSONObjectValueMapper DEVICE_SHADOW_DATA_ADDITION = new JSONObjectValueMapper(DeviceShadowDataAddition.class);
+
 
 
     // ------------------------------------Customize Mappers---------------------------------------//
@@ -100,6 +110,19 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
         public Map<String, Object> fromColumn(ResultSet rs, String columnName) throws SQLException {
             String columnValue = rs.getString(columnName);
             return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.jsonToMap(columnValue, String.class, Object.class) : null;
+        }
+    };
+
+    ColumnValueMapper<Object,String> JSON_OBJECT = new ColumnValueMapper<>() {
+        @Override
+        public String toColumn(Object originalValue, String columnName) {
+            return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.objectToJson(originalValue) : null;
+        }
+
+        @Override
+        public Object fromColumn(ResultSet rs, String columnName) throws SQLException {
+            String columnValue = rs.getString(columnName);
+            return !ObjectUtils.isEmpty(columnValue) ? JacksonUtils.jsonToObject(columnValue, Object.class) : null;
         }
     };
 

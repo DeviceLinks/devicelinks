@@ -18,6 +18,7 @@
 package cn.devicelinks.framework.jdbc.core.definition;
 
 import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.mapper.value.BasicColumnValueMapper;
 import cn.devicelinks.framework.jdbc.core.mapper.value.ColumnValueMapper;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
@@ -35,6 +36,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * 数据库表中单个列定义
@@ -61,6 +64,14 @@ public class Column {
 
     @Getter(AccessLevel.PRIVATE)
     private ColumnValueMapper columnValueMapper;
+    /**
+     * The PrivateKey generation strategy for the column value
+     */
+    private IdGenerationStrategy idGenerationStrategy;
+    /**
+     * Get the default value, only used for insert data
+     */
+    private Supplier<Object> defaultValueSupplier;
 
     /**
      * Create {@link ColumnBuilder} Instance
@@ -272,6 +283,8 @@ public class Column {
         private boolean updatable;
         private int sqlType;
         private ColumnValueMapper columnValueMapper;
+        private IdGenerationStrategy idGenerationStrategy;
+        private Supplier<Object> defaultValueSupplier;
 
         public ColumnBuilder(String name) {
             Assert.hasText(name, "The Column name must not be empty.");
@@ -284,6 +297,13 @@ public class Column {
 
         public ColumnBuilder primaryKey() {
             this.primaryKey = true;
+            this.idGenerationStrategy = IdGenerationStrategy.OBJECT_ID;
+            return this;
+        }
+
+        public ColumnBuilder primaryKey(IdGenerationStrategy idGenerationStrategy) {
+            this.primaryKey = true;
+            this.idGenerationStrategy = Objects.requireNonNullElse(idGenerationStrategy, IdGenerationStrategy.OBJECT_ID);
             return this;
         }
 
@@ -325,6 +345,12 @@ public class Column {
             return this;
         }
 
+        public ColumnBuilder longValue() {
+            this.sqlType = Types.BIGINT;
+            this.columnValueMapper = BasicColumnValueMapper.LONG;
+            return this;
+        }
+
         public ColumnBuilder localDateValue() {
             this.sqlType = Types.DATE;
             this.columnValueMapper = BasicColumnValueMapper.LOCAL_DATE;
@@ -343,8 +369,19 @@ public class Column {
             return this;
         }
 
+        public ColumnBuilder timestamp() {
+            this.sqlType = Types.TIMESTAMP;
+            this.columnValueMapper = BasicColumnValueMapper.TIMESTAMP;
+            return this;
+        }
+
+        public ColumnBuilder defaultValue(Supplier<Object> defaultValueSupplier) {
+            this.defaultValueSupplier = defaultValueSupplier;
+            return this;
+        }
+
         public Column build() {
-            return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper);
+            return new Column(name, primaryKey, insertable, updatable, sqlType, columnValueMapper, idGenerationStrategy, defaultValueSupplier);
         }
     }
 }

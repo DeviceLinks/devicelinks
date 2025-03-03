@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
 import lombok.Getter;
 
 /**
@@ -28,14 +29,16 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
+@ApiEnum
 public enum DataFormat {
-    Json("JSON数据格式"),
+    Json("JSON"),
     Bytes("字节"),
-    Hex("十六进制数据格式");
+    Hex("十六进制");
 
     private final String description;
 
     DataFormat(String description) {
         this.description = description;
     }
+
 }

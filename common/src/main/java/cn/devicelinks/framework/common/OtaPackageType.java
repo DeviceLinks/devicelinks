@@ -17,19 +17,30 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * OTA升级包类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum OtaPackageType {
     /**
      * 固件
      */
-    Firmware,
+    Firmware("固件"),
     /**
      * 软件
      */
-    Software
+    Software("软件");
+
+    private final String description;
+
+    OtaPackageType(String description) {
+        this.description = description;
+    }
 }

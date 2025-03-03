@@ -17,11 +17,10 @@
 
 package cn.devicelinks.console.service.impl;
 
-import cn.devicelinks.console.model.StatusCodeConstants;
 import cn.devicelinks.console.service.SysDepartmentService;
+import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
@@ -54,7 +53,6 @@ public class SysDepartmentServiceImpl extends BaseServiceImpl<SysDepartment, Str
         if (storedDepartment != null) {
             throw new ApiException(StatusCodeConstants.DEPARTMENT_ALREADY_EXISTS);
         }
-        department.setId(UUIDUtils.generateNoDelimiter());
         this.repository.insert(department);
         return department;
     }

@@ -17,23 +17,34 @@
 
 package cn.devicelinks.framework.common;
 
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
+
 /**
  * 会话状态
  *
  * @author 恒宇少年
  * @since 1.0
  */
+@Getter
+@ApiEnum
 public enum SessionStatus {
     /**
      * 正常
      */
-    Normal,
+    Normal("正常"),
     /**
      * 已登出
      */
-    LoggedOut,
+    LoggedOut("已登出"),
     /**
      * 被踢除
      */
-    Kickoff
+    Kickoff("被踢除");
+    
+    private final String description;
+
+    SessionStatus(String description) {
+        this.description = description;
+    }
 }

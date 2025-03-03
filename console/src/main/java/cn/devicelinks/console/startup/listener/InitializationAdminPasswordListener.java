@@ -22,7 +22,7 @@ import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.startup.AbstractStartupEventListener;
 import cn.devicelinks.framework.common.startup.ServerStartupEvent;
-import cn.devicelinks.framework.common.utils.IDGenerator;
+import cn.devicelinks.framework.common.utils.ObjectIdUtils;
 import cn.devicelinks.framework.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,7 +56,7 @@ public class InitializationAdminPasswordListener extends AbstractStartupEventLis
         SysUser adminUser = this.userService.selectByAccount(SYS_ADMIN_ACCOUNT);
         if (adminUser == null) {
             // generator default random password
-            String originalPassword = IDGenerator.next();
+            String originalPassword = ObjectIdUtils.generateId();
             // @formatter:off
             adminUser = new SysUser()
                     .setId(UUIDUtils.generateNoDelimiter())

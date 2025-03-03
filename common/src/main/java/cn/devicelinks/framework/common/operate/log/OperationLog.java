@@ -21,9 +21,7 @@ import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
-import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysLog;
-import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.pojos.SysUser;
 
 import java.lang.annotation.*;
@@ -33,7 +31,7 @@ import java.lang.annotation.*;
  * <p>
  * 操作日志支持通过SpEL表达式来解析数据，可以直接配置代码来协助解析
  * 为了方便使用操作日志，其中内置了一些变量，如下所示：
- * - "#px"：参数对象，索引从0开始；如想要使用第一个参数时为"#p0"，以此类推。
+ * - "#p"：参数对象，索引从0开始；如想要使用第一个参数时为"#p0"，以此类推。
  * - "#before": 前置数据；在目标方法之前执行，支持SpEL表达式。依据{@link #object()}以及{@link LogAction#isHaveBeforeData()}
  * - "#after": 后置数据；在目标方法之后执行，支持SpEL表达式。依据{@link #object()}以及{@link LogAction#isHaveAfterData()}
  * - "#result": 目标方法返回值；目标方法执行成功之后会将方法的返回值作为整个对象设置到变量集合中，可以直接通过"{#result.xxx}"来获取，支持多层级获取
@@ -83,21 +81,25 @@ public @interface OperationLog {
     String objectId();
 
     /**
-     * 配置用于获取“对象详细信息”的表达式
+     * 获取操作目标对象
+     * <p>
      * 支持SpEL表达式
+     * 仅适用于{@link LogAction#Update}、{@link LogAction#Delete}两种动作
      * <p>
-     * 获取到非空值后会根据{@link LogObjectType}以及{@link LogAction}提取到本次操作的{@link ObjectField}对象字段列表，
-     * 将对象字段列表与对象详细信息实例进行匹配，将匹配到的字段值以JSON字符串的形式存储到{@link SysLogAddition#getObjectFields()}数据列中
+     * 对于{@link LogAction#Update}会在目标方法执行之前获取操作目标对象，并将获取到的数据存入{@link ExpressionVariables}变量集合中，
+     * 变量名为："#before"。目标方法执行完成后并且是执行成功状态"#executionSucceed=true"，则再次执行一次获取操作目标对象
+     * 将目标对象存入{@link ExpressionVariables}变量集合中，变量名为："#after"。
      * <p>
-     * 在操作目标方法之前将获取到非空值存入{@link ExpressionVariables}变量集合中，变量名为"before"，可以通过"{#before.xxx}"进行调用，如："{#before.account}"、"{#before.getLastName()}"
-     * 在操作目标方法之后将获取到非空值存入{@link ExpressionVariables}变量集合中，变量名为"after"，可以通过"{#before.xxx}"进行调用，如："{#after.account}"、"{#after.getLastName()}"
+     * 对于{@link LogAction#Delete}仅会在目标方法执行之前执行一次获取操作目标对象
+     * 将目标对象存入{@link ExpressionVariables}变量集合中，变量名为："#before"
      *
      * @return 获取操作目标对象详情的SpEL表达式，一般解析后返回对象实例，如{@link SysUser}
      */
     String object() default Constants.EMPTY_STRING;
 
     /**
-     * 操作描述
+     * 日志内容
+     * <p>
      * 支持SpEL表达式
      * <p>
      * 无论目标方法执行成功还是失败都会解析，可以通过"{#executionSucceed}"来判断是否执行成功
@@ -107,18 +109,16 @@ public @interface OperationLog {
     String msg() default Constants.EMPTY_STRING;
 
     /**
-     * 附加字段列表
+     * 附加数据
      * <p>
-     * 配置操作对象详情中不存在的额外附加字段列表
+     * 支持SpEL表达式
      * <p>
-     * 如：想记录用户的部门名称，而{@link SysUser}对象中并不存在”部门名称“{@link SysDepartment#getName()}字段，只有”部门ID“{@link SysUser#getDepartmentId()} ()}字段
-     * 这时我们就可以通过配置附加字段来提取到”部门名称“的值并存储到{@link SysLogAddition#getObjectFields()}进行记录存在
-     * <p>
-     * 附加字段都在{@link ObjectField}中与标准字段一并定义
+     * 将每个{@link AdditionalData}加载到的数据根据顺序依次存入{@link ExpressionVariables}变量集合中，
+     * 可通过"{#pre{index}}"的方式调用，以便于操作日志的判断以及格式化数据内容，变量名依次为（索引从0开始）：#pre0、#pre1、...
      *
-     * @return {@link ObjectAdditionField}
+     * @return {@link AdditionalData}
      */
-    ObjectAdditionField[] additionFields() default {};
+    AdditionalData[] additional() default {};
 
     /**
      * 当前操作的活动数据

@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common.operate.log;
 
+import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionEvaluationContext;
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.operate.log.expression.OperationLogCachedExpressionEvaluator;
@@ -34,6 +35,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,8 +62,15 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
      * 定义操作对象在目标方法执行之后的值在{@link ExpressionVariables}变量集合内的Key
      */
     private static final String AFTER_VARIABLE_KEY = "after";
+    /**
+     * 定义附加字段前置加载值在{@link ExpressionVariables}变量集合内的Key
+     */
+    private static final String ADDITIONAL_DATA_VALUE_VARIABLE_KEY = "addition_%s";
+
     private final OperationLogStorage operationLogStorage;
+
     private final SecurityUserDetailsProvider userDetailsProvider;
+
     private BeanFactoryResolver beanFactoryResolver;
 
     public OperationLogAnnotationMethodInterceptor(OperationLogStorage operationLogStorage, SecurityUserDetailsProvider userDetailsProvider) {
@@ -91,14 +100,16 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 variables.addVariables(parameterValues);
             }
             evaluationContext = new ExpressionEvaluationContext(variables, beanFactoryResolver);
+            // Load all additional data at target method invoke before
+            this.loadAdditionalData(evaluator, evaluationContext, extractor.getPreAdditionDataList(), AdditionalDataLoadTime.OperationBefore);
             try {
                 // get object before value
-                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveBeforeData()) {
+                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) &&
+                        (LogAction.Update == extractor.getAction() || LogAction.Delete == extractor.getAction())) {
                     targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetBeforeObject != null) {
                         evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
-                    }
-                    if (targetBeforeObject == null && extractor.getAction().isHaveBeforeData()) {
+                    } else {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -112,13 +123,14 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 evaluationContext.addVariable(RESULT_VARIABLE_KEY, result);
             }
             try {
+                // Load all additional data at target method invoke after
+                this.loadAdditionalData(evaluator, evaluationContext, extractor.getPreAdditionDataList(), AdditionalDataLoadTime.OperationAfter);
                 // get object after value
-                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && extractor.getAction().isHaveAfterData()) {
+                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && LogAction.Update == extractor.getAction()) {
                     targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
                     if (targetAfterObject != null) {
                         evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
-                    }
-                    if (targetAfterObject == null && extractor.getAction().isHaveAfterData()) {
+                    } else {
                         log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
                     }
                 }
@@ -165,6 +177,39 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 log.error("[操作日志], 内容解析或存储操作日志时遇到异常.", e);
             }
         }
+    }
+
+    private void loadAdditionalData(OperationLogCachedExpressionEvaluator evaluator,
+                                    ExpressionEvaluationContext evaluationContext,
+                                    List<AdditionalData> additionalDataList,
+                                    AdditionalDataLoadTime loadTime) {
+        if (ObjectUtils.isEmpty(additionalDataList)) {
+            return;
+        }
+        additionalDataList.forEach(additionalData -> {
+            try {
+                if (loadTime != additionalData.loadTime() && AdditionalDataLoadTime.All != additionalData.loadTime()) {
+                    return;
+                }
+                if (!ObjectUtils.isEmpty(additionalData.condition())) {
+                    Boolean condition = evaluator.parseExpression(evaluationContext, Boolean.class, additionalData.condition());
+                    if (!condition) {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+                if (!ObjectUtils.isEmpty(additionalData.data())) {
+                    String variableKey = String.format(ADDITIONAL_DATA_VALUE_VARIABLE_KEY, additionalData.key());
+                    Object data = evaluator.parseExpression(evaluationContext, Object.class, additionalData.data());
+                    if (data != null) {
+                        evaluationContext.addVariable(variableKey, data);
+                    }
+                }
+            } catch (Exception e) {
+                log.error("[操作日志], 附加字段前置加载值解析时遇到异常.", e);
+            }
+        });
     }
 
     @Override
