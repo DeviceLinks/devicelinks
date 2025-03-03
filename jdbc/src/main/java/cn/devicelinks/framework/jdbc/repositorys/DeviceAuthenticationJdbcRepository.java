@@ -41,6 +41,11 @@ public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceAut
     }
 
     @Override
+    public DeviceAuthentication selectByDeviceId(String deviceId) {
+        return this.selectOne(DEVICE_AUTHENTICATION.DEVICE_ID.eq(deviceId), DEVICE_AUTHENTICATION.DELETED.eq(Boolean.FALSE));
+    }
+
+    @Override
     public DeviceAuthentication selectByAccessToken(String accessToken) {
         if (ObjectUtils.isEmpty(accessToken)) {
             throw new IllegalArgumentException("accessToken can't be null");

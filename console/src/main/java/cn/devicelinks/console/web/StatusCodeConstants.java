@@ -75,4 +75,5 @@ public interface StatusCodeConstants {
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");
     StatusCode INVALID_DEVICE_CREDENTIAL = StatusCode.build("INVALID_DEVICE_CREDENTIAL", "无效的一机一密凭证");
     StatusCode DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS = StatusCode.build("DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS", "设备Key已经存在.");
+    StatusCode DEVICE_AUTHENTICATION_NOT_EXISTS = StatusCode.build("DEVICE_AUTHENTICATION_NOT_EXISTS","设备：%s，认证信息不存在.");
 }

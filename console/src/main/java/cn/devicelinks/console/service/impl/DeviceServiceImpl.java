@@ -23,8 +23,10 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.*;
-import cn.devicelinks.framework.common.utils.X509Utils;
+import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
+import cn.devicelinks.framework.common.pojos.Product;
+import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -33,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,63 +76,21 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
     @Override
     public Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
+        // check request data
         this.checkData(device, false);
-
-        // validate authentication data
-        this.validateAuthentication(authenticationMethod, authenticationAddition);
 
         // Save device data
         this.repository.insert(device);
 
         // Save authentication data
-        this.deviceAuthenticationService.saveAuthentication(device, authenticationMethod, authenticationAddition);
+        this.deviceAuthenticationService.addAuthentication(device.getId(), authenticationMethod, authenticationAddition);
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());
         return device;
     }
 
-    private void validateAuthentication(DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
-        switch (authenticationMethod) {
-            case AccessToken:
-                if (ObjectUtils.isEmpty(authenticationAddition.getAccessToken())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_ACCESS_TOKEN, authenticationAddition.getAccessToken());
-                }
-                DeviceAuthentication accessTokenAuthentication = this.deviceAuthenticationService.selectByAccessToken(authenticationAddition.getAccessToken());
-                if (accessTokenAuthentication != null) {
-                    throw new ApiException(StatusCodeConstants.DEVICE_ACCESS_TOKEN_ALREADY_EXISTS, authenticationAddition.getAccessToken());
-                }
-                break;
-            case MqttBasic:
-                // Validate MQTT Basic authentication
-                DeviceAuthenticationAddition.MqttBasic mqttBasic = authenticationAddition.getMqttBasic();
-                if (mqttBasic == null || ObjectUtils.isEmpty(mqttBasic.getUsername()) || ObjectUtils.isEmpty(mqttBasic.getPassword())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_MQTT_BASIC_AUTH, mqttBasic);
-                }
-                DeviceAuthentication mqttBasicAuthentication = this.deviceAuthenticationService.selectByClientId(mqttBasic.getClientId());
-                if (mqttBasicAuthentication != null) {
-                    throw new ApiException(StatusCodeConstants.DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS, mqttBasic.getClientId());
-                }
-                break;
-            case DeviceCredential:
-                DeviceAuthenticationAddition.DeviceCredential deviceCredential = authenticationAddition.getDeviceCredential();
-                if (deviceCredential == null || ObjectUtils.isEmpty(deviceCredential.getDeviceKey()) || ObjectUtils.isEmpty(deviceCredential.getDeviceSecret())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_CREDENTIAL, deviceCredential);
-                }
-                DeviceAuthentication deviceCredentialAuthentication = this.deviceAuthenticationService.selectByDeviceKey(deviceCredential.getDeviceKey());
-                if (deviceCredentialAuthentication != null) {
-                    throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS, deviceCredential);
-                }
-                break;
-            case X509:
-                if (ObjectUtils.isEmpty(authenticationAddition.getX509Pem()) || !X509Utils.isValidX509Pem(authenticationAddition.getX509Pem())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_X509_PEM, authenticationAddition.getX509Pem());
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported authentication method");
-        }
-    }
+
 
     @Override
     public Device updateDevice(Device device) {

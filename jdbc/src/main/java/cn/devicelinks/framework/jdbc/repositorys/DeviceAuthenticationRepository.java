@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceAuthentication;
 import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
 import cn.devicelinks.framework.jdbc.core.Repository;
@@ -28,6 +29,14 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @since 1.0
  */
 public interface DeviceAuthenticationRepository extends Repository<DeviceAuthentication, String> {
+    /**
+     * 通过设备ID查询设备鉴权信息
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return {@link DeviceAuthentication}
+     */
+    DeviceAuthentication selectByDeviceId(String deviceId);
+
     /**
      * 通过AccessToken查询鉴权信息
      *
@@ -47,7 +56,7 @@ public interface DeviceAuthenticationRepository extends Repository<DeviceAuthent
     /**
      * 通过deviceKey查询鉴权信息
      *
-     * @param deviceKey    设备Key {@link DeviceAuthenticationAddition.DeviceCredential#getDeviceKey()}
+     * @param deviceKey 设备Key {@link DeviceAuthenticationAddition.DeviceCredential#getDeviceKey()}
      * @return 鉴权信息 {@link DeviceAuthentication}
      */
     DeviceAuthentication selectByDeviceKey(String deviceKey);
