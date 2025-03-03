@@ -22,19 +22,17 @@ export async function postApiProduct(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: string;
-    message: string;
-    data: API.Product;
-    additional: Record<string, any>;
-  }>('/api/product', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    '/api/product',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 查询产品详情 GET /api/product/${param0} */
@@ -79,20 +77,18 @@ export async function postApiProductProductId(
   options?: { [key: string]: any },
 ) {
   const { productId: param0, ...queryParams } = params;
-  return request<{
-    code: boolean;
-    message: string;
-    data: API.Product;
-    additional: Record<string, any>;
-  }>(`/api/product/${param0}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: boolean; message: string; data: any; additional: Record<string, any> }>(
+    `/api/product/${param0}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: { ...queryParams },
+      data: body,
+      ...(options || {}),
     },
-    params: { ...queryParams },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 删除产品 DELETE /api/product/${param0} */
@@ -102,16 +98,14 @@ export async function deleteApiProductProductId(
   options?: { [key: string]: any },
 ) {
   const { productId: param0, ...queryParams } = params;
-  return request<{
-    code: boolean;
-    message: string;
-    data: API.Product;
-    additional: Record<string, any>;
-  }>(`/api/product/${param0}`, {
-    method: 'DELETE',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
+  return request<{ code: boolean; message: string; data: any; additional: Record<string, any> }>(
+    `/api/product/${param0}`,
+    {
+      method: 'DELETE',
+      params: { ...queryParams },
+      ...(options || {}),
+    },
+  );
 }
 
 /** 发布产品 POST /api/product/${param0}/publish */
@@ -121,16 +115,14 @@ export async function postApiProductProductIdPublish(
   options?: { [key: string]: any },
 ) {
   const { productId: param0, ...queryParams } = params;
-  return request<{
-    code: boolean;
-    message: string;
-    data: API.Product;
-    additional: Record<string, any>;
-  }>(`/api/product/${param0}/publish`, {
-    method: 'POST',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
+  return request<{ code: boolean; message: string; data: any; additional: Record<string, any> }>(
+    `/api/product/${param0}/publish`,
+    {
+      method: 'POST',
+      params: { ...queryParams },
+      ...(options || {}),
+    },
+  );
 }
 
 /** 重新生成KeySecret POST /api/product/${param0}/regenerate/key-secret */
@@ -143,7 +135,7 @@ export async function postApiProductProductIdRegenerateKeySecret(
   return request<{
     code: boolean;
     message: string;
-    data: { productId: string; productName: string; productKey: string; productSecret: string };
+    data: { productId?: string; productName?: string; productKey?: string; productSecret?: string };
     additional: Record<string, any>;
   }>(`/api/product/${param0}/regenerate/key-secret`, {
     method: 'POST',
@@ -163,11 +155,11 @@ export async function postApiProductFilter(
     code: string;
     message: string;
     data: {
-      page: number;
-      pageSize: number;
-      totalPages: number;
-      totalRows: number;
-      result: API.Product[];
+      page?: number;
+      pageSize?: number;
+      totalPages?: number;
+      totalRows?: number;
+      result?: API.Product[];
     };
     additional: Record<string, any>;
   }>('/api/product/filter', {

@@ -22,19 +22,17 @@ export async function postApiUser(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    code: string;
-    message: string;
-    data: API.User;
-    additional: Record<string, any>;
-  }>('/api/user', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    '/api/user',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 更新用户 POST /api/user/${param0} */
@@ -56,20 +54,18 @@ export async function postApiUserUserId(
   options?: { [key: string]: any },
 ) {
   const { userId: param0, ...queryParams } = params;
-  return request<{
-    code: string;
-    message: string;
-    data: API.User;
-    additional: Record<string, any>;
-  }>(`/api/user/${param0}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    `/api/user/${param0}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: { ...queryParams },
+      data: body,
+      ...(options || {}),
     },
-    params: { ...queryParams },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 删除用户 DELETE /api/user/${param0} */
@@ -79,16 +75,14 @@ export async function deleteApiUserUserId(
   options?: { [key: string]: any },
 ) {
   const { userId: param0, ...queryParams } = params;
-  return request<{
-    code: string;
-    message: string;
-    data: API.User;
-    additional: Record<string, any>;
-  }>(`/api/user/${param0}`, {
-    method: 'DELETE',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    `/api/user/${param0}`,
+    {
+      method: 'DELETE',
+      params: { ...queryParams },
+      ...(options || {}),
+    },
+  );
 }
 
 /** 查询用户列表 POST /api/user/filter */
@@ -101,7 +95,7 @@ export async function postApiUserFilter(
     /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
     searchMatch: string;
     /** 检索字段列表 */
-    searchFields?: { field: string; operator: string; value: (string | number)[] }[];
+    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
   },
   options?: { [key: string]: any },
 ) {
@@ -109,11 +103,11 @@ export async function postApiUserFilter(
     code: string;
     message: string;
     data: {
-      page: number;
-      pageSize: number;
-      totalPages: number;
-      totalRows: number;
-      result: API.User[];
+      page?: number;
+      pageSize?: number;
+      totalPages?: number;
+      totalRows?: number;
+      result?: API.User[];
     };
     additional: Record<string, any>;
   }>('/api/user/filter', {
@@ -131,15 +125,13 @@ export async function postApiUserFilter(
 
 /** 获取登录人信息 GET /api/user/me */
 export async function getApiUserMe(options?: { [key: string]: any }) {
-  return request<{
-    code: string;
-    message: string;
-    data: API.CurrentUser;
-    additional: Record<string, any>;
-  }>('/api/user/me', {
-    method: 'GET',
-    ...(options || {}),
-  });
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    '/api/user/me',
+    {
+      method: 'GET',
+      ...(options || {}),
+    },
+  );
 }
 
 /** 启用 / 禁用 POST /api/user/status/${param0} */

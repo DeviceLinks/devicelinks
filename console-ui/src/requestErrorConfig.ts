@@ -127,6 +127,7 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response) => {
+      console.log(response, 'response');
       // 拦截响应数据，进行个性化处理
       return response;
     },

@@ -11,14 +11,17 @@ export async function postApiOpenApiFunctionModule(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseResult>('/api/function/module', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    '/api/function/module',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
     },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 查询功能模块详情 GET /api/function/module/${param0} */
@@ -28,16 +31,14 @@ export async function getApiOpenApiFunctionModuleModuleId(
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
-  return request<{
-    code: string;
-    message: string;
-    data: API.FunctionModule;
-    additional: Record<string, any>;
-  }>(`/api/function/module/${param0}`, {
-    method: 'GET',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    `/api/function/module/${param0}`,
+    {
+      method: 'GET',
+      params: { ...queryParams },
+      ...(options || {}),
+    },
+  );
 }
 
 /** 更新功能模块 POST /api/function/module/${param0} */
@@ -51,15 +52,18 @@ export async function postApiOpenApiFunctionModuleModuleId(
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/function/module/${param0}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
+    `/api/function/module/${param0}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: { ...queryParams },
+      data: body,
+      ...(options || {}),
     },
-    params: { ...queryParams },
-    data: body,
-    ...(options || {}),
-  });
+  );
 }
 
 /** 删除功能模块 DELETE /api/function/module/${param0} */
@@ -87,11 +91,11 @@ export async function postApiOpenApiFunctionModuleFilter(
     code: string;
     message: string;
     data: {
-      page: number;
-      pageSize: number;
-      totalPages: number;
-      totalRows: number;
-      result: API.FunctionModule[];
+      page?: number;
+      pageSize?: number;
+      totalPages?: number;
+      totalRows?: number;
+      result?: API.FunctionModule[];
     };
     additional: Record<string, any>;
   }>('/api/function/module/filter', {
