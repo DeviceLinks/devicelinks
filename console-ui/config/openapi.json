@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "devicelinks",
     "description": "",
@@ -145,7 +145,10 @@
                       "description": "消息"
                     },
                     "data": {
-                      "type": "object",
+                      "type": [
+                        "object",
+                        "null"
+                      ],
                       "properties": {
                         "page": {
                           "type": "integer",
@@ -178,8 +181,7 @@
                         "totalPages",
                         "totalRows",
                         "result"
-                      ],
-                      "nullable": true
+                      ]
                     },
                     "additional": {
                       "type": "object",
@@ -1377,7 +1379,10 @@
                       "description": "消息"
                     },
                     "data": {
-                      "type": "object",
+                      "type": [
+                        "object",
+                        "null"
+                      ],
                       "properties": {
                         "page": {
                           "type": "integer",
@@ -1410,8 +1415,7 @@
                         "totalPages",
                         "totalRows",
                         "result"
-                      ],
-                      "nullable": true
+                      ]
                     },
                     "additional": {
                       "type": "object",
@@ -1746,7 +1750,10 @@
                       "description": "消息"
                     },
                     "data": {
-                      "type": "object",
+                      "type": [
+                        "object",
+                        "null"
+                      ],
                       "properties": {
                         "page": {
                           "type": "integer",
@@ -1779,8 +1786,7 @@
                         "totalPages",
                         "totalRows",
                         "result"
-                      ],
-                      "nullable": true
+                      ]
                     },
                     "additional": {
                       "type": "object",
@@ -2678,7 +2684,10 @@
                       "description": "消息"
                     },
                     "data": {
-                      "type": "object",
+                      "type": [
+                        "object",
+                        "null"
+                      ],
                       "properties": {
                         "page": {
                           "type": "integer",
@@ -2711,8 +2720,7 @@
                         "totalPages",
                         "totalRows",
                         "result"
-                      ],
-                      "nullable": true
+                      ]
                     },
                     "additional": {
                       "type": "object",
@@ -6305,7 +6313,10 @@
                       "description": "消息"
                     },
                     "data": {
-                      "type": "object",
+                      "type": [
+                        "object",
+                        "null"
+                      ],
                       "properties": {
                         "page": {
                           "type": "integer",
@@ -6338,8 +6349,7 @@
                         "totalPages",
                         "totalRows",
                         "result"
-                      ],
-                      "nullable": true
+                      ]
                     },
                     "additional": {
                       "type": "object",
@@ -7449,142 +7459,255 @@
   "components": {
     "schemas": {
       "Enum": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "label": {
-              "type": "string",
-              "description": "枚举描述"
-            },
-            "value": {
-              "type": "string",
-              "description": "枚举值"
-            }
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "枚举描述"
           },
-          "required": [
-            "label",
-            "value"
-          ]
+          "value": {
+            "type": "string",
+            "description": "枚举值"
+          }
         },
-        "description": "枚举"
+        "required": [
+          "label",
+          "value"
+        ]
       },
       "AttributeDataType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "NotificationSeverity": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "LogObjectType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "PlatformType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "UserActivateMethod": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "DeviceAuthenticationMethod": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "GlobalSettingDataType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SessionStatus": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "EntityAction": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "LogAction": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "NotificationTypeIdentifier": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SignAlgorithm": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "UserIdentity": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "NotificationStatus": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaUpgradeBatchType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "DeviceType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaPackageDownloadProtocol": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "DeviceNetworkingAway": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "AlarmType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "NotificationSeverity1": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaUpgradeStrategyRetryInterval": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaPackageType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaUpgradeBatchMethod": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "NotificationMatchUserAway": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaUpgradeBatchScope": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SignatureAlgorithm": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OTAFileSource": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "ProductStatus": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "DataFormat": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "NotificationPushAway": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaUpgradeBatchState": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "AccessGatewayProtocol": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "OtaUpgradeProgressState": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchFieldOperator": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchFieldComponentType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchFieldValueType": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchFieldOptionDataSource": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchFieldModuleIdentifier": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchFieldMatch": {
-        "$ref": "#/components/schemas/Enum"
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Enum"
+        }
       },
       "SearchField": {
         "type": "object",
@@ -7748,19 +7871,25 @@
             "description": "是否删除"
           },
           "createBy": {
-            "type": "string",
-            "description": "创建人ID",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "创建人ID"
           },
           "createTime": {
-            "type": "string",
-            "description": "创建时间",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "创建时间"
           },
           "description": {
-            "type": "string",
-            "description": "描述",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "描述"
           },
           "childAttributes": {
             "type": "array",
@@ -7861,10 +7990,12 @@
             "const": "DeviceNetworkingAway"
           },
           "accessGatewayProtocol": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "接入网关协议",
-            "const": "AccessGatewayProtocol",
-            "nullable": true
+            "const": "AccessGatewayProtocol"
           },
           "dataFormat": {
             "type": "string",
@@ -7890,9 +8021,11 @@
             "description": "是否删除"
           },
           "description": {
-            "type": "string",
-            "description": "描述",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "描述"
           },
           "createBy": {
             "type": "string",
@@ -7934,7 +8067,16 @@
             "description": "消息"
           },
           "data": {
-            "type": "string"
+            "type": [
+              "string",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "number",
+              "null"
+            ],
+            "description": "响应数据"
           },
           "additional": {
             "type": "object",
@@ -7979,9 +8121,11 @@
             "description": "操作对象ID"
           },
           "msg": {
-            "type": "string",
-            "description": "日志内容",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "日志内容"
           },
           "success": {
             "type": "boolean",
@@ -7991,19 +8135,25 @@
             "type": "object",
             "properties": {
               "ipAddress": {
-                "type": "string",
-                "description": "操作IP地址",
-                "nullable": true
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "操作IP地址"
               },
               "browser": {
-                "type": "string",
-                "description": "操作浏览器",
-                "nullable": true
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "操作浏览器"
               },
               "os": {
-                "type": "string",
-                "description": "操作系统",
-                "nullable": true
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "操作系统"
               },
               "location": {
                 "type": "string",
@@ -8031,14 +8181,18 @@
                       "description": "字段名称"
                     },
                     "beforeValue": {
-                      "type": "string",
-                      "description": "操作之前的值",
-                      "nullable": true
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "操作之前的值"
                     },
                     "afterValue": {
-                      "type": "string",
-                      "description": "操作之后的值",
-                      "nullable": true
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "操作之后的值"
                     },
                     "different": {
                       "type": "boolean",
@@ -8405,7 +8559,7 @@
         ],
         "title": "设备凭证模型"
       },
-      "Department": {
+      "User": {
         "type": "object",
         "properties": {
           "id": {
@@ -8414,57 +8568,125 @@
           },
           "name": {
             "type": "string",
-            "description": "部门名称"
+            "description": "名称"
           },
-          "identifier": {
+          "account": {
             "type": "string",
-            "description": "标识符"
+            "description": "账号"
           },
-          "pid": {
+          "email": {
             "type": "string",
-            "description": "上级ID",
-            "nullable": true
+            "description": "邮箱地址"
           },
-          "sort": {
-            "type": "integer",
-            "description": "排序"
+          "phone": {
+            "type": "string",
+            "description": "手机号"
           },
-          "level": {
-            "type": "integer",
-            "description": "等级"
+          "pwd": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "密码"
+          },
+          "activateMethod": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接",
+            "const": "UserActivateMethod"
+          },
+          "activateToken": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "记录令牌"
+          },
+          "departmentId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "所属部门ID"
+          },
+          "identity": {
+            "type": "string",
+            "description": "身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员",
+            "const": "UserIdentity"
+          },
+          "lastLoginTime": {
+            "type": [
+              "string",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "number",
+              "null"
+            ],
+            "description": "最后登录时间"
+          },
+          "lastChangePwdTime": {
+            "type": [
+              "string",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "number",
+              "null"
+            ],
+            "description": "最后修改密码时间"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "是否启用"
           },
           "deleted": {
             "type": "boolean",
             "description": "是否删除"
           },
           "createBy": {
-            "type": "string",
-            "description": "创建人ID",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "创建人"
           },
           "createTime": {
             "type": "string",
             "description": "创建时间"
           },
-          "description": {
-            "type": "string",
-            "description": "描述",
-            "nullable": true
+          "mark": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "备注"
           }
         },
         "required": [
           "id",
           "name",
-          "identifier",
-          "pid",
-          "sort",
-          "level",
+          "account",
+          "email",
+          "phone",
+          "activateMethod",
+          "activateToken",
+          "departmentId",
+          "identity",
+          "lastLoginTime",
+          "lastChangePwdTime",
+          "enabled",
           "deleted",
           "createBy",
           "createTime",
-          "description"
+          "mark"
         ],
-        "title": "部门模型"
+        "description": "用户信息",
+        "title": "用户模型"
       },
       "LoginResult": {
         "type": "object",
@@ -8510,7 +8732,15 @@
           "result": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": [
+                "string",
+                "integer",
+                "boolean",
+                "array",
+                "object",
+                "number",
+                "null"
+              ]
             },
             "description": "分页数据列表"
           }
@@ -8524,7 +8754,7 @@
         ],
         "title": "分页数据模型"
       },
-      "User": {
+      "Department": {
         "type": "object",
         "properties": {
           "id": {
@@ -8533,95 +8763,63 @@
           },
           "name": {
             "type": "string",
-            "description": "名称"
+            "description": "部门名称"
           },
-          "account": {
+          "identifier": {
             "type": "string",
-            "description": "账号"
+            "description": "标识符"
           },
-          "email": {
-            "type": "string",
-            "description": "邮箱地址"
+          "pid": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "上级ID"
           },
-          "phone": {
-            "type": "string",
-            "description": "手机号"
+          "sort": {
+            "type": "integer",
+            "description": "排序"
           },
-          "pwd": {
-            "type": "string",
-            "description": "密码",
-            "nullable": true
-          },
-          "activateMethod": {
-            "type": "string",
-            "description": "激活方式，SendUrlToEmail：向邮箱发送激活链接；ShowUrl：显示激活链接",
-            "const": "UserActivateMethod",
-            "nullable": true
-          },
-          "activateToken": {
-            "type": "string",
-            "description": "记录令牌",
-            "nullable": true
-          },
-          "departmentId": {
-            "type": "string",
-            "description": "所属部门ID",
-            "nullable": true
-          },
-          "identity": {
-            "type": "string",
-            "description": "身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员",
-            "const": "UserIdentity"
-          },
-          "lastLoginTime": {
-            "type": "string"
-          },
-          "lastChangePwdTime": {
-            "type": "string"
-          },
-          "enabled": {
-            "type": "boolean",
-            "description": "是否启用"
+          "level": {
+            "type": "integer",
+            "description": "等级"
           },
           "deleted": {
             "type": "boolean",
             "description": "是否删除"
           },
           "createBy": {
-            "type": "string",
-            "description": "创建人",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "创建人ID"
           },
           "createTime": {
             "type": "string",
             "description": "创建时间"
           },
-          "mark": {
-            "type": "string",
-            "description": "备注",
-            "nullable": true
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "描述"
           }
         },
         "required": [
           "id",
           "name",
-          "account",
-          "email",
-          "phone",
-          "activateMethod",
-          "activateToken",
-          "departmentId",
-          "identity",
-          "lastLoginTime",
-          "lastChangePwdTime",
-          "enabled",
+          "identifier",
+          "pid",
+          "sort",
+          "level",
           "deleted",
           "createBy",
           "createTime",
-          "mark"
+          "description"
         ],
-        "description": "用户信息",
-        "title": "用户模型"
+        "title": "部门模型"
       }
     },
     "securitySchemes": {
