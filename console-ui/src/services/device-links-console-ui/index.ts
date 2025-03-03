@@ -11,6 +11,7 @@ import * as department from './department';
 import * as common from './common';
 import * as attribute from './attribute';
 import * as log from './log';
+import * as telemetry from './telemetry';
 export default {
   functionModule,
   login,
@@ -21,4 +22,5 @@ export default {
   common,
   attribute,
   log,
+  telemetry,
 };

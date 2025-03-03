@@ -341,9 +341,9 @@ export async function postApiAttributeFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiAttributeFilterParams,
   body: {
-    /** 检索字段模块，User/Device/Log/Notification */
+    /** 检索字段模块 */
     searchFieldModule: string;
-    /** 检索字段之间的匹配方式，ALL：所有；ANY：任意 */
+    /** 检索字段之间的匹配方式 */
     searchMatch: string;
     /** 检索字段列表 */
     searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];

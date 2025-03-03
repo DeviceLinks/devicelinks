@@ -11,12 +11,12 @@ export async function getApiCommonSearchField(
   return request<{
     field: string;
     fieldText: string;
-    valueType: string;
+    valueType: API.SearchFieldValueType;
     componentType: string;
     optionDataSource: string;
     optionApiDataCode: any;
     optionStaticData: { label?: string; value?: string }[];
-    operators: { label?: string; value?: string }[];
+    operators: { description?: string; value?: string }[];
   }>('/api/common/search/field', {
     method: 'GET',
     params: {
