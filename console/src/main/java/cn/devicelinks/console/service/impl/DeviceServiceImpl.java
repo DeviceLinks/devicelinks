@@ -34,7 +34,6 @@ import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -76,7 +75,6 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
-    @Transactional
     public Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
         // check request data
         this.checkData(device, false);
