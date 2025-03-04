@@ -28,7 +28,7 @@ export default [
     icon: 'laptop',
     routes: [
       { path: '/device', redirect: '/device/product' },
-      { path: '/device/product', name: '产品', component: './device/product/list' },
+      { path: '/device/product/list', name: '产品', component: './device/product/list' },
     ],
   },
   {
@@ -37,7 +37,7 @@ export default [
     icon: 'setting',
     routes: [
       { path: '/system', redirect: '/system/user' },
-      { path: '/system/user', name: '用户', component: './system/user/list' },
+      { path: '/system/user/list', name: '用户', component: './system/user/list' },
     ],
   },
   { path: '/', redirect: '/home' },
