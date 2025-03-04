@@ -34,7 +34,7 @@ let server: {
   close: () => void;
 };
 
-describe('Login Page', () => {
+describe('login Page', () => {
   beforeAll(async () => {
     server = await startMock({
       port: 8000,

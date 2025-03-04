@@ -19,16 +19,16 @@ export default [
   {
     path: '/user',
     layout: false,
-    routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
+    routes: [{ name: '登录', path: '/user/login', component: './user/login' }],
   },
-  { path: '/home', name: '首页', icon: 'home', component: './Home' },
+  { path: '/home', name: '首页', icon: 'home', component: './home' },
   {
     path: '/device',
     name: '设备管理',
     icon: 'laptop',
     routes: [
       { path: '/device', redirect: '/device/product' },
-      { path: '/device/product', name: '产品', component: './Device/Product' },
+      { path: '/device/product', name: '产品', component: './device/product/list' },
     ],
   },
   {
@@ -36,8 +36,8 @@ export default [
     name: '系统管理',
     icon: 'setting',
     routes: [
-      { path: '/system', redirect: '/system/userInfo' },
-      { path: '/system/userInfo', name: '用户', component: './System/UserInfo' },
+      { path: '/system', redirect: '/system/user' },
+      { path: '/system/user', name: '用户', component: './system/user/list' },
     ],
   },
   { path: '/', redirect: '/home' },

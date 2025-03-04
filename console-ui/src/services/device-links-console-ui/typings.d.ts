@@ -248,7 +248,7 @@ declare namespace API {
   };
 
   type getApiCommonSearchFieldParams = {
-    /** 功能模块，取值：Device、User、Log、Notification、FunctionModule、Attribute、Product、Telemetry */
+    /** 功能模块，取值：device、user、Log、Notification、FunctionModule、Attribute、product、Telemetry */
     module?: string;
   };
 
@@ -645,7 +645,7 @@ declare namespace API {
     activateToken: string;
     /** 所属部门ID */
     departmentId: string;
-    /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
+    /** 身份，user：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: string;
     lastLoginTime: string;
     lastChangePwdTime: string;
