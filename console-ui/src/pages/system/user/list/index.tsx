@@ -6,7 +6,7 @@ import {
 import { ActionType, PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
 import { Button, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
-import Add from '@/pages/system/user/components/add';
+import Add from '@/pages/system/user/modules/add';
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);

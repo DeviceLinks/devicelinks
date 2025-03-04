@@ -14607,7 +14607,7 @@ snapshots:
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.10)
       axios: 0.27.2
       babel-plugin-import: 1.13.8
-      babel-plugin-styled-components: 2.1.4(@babel/core@7.4.5)(styled-components@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      babel-plugin-styled-components: 2.1.4(@babel/core@7.4.5)(styled-modules@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       dayjs: 1.11.10
       dva-core: 2.0.4(redux@4.2.1)
       dva-immer: 1.0.1(dva@2.5.0-beta.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -14652,7 +14652,7 @@ snapshots:
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.10)
       axios: 0.27.2
       babel-plugin-import: 1.13.8
-      babel-plugin-styled-components: 2.1.4(@babel/core@7.4.5)(styled-components@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      babel-plugin-styled-components: 2.1.4(@babel/core@7.4.5)(styled-modules@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       dayjs: 1.11.10
       dva-core: 2.0.4(redux@4.2.1)
       dva-immer: 1.0.1(dva@2.5.0-beta.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -14697,7 +14697,7 @@ snapshots:
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.10)
       axios: 0.27.2
       babel-plugin-import: 1.13.8
-      babel-plugin-styled-components: 2.1.4(@babel/core@7.4.5)(styled-components@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      babel-plugin-styled-components: 2.1.4(@babel/core@7.4.5)(styled-modules@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       dayjs: 1.11.10
       dva-core: 2.0.4(redux@4.2.1)
       dva-immer: 1.0.1(dva@2.5.0-beta.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0))

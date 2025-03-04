@@ -48,7 +48,7 @@ or (更推荐)
 │   │         ├── profile
 │   │         │   └──index.tsx    # 详情业务
 │   │         └── styles          # 样式
-│   │         └── components      # 业务通用组件
+│   │         └── modules         # 业务通用模块（组件）
 |   |             └── add.tsx     # 添加业务组件
 │   ├── services                  # 后台接口服务
 │   ├── utils                     # 工具库
