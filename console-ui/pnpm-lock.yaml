@@ -3213,7 +3213,7 @@ packages:
     resolution: {integrity: sha512-mZV3ycvtB4mfVhmScbU4CjMfBgoQAlsGu/vQw292juPSgvezTmBAke+V85ODAVNCM68r2Qa6dwu72Zcl4cTIbw==}
 
   babel-plugin-styled-components@2.1.4:
-    resolution: {integrity: sha512-Xgp9g+A/cG47sUyRwwYxGM4bR/jDRg5N6it/8+HxCnbT5XNKSKDT9xm4oag/osgqjC2It/vH0yXsomOG6k558g==}
+    resolution: {integrity: sha512-Xgp9g+A/cG47sUyRwwYxGM4bR/jDRg5N6it/8+HxCnbT5XNKSKDT9xm4oag/osgqjC2It/vH0yXsomOG6k558g==, tarball: https://registry.npmjs.org/babel-plugin-styled-components/-/babel-plugin-styled-components-2.1.4.tgz}
     peerDependencies:
       styled-components: '>= 2'
 

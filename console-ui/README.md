@@ -25,3 +25,39 @@ or (更推荐)
 ```bash 
   npm run openapi
 ```
+## 目录结构
+
+```
+├── config
+│   ├── config.ts                 # 全部配置
+│   ├── defaultSettings.ts        # 默认配置
+│   ├── openapi.json              # OpenAPI 配置
+│   ├── proxy.json                # 代理配置
+│   └── routes.ts                 # 路由配置
+├── public
+│   ├── icons                     # 图标目录
+│   ├── scripts                   # 脚本目录
+│   ├── favicon.ico               # 图标
+│   └── logo.svg                  # logo
+├── src
+│   ├── components                # 业务通用组件
+│   ├── pages                     # 业务页面入口和常用模板
+│   │    └── example              # 业务页面模板
+│   │         ├── list
+│   │         │   └──index.tsx    # 列表业务
+│   │         ├── profile
+│   │         │   └──index.tsx    # 详情业务
+│   │         └── styles          # 样式
+│   │         └── components      # 业务通用组件
+|   |             └── add.tsx     # 添加业务组件
+│   ├── services                  # 后台接口服务
+│   ├── utils                     # 工具库
+│   ├── access.ts                 # 权限配置
+│   ├── global.less               # 全局样式
+│   └── global.ts                 # 全局js
+├── tsconfig.json
+|
+└── package.json
+```
+
+
