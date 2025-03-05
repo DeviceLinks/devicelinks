@@ -1,12 +1,14 @@
+import { FilterButtonBox } from '@/components/FilterButtonBox';
+import Add from '@/pages/system/user/modules/add';
 import {
   deleteApiUserUserId,
   postApiUserFilter,
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
+import { SearchOutlined } from '@ant-design/icons';
 import { ActionType, PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
-import { Button, message, Modal } from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
-import Add from '@/pages/system/user/modules/add';
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -109,10 +111,19 @@ const UserInfo: React.FC = () => {
       extra={<Add refresh={() => tableRef.current?.reload()} />}
     >
       <ProCard direction="column" ghost gutter={[0, 16]}>
+        <Form layout={'inline'} style={{ marginBottom: 15 }} variant={'filled'}>
+          <Form.Item>
+            <Input prefix={<SearchOutlined />} placeholder="搜索" />
+          </Form.Item>
+          <Form.Item>
+            <FilterButtonBox></FilterButtonBox>
+          </Form.Item>
+        </Form>
         <ProTable
           actionRef={tableRef}
           loading={loading}
           columns={TABLE_COLUMNS}
+          search={false}
           request={async (params: { pageSize: number; current: number }) => {
             setLoading(true);
             const result: any = await postApiUserFilter(
