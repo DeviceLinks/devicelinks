@@ -80,6 +80,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceShadowHistoryOperationSource.class);
     EnumColumnValueMapper DEVICE_SHADOW_STATUS = new EnumColumnValueMapper(DeviceShadowStatus.class);
     EnumColumnValueMapper TELEMETRY_METRIC_TYPE = new EnumColumnValueMapper(TelemetryMetricType.class);
+    EnumColumnValueMapper DESIRED_ATTRIBUTE_STATUS = new EnumColumnValueMapper(DesiredAttributeStatus.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);
