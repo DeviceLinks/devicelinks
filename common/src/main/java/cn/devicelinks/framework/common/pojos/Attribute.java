@@ -44,6 +44,7 @@ public class Attribute implements Serializable {
     private String identifier;
     private AttributeDataType dataType;
     private AttributeAddition addition;
+    private boolean writable;
     private boolean enabled;
     private boolean deleted;
     private String createBy;

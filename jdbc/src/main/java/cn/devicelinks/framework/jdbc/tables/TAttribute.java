@@ -50,6 +50,7 @@ public class TAttribute extends TableImpl {
     public final Column IDENTIFIER = Column.withName("identifier").build();
     public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.ATTRIBUTE_DATA_TYPE).build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.ATTRIBUTE_ADDITION).build();
+    public final Column WRITABLE = Column.withName("writable").booleanValue().defaultValue(() -> Boolean.TRUE).build();
     public final Column ENABLED = Column.withName("enabled").booleanValue().defaultValue(() -> Boolean.TRUE).build();
     public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();
@@ -58,6 +59,6 @@ public class TAttribute extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, PRODUCT_ID, MODULE_ID, PID, NAME, IDENTIFIER, DATA_TYPE, ADDITION, ENABLED, DELETED, CREATE_BY, CREATE_TIME, DESCRIPTION);
+        return List.of(ID, PRODUCT_ID, MODULE_ID, PID, NAME, IDENTIFIER, DATA_TYPE, ADDITION, WRITABLE, ENABLED, DELETED, CREATE_BY, CREATE_TIME, DESCRIPTION);
     }
 }
