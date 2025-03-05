@@ -52,6 +52,10 @@ public interface Constants {
      */
     String ENUM_OBJECT_LABEL_FIELD = "description";
     /**
+     * 枚举值在前端的显示样式
+     */
+    String ENUM_SHOW_STYLE_FIELD = "showStyle";
+    /**
      * 日期/时间格式：yyyy-MM-dd
      */
     String DATE_TIME_FORMAT_YYYY_MM_DD = "yyyy-MM-dd";

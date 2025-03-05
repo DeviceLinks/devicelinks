@@ -1,5 +1,6 @@
 package cn.devicelinks.console.utils;
 
+import cn.devicelinks.framework.common.EnumShowStyle;
 import cn.devicelinks.framework.common.annotation.ApiEnum;
 import cn.devicelinks.framework.common.utils.EnumUtils;
 import lombok.Data;
@@ -9,8 +10,10 @@ import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.devicelinks.framework.common.Constants.ENUM_OBJECT_LABEL_FIELD;
+import static cn.devicelinks.framework.common.Constants.ENUM_SHOW_STYLE_FIELD;
 
 /**
  * 接口枚举扫描器
@@ -35,15 +38,38 @@ public class ApiEnumScanner {
                     .map(enumConstant -> {
                         ApiEnumObject apiEnumObject = new ApiEnumObject()
                                 .setLabel(enumConstant.toString())
+                                .setShowStyle(EnumShowStyle.Default)
                                 .setValue(enumConstant.name());
+
+                        // All fields in enum
+                        Map<String, Field> enumFields = Arrays
+                                .stream(enumConstant.getClass().getDeclaredFields())
+                                .collect(Collectors.toMap(Field::getName, v -> v));
+
+                        // Set label
                         try {
-                            Field field = enumConstant.getClass().getDeclaredField(ENUM_OBJECT_LABEL_FIELD);
-                            field.setAccessible(true);
-                            String description = (String) field.get(enumConstant);
-                            apiEnumObject.setLabel(!ObjectUtils.isEmpty(description) ? description : enumConstant.toString());
+                            if (enumFields.containsKey(ENUM_OBJECT_LABEL_FIELD)) {
+                                Field field = enumFields.get(ENUM_OBJECT_LABEL_FIELD);
+                                field.setAccessible(true);
+                                String label = (String) field.get(enumConstant);
+                                apiEnumObject.setLabel(!ObjectUtils.isEmpty(label) ? label : enumConstant.toString());
+                            }
                         } catch (Exception e) {
-                            log.error("Failed to get description for enum constant {} in class {}", enumConstant, enumClass, e);
+                            log.error("Failed to get label for enum constant {} in class {}", enumConstant, enumClass, e);
                         }
+
+                        // Set showStyle
+                        try {
+                            if(enumFields.containsKey(ENUM_SHOW_STYLE_FIELD)) {
+                                Field field = enumConstant.getClass().getDeclaredField(ENUM_SHOW_STYLE_FIELD);
+                                field.setAccessible(true);
+                                EnumShowStyle showStyle = (EnumShowStyle) field.get(enumConstant);
+                                apiEnumObject.setShowStyle(!ObjectUtils.isEmpty(showStyle) ? showStyle : EnumShowStyle.Default);
+                            }
+                        } catch (Exception e) {
+                            log.error("Failed to get showStyle for enum constant {} in class {}", enumConstant, enumClass, e);
+                        }
+
                         return apiEnumObject;
                     }).toList();
             // @formatter:on
@@ -61,5 +87,6 @@ public class ApiEnumScanner {
     public static class ApiEnumObject {
         private String label;
         private String value;
+        private EnumShowStyle showStyle;
     }
 }

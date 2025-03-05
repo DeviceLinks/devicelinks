@@ -32,19 +32,21 @@ public enum DeviceStatus {
     /**
      * 未激活，设备从未连接并上报数据
      */
-    NotActivate("未激活"),
+    NotActivate("未激活", EnumShowStyle.Warning),
     /**
      * 已激活，在线
      */
-    Online("在线"),
+    Online("在线", EnumShowStyle.Success),
     /**
      * 已激活，离线
      */
-    Offline("离线");
+    Offline("离线", EnumShowStyle.Default);
 
     private final String description;
+    private final EnumShowStyle showStyle;
 
-    DeviceStatus(String description) {
+    DeviceStatus(String description, EnumShowStyle showStyle) {
         this.description = description;
+        this.showStyle = showStyle;
     }
 }
