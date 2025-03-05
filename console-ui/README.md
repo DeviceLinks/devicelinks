@@ -9,7 +9,7 @@
 or (更推荐)
 
 ```bash
-  pnpm
+  pnpm install
 ```
 
 ## 运行
