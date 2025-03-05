@@ -373,3 +373,17 @@ export async function postApiAttributeFilter(
     ...(options || {}),
   });
 }
+
+/** 查询设备上报属性 GET /api/device/${param0}/attribute/reported */
+export async function getApiDeviceDeviceIdAttributeReported(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getApiDeviceDeviceIdAttributeReportedParams,
+  options?: { [key: string]: any },
+) {
+  const { deviceId: param0, ...queryParams } = params;
+  return request<API.ResponseResult>(`/api/device/${param0}/attribute/reported`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}

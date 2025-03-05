@@ -219,6 +219,8 @@ declare namespace API {
     label: string;
     /** 枚举值 */
     value: string;
+    /** 回显样式 */
+    showStyle: string;
   };
 
   type FunctionModule = {
@@ -248,13 +250,18 @@ declare namespace API {
   };
 
   type getApiCommonSearchFieldParams = {
-    /** 功能模块，取值：device、user、Log、Notification、FunctionModule、Attribute、product、Telemetry */
+    /** 功能模块，取值：Device、User、Log、Notification、FunctionModule、Attribute、Product、Telemetry */
     module?: string;
   };
 
   type getApiDepartmentDepartmentIdParams = {
     /** 部门ID */
     departmentId: string;
+  };
+
+  type getApiDeviceDeviceIdAttributeReportedParams = {
+    /** 设备ID */
+    deviceId: string;
   };
 
   type getApiDeviceDeviceIdAuthorizationParams = {
@@ -571,6 +578,8 @@ declare namespace API {
 
   type ProductStatus = EnumItem[];
 
+  type ProductStatus2 = EnumItem[];
+
   type ResponseResult = {
     /** 状态码 */
     code: string;
@@ -645,7 +654,7 @@ declare namespace API {
     activateToken: string;
     /** 所属部门ID */
     departmentId: string;
-    /** 身份，user：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
+    /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: string;
     lastLoginTime: string;
     lastChangePwdTime: string;
