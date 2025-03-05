@@ -98,7 +98,6 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper DEVICE_SHADOW_DATA_ADDITION = new JSONObjectValueMapper(DeviceShadowDataAddition.class);
 
 
-
     // ------------------------------------Customize Mappers---------------------------------------//
 
     ColumnValueMapper<Map<String, Object>, String> JSON_MAP = new ColumnValueMapper<>() {
@@ -114,7 +113,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
         }
     };
 
-    ColumnValueMapper<Object,String> JSON_OBJECT = new ColumnValueMapper<>() {
+    ColumnValueMapper<Object, String> JSON_OBJECT = new ColumnValueMapper<>() {
         @Override
         public String toColumn(Object originalValue, String columnName) {
             return !ObjectUtils.isEmpty(originalValue) ? JacksonUtils.objectToJson(originalValue) : null;

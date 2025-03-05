@@ -39,6 +39,7 @@ public enum SearchFieldVariable {
     USER_EMAIL("email", "邮箱地址"),
     USER_ACTIVATE_METHOD("activateMethod", "激活方式"),
 
+    DEVICE_ID("deviceId", "设备ID"),
     DEVICE_CODE("deviceCode", "设备号"),
     DEVICE_NAME("name", "设备名称"),
     DEVICE_TYPE("deviceType", "设备类型"),
@@ -59,6 +60,7 @@ public enum SearchFieldVariable {
     FUNCTION_MODULE_NAME("name", "模块名称"),
     FUNCTION_MODULE_IDENTIFIER("identifier", "模块标识符"),
 
+    ATTRIBUTE_ID("attributeId", "属性ID"),
     ATTRIBUTE_NAME("name", "属性名称"),
     ATTRIBUTE_PARENT_ID("pid", "属性上级ID"),
     ATTRIBUTE_DATA_TYPE("dataType", "数据类型"),
@@ -74,10 +76,15 @@ public enum SearchFieldVariable {
     PRODUCT_DYNAMIC_REGISTRATION("dynamicRegistration", "是否动态注册"),
     PRODUCT_STATUS("status", "状态"),
 
-    DEVICE_ID("deviceId", "设备ID"),
+
     TELEMETRY_METRIC_TYPE("metricType", "遥测数据类型"),
     TELEMETRY_METRIC_KEY("key", "遥测数据Key"),
     TELEMETRY_LAST_UPDATE_TIMESTAMP("lastUpdateTime", "最后更新时间"),
+
+    DEVICE_ATTRIBUTE_REPORT_TIME("lastReportTime", "设备属性上报时间"),
+    DEVICE_ATTRIBUTE_LAST_UPDATE_TIME("lastUpdateTime", "设备属性最后更新时间"),
+    DEVICE_ATTRIBUTE_DESIRED_STATUS("status", "设备期望属性状态")
+
     ;
     private final String field;
     private final String text;

@@ -3,7 +3,15 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.page.PageQuery;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.Condition;
+import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import org.springframework.jdbc.core.JdbcOperations;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeReported.DEVICE_ATTRIBUTE_REPORTED;
 
@@ -17,5 +25,16 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeReported.DEVI
 public class DeviceAttributeReportedJdbcRepository extends JdbcRepository<DeviceAttributeReported, String> implements DeviceAttributeReportedRepository {
     public DeviceAttributeReportedJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_ATTRIBUTE_REPORTED, jdbcOperations);
+    }
+
+    @Override
+    public PageResult<DeviceAttributeReported> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
+        Condition[] conditions = this.searchFieldConditionToConditionArray(searchFieldConditionList);
+        // @formatter:off
+        FusionCondition fusionCondition = FusionCondition.withConditions(conditions)
+                .sort(sortCondition)
+                .build();
+        // @formatter:on
+        return this.page(fusionCondition, pageQuery);
     }
 }

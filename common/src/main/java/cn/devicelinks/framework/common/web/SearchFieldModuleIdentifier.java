@@ -60,8 +60,15 @@ public enum SearchFieldModuleIdentifier {
     /**
      * 遥测数据
      */
-    Telemetry("遥测数据")
-    ;
+    Telemetry("遥测数据"),
+    /**
+     * 设备上报属性
+     */
+    DeviceReportedAttribute("设备上报属性"),
+    /**
+     * 设备期望属性
+     */
+    DeviceDesiredAttribute("设备期望属性");
 
     private final String description;
 
