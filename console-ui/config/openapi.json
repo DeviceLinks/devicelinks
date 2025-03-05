@@ -6372,6 +6372,60 @@
         ]
       }
     },
+    "/api/device/{deviceId}/attribute/reported": {
+      "get": {
+        "summary": "查询设备上报属性",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "设备ID",
+            "required": true,
+            "example": "67c127a3fd75f8b64d59c2dc",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "请求令牌",
+            "required": true,
+            "example": "{{accessToken}}",
+            "schema": {
+              "type": "string",
+              "default": "{{accessToken}}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResult",
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/attribute/{attributeId}": {
       "get": {
         "summary": "查询属性详情",
@@ -7465,11 +7519,16 @@
           "value": {
             "type": "string",
             "description": "枚举值"
+          },
+          "showStyle": {
+            "type": "string",
+            "description": "回显样式"
           }
         },
         "required": [
           "label",
-          "value"
+          "value",
+          "showStyle"
         ]
       },
       "AttributeDataType": {

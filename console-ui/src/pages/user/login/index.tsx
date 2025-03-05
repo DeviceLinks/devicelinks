@@ -79,6 +79,7 @@ const LoginMessage: React.FC<{
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const { initialState, setInitialState } = useModel('@@initialState');
+  const { fetchEnums, setData: setEnums } = useModel('enumModel');
   const { styles } = useStyles();
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -91,6 +92,15 @@ const Login: React.FC = () => {
       });
     }
   };
+  //登录后初始化状态
+  const initAllState = async () => {
+    const enums = await fetchEnums();
+    if (enums) {
+      setEnums(enums);
+    }
+    await fetchUserInfo();
+  };
+
   const handleSubmit = async (values: API.postAuthLoginParams) => {
     if (values.password) {
       values.password = md5(values.password).toString().substring(8, 24);
@@ -115,7 +125,7 @@ const Login: React.FC = () => {
           expires: loginResult.expires_in! / 86400,
           path: '/',
         });
-        await fetchUserInfo();
+        await initAllState();
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
         return;

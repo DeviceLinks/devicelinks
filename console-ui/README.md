@@ -9,7 +9,7 @@
 or (更推荐)
 
 ```bash
-  pnpm
+  pnpm install
 ```
 
 ## 运行
@@ -58,6 +58,32 @@ or (更推荐)
 ├── tsconfig.json
 |
 └── package.json
+```
+
+## 使用枚举
+
+示例： proTable 中使用
+
+```ts
+import { useModel } from '@umijs/max';
+
+const Demo: React.FC = () => {
+  const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
+  const {Status} = enums!
+  const columns: ProColumns<API.Demo>[] = [
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: getProSchemaValueEnumObjByEnum(Status) //可选参数 showStatus 是否显示状态
+    }
+  ];
+  return (
+    <ProTable columns={columns}></ProTable>
+  )
+  
+}
+
 ```
 
 
