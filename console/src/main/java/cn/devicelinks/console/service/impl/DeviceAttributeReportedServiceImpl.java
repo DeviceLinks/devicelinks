@@ -6,6 +6,7 @@ import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeReportedDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceAttributeReportedRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class DeviceAttributeReportedServiceImpl extends BaseServiceImpl<DeviceAt
     }
 
     @Override
-    public PageResult<DeviceAttributeReported> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
+    public PageResult<DeviceAttributeReportedDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
         return this.repository.getByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 }

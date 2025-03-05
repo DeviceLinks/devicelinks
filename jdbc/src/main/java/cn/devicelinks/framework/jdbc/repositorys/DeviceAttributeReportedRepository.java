@@ -6,6 +6,7 @@ import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeReportedDTO;
 
 import java.util.List;
 
@@ -24,5 +25,5 @@ public interface DeviceAttributeReportedRepository extends Repository<DeviceAttr
      * @param sortCondition            排序条件
      * @return 设备上报属性分页对象
      */
-    PageResult<DeviceAttributeReported> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
+    PageResult<DeviceAttributeReportedDTO> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
 }

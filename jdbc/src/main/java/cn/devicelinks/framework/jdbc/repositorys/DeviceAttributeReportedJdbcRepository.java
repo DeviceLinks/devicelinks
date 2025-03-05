@@ -3,16 +3,20 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
+import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.Condition;
-import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
+import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeReportedDTO;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
 
+import static cn.devicelinks.framework.jdbc.ColumnValueMappers.ATTRIBUTE_ADDITION;
+import static cn.devicelinks.framework.jdbc.ColumnValueMappers.ATTRIBUTE_DATA_TYPE;
 import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeReported.DEVICE_ATTRIBUTE_REPORTED;
 
 /**
@@ -23,18 +27,42 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeReported.DEVI
  */
 @RegisterBean
 public class DeviceAttributeReportedJdbcRepository extends JdbcRepository<DeviceAttributeReported, String> implements DeviceAttributeReportedRepository {
+    // @formatter:off
+    private static final String SELECT_ATTRIBUTE_REPORTED_DTO_SQL = "select dar.*," +
+            " a.name attribute_name," +
+            " a.data_type attribute_data_type," +
+            " a.addition attribute_addition," +
+            " a.description attribute_description" +
+            " from device_attribute_reported dar" +
+            " left join attribute a on a.id = dar.attribute_id";
+    // @formatter:on
+    private static final Column COLUMN_ATTRIBUTE_NAME = Column.withName("attribute_name").build();
+    private static final Column COLUMN_ATTRIBUTE_DATA_TYPE = Column.withName("attribute_data_type").typeMapper(ATTRIBUTE_DATA_TYPE).build();
+    private static final Column COLUMN_ATTRIBUTE_ADDITION = Column.withName("attribute_addition").typeMapper(ATTRIBUTE_ADDITION).build();
+    private static final Column COLUMN_ATTRIBUTE_DESCRIPTION = Column.withName("attribute_description").build();
+
     public DeviceAttributeReportedJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_ATTRIBUTE_REPORTED, jdbcOperations);
     }
 
     @Override
-    public PageResult<DeviceAttributeReported> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
-        Condition[] conditions = this.searchFieldConditionToConditionArray(searchFieldConditionList);
+    public PageResult<DeviceAttributeReportedDTO> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
         // @formatter:off
-        FusionCondition fusionCondition = FusionCondition.withConditions(conditions)
-                .sort(sortCondition)
-                .build();
+        DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_ATTRIBUTE_REPORTED_DTO_SQL)
+                .resultColumns(resultColumns -> {
+                    resultColumns.addAll(DEVICE_ATTRIBUTE_REPORTED.getColumns());
+                    resultColumns.add(COLUMN_ATTRIBUTE_NAME);
+                    resultColumns.add(COLUMN_ATTRIBUTE_DATA_TYPE);
+                    resultColumns.add(COLUMN_ATTRIBUTE_ADDITION);
+                    resultColumns.add(COLUMN_ATTRIBUTE_DESCRIPTION);
+                })
+                .appendSearchFieldCondition(DEVICE_ATTRIBUTE_REPORTED, searchFieldConditionList, consumer -> consumer.tableAlias("dar"))
+                .sort(sortCondition);
         // @formatter:on
-        return this.page(fusionCondition, pageQuery);
+
+        DynamicWrapper wrapper = selectBuilder.resultType(DeviceAttributeReportedDTO.class).build();
+        Dynamic dynamic = wrapper.dynamic();
+        return this.page(dynamic, pageQuery, wrapper.parameters());
+
     }
 }
