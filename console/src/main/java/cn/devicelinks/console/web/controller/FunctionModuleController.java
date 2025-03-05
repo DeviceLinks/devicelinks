@@ -7,6 +7,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddFunctionModuleRequest;
 import cn.devicelinks.console.web.request.UpdateFunctionModuleRequest;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -14,6 +15,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -49,6 +51,7 @@ public class FunctionModuleController {
      * @throws ApiException 如果在获取功能模块列表时发生错误。
      */
     @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.FunctionModule)
     public ApiResponse getFunctionModuleByPageable(@Valid PaginationQuery paginationQuery,
                                                    @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<FunctionModule> pageResult = this.functionModuleService.getFunctionModulesByPage(paginationQuery, searchFieldQuery);

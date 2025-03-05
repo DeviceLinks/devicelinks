@@ -8,6 +8,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceRequest;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -16,6 +17,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -43,6 +45,7 @@ public class DeviceController {
      * @throws ApiException 抛出处理过程中遇到的异常
      */
     @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.Device)
     public ApiResponse getDeviceListByPageable(@Valid PaginationQuery paginationQuery,
                                                @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.deviceService.selectByPageable(paginationQuery, searchFieldQuery));

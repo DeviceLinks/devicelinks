@@ -24,6 +24,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddUserRequest;
 import cn.devicelinks.console.web.request.UpdateUserRequest;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.UserActivateMethod;
@@ -33,6 +34,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +65,7 @@ public class SysUserController {
      */
     @PostMapping(value = "/filter")
     @PreAuthorize("hasAuthority('SystemAdmin')")
+    @SearchModule(module = SearchFieldModuleIdentifier.User)
     public ApiResponse getUsers(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.userService.getUsers(searchFieldQuery, paginationQuery));
     }

@@ -3,8 +3,10 @@ package cn.devicelinks.console.web.controller;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.service.SysLogService;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +39,7 @@ public class SysLogController {
      * @throws ApiException 如果查询过程中发生错误，例如参数无效或数据库查询失败，将抛出 {@link ApiException} 异常。
      */
     @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.Log)
     public ApiResponse getLogByPageable(@Valid PaginationQuery paginationQuery,
                                         @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.sysLogService.getByPageable(paginationQuery, searchFieldQuery));

@@ -7,11 +7,13 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddProductRequest;
 import cn.devicelinks.console.web.request.UpdateProductRequest;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Product;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,7 @@ public class ProductController {
      * 响应中包括分页元数据和产品列表。
      */
     @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.Product)
     public ApiResponse getProductByPageable(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) {
         return ApiResponse.success(this.productService.getPageByPageable(paginationQuery, searchFieldQuery));
     }

@@ -4,11 +4,16 @@ import cn.devicelinks.console.service.DeviceAttributeDesiredService;
 import cn.devicelinks.console.service.DeviceAttributeReportedService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 设备属性接口控制器
@@ -34,6 +39,7 @@ public class DeviceAttributeController {
      * @throws ApiException 查询过程中遇到的业务异常
      */
     @PostMapping(value = "/reported/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.DeviceReportedAttribute)
     public ApiResponse getReportedAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                       @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(reportedAttributeService.getByPageable(searchFieldQuery, paginationQuery));
@@ -48,6 +54,7 @@ public class DeviceAttributeController {
      * @throws ApiException 查询过程中遇到的业务异常
      */
     @PostMapping(value = "/desired/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.DeviceDesiredAttribute)
     public ApiResponse getDesiredAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                      @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(desiredAttributeService.getByPageable(searchFieldQuery, paginationQuery));

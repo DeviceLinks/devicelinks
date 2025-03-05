@@ -3,9 +3,11 @@ package cn.devicelinks.console.web.controller;
 import cn.devicelinks.console.service.TelemetryService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Telemetry;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,6 +40,7 @@ public class TelemetryController {
      * @throws ApiException 如果在处理请求时发生错误，例如查询失败或参数验证失败。
      */
     @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.Telemetry)
     public ApiResponse getTelemetryByPageable(@Valid PaginationQuery paginationQuery,
                                               @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<Telemetry> pageResult = this.telemetryService.getTelemetryByPage(paginationQuery, searchFieldQuery);
