@@ -5,6 +5,7 @@ import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDesiredDTO;
 
 /**
  * 设备期望属性业务逻辑接口
@@ -20,5 +21,5 @@ public interface DeviceAttributeDesiredService extends BaseService<DeviceAttribu
      * @param paginationQuery  分页查询对象 {@link PaginationQuery}
      * @return 设备期望属性分页对象
      */
-    PageResult<DeviceAttributeDesired> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery);
+    PageResult<DeviceAttributeDesiredDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery);
 }
