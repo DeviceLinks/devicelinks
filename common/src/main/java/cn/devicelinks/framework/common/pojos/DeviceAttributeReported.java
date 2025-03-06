@@ -26,6 +26,7 @@ public class DeviceAttributeReported implements Serializable {
     private String attributeId;
     private String identifier;
     private Object reportValue;
+    private int version;
     private LocalDateTime lastReportTime;
     private LocalDateTime createTime;
 }

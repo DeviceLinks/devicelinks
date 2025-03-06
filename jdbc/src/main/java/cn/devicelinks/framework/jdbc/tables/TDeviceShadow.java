@@ -28,17 +28,14 @@ public class TDeviceShadow extends TableImpl {
 
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column DEVICE_ID = Column.withName("device_id").build();
-    public final Column REPORTED_STATE = Column.withName("reported_state").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATE_ADDITION).build();
-    public final Column DESIRED_STATE = Column.withName("desired_state").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATE_ADDITION).build();
-    public final Column REPORTED_VERSION = Column.withName("reported_version").longValue().build();
-    public final Column DESIRED_VERSION = Column.withName("desired_version").longValue().build();
-    public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATUS).defaultValue(() -> DeviceShadowStatus.Normal).build();
-    public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").timestamp().build();
-    public final Column LAST_SYNC_TIMESTAMP = Column.withName("last_sync_timestamp").timestamp().build();
+    public final Column SHADOW_DATA = Column.withName("shadow_data").typeMapper(ColumnValueMappers.DEVICE_SHADOW_DATA_LIST).build();
+    public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SHADOW_STATUS).defaultValue(() -> DeviceShadowStatus.Consistency).build();
+    public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").localDateTimeValue().build();
+    public final Column LAST_SYNC_TIMESTAMP = Column.withName("last_sync_timestamp").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, REPORTED_STATE, DESIRED_STATE, REPORTED_VERSION, DESIRED_VERSION, STATUS, LAST_UPDATE_TIMESTAMP, LAST_SYNC_TIMESTAMP, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, SHADOW_DATA, STATUS, LAST_UPDATE_TIMESTAMP, LAST_SYNC_TIMESTAMP, CREATE_TIME);
     }
 }

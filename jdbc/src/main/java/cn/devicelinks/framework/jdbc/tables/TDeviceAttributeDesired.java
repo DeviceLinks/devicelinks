@@ -39,9 +39,10 @@ public class TDeviceAttributeDesired extends TableImpl {
     public final Column LAST_UPDATE_TIME = Column.withName("last_update_time").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
     public final Column EXPIRED_TIME = Column.withName("expired_time").localDateTimeValue().build();
+    public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, DATA_TYPE, VERSION, DESIRED_VALUE, STATUS, LAST_UPDATE_TIME, CREATE_TIME, EXPIRED_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, DATA_TYPE, VERSION, DESIRED_VALUE, STATUS, LAST_UPDATE_TIME, CREATE_TIME, EXPIRED_TIME, DELETED);
     }
 }

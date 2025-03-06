@@ -12,14 +12,16 @@ import lombok.Getter;
 @ApiEnum
 @Getter
 public enum DeviceShadowStatus {
-    Normal("正常"),
-    InSync("同步中"),
-    Conflict("冲突"),
-    Error("异常");
+    Consistency("数据一致", EnumShowStyle.Success),
+    WaitSync("待同步", EnumShowStyle.Warning),
+    InSync("同步中", EnumShowStyle.Processing),
+    Error("同步失败", EnumShowStyle.Error);
 
     private final String description;
+    private final EnumShowStyle showStyle;
 
-    DeviceShadowStatus(String description) {
+    DeviceShadowStatus(String description, EnumShowStyle showStyle) {
         this.description = description;
+        this.showStyle = showStyle;
     }
 }

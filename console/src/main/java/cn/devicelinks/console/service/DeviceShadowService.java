@@ -1,5 +1,6 @@
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.pojos.DeviceShadow;
 import cn.devicelinks.framework.jdbc.BaseService;
 
@@ -17,4 +18,12 @@ public interface DeviceShadowService extends BaseService<DeviceShadow, String> {
      * @return 初始设备影子 {@link DeviceShadow}
      */
     DeviceShadow initialShadow(String deviceId);
+
+    /**
+     * 更新期望属性影子数据
+     *
+     * @param attributeDesired 需要更新的期望属性
+     * @return 设备影子数据 {@link DeviceShadow}
+     */
+    DeviceShadow updateDesired(DeviceAttributeDesired attributeDesired);
 }

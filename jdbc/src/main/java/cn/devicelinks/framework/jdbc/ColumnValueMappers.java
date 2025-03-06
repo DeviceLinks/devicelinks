@@ -21,10 +21,7 @@ import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.NotificationType;
 import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
-import cn.devicelinks.framework.jdbc.core.mapper.value.BasicColumnValueMapper;
-import cn.devicelinks.framework.jdbc.core.mapper.value.ColumnValueMapper;
-import cn.devicelinks.framework.jdbc.core.mapper.value.EnumColumnValueMapper;
-import cn.devicelinks.framework.jdbc.core.mapper.value.JSONObjectValueMapper;
+import cn.devicelinks.framework.jdbc.core.mapper.value.*;
 import org.springframework.util.ObjectUtils;
 
 import java.sql.ResultSet;
@@ -76,8 +73,6 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper NOTIFICATION_TYPE_IDENTIFIER = new EnumColumnValueMapper(NotificationTypeIdentifier.class);
     EnumColumnValueMapper DEVICE_DESIRED_OPERATION_TYPE = new EnumColumnValueMapper(DeviceDesiredOperationType.class);
     EnumColumnValueMapper DEVICE_DESIRED_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceDesiredOperationSource.class);
-    EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_TYPE = new EnumColumnValueMapper(DeviceShadowHistoryOperationType.class);
-    EnumColumnValueMapper DEVICE_SHADOW_HISTORY_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceShadowHistoryOperationSource.class);
     EnumColumnValueMapper DEVICE_SHADOW_STATUS = new EnumColumnValueMapper(DeviceShadowStatus.class);
     EnumColumnValueMapper TELEMETRY_METRIC_TYPE = new EnumColumnValueMapper(TelemetryMetricType.class);
     EnumColumnValueMapper DESIRED_ATTRIBUTE_STATUS = new EnumColumnValueMapper(DesiredAttributeStatus.class);
@@ -94,9 +89,10 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper OTA_UPGRADE_BATCH_ADDITION = new JSONObjectValueMapper(OtaUpgradeBatchAddition.class);
     JSONObjectValueMapper SYS_LOG_ADDITION = new JSONObjectValueMapper(SysLogAddition.class);
     JSONObjectValueMapper TELEMETRY_ADDITION = new JSONObjectValueMapper(TelemetryAddition.class);
-    JSONObjectValueMapper DEVICE_SHADOW_STATE_ADDITION = new JSONObjectValueMapper(DeviceShadowStateAddition.class);
     JSONObjectValueMapper DEVICE_SHADOW_DATA_ADDITION = new JSONObjectValueMapper(DeviceShadowDataAddition.class);
 
+
+    JSONListObjectValueMapper DEVICE_SHADOW_DATA_LIST = new JSONListObjectValueMapper(DeviceShadowDataAddition.class);
 
     // ------------------------------------Customize Mappers---------------------------------------//
 
