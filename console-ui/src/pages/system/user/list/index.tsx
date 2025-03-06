@@ -116,7 +116,7 @@ const UserInfo: React.FC = () => {
             <Input prefix={<SearchOutlined />} placeholder="搜索" />
           </Form.Item>
           <Form.Item>
-            <FilterButtonBox></FilterButtonBox>
+            <FilterButtonBox module={'User'}></FilterButtonBox>
           </Form.Item>
         </Form>
         <ProTable

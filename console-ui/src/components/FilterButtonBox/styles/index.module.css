@@ -1,8 +1,12 @@
 
 .FilterButtonBoxContainer{
-  background: #f4f5f6;
+  background: #e8e8e8;
   border: 1px solid #e5e7eb;
   color: #545968;
+  border-radius: 4px;
+}
+.FilterButtonBoxContainer:hover{
+  background: #d6d6d6;
 }
 
 
