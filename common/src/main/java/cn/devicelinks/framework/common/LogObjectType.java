@@ -36,7 +36,9 @@ public enum LogObjectType {
     Ota("OTA"),
     FunctionModule("功能模块"),
     GlobalSetting("系统参数"),
-    Attribute("属性");
+    Attribute("属性"),
+    DeviceDesiredAttribute("设备期望属性"),
+    DeviceReportedAttribute("设备上报属性");
 
     private final String description;
 

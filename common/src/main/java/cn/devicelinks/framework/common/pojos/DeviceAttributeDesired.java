@@ -34,4 +34,5 @@ public class DeviceAttributeDesired implements Serializable {
     private LocalDateTime lastUpdateTime;
     private LocalDateTime createTime;
     private LocalDateTime expiredTime;
+    private boolean deleted;
 }

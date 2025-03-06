@@ -53,7 +53,7 @@ public interface StatusCodeConstants {
      */
     StatusCode FUNCTION_MODULE_NOT_FOUND = StatusCode.build("FUNCTION_MODULE_NOT_FOUND", "功能模块：%s，不存在.");
     StatusCode FUNCTION_MODULE_ALREADY_EXISTS = StatusCode.build("FUNCTION_MODULE_ALREADY_EXISTS", "功能模块已经存在，请检查名称、标识符是否重复.");
-
+    StatusCode FUNCTION_MODULE_NOT_BELONG_PRODUCT = StatusCode.build("FUNCTION_MODULE_NOT_BELONG_PRODUCT", "功能模块：%s，不属于产品：%s.");
     /**
      * Product
      */
@@ -64,6 +64,9 @@ public interface StatusCodeConstants {
     StatusCode PRODUCT_HAS_RELATED_DEVICES = StatusCode.build("PRODUCT_HAS_RELATED_DEVICES", "产品：%s，存在关联的设备，无法删除.");
 
     StatusCode ATTRIBUTE_NOT_FOUND = StatusCode.build("ATTRIBUTE_NOT_FOUND", "属性：%s，不存在.");
+    StatusCode ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE = StatusCode.build("ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE", "属性：%s，不属于功能模块：%s.");
+    StatusCode ATTRIBUTE_DATA_TYPE_NOT_MATCH = StatusCode.build("ATTRIBUTE_DATA_TYPE_NOT_MATCH", "属性：%s，数据类型不匹配.");
+    StatusCode ATTRIBUTE_NOT_BELONG_PRODUCT = StatusCode.build("ATTRIBUTE_NOT_BELONG_PRODUCT", "属性：%s，不属于产品：%s.");
 
     StatusCode DEVICE_ALREADY_EXISTS = StatusCode.build("DEVICE_ALREADY_EXISTS", "设备：%s，已经存在，请检查产品下设备唯一码是否重复.");
     StatusCode DEVICE_NOT_EXISTS = StatusCode.build("DEVICE_NOT_EXISTS", "设备：%s，不存在.");
@@ -75,5 +78,8 @@ public interface StatusCodeConstants {
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");
     StatusCode INVALID_DEVICE_CREDENTIAL = StatusCode.build("INVALID_DEVICE_CREDENTIAL", "无效的一机一密凭证");
     StatusCode DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS = StatusCode.build("DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS", "设备Key已经存在.");
-    StatusCode DEVICE_AUTHENTICATION_NOT_EXISTS = StatusCode.build("DEVICE_AUTHENTICATION_NOT_EXISTS","设备：%s，认证信息不存在.");
+    StatusCode DEVICE_AUTHENTICATION_NOT_EXISTS = StatusCode.build("DEVICE_AUTHENTICATION_NOT_EXISTS", "设备：%s，认证信息不存在.");
+
+    StatusCode INVALID_DESIRED_VALUE = StatusCode.build("INVALID_DESIRED_VALUE", "无效的期望属性值，请检查与数据类型是否匹配.");
+    StatusCode DESIRED_DATA_TYPE_NOT_MATCH = StatusCode.build("DESIRED_DATA_TYPE_NOT_MATCH", "期望属性：%s，与现有的数据类型不匹配.");
 }

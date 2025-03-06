@@ -1,5 +1,6 @@
 package cn.devicelinks.framework.jdbc.tables;
 
+import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
@@ -31,11 +32,12 @@ public class TDeviceAttributeReported extends TableImpl {
     public final Column ATTRIBUTE_ID = Column.withName("attribute_id").build();
     public final Column IDENTIFIER = Column.withName("identifier").build();
     public final Column REPORT_VALUE = Column.withName("report_value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
+    public final Column VERSION = Column.withName("version").intValue().defaultValue(() -> Constants.ZERO).build();
     public final Column LAST_REPORT_TIME = Column.withName("last_report_time").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, REPORT_VALUE, LAST_REPORT_TIME, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, REPORT_VALUE, VERSION, LAST_REPORT_TIME, CREATE_TIME);
     }
 }

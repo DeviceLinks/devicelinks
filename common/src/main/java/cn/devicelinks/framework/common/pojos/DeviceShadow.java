@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 设备影子
@@ -23,12 +24,9 @@ public class DeviceShadow implements Serializable {
 
     private String id;
     private String deviceId;
-    private DeviceShadowStateAddition reportedState;
-    private DeviceShadowStateAddition desiredState;
-    private long reportedVersion;
-    private long desiredVersion;
+    private List<DeviceShadowDataAddition> shadowData;
     private DeviceShadowStatus status;
-    private Long lastUpdateTimestamp;
-    private Long lastSyncTimestamp;
+    private LocalDateTime lastUpdateTimestamp;
+    private LocalDateTime lastSyncTimestamp;
     private LocalDateTime createTime;
 }

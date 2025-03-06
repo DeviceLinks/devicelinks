@@ -26,15 +26,7 @@ public enum AttributeDataType {
     /**
      * 整型
      */
-    INT32("整型"),
-    /**
-     * 长整型
-     */
-    LONG64("长整型"),
-    /**
-     * 浮点型
-     */
-    FLOAT("浮点型"),
+    INTEGER("整型"),
     /**
      * 双精度浮点型
      */
@@ -68,9 +60,9 @@ public enum AttributeDataType {
      */
     TIMESTAMP("时间戳"),
     /**
-     * 对象
+     * JSON
      */
-    OBJECT("对象"),
+    JSON("JSON"),
     /**
      * 数组
      */

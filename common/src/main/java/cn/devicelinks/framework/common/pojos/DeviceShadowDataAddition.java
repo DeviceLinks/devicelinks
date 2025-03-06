@@ -1,39 +1,36 @@
 package cn.devicelinks.framework.common.pojos;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * 设备影子数据附加信息
- * <p>示例：
  * <pre>
  * {
+ *     "module": "moduleA",
  *     "desired": {
  *         "state": {
- *             "humidity": 60,
  *             "temperature": 25
  *         },
  *         "metadata": {
- *             "humidity": {
- *                 "timestamp": 1718000001,
- *                 "attributeId": null
- *             },
  *             "temperature": {
- *                 "timestamp": 1718000000,
- *                 "attributeId": "xxxxxx"
+ *                 "timestamp": 1741226222159,
+ *                 "version": 1
  *             }
  *         }
  *     },
  *     "reported": {
  *         "state": {
- *             "humidity": 55,
- *             "temperature": 23
+ *             "temperature": 25
  *         },
  *         "metadata": {
  *             "temperature": {
- *                 "timestamp": 1718000030,
- *                 "attributeId": "xxxxxx"
+ *                 "timestamp": 1741226270017,
+ *                 "version": 1
  *             }
  *         }
  *     }
@@ -44,7 +41,45 @@ import java.util.Map;
  * @since 1.0
  */
 @Data
+@NoArgsConstructor
 public class DeviceShadowDataAddition {
-    private Map<String, DeviceShadowStateAddition> reported;
-    private Map<String, DeviceShadowStateAddition> desired;
+
+    private String module;
+
+    private ShadowReported reported = new ShadowReported();
+
+    private ShadowDesired desired = new ShadowDesired();
+
+    public DeviceShadowDataAddition(String module) {
+        this.module = module;
+    }
+
+    /**
+     * 设备影子上报数据
+     */
+    @Data
+    public static class ShadowReported {
+        private Map<String, Object> state = new LinkedHashMap<>();
+        private Map<String, Metadata> metadata = new LinkedHashMap<>();
+    }
+
+    /**
+     * 设备影子期望数据
+     */
+    @Data
+    public static class ShadowDesired {
+        private Map<String, Object> state = new LinkedHashMap<>();
+        private Map<String, Metadata> metadata = new LinkedHashMap<>();
+    }
+
+    /**
+     * 元数据
+     */
+    @Data
+    @Accessors(chain = true)
+    public static class Metadata {
+        private long timestamp;
+        private int version;
+
+    }
 }

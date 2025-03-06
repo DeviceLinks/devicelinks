@@ -2,6 +2,7 @@ package cn.devicelinks.console.service;
 
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -22,4 +23,22 @@ public interface DeviceAttributeDesiredService extends BaseService<DeviceAttribu
      * @return 设备期望属性分页对象
      */
     PageResult<DeviceAttributeDesiredDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery);
+
+    /**
+     * 新增期望属性
+     *
+     * @param request 添加设备期望属性请求参数 {@link AddDeviceDesiredAttributeRequest}
+     * @return 添加后的期望属性实例 {@link DeviceAttributeDesired}
+     */
+    DeviceAttributeDesired addDesiredAttribute(AddDeviceDesiredAttributeRequest request);
+
+    /**
+     * 查询功能模块下指定标识符的期望属性
+     *
+     * @param deviceId 设备ID {@link DeviceAttributeDesired#getDeviceId()}
+     * @param moduleId   功能模块ID {@link DeviceAttributeDesired#getModuleId()}
+     * @param identifier 期望属性标识符 {@link DeviceAttributeDesired#getIdentifier()}
+     * @return {@link DeviceAttributeDesired}
+     */
+    DeviceAttributeDesired selectByIdentifier(String deviceId, String moduleId, String identifier);
 }
