@@ -3,7 +3,7 @@ import { CloseOutlined, FilterOutlined } from '@ant-design/icons';
 import { Button, Form, FormListFieldData, Input, Popover, Select, Space } from 'antd';
 import React from 'react';
 import style from './styles/index.module.css';
-export const FilterButtonBox = ({ module }) => {
+export const FilterButtonBox = ({ module, confirm }) => {
   const [form] = Form.useForm();
   const [filterOption, setfilterOption] = React.useState([]);
   const [selectedValues, setSelectedValues] = React.useState({});
@@ -13,7 +13,19 @@ export const FilterButtonBox = ({ module }) => {
       setfilterOption(data);
     }
   };
+  const resetFormList = () => {
+    form.resetFields();
+  };
   const changeFileldType = (rowIndex: any, value: any) => {
+    // 清空运算符和值
+    form.setFieldsValue({
+      items: {
+        [rowIndex]: {
+          value: undefined,
+          operator: undefined,
+        },
+      },
+    });
     setSelectedValues((prev) => ({ ...prev, [rowIndex]: value }));
   };
   /**
@@ -21,22 +33,24 @@ export const FilterButtonBox = ({ module }) => {
    */
   const getLastFormItem = (formItem: FormListFieldData) => {
     let row = filterOption.find((item) => item.field === selectedValues[formItem.name]);
-    if (row && row.componentType == 'SELECT') {
+    if (row && row.componentType === 'SELECT') {
       return (
         <Select
           placeholder={'请选择'}
           options={row?.optionStaticData || []}
           style={{ width: '240px' }}
+          allowClear
+          mode="multiple"
         ></Select>
       );
-    } else if (row && row.componentType == 'INPUT') {
+    } else if (row && row.componentType === 'INPUT') {
       return <Input placeholder={'请输入'} style={{ width: '240px' }}></Input>;
     } else {
       return <Input placeholder={'请输入'} style={{ width: '240px' }}></Input>;
     }
   };
   /**
-   * 弹框内容
+   * 弹框表单内容
    */
   const content = () => {
     return (
@@ -44,9 +58,11 @@ export const FilterButtonBox = ({ module }) => {
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
         form={form}
-        style={{ maxWidth: 600 }}
+        name={'formList'}
+        style={{ maxWidth: 600, zIndex: 9999 }}
         autoComplete="off"
         initialValues={{ items: [{}] }}
+        onFinish={confirm}
       >
         <Form.List name={'items'}>
           {(fields, { add, remove }) => (
@@ -54,7 +70,11 @@ export const FilterButtonBox = ({ module }) => {
               {fields.map((formItem) => {
                 return (
                   <Space key={formItem.key}>
-                    <Form.Item noStyle name={[formItem.name, 'field']}>
+                    <Form.Item
+                      noStyle
+                      name={[formItem.name, 'field']}
+                      rules={[{ required: true, message: '请选择字段' }]}
+                    >
                       <Select
                         placeholder={'请选择字段'}
                         options={filterOption}
@@ -66,7 +86,11 @@ export const FilterButtonBox = ({ module }) => {
                         onChange={(v) => changeFileldType(formItem.name, v)}
                       ></Select>
                     </Form.Item>
-                    <Form.Item noStyle name={[formItem.name, 'operator']}>
+                    <Form.Item
+                      noStyle
+                      name={[formItem.name, 'operator']}
+                      rules={[{ required: true, message: '请选择运算符' }]}
+                    >
                       <Select
                         placeholder={'请选择运算符'}
                         options={
@@ -80,7 +104,11 @@ export const FilterButtonBox = ({ module }) => {
                         }}
                       ></Select>
                     </Form.Item>
-                    <Form.Item noStyle name={[formItem.name, 'value']}>
+                    <Form.Item
+                      noStyle
+                      name={[formItem.name, 'value']}
+                      rules={[{ required: true, message: '请选择/输入' }]}
+                    >
                       {getLastFormItem(formItem)}
                     </Form.Item>
                     {formItem && fields.length > 1 && (
@@ -93,9 +121,21 @@ export const FilterButtonBox = ({ module }) => {
                   </Space>
                 );
               })}
-              <Button type="dashed" onClick={() => add()} block>
-                + 添加筛选条件
-              </Button>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <Button type={'dashed'} onClick={() => add()}>
+                  + 添加筛选条件
+                </Button>
+                <div>
+                  <Button onClick={() => resetFormList()} style={{ marginRight: '10px' }}>
+                    重置
+                  </Button>
+                  <Button type={'primary'} htmlType={'submit'}>
+                    搜索
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
         </Form.List>

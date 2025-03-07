@@ -12,8 +12,16 @@ import React, { ReactNode, useRef, useState } from 'react';
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [filterBoxVlaues, setFilterBoxVlaues] = useState<any>();
   const tableRef = useRef<ActionType>();
+  const [contion] = Form.useForm();
+  /**
+   *
+   */
+  const handleFilter = (val) => {
+    setFilterBoxVlaues(val);
+    tableRef.current?.reload();
+  };
 
   /**启用/禁用 */
   const handleEnabled = async (record: API.User) => {
@@ -111,14 +119,19 @@ const UserInfo: React.FC = () => {
       extra={<Add refresh={() => tableRef.current?.reload()} />}
     >
       <ProCard direction="column" ghost gutter={[0, 16]}>
-        <Form layout={'inline'} style={{ marginBottom: 15 }} variant={'filled'}>
+        <Form
+          form={contion}
+          name={'contion'}
+          layout={'inline'}
+          style={{ marginBottom: 15 }}
+          variant={'filled'}
+        >
           <Form.Item>
             <Input prefix={<SearchOutlined />} placeholder="搜索" />
           </Form.Item>
-          <Form.Item>
-            <FilterButtonBox module={'User'}></FilterButtonBox>
-          </Form.Item>
+          <FilterButtonBox module={'User'} confirm={(val) => handleFilter(val)}></FilterButtonBox>
         </Form>
+
         <ProTable
           actionRef={tableRef}
           loading={loading}
@@ -132,6 +145,7 @@ const UserInfo: React.FC = () => {
                 pageSize: params.pageSize,
               },
               {
+                searchFields: filterBoxVlaues,
                 searchFieldModule: 'User',
                 searchMatch: 'ANY',
               },
