@@ -41,6 +41,11 @@ public class DeviceShadowServiceImpl extends BaseServiceImpl<DeviceShadow, Strin
     }
 
     @Override
+    public DeviceShadow selectByDeviceId(String deviceId) {
+        return this.repository.selectOne(DEVICE_SHADOW.DEVICE_ID.eq(deviceId));
+    }
+
+    @Override
     public DeviceShadow initialShadow(String deviceId) {
         // @formatter:off
         DeviceShadow deviceShadow = new DeviceShadow().setDeviceId(deviceId);

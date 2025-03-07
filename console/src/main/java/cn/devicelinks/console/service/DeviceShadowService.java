@@ -20,6 +20,14 @@ public interface DeviceShadowService extends BaseService<DeviceShadow, String> {
     DeviceShadow initialShadow(String deviceId);
 
     /**
+     * 查询指定设备的影子数据
+     *
+     * @param deviceId 设备ID {@link DeviceShadow#getDeviceId()}
+     * @return 设备影子数据 {@link DeviceShadow}
+     */
+    DeviceShadow selectByDeviceId(String deviceId);
+
+    /**
      * 更新期望属性影子数据
      *
      * @param attributeDesired 需要更新的期望属性
