@@ -5,6 +5,7 @@ import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceDesiredAttributeRequest;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.AttributeKnowType;
 import cn.devicelinks.framework.common.Constants;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,8 +70,30 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     public DeviceAttributeDesired addDesiredAttribute(String deviceId, String moduleId, AddDeviceDesiredAttributeRequest request) {
         // validate
         AttributeKnowType knowType = AttributeKnowType.valueOf(request.getKnowType());
-        Attribute attribute = this.validate(deviceId, moduleId, knowType, request.getDesiredValue(),
+        Device device = this.deviceService.selectById(deviceId);
+        if (device == null || device.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        FunctionModule functionModule = this.functionModuleService.selectById(moduleId);
+        if (functionModule == null || functionModule.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, moduleId);
+        }
+        if (!functionModule.getProductId().equals(device.getProductId())) {
+            throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_BELONG_PRODUCT, functionModule.getIdentifier(), device.getProductId());
+        }
+
+        Attribute attribute = this.validate(knowType, request.getDesiredValue(),
                 request.getAttributeId(), request.getIdentifier(), request.getDataType());
+
+        if (AttributeKnowType.Known == knowType) {
+            if (!attribute.getProductId().equals(functionModule.getProductId())) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_BELONG_PRODUCT, attribute.getIdentifier(), functionModule.getProductId());
+            }
+            if (!attribute.getModuleId().equals(functionModule.getId())) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE, attribute.getIdentifier(), functionModule.getIdentifier());
+            }
+        }
+
 
         String identifier = AttributeKnowType.Known == knowType ? attribute.getIdentifier() : request.getIdentifier();
         DeviceAttributeDesired desiredAttribute = this.selectByIdentifier(deviceId, moduleId, identifier);
@@ -116,6 +140,33 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     }
 
     @Override
+    public DeviceAttributeDesired updateDesiredAttribute(String desiredAttributeId, UpdateDeviceDesiredAttributeRequest request) {
+        DeviceAttributeDesired desiredAttribute = this.selectById(desiredAttributeId);
+        if (desiredAttribute == null || desiredAttribute.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DESIRED_NOT_FOUND, desiredAttributeId);
+        }
+
+        AttributeKnowType knowType = StringUtils.hasText(desiredAttribute.getAttributeId()) ? AttributeKnowType.Known : AttributeKnowType.Unknown;
+        this.validate(knowType, request.getDesiredValue(), desiredAttribute.getAttributeId(), desiredAttribute.getIdentifier(), request.getDataType());
+
+        // Unknown attribute，allow update data type
+        if (AttributeKnowType.Unknown == knowType) {
+            desiredAttribute.setDataType(AttributeDataType.valueOf(request.getDataType()));
+        }
+
+        // @formatter:off
+        desiredAttribute
+                .setDesiredValue(request.getDesiredValue())
+                .setVersion(desiredAttribute.getVersion() + Constants.ONE)
+                .setStatus(DesiredAttributeStatus.Pending)
+                .setLastUpdateTime(LocalDateTime.now());
+        // @formatter:on
+        this.update(desiredAttribute);
+        this.deviceShadowService.updateDesired(desiredAttribute);
+        return desiredAttribute;
+    }
+
+    @Override
     public DeviceAttributeDesired selectByIdentifier(String deviceId, String moduleId, String identifier) {
         // @formatter:off
         return this.repository.selectOne(
@@ -129,29 +180,16 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     /**
      * 验证关联数据是否有效
      *
-     * @param deviceId     设备ID {@link DeviceAttributeDesired#getDeviceId()}
-     * @param moduleId     功能模块ID {@link DeviceAttributeDesired#getModuleId()}
      * @param knowType     属性知晓类型 {@link AttributeKnowType}
      * @param desiredValue 期望值
      * @param attributeId  已知属性ID
      * @param identifier   未知属性标识符
      * @param dataType     未知属性数据类型
      */
-    private Attribute validate(String deviceId, String moduleId, AttributeKnowType knowType,
-                               String desiredValue, String attributeId, String identifier, String dataType) {
+    private Attribute validate(AttributeKnowType knowType, String desiredValue,
+                               String attributeId, String identifier, String dataType) {
         if (ObjectUtils.isEmpty(desiredValue)) {
             throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
-        }
-        Device device = this.deviceService.selectById(deviceId);
-        if (device == null || device.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
-        }
-        FunctionModule functionModule = this.functionModuleService.selectById(moduleId);
-        if (functionModule == null || functionModule.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, moduleId);
-        }
-        if (!functionModule.getProductId().equals(device.getProductId())) {
-            throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_BELONG_PRODUCT, functionModule.getIdentifier(), device.getProductId());
         }
 
         AttributeDataType attributeDataType = !ObjectUtils.isEmpty(dataType) ? AttributeDataType.valueOf(dataType) : null;
@@ -168,12 +206,6 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
             }
             if (!attribute.isWritable()) {
                 throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_WRITEABLE, attribute.getIdentifier());
-            }
-            if (!attribute.getProductId().equals(functionModule.getProductId())) {
-                throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_BELONG_PRODUCT, attribute.getIdentifier(), functionModule.getProductId());
-            }
-            if (!attribute.getModuleId().equals(functionModule.getId())) {
-                throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE, attribute.getIdentifier(), functionModule.getIdentifier());
             }
             // check enum value is define
             if (AttributeDataType.ENUM == attribute.getDataType()) {

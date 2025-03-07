@@ -5,12 +5,14 @@ import cn.devicelinks.console.service.DeviceAttributeReportedService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceDesiredAttributeRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -71,12 +73,32 @@ public class DeviceAttributeController {
     @PostMapping(value = "/{deviceId}/module/{moduleId}/desired/attribute")
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.DeviceDesiredAttribute,
-            objectId = "{#executionSucceed ? #result.data.id : #p1.identifier}",
+            objectId = "{#executionSucceed ? #result.data.id : #p2.identifier}",
             msg = "{#executionSucceed ? '添加设备期望属性成功' : '添加设备期望属性失败'}",
-            activateData = "{#p1}")
+            activateData = "{#p2}")
     public ApiResponse addDesiredAttribute(@PathVariable("deviceId") String deviceId,
                                            @PathVariable("moduleId") String moduleId,
                                            @Valid @RequestBody AddDeviceDesiredAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.addDesiredAttribute(deviceId, moduleId, request));
+    }
+
+    /**
+     * 更新设备期望属性
+     *
+     * @param desiredAttributeId 期望属性ID {@link DeviceAttributeDesired#getId()}
+     * @param request            更新设备期望属性请求参数 {@link UpdateDeviceDesiredAttributeRequest}
+     * @return 更新后的设备期望属性
+     * @throws ApiException 遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/desired/attribute/{desiredAttributeId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceDesiredAttribute,
+            objectId = "{#executionSucceed ? #result.data.id : #p0}",
+            object = "{@deviceAttributeDesiredServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed ? '更新设备期望属性成功' : '更新设备期望属性失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
+                                              @Valid @RequestBody UpdateDeviceDesiredAttributeRequest request) throws ApiException {
+        return ApiResponse.success(this.desiredAttributeService.updateDesiredAttribute(desiredAttributeId, request));
     }
 }

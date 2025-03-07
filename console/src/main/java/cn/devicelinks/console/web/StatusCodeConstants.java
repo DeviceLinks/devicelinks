@@ -86,4 +86,5 @@ public interface StatusCodeConstants {
 
     StatusCode INVALID_DESIRED_VALUE = StatusCode.build("INVALID_DESIRED_VALUE", "无效的期望属性值，请检查与数据类型是否匹配.");
     StatusCode DESIRED_DATA_TYPE_NOT_MATCH = StatusCode.build("DESIRED_DATA_TYPE_NOT_MATCH", "期望属性：%s，与现有的数据类型不匹配.");
+    StatusCode DEVICE_ATTRIBUTE_DESIRED_NOT_FOUND = StatusCode.build("DEVICE_ATTRIBUTE_DESIRED_NOT_FOUND","设备期望属性：%s，不存在.");
 }
