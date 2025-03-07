@@ -82,6 +82,14 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.NotLike
             ));
 
+    SearchField WRITABLE = SearchField.of(SearchFieldVariable.ATTRIBUTE_WRITABLE)
+            .setValueType(SearchFieldValueType.BOOLEAN)
+            .setComponentType(SearchFieldComponentType.SELECT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo
+            ));
+
     @Override
     public SearchFieldModuleIdentifier supportIdentifier() {
         return SearchFieldModuleIdentifier.Attribute;
@@ -95,7 +103,8 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
                 ATTRIBUTE_PARENT_ID,
                 ATTRIBUTE_IDENTIFIER,
                 ATTRIBUTE_DATA_TYPE,
-                ATTRIBUTE_NAME
+                ATTRIBUTE_NAME,
+                WRITABLE
         );
     }
 }
