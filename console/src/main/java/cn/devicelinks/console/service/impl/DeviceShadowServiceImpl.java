@@ -106,4 +106,32 @@ public class DeviceShadowServiceImpl extends BaseServiceImpl<DeviceShadow, Strin
         this.repository.update(deviceShadow);
         return deviceShadow;
     }
+
+    @Override
+    public void removeDesired(DeviceAttributeDesired attributeDesired) {
+        FunctionModule functionModule = this.functionModuleService.selectById(attributeDesired.getModuleId());
+        if (functionModule == null || functionModule.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, attributeDesired.getModuleId());
+        }
+        DeviceShadow deviceShadow = this.repository.selectOne(DEVICE_SHADOW.DEVICE_ID.eq(attributeDesired.getDeviceId()));
+        if (deviceShadow != null) {
+            List<DeviceShadowDataAddition> shadowDataAdditionList = deviceShadow.getShadowData();
+            Map<String, DeviceShadowDataAddition> shadowDataAdditionMap = !ObjectUtils.isEmpty(shadowDataAdditionList) ?
+                    shadowDataAdditionList.stream().collect(Collectors.toMap(DeviceShadowDataAddition::getModule, v -> v)) :
+                    new LinkedHashMap<>();
+            if (shadowDataAdditionMap.containsKey(functionModule.getIdentifier())) {
+                DeviceShadowDataAddition addition = shadowDataAdditionMap.get(functionModule.getIdentifier());
+                // @formatter:off
+                // Remove desired attribute state
+                addition.getDesired()
+                        .getState()
+                        .remove(attributeDesired.getIdentifier());
+                // Remove desired attribute metadata
+                addition.getDesired()
+                        .getMetadata()
+                        .remove(attributeDesired.getIdentifier());
+                // @formatter:on
+            }
+        }
+    }
 }

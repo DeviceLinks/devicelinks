@@ -216,6 +216,17 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
         return attributeDTO;
     }
 
+    @Override
+    public DeviceAttributeDesired deleteDesiredAttribute(String desiredAttributeId) {
+        DeviceAttributeDesired desiredAttribute = this.selectById(desiredAttributeId);
+        if (desiredAttribute == null || desiredAttribute.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND, desiredAttributeId);
+        }
+        desiredAttribute.setDeleted(Boolean.TRUE);
+        this.deviceShadowService.removeDesired(desiredAttribute);
+        return desiredAttribute;
+    }
+
     /**
      * 验证关联数据是否有效
      *

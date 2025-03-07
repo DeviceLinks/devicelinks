@@ -142,4 +142,21 @@ public class DeviceAttributeController {
                                                        @Valid @RequestBody ExtractUnknownReportedAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.reportedAttributeService.extractUnknownAttribute(reportedAttributeId, request));
     }
+
+    /**
+     * 删除期望属性
+     *
+     * @param desiredAttributeId 期望属性ID {@link DeviceAttributeDesired#getId()}
+     * @return 已删除的期望属性 {@link DeviceAttributeDesired}
+     * @throws ApiException 遇到的业务逻辑异常
+     */
+    @DeleteMapping(value = "/desired/attribute/{desiredAttributeId}")
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.DeviceDesiredAttribute,
+            objectId = "{#p0}",
+            msg = "{#executionSucceed ? '删除期望属性成功' : '删除期望属性失败'}",
+            activateData = "{#p0}")
+    public ApiResponse deleteDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId) throws ApiException {
+        return ApiResponse.success(this.desiredAttributeService.deleteDesiredAttribute(desiredAttributeId));
+    }
 }

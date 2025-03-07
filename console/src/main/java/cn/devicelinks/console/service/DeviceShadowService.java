@@ -26,4 +26,11 @@ public interface DeviceShadowService extends BaseService<DeviceShadow, String> {
      * @return 设备影子数据 {@link DeviceShadow}
      */
     DeviceShadow updateDesired(DeviceAttributeDesired attributeDesired);
+
+    /**
+     * 删除影子中期望属性
+     *
+     * @param attributeDesired 期望属性 {@link DeviceAttributeDesired}
+     */
+    void removeDesired(DeviceAttributeDesired attributeDesired);
 }

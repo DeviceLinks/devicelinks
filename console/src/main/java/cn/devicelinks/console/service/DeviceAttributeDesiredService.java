@@ -64,4 +64,12 @@ public interface DeviceAttributeDesiredService extends BaseService<DeviceAttribu
      * @return 存储后的已知属性 {@link Attribute}
      */
     Attribute extractUnknownAttribute(String desiredAttributeId, ExtractUnknownDesiredAttributeRequest request);
+
+    /**
+     * 删除期望属性
+     *
+     * @param desiredAttributeId 期望属性ID {@link DeviceAttributeDesired#getId()}
+     * @return 期望属性 {@link DeviceAttributeDesired}
+     */
+    DeviceAttributeDesired deleteDesiredAttribute(String desiredAttributeId);
 }
