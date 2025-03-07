@@ -67,6 +67,10 @@ public interface StatusCodeConstants {
     StatusCode ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE = StatusCode.build("ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE", "属性：%s，不属于功能模块：%s.");
     StatusCode ATTRIBUTE_DATA_TYPE_NOT_MATCH = StatusCode.build("ATTRIBUTE_DATA_TYPE_NOT_MATCH", "属性：%s，数据类型不匹配.");
     StatusCode ATTRIBUTE_NOT_BELONG_PRODUCT = StatusCode.build("ATTRIBUTE_NOT_BELONG_PRODUCT", "属性：%s，不属于产品：%s.");
+    StatusCode ATTRIBUTE_NOT_WRITEABLE = StatusCode.build("ATTRIBUTE_NOT_WRITEABLE", "属性：%s，不允许设置值.");
+    StatusCode ATTRIBUTE_ID_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_ID_CANNOT_BLANK", "属性ID不允许为空.");
+    StatusCode ATTRIBUTE_IDENTIFIER_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_IDENTIFIER_CANNOT_BLANK", "属性标识符不允许为空.");
+    StatusCode ATTRIBUTE_DATA_TYPE_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_DATA_TYPE_CANNOT_BLANK", "属性数据类型不允许为空.");
 
     StatusCode DEVICE_ALREADY_EXISTS = StatusCode.build("DEVICE_ALREADY_EXISTS", "设备：%s，已经存在，请检查产品下设备唯一码是否重复.");
     StatusCode DEVICE_NOT_EXISTS = StatusCode.build("DEVICE_NOT_EXISTS", "设备：%s，不存在.");

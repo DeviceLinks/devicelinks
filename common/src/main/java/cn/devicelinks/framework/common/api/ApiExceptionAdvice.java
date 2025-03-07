@@ -59,6 +59,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiExceptionAdvice {
     public static StatusCode PARAM_INVALID = StatusCode.build("PARAM_INVALID", "参数验证失败.");
+    public static StatusCode PARAM_INVALID_WITH_MSG = StatusCode.build("PARAM_INVALID_WITH_MSG", "参数验证失败，提示：%s.");
     public static StatusCode REQUEST_VARIABLES_INVALID = StatusCode.build("REQUEST_VARIABLES_INVALID", "请求参数值非法.");
     public static StatusCode REQUEST_BODY_UNABLE_PARSE = StatusCode.build("REQUEST_BODY_UNABLE_PARSE_CODE", "请求主体无法解析.");
     public static StatusCode SYSTEM_EXCEPTION_STATUS = StatusCode.build("SYSTEM_EXCEPTION", "系统开小差啦.");
@@ -154,11 +155,11 @@ public class ApiExceptionAdvice {
      */
     @ExceptionHandler({UnexpectedTypeException.class, MethodArgumentTypeMismatchException.class})
     public ApiResponse handleUnexpectedTypeException(Exception exception) {
-        String errorMsg = "Parameter validation failed.";
         if (exception instanceof MethodArgumentTypeMismatchException argumentTypeMismatchException) {
-            errorMsg = "Parameter: " + argumentTypeMismatchException.getName() + ", Unacceptable value: " + argumentTypeMismatchException.getValue() + ".";
+            String errorMsg = "Parameter: " + argumentTypeMismatchException.getName() + ", Unacceptable value: " + argumentTypeMismatchException.getValue() + ".";
+            return ApiResponse.error(PARAM_INVALID_WITH_MSG, errorMsg);
         }
-        return ApiResponse.error(StatusCode.build(PARAM_INVALID.getCode(), errorMsg));
+        return ApiResponse.error(PARAM_INVALID);
     }
 
     /**

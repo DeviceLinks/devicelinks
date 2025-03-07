@@ -6,6 +6,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
 import cn.devicelinks.framework.common.AttributeDataType;
+import cn.devicelinks.framework.common.AttributeKnowType;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DesiredAttributeStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -27,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
+import java.util.Objects;
 
 import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeDesired.DEVICE_ATTRIBUTE_DESIRED;
 
@@ -63,35 +65,42 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     }
 
     @Override
-    public DeviceAttributeDesired addDesiredAttribute(AddDeviceDesiredAttributeRequest request) {
-        AttributeDataType dataType = AttributeDataType.valueOf(request.getDataType());
+    public DeviceAttributeDesired addDesiredAttribute(String deviceId, String moduleId, AddDeviceDesiredAttributeRequest request) {
         // validate
-        this.validate(request.getDeviceId(), request.getModuleId(), request.getAttributeId(), dataType, request.getDesiredValue());
+        AttributeKnowType knowType = AttributeKnowType.valueOf(request.getKnowType());
+        Attribute attribute = this.validate(deviceId, moduleId, knowType, request.getDesiredValue(),
+                request.getAttributeId(), request.getIdentifier(), request.getDataType());
 
-        DeviceAttributeDesired desiredAttribute = this.selectByIdentifier(request.getDeviceId(), request.getModuleId(), request.getIdentifier());
-
+        String identifier = AttributeKnowType.Known == knowType ? attribute.getIdentifier() : request.getIdentifier();
+        DeviceAttributeDesired desiredAttribute = this.selectByIdentifier(deviceId, moduleId, identifier);
         // insert
         if (desiredAttribute == null) {
             // @formatter:off
             desiredAttribute = new DeviceAttributeDesired()
-                    .setDeviceId(request.getDeviceId())
-                    .setModuleId(request.getModuleId())
-                    .setAttributeId(request.getAttributeId())
-                    .setIdentifier(request.getIdentifier())
-                    .setDataType(dataType)
+                    .setDeviceId(deviceId)
+                    .setModuleId(moduleId)
                     .setVersion(Constants.ONE)
                     .setDesiredValue(request.getDesiredValue())
                     .setLastUpdateTime(LocalDateTime.now());
+            // Known attribute, use attribute info
+            if (AttributeKnowType.Known == knowType) {
+                desiredAttribute
+                        .setAttributeId(attribute.getId())
+                        .setIdentifier(attribute.getIdentifier())
+                        .setDataType(attribute.getDataType());
+            } else if (AttributeKnowType.Unknown == knowType) {
+                desiredAttribute
+                        .setIdentifier(request.getIdentifier())
+                        .setDataType(AttributeDataType.valueOf(request.getDataType()));
+            }
             // @formatter:on
             this.repository.insert(desiredAttribute);
         }
         // update
         else {
-            if (dataType != desiredAttribute.getDataType()) {
-                throw new ApiException(StatusCodeConstants.DESIRED_DATA_TYPE_NOT_MATCH, desiredAttribute.getIdentifier());
-            }
-            if (!ObjectUtils.isEmpty(request.getAttributeId()) && ObjectUtils.isEmpty(desiredAttribute.getAttributeId())) {
-                desiredAttribute.setAttributeId(request.getAttributeId());
+            // Unknown attribute, allow to modify data type
+            if (AttributeKnowType.Unknown == knowType) {
+                desiredAttribute.setDataType(AttributeDataType.valueOf(request.getDataType()));
             }
             // @formatter:off
             desiredAttribute
@@ -120,11 +129,16 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     /**
      * 验证关联数据是否有效
      *
-     * @param deviceId    设备ID {@link DeviceAttributeDesired#getDeviceId()}
-     * @param moduleId    功能模块ID {@link DeviceAttributeDesired#getModuleId()}
-     * @param attributeId 预定义属性ID {@link DeviceAttributeDesired#getAttributeId()}
+     * @param deviceId     设备ID {@link DeviceAttributeDesired#getDeviceId()}
+     * @param moduleId     功能模块ID {@link DeviceAttributeDesired#getModuleId()}
+     * @param knowType     属性知晓类型 {@link AttributeKnowType}
+     * @param desiredValue 期望值
+     * @param attributeId  已知属性ID
+     * @param identifier   未知属性标识符
+     * @param dataType     未知属性数据类型
      */
-    private void validate(String deviceId, String moduleId, String attributeId, AttributeDataType dataType, String desiredValue) {
+    private Attribute validate(String deviceId, String moduleId, AttributeKnowType knowType,
+                               String desiredValue, String attributeId, String identifier, String dataType) {
         if (ObjectUtils.isEmpty(desiredValue)) {
             throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
         }
@@ -139,10 +153,21 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
         if (!functionModule.getProductId().equals(device.getProductId())) {
             throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_BELONG_PRODUCT, functionModule.getIdentifier(), device.getProductId());
         }
-        if (!ObjectUtils.isEmpty(attributeId)) {
-            Attribute attribute = this.attributeService.selectById(attributeId);
+
+        AttributeDataType attributeDataType = !ObjectUtils.isEmpty(dataType) ? AttributeDataType.valueOf(dataType) : null;
+        Attribute attribute = null;
+
+        // AttributeKnowType#Known
+        if (AttributeKnowType.Known == knowType) {
+            if (ObjectUtils.isEmpty(attributeId)) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_ID_CANNOT_BLANK);
+            }
+            attribute = this.attributeService.selectById(attributeId);
             if (attribute == null || attribute.isDeleted()) {
                 throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_FOUND, attributeId);
+            }
+            if (!attribute.isWritable()) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_WRITEABLE, attribute.getIdentifier());
             }
             if (!attribute.getProductId().equals(functionModule.getProductId())) {
                 throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_BELONG_PRODUCT, attribute.getIdentifier(), functionModule.getProductId());
@@ -150,19 +175,28 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
             if (!attribute.getModuleId().equals(functionModule.getId())) {
                 throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_BELONG_FUNCTION_MODULE, attribute.getIdentifier(), functionModule.getIdentifier());
             }
-            if (attribute.getDataType() != dataType) {
-                throw new ApiException(StatusCodeConstants.ATTRIBUTE_DATA_TYPE_NOT_MATCH, attribute.getIdentifier());
-            }
             // check enum value is define
-            if (AttributeDataType.ENUM == dataType) {
+            if (AttributeDataType.ENUM == attribute.getDataType()) {
                 Map<String, String> enumMap = attribute.getAddition().getValueMap();
                 if (!enumMap.containsKey(desiredValue)) {
                     throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
                 }
             }
+            attributeDataType = attribute.getDataType();
         }
+        // AttributeKnowType#Unknown
+        else if (AttributeKnowType.Unknown == knowType) {
+            if (ObjectUtils.isEmpty(identifier)) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_IDENTIFIER_CANNOT_BLANK);
+            }
+            if (ObjectUtils.isEmpty(dataType)) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_DATA_TYPE_CANNOT_BLANK);
+            }
+        }
+
+        // Validate data type
         try {
-            switch (dataType) {
+            switch (Objects.requireNonNull(attributeDataType)) {
                 case INTEGER:
                     Integer.parseInt(desiredValue);
                     break;
@@ -198,5 +232,6 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
         } catch (Exception e) {
             throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
         }
+        return attribute;
     }
 }

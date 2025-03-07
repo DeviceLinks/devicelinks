@@ -27,15 +27,17 @@ public interface DeviceAttributeDesiredService extends BaseService<DeviceAttribu
     /**
      * 新增期望属性
      *
-     * @param request 添加设备期望属性请求参数 {@link AddDeviceDesiredAttributeRequest}
+     * @param deviceId 设备ID {@link DeviceAttributeDesired#getDeviceId()}
+     * @param moduleId 功能模块ID {@link DeviceAttributeDesired#getModuleId()}
+     * @param request  添加设备期望属性请求参数 {@link AddDeviceDesiredAttributeRequest}
      * @return 添加后的期望属性实例 {@link DeviceAttributeDesired}
      */
-    DeviceAttributeDesired addDesiredAttribute(AddDeviceDesiredAttributeRequest request);
+    DeviceAttributeDesired addDesiredAttribute(String deviceId, String moduleId, AddDeviceDesiredAttributeRequest request);
 
     /**
      * 查询功能模块下指定标识符的期望属性
      *
-     * @param deviceId 设备ID {@link DeviceAttributeDesired#getDeviceId()}
+     * @param deviceId   设备ID {@link DeviceAttributeDesired#getDeviceId()}
      * @param moduleId   功能模块ID {@link DeviceAttributeDesired#getModuleId()}
      * @param identifier 期望属性标识符 {@link DeviceAttributeDesired#getIdentifier()}
      * @return {@link DeviceAttributeDesired}

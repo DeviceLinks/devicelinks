@@ -14,10 +14,7 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 设备属性接口控制器
@@ -26,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0
  */
 @RestController
-@RequestMapping(value = "/api/device/attribute")
+@RequestMapping(value = "/api/device")
 @AllArgsConstructor
 public class DeviceAttributeController {
 
@@ -42,7 +39,7 @@ public class DeviceAttributeController {
      * @return 设备上报的属性列表
      * @throws ApiException 查询过程中遇到的业务异常
      */
-    @PostMapping(value = "/reported/filter")
+    @PostMapping(value = "/reported/attribute/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceReportedAttribute)
     public ApiResponse getReportedAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                       @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
@@ -57,7 +54,7 @@ public class DeviceAttributeController {
      * @return 设备期望属性列表
      * @throws ApiException 查询过程中遇到的业务异常
      */
-    @PostMapping(value = "/desired/filter")
+    @PostMapping(value = "/desired/attribute/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceDesiredAttribute)
     public ApiResponse getDesiredAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                      @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
@@ -71,13 +68,15 @@ public class DeviceAttributeController {
      * @return 新增的期望属性
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @PostMapping(value = "/desired")
+    @PostMapping(value = "/{deviceId}/module/{moduleId}/desired/attribute")
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.DeviceDesiredAttribute,
-            objectId = "{#executionSucceed ? #result.data.id : #p0.identifier}",
+            objectId = "{#executionSucceed ? #result.data.id : #p1.identifier}",
             msg = "{#executionSucceed ? '添加设备期望属性成功' : '添加设备期望属性失败'}",
-            activateData = "{#p0}")
-    public ApiResponse addDesiredAttribute(@Valid @RequestBody AddDeviceDesiredAttributeRequest request) throws ApiException {
-        return ApiResponse.success(this.desiredAttributeService.addDesiredAttribute(request));
+            activateData = "{#p1}")
+    public ApiResponse addDesiredAttribute(@PathVariable("deviceId") String deviceId,
+                                           @PathVariable("moduleId") String moduleId,
+                                           @Valid @RequestBody AddDeviceDesiredAttributeRequest request) throws ApiException {
+        return ApiResponse.success(this.desiredAttributeService.addDesiredAttribute(deviceId, moduleId, request));
     }
 }

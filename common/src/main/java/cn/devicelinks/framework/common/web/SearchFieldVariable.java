@@ -65,6 +65,7 @@ public enum SearchFieldVariable {
     ATTRIBUTE_PARENT_ID("pid", "属性上级ID"),
     ATTRIBUTE_DATA_TYPE("dataType", "数据类型"),
     ATTRIBUTE_IDENTIFIER("identifier", "属性标识符"),
+    ATTRIBUTE_WRITABLE("writable", "是否可写"),
 
     PRODUCT_ID("productId", "产品ID"),
     PRODUCT_NAME("name", "产品名称"),
