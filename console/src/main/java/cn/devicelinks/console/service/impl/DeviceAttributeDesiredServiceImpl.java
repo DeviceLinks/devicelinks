@@ -155,7 +155,7 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     public DeviceAttributeDesired updateDesiredAttribute(String desiredAttributeId, UpdateDeviceDesiredAttributeRequest request) {
         DeviceAttributeDesired desiredAttribute = this.selectById(desiredAttributeId);
         if (desiredAttribute == null || desiredAttribute.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DESIRED_NOT_FOUND, desiredAttributeId);
+            throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND, desiredAttributeId);
         }
 
         AttributeKnowType knowType = StringUtils.hasText(desiredAttribute.getAttributeId()) ? AttributeKnowType.Known : AttributeKnowType.Unknown;
@@ -182,10 +182,10 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     public Attribute extractUnknownAttribute(String desiredAttributeId, ExtractUnknownDesiredAttributeRequest request) {
         DeviceAttributeDesired desiredAttribute = this.selectById(desiredAttributeId);
         if (desiredAttribute == null || desiredAttribute.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DESIRED_NOT_FOUND, desiredAttributeId);
+            throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND, desiredAttributeId);
         }
         if (!ObjectUtils.isEmpty(desiredAttribute.getAttributeId())) {
-            throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DESIRED_NOT_UNKNOWN_UNEXPECTED, desiredAttribute.getIdentifier());
+            throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN, desiredAttribute.getIdentifier());
         }
         FunctionModule functionModule = this.functionModuleService.selectById(desiredAttribute.getModuleId());
         if (functionModule == null || functionModule.isDeleted()) {
@@ -228,7 +228,7 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     private Attribute validate(AttributeKnowType knowType, String desiredValue,
                                String attributeId, String identifier, String dataType) {
         if (ObjectUtils.isEmpty(desiredValue)) {
-            throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
+            throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID);
         }
 
         AttributeDataType attributeDataType = !ObjectUtils.isEmpty(dataType) ? AttributeDataType.valueOf(dataType) : null;
@@ -250,7 +250,7 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
             if (AttributeDataType.ENUM == attribute.getDataType()) {
                 Map<String, String> enumMap = attribute.getAddition().getValueMap();
                 if (!enumMap.containsKey(desiredValue)) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
+                    throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID);
                 }
             }
             attributeDataType = attribute.getDataType();
@@ -301,7 +301,7 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
                     break;
             }
         } catch (Exception e) {
-            throw new ApiException(StatusCodeConstants.INVALID_DESIRED_VALUE);
+            throw new ApiException(StatusCodeConstants.DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID);
         }
         return attribute;
     }

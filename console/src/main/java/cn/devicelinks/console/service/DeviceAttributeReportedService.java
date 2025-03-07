@@ -2,6 +2,8 @@ package cn.devicelinks.console.service;
 
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.request.ExtractUnknownReportedAttributeRequest;
+import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -22,4 +24,13 @@ public interface DeviceAttributeReportedService extends BaseService<DeviceAttrib
      * @return 设备上报属性分页对象
      */
     PageResult<DeviceAttributeReportedDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery);
+
+    /**
+     * 提取未知上报属性
+     *
+     * @param reportAttributeId 上报属性ID {@link DeviceAttributeReported#getId()}
+     * @param request           提取未知上报属性的请求参数
+     * @return 存储后的已知属性 {@link Attribute}
+     */
+    Attribute extractUnknownAttribute(String reportAttributeId, ExtractUnknownReportedAttributeRequest request);
 }
