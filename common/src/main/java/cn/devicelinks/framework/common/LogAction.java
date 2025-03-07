@@ -39,7 +39,8 @@ public enum LogAction {
     Bind("绑定"),
     Unbind("解绑"),
     Publish("发布"),
-    RegenerateKeySecret("重新生成KeySecret");
+    RegenerateKeySecret("重新生成KeySecret"),
+    Extract("提取");
 
     private final String description;
 

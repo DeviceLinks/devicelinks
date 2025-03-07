@@ -3,6 +3,7 @@ package cn.devicelinks.console.web.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @since 1.0
  */
 @Data
+@Accessors(chain = true)
 public class AddAttributeRequest {
 
     @NotEmpty(message = "产品ID不可以为空")

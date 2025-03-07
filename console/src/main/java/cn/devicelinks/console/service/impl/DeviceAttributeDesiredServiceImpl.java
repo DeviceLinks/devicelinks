@@ -4,8 +4,7 @@ import cn.devicelinks.console.service.*;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
-import cn.devicelinks.console.web.request.UpdateDeviceDesiredAttributeRequest;
+import cn.devicelinks.console.web.request.*;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.AttributeKnowType;
 import cn.devicelinks.framework.common.Constants;
@@ -17,6 +16,7 @@ import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDesiredDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceAttributeDesiredRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -59,6 +60,17 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
 
     public DeviceAttributeDesiredServiceImpl(DeviceAttributeDesiredRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public DeviceAttributeDesired selectByIdentifier(String deviceId, String moduleId, String identifier) {
+        // @formatter:off
+        return this.repository.selectOne(
+                DEVICE_ATTRIBUTE_DESIRED.DEVICE_ID.eq(deviceId),
+                DEVICE_ATTRIBUTE_DESIRED.MODULE_ID.eq(moduleId),
+                DEVICE_ATTRIBUTE_DESIRED.IDENTIFIER.eq(identifier),
+                DEVICE_ATTRIBUTE_DESIRED.DELETED.eq(Boolean.FALSE));
+        // @formatter:on
     }
 
     @Override
@@ -167,14 +179,41 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
     }
 
     @Override
-    public DeviceAttributeDesired selectByIdentifier(String deviceId, String moduleId, String identifier) {
+    public Attribute extractUnknownAttribute(String desiredAttributeId, ExtractUnknownDesiredAttributeRequest request) {
+        DeviceAttributeDesired desiredAttribute = this.selectById(desiredAttributeId);
+        if (desiredAttribute == null || desiredAttribute.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DESIRED_NOT_FOUND, desiredAttributeId);
+        }
+        if (!ObjectUtils.isEmpty(desiredAttribute.getAttributeId())) {
+            throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DESIRED_NOT_UNKNOWN_UNEXPECTED, desiredAttribute.getIdentifier());
+        }
+        FunctionModule functionModule = this.functionModuleService.selectById(desiredAttribute.getModuleId());
+        if (functionModule == null || functionModule.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, desiredAttribute.getModuleId());
+        }
         // @formatter:off
-        return this.repository.selectOne(
-                DEVICE_ATTRIBUTE_DESIRED.DEVICE_ID.eq(deviceId),
-                DEVICE_ATTRIBUTE_DESIRED.MODULE_ID.eq(moduleId),
-                DEVICE_ATTRIBUTE_DESIRED.IDENTIFIER.eq(identifier),
-                DEVICE_ATTRIBUTE_DESIRED.DELETED.eq(Boolean.FALSE));
+        AddAttributeRequest addAttributeRequest = new AddAttributeRequest()
+                .setProductId(functionModule.getProductId())
+                .setModuleId(functionModule.getId())
+                .setInfo(new AttributeInfoRequest()
+                        .setName(request.getAttributeName())
+                        .setIdentifier(desiredAttribute.getIdentifier())
+                        .setDataType(desiredAttribute.getDataType().toString())
+                        .setAddition(request.getAddition())
+                        .setWritable(Boolean.TRUE));
+
+        AttributeDTO attributeDTO = this.attributeService.addAttribute(addAttributeRequest);
+
+        // After the unknown attribute is extracted as a known attribute,
+        // set the attribute_id of the expected attribute to the known attribute id
+        desiredAttribute.setAttributeId(attributeDTO.getId());
+
+        this.repository.update(
+                List.of(DEVICE_ATTRIBUTE_DESIRED.ATTRIBUTE_ID.set(attributeDTO.getId())),
+                DEVICE_ATTRIBUTE_DESIRED.ID.eq(desiredAttribute.getId()));
+
         // @formatter:on
+        return attributeDTO;
     }
 
     /**

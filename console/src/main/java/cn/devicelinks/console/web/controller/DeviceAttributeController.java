@@ -5,6 +5,7 @@ import cn.devicelinks.console.service.DeviceAttributeReportedService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
+import cn.devicelinks.console.web.request.ExtractUnknownDesiredAttributeRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceDesiredAttributeRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
@@ -74,7 +75,7 @@ public class DeviceAttributeController {
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.DeviceDesiredAttribute,
             objectId = "{#executionSucceed ? #result.data.id : #p2.identifier}",
-            msg = "{#executionSucceed ? '添加设备期望属性成功' : '添加设备期望属性失败'}",
+            msg = "{#executionSucceed ? '添加期望属性成功' : '添加期望属性失败'}",
             activateData = "{#p2}")
     public ApiResponse addDesiredAttribute(@PathVariable("deviceId") String deviceId,
                                            @PathVariable("moduleId") String moduleId,
@@ -83,7 +84,7 @@ public class DeviceAttributeController {
     }
 
     /**
-     * 更新设备期望属性
+     * 更新设备期望属性值
      *
      * @param desiredAttributeId 期望属性ID {@link DeviceAttributeDesired#getId()}
      * @param request            更新设备期望属性请求参数 {@link UpdateDeviceDesiredAttributeRequest}
@@ -95,10 +96,29 @@ public class DeviceAttributeController {
             objectType = LogObjectType.DeviceDesiredAttribute,
             objectId = "{#executionSucceed ? #result.data.id : #p0}",
             object = "{@deviceAttributeDesiredServiceImpl.selectById(#p0)}",
-            msg = "{#executionSucceed ? '更新设备期望属性成功' : '更新设备期望属性失败'}",
+            msg = "{#executionSucceed ? '更新期望属性值成功' : '更新期望属性值失败'}",
             activateData = "{#p1}")
     public ApiResponse updateDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
                                               @Valid @RequestBody UpdateDeviceDesiredAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.updateDesiredAttribute(desiredAttributeId, request));
+    }
+
+    /**
+     * 将未知的期望属性提取成已知属性
+     *
+     * @param desiredAttributeId 期望属性ID {@link DeviceAttributeDesired#getAttributeId()}
+     * @param request            提取期望属性请求参数 {@link ExtractUnknownDesiredAttributeRequest}
+     * @return 提取后的属性 {@link cn.devicelinks.framework.common.pojos.Attribute}
+     * @throws ApiException 遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/desired/attribute/{desiredAttributeId}/extract")
+    @OperationLog(action = LogAction.Extract,
+            objectType = LogObjectType.DeviceDesiredAttribute,
+            objectId = "{#executionSucceed ? #result.data.id : #p0}",
+            msg = "{#executionSucceed ? '提取未知期望属性成功' : '提取未知期望属性失败'}",
+            activateData = "{#p1}")
+    public ApiResponse extractUnknownDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
+                                                      @Valid @RequestBody ExtractUnknownDesiredAttributeRequest request) throws ApiException {
+        return ApiResponse.success(this.desiredAttributeService.extractUnknownAttribute(desiredAttributeId, request));
     }
 }
