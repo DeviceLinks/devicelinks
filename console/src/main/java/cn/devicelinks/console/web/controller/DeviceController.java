@@ -18,6 +18,7 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -49,6 +50,18 @@ public class DeviceController {
     public ApiResponse getDeviceListByPageable(@Valid PaginationQuery paginationQuery,
                                                @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.deviceService.selectByPageable(paginationQuery, searchFieldQuery));
+    }
+
+    /**
+     * 获取设备详情
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return 设备详情数据传输实体 {@link DeviceDTO}
+     * @throws ApiException 抛出处理过程中遇到的异常
+     */
+    @GetMapping(value = "/{deviceId}")
+    public ApiResponse getDeviceInfo(@PathVariable("deviceId") String deviceId) throws ApiException {
+        return ApiResponse.success(this.deviceService.selectByDeviceId(deviceId));
     }
 
     /**

@@ -24,6 +24,7 @@ import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
 
 import java.util.List;
 
@@ -50,6 +51,14 @@ public interface DeviceService extends BaseService<Device, String> {
      * @return 设备列表 {@link Device}
      */
     List<Device> selectByProductId(String productId);
+
+    /**
+     * 根据设备ID查询设备详情
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return {@link DeviceDTO}
+     */
+    DeviceDTO selectByDeviceId(String deviceId);
 
     /**
      * 添加一个新的设备

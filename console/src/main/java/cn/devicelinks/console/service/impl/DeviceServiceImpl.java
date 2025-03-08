@@ -19,25 +19,27 @@ package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.service.*;
 import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.converter.DeviceConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
-import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.common.pojos.SysDepartment;
+import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
 
@@ -58,6 +60,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     private DeviceAuthenticationService deviceAuthenticationService;
     @Autowired
     private DeviceShadowService deviceShadowService;
+    @Autowired
+    private DeviceOtaService deviceOtaService;
 
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
@@ -75,6 +79,28 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
+    public DeviceDTO selectByDeviceId(String deviceId) {
+        Device device = this.selectById(deviceId);
+        if (device == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+
+        DeviceDTO deviceDTO = DeviceConverter.INSTANCE.from(device);
+
+        DeviceAuthentication deviceAuthentication = this.deviceAuthenticationService.selectByDeviceId(deviceId);
+        if (deviceAuthentication == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
+        }
+        deviceDTO.setAuthenticationMethod(deviceAuthentication.getAuthenticationMethod());
+        List<DeviceFunctionModuleOtaDTO> deviceOtaList = this.deviceOtaService.selectByDeviceId(deviceId);
+        if (!ObjectUtils.isEmpty(deviceOtaList)) {
+            deviceDTO.setModuleVersion(deviceOtaList.stream()
+                    .collect(Collectors.toMap(DeviceFunctionModuleOtaDTO::getModuleIdentifier, DeviceFunctionModuleOtaDTO::getOtaVersion)));
+        }
+        return deviceDTO;
+    }
+
+    @Override
     public Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
         // check request data
         this.checkData(device, false);
@@ -89,7 +115,6 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         this.deviceShadowService.initialShadow(device.getId());
         return device;
     }
-
 
 
     @Override

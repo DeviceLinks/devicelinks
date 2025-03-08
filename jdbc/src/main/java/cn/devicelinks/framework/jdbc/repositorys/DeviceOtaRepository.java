@@ -19,6 +19,9 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.DeviceOta;
 import cn.devicelinks.framework.jdbc.core.Repository;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
+
+import java.util.List;
 
 /**
  * The {@link DeviceOta} Repository
@@ -27,5 +30,11 @@ import cn.devicelinks.framework.jdbc.core.Repository;
  * @since 1.0
  */
 public interface DeviceOtaRepository extends Repository<DeviceOta, String> {
-	//...
+    /**
+     * 查询指定设备各个功能模块的ota版本
+     *
+     * @param deviceId 设备ID {@link DeviceOta#getDeviceId()}
+     * @return {@link DeviceFunctionModuleOtaDTO}
+     */
+    List<DeviceFunctionModuleOtaDTO> selectByDeviceId(String deviceId);
 }
