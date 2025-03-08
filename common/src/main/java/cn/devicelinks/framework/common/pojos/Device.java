@@ -47,6 +47,7 @@ public class Device implements Serializable {
     private String name;
     private DeviceStatus status;
     private List<String> tags;
+    private String ipAddress;
     private LocalDateTime activationTime;
     private LocalDateTime lastOnlineTime;
     private LocalDateTime lastReportTime;

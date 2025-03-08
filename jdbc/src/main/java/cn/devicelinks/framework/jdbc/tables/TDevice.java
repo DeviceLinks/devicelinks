@@ -51,6 +51,7 @@ public class TDevice extends TableImpl {
     public final Column NAME = Column.withName("name").build();
     public final Column STATUS = Column.withName("status").defaultValue(() -> DeviceStatus.NotActivate).typeMapper(ColumnValueMappers.DEVICE_STATUS).build();
     public final Column TAGS = Column.withName("tags").typeMapper(ColumnValueMappers.STRING_JOINER).build();
+    public final Column IP_ADDRESS = Column.withName("ip_address").build();
     public final Column ACTIVATION_TIME = Column.withName("activation_time").localDateTimeValue().build();
     public final Column LAST_ONLINE_TIME = Column.withName("last_online_time").localDateTimeValue().build();
     public final Column LAST_REPORT_TIME = Column.withName("last_report_time").localDateTimeValue().build();
