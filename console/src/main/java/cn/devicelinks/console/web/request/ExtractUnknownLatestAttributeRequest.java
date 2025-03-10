@@ -9,13 +9,13 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * 提取未知上报属性请求参数
+ * 提取未知属性请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
-public class ExtractUnknownReportedAttributeRequest {
+public class ExtractUnknownLatestAttributeRequest {
 
     @NotEmpty(message = "属性名称不可以为空")
     @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "属性名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")

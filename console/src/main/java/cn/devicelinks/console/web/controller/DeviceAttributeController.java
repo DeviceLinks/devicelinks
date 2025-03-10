@@ -1,12 +1,12 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.service.DeviceAttributeDesiredService;
-import cn.devicelinks.console.service.DeviceAttributeReportedService;
+import cn.devicelinks.console.service.DeviceAttributeLatestService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
 import cn.devicelinks.console.web.request.ExtractUnknownDesiredAttributeRequest;
-import cn.devicelinks.console.web.request.ExtractUnknownReportedAttributeRequest;
+import cn.devicelinks.console.web.request.ExtractUnknownLatestAttributeRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceDesiredAttributeRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
@@ -32,23 +32,23 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class DeviceAttributeController {
 
-    private DeviceAttributeReportedService reportedAttributeService;
+    private DeviceAttributeLatestService latestAttributeService;
 
     private DeviceAttributeDesiredService desiredAttributeService;
 
     /**
-     * 分页查询设备上报的属性列表
+     * 分页查询设备的属性列表
      *
      * @param paginationQuery  分页查询对象 {@link PaginationQuery}
      * @param searchFieldQuery 检索字段对象 {@link SearchFieldQuery}
-     * @return 设备上报的属性列表
+     * @return 设备的属性列表
      * @throws ApiException 查询过程中遇到的业务异常
      */
-    @PostMapping(value = "/reported/attribute/filter")
-    @SearchModule(module = SearchFieldModuleIdentifier.DeviceReportedAttribute)
+    @PostMapping(value = "/attribute/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.DeviceAttribute)
     public ApiResponse getReportedAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                       @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
-        return ApiResponse.success(reportedAttributeService.getByPageable(searchFieldQuery, paginationQuery));
+        return ApiResponse.success(latestAttributeService.getByPageable(searchFieldQuery, paginationQuery));
     }
 
     /**
@@ -125,22 +125,22 @@ public class DeviceAttributeController {
     }
 
     /**
-     * 将未知的上报属性提取成已知属性
+     * 将未知的属性提取成已知属性
      *
-     * @param reportedAttributeId 上报属性ID {@link DeviceAttributeLatest#getId()}
-     * @param request             提取上报属性请求参数 {@link ExtractUnknownReportedAttributeRequest}
+     * @param deviceAttributeId 属性ID {@link DeviceAttributeLatest#getId()}
+     * @param request             提取属性请求参数 {@link ExtractUnknownLatestAttributeRequest}
      * @return 提取后的属性 {@link cn.devicelinks.framework.common.pojos.Attribute}
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @PostMapping(value = "/reported/attribute/{reportedAttributeId}/extract")
+    @PostMapping(value = "/attribute/{deviceAttributeId}/extract")
     @OperationLog(action = LogAction.Extract,
-            objectType = LogObjectType.DeviceReportedAttribute,
+            objectType = LogObjectType.DeviceAttribute,
             objectId = "{#p0}",
-            msg = "{#executionSucceed ? '提取未知上报属性成功' : '提取未知上报属性失败'}",
+            msg = "{#executionSucceed ? '提取未知属性成功' : '提取未知属性失败'}",
             activateData = "{#p1}")
-    public ApiResponse extractUnknownReportedAttribute(@PathVariable("reportedAttributeId") String reportedAttributeId,
-                                                       @Valid @RequestBody ExtractUnknownReportedAttributeRequest request) throws ApiException {
-        return ApiResponse.success(this.reportedAttributeService.extractUnknownAttribute(reportedAttributeId, request));
+    public ApiResponse extractUnknownReportedAttribute(@PathVariable("deviceAttributeId") String deviceAttributeId,
+                                                       @Valid @RequestBody ExtractUnknownLatestAttributeRequest request) throws ApiException {
+        return ApiResponse.success(this.latestAttributeService.extractUnknownAttribute(deviceAttributeId, request));
     }
 
     /**

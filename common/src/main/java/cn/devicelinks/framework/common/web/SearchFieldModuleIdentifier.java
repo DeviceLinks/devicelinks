@@ -62,9 +62,9 @@ public enum SearchFieldModuleIdentifier {
      */
     Telemetry("遥测数据"),
     /**
-     * 设备上报属性
+     * 设备属性
      */
-    DeviceReportedAttribute("设备上报属性"),
+    DeviceAttribute("设备属性"),
     /**
      * 设备期望属性
      */

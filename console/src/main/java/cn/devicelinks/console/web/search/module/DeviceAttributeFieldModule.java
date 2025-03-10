@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 设备上报属性检索字段定义
+ * 设备属性检索字段定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Component
-public class DeviceAttributeReportedFieldModule implements SearchFieldModule {
+public class DeviceAttributeFieldModule implements SearchFieldModule {
 
     SearchField ID = SearchField.of(SearchFieldVariable.ID)
             .setValueType(SearchFieldValueType.STRING)
@@ -77,7 +77,7 @@ public class DeviceAttributeReportedFieldModule implements SearchFieldModule {
 
     @Override
     public SearchFieldModuleIdentifier supportIdentifier() {
-        return SearchFieldModuleIdentifier.DeviceReportedAttribute;
+        return SearchFieldModuleIdentifier.DeviceAttribute;
     }
 
     @Override

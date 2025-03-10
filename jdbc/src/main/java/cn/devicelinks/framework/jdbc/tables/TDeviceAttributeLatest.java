@@ -17,12 +17,12 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
-public class TDeviceAttributeReported extends TableImpl {
+public class TDeviceAttributeLatest extends TableImpl {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TDeviceAttributeReported DEVICE_ATTRIBUTE_REPORTED = new TDeviceAttributeReported("device_attribute_reported");
+    public static final TDeviceAttributeLatest DEVICE_ATTRIBUTE_LATEST = new TDeviceAttributeLatest("device_attribute_latest");
 
-    private TDeviceAttributeReported(String tableName) {
+    private TDeviceAttributeLatest(String tableName) {
         super(tableName);
     }
 

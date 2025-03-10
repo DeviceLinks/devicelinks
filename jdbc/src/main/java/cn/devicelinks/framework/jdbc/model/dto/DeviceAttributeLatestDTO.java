@@ -7,14 +7,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 设备上报属性数据转换类
+ * 设备属性数据转换类
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DeviceAttributeReportedDTO extends DeviceAttributeLatest {
+public class DeviceAttributeLatestDTO extends DeviceAttributeLatest {
 
     private String attributeName;
 
