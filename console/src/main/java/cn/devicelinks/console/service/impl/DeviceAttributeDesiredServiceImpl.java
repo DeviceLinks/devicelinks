@@ -5,10 +5,7 @@ import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.*;
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.AttributeKnowType;
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.DesiredAttributeStatus;
+import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.common.pojos.Device;
@@ -256,6 +253,9 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
             }
             if (!attribute.isWritable()) {
                 throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_WRITEABLE, attribute.getIdentifier());
+            }
+            if (attribute.getScope() == null || AttributeScope.Common != attribute.getScope()) {
+                throw new ApiException(StatusCodeConstants.ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED, attribute.getIdentifier());
             }
             // check enum value is define
             if (AttributeDataType.ENUM == attribute.getDataType()) {

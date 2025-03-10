@@ -71,6 +71,7 @@ public interface StatusCodeConstants {
     StatusCode ATTRIBUTE_ID_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_ID_CANNOT_BLANK", "属性ID不允许为空.");
     StatusCode ATTRIBUTE_IDENTIFIER_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_IDENTIFIER_CANNOT_BLANK", "属性标识符不允许为空.");
     StatusCode ATTRIBUTE_DATA_TYPE_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_DATA_TYPE_CANNOT_BLANK", "属性数据类型不允许为空.");
+    StatusCode ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED = StatusCode.build("ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED","属性：%s，不是公共属性，不支持设置期望值.");
 
     StatusCode DEVICE_ALREADY_EXISTS = StatusCode.build("DEVICE_ALREADY_EXISTS", "设备：%s，已经存在，请检查产品下设备唯一码是否重复.");
     StatusCode DEVICE_NOT_EXISTS = StatusCode.build("DEVICE_NOT_EXISTS", "设备：%s，不存在.");
@@ -86,8 +87,8 @@ public interface StatusCodeConstants {
 
     StatusCode DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID", "无效的期望属性值，请检查与数据类型是否匹配.");
     StatusCode DEVICE_DESIRED_ATTRIBUTE_DATA_TYPE_NOT_MATCH = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_DATA_TYPE_NOT_MATCH", "期望属性：%s，与现有的数据类型不匹配.");
-    StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND","设备期望属性：%s，不存在.");
-    StatusCode DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND","设备上报属性：%s，不存在.");
-    StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN","设备期望属性：%s，不是未知属性，无法提取.");
-    StatusCode DEVICE_REPORTED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_REPORTED_ATTRIBUTE_NOT_UNKNOWN","设备上报属性：%s，不是未知属性，无法提取.");
+    StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND", "设备期望属性：%s，不存在.");
+    StatusCode DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND", "设备上报属性：%s，不存在.");
+    StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN", "设备期望属性：%s，不是未知属性，无法提取.");
+    StatusCode DEVICE_REPORTED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_REPORTED_ATTRIBUTE_NOT_UNKNOWN", "设备上报属性：%s，不是未知属性，无法提取.");
 }
