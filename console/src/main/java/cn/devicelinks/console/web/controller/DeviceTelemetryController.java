@@ -85,4 +85,24 @@ public class DeviceTelemetryController {
                                        @PathVariable("telemetryId") String telemetryId) throws ApiException {
         return ApiResponse.success(this.telemetryService.deleteTelemetry(deviceId, telemetryId));
     }
+
+    /**
+     * 更新遥测数据是否在设备状态展示
+     *
+     * @param deviceId    设备ID {@link DeviceTelemetry#getDeviceId()}
+     * @param telemetryId 遥测数据ID {@link DeviceTelemetry#getId()}
+     * @return 更新显示状态的遥测数据
+     * @throws ApiException 处理过程中遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/{deviceId}/telemetry/{telemetryId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceTelemetry,
+            objectId = "{#p1}",
+            msg = "{#executionSucceed? '更新遥测数据在设备状态显示成功' : '更新遥测数据在设备状态显示失败'}",
+            activateData = "{#p2}")
+    public ApiResponse updateDisplayInDeviceStatus(@PathVariable("deviceId") String deviceId,
+                                                   @PathVariable("telemetryId") String telemetryId,
+                                                   @RequestParam("display") boolean display) throws ApiException {
+        return ApiResponse.success(this.telemetryService.updateDisplayInDeviceStatus(deviceId, telemetryId, display));
+    }
 }

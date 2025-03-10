@@ -40,4 +40,13 @@ public interface DeviceTelemetryService extends BaseService<DeviceTelemetry, Str
      * @return 已删除的遥测数据 {@link DeviceTelemetry}
      */
     DeviceTelemetry deleteTelemetry(String deviceId, String telemetryId);
+
+    /**
+     * 更新遥测数据是否在设备状态页面展示
+     *
+     * @param deviceId    设备ID {@link DeviceTelemetry#getDeviceId()}
+     * @param telemetryId 遥测数据ID {@link DeviceTelemetry#getId()}
+     * @return {@link DeviceTelemetry}
+     */
+    DeviceTelemetry updateDisplayInDeviceStatus(String deviceId, String telemetryId, boolean display);
 }

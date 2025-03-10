@@ -87,6 +87,20 @@ public class DeviceTelemetryServiceImpl extends BaseServiceImpl<DeviceTelemetry,
         return telemetry;
     }
 
+    @Override
+    public DeviceTelemetry updateDisplayInDeviceStatus(String deviceId, String telemetryId, boolean display) {
+        DeviceTelemetry telemetry = this.repository.selectOne(
+                DEVICE_TELEMETRY.DEVICE_ID.eq(deviceId),
+                DEVICE_TELEMETRY.ID.eq(telemetryId),
+                DEVICE_TELEMETRY.DELETED.eq(Boolean.FALSE));
+        if (telemetry == null) {
+            throw new ApiException(StatusCodeConstants.TELEMETRY_NOT_EXISTS, telemetryId);
+        }
+        telemetry.setDisplayOnStatusPage(display);
+        this.repository.update(telemetry);
+        return telemetry;
+    }
+
     private TelemetryAddition setTelemetryDataType(TelemetryAddition telemetryAddition, AttributeDataType dataType) {
         telemetryAddition = telemetryAddition == null ? new TelemetryAddition() : telemetryAddition;
         TelemetryAddition.TelemetryMetadata telemetryMetadata =
