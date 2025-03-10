@@ -34,7 +34,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-public class Telemetry implements Serializable {
+public class DeviceTelemetry implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
@@ -46,5 +46,6 @@ public class Telemetry implements Serializable {
     private TelemetryAddition addition;
     private boolean displayOnStatusPage;
     private Long lastUpdateTimestamp;
+    private boolean deleted;
     private LocalDateTime createTime;
 }

@@ -21,24 +21,24 @@ import cn.devicelinks.framework.common.DeviceLinksVersion;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
-import cn.devicelinks.framework.common.pojos.Telemetry;
+import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * The {@link Telemetry} TableImpl
+ * The {@link DeviceTelemetry} TableImpl
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class TTelemetry extends TableImpl {
+public class TDeviceTelemetry extends TableImpl {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TTelemetry TELEMETRY = new TTelemetry("telemetry");
+    public static final TDeviceTelemetry DEVICE_TELEMETRY = new TDeviceTelemetry("device_telemetry");
 
-    private TTelemetry(String tableName) {
+    private TDeviceTelemetry(String tableName) {
         super(tableName);
     }
 
@@ -50,10 +50,11 @@ public class TTelemetry extends TableImpl {
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.TELEMETRY_ADDITION).build();
     public final Column DISPLAY_ON_STATUS_PAGE = Column.withName("display_on_status_page").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").longValue().build();
+    public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, METRIC_TYPE, METRIC_KEY, METRIC_VALUE, ADDITION, DISPLAY_ON_STATUS_PAGE, LAST_UPDATE_TIMESTAMP, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, METRIC_TYPE, METRIC_KEY, METRIC_VALUE, ADDITION, DISPLAY_ON_STATUS_PAGE, LAST_UPDATE_TIMESTAMP, DELETED, CREATE_TIME);
     }
 }

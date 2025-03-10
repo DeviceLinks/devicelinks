@@ -18,7 +18,7 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
-import cn.devicelinks.framework.common.pojos.Telemetry;
+import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -30,22 +30,22 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TTelemetry.TELEMETRY;
+import static cn.devicelinks.framework.jdbc.tables.TDeviceTelemetry.DEVICE_TELEMETRY;
 
 /**
- * The {@link Telemetry} JDBC Repository
+ * The {@link DeviceTelemetry} JDBC Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @RegisterBean
-public class DeviceTelemetryJdbcRepository extends JdbcRepository<Telemetry, String> implements TelemetryRepository {
+public class DeviceTelemetryJdbcRepository extends JdbcRepository<DeviceTelemetry, String> implements DeviceTelemetryRepository {
     public DeviceTelemetryJdbcRepository(JdbcOperations jdbcOperations) {
-        super(TELEMETRY, jdbcOperations);
+        super(DEVICE_TELEMETRY, jdbcOperations);
     }
 
     @Override
-    public PageResult<Telemetry> getTelemetryByPage(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
+    public PageResult<DeviceTelemetry> getTelemetryByPage(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition) {
         // @formatter:off
         Condition[] conditions = this.searchFieldConditionToConditionArray(searchFieldConditionList);
         FusionCondition fusionCondition = FusionCondition

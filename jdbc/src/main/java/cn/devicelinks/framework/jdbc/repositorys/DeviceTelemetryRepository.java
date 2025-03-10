@@ -17,7 +17,7 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.pojos.Telemetry;
+import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.core.Repository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -27,12 +27,12 @@ import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import java.util.List;
 
 /**
- * The {@link Telemetry} Repository
+ * The {@link DeviceTelemetry} Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public interface TelemetryRepository extends Repository<Telemetry, String> {
+public interface DeviceTelemetryRepository extends Repository<DeviceTelemetry, String> {
     /**
      * 分页获取遥测数据
      *
@@ -41,7 +41,7 @@ public interface TelemetryRepository extends Repository<Telemetry, String> {
      * @param sortCondition            排序条件
      * @return 遥测数据列表分页对象
      */
-    PageResult<Telemetry> getTelemetryByPage(List<SearchFieldCondition> searchFieldConditionList,
-                                             PageQuery pageQuery,
-                                             SortCondition sortCondition);
+    PageResult<DeviceTelemetry> getTelemetryByPage(List<SearchFieldCondition> searchFieldConditionList,
+                                                   PageQuery pageQuery,
+                                                   SortCondition sortCondition);
 }

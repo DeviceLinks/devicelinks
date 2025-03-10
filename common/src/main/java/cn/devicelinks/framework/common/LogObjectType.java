@@ -38,7 +38,8 @@ public enum LogObjectType {
     GlobalSetting("系统参数"),
     Attribute("属性"),
     DeviceDesiredAttribute("设备期望属性"),
-    DeviceAttribute("设备属性");
+    DeviceAttribute("设备属性"),
+    DeviceTelemetry("设备遥测数据");
 
     private final String description;
 

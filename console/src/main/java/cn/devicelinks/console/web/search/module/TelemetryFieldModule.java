@@ -68,7 +68,7 @@ public class TelemetryFieldModule implements SearchFieldModule {
 
     @Override
     public SearchFieldModuleIdentifier supportIdentifier() {
-        return SearchFieldModuleIdentifier.Telemetry;
+        return SearchFieldModuleIdentifier.DeviceTelemetry;
     }
 
     @Override
