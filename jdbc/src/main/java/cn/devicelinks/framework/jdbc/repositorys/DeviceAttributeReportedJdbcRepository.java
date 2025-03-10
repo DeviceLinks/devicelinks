@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
@@ -26,7 +26,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeReported.DEVI
  * @since 1.0
  */
 @RegisterBean
-public class DeviceAttributeReportedJdbcRepository extends JdbcRepository<DeviceAttributeReported, String> implements DeviceAttributeReportedRepository {
+public class DeviceAttributeReportedJdbcRepository extends JdbcRepository<DeviceAttributeLatest, String> implements DeviceAttributeReportedRepository {
     // @formatter:off
     private static final String SELECT_ATTRIBUTE_REPORTED_DTO_SQL = "select dar.*," +
             " a.name attribute_name," +

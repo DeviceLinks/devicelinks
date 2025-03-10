@@ -1,5 +1,6 @@
 package cn.devicelinks.framework.common.pojos;
 
+import cn.devicelinks.framework.common.AttributeValueSource;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -9,14 +10,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 设备上报属性
+ * 设备属性最新值
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
 @Accessors(chain = true)
-public class DeviceAttributeReported implements Serializable {
+public class DeviceAttributeLatest implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
@@ -25,8 +26,10 @@ public class DeviceAttributeReported implements Serializable {
     private String moduleId;
     private String attributeId;
     private String identifier;
-    private Object reportValue;
+    private Object value;
+    private AttributeValueSource valueSource;
     private int version;
-    private LocalDateTime lastReportTime;
+    private boolean displayOnStatusPage;
+    private LocalDateTime lastUpdateTime;
     private LocalDateTime createTime;
 }

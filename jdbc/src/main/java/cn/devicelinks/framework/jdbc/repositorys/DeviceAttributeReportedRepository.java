@@ -1,6 +1,6 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
 import cn.devicelinks.framework.jdbc.core.Repository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface DeviceAttributeReportedRepository extends Repository<DeviceAttributeReported, String> {
+public interface DeviceAttributeReportedRepository extends Repository<DeviceAttributeLatest, String> {
     /**
      * 分页获取设备上报属性
      *

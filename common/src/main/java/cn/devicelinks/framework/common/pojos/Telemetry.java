@@ -44,6 +44,7 @@ public class Telemetry implements Serializable {
     private String metricKey;
     private Object metricValue;
     private TelemetryAddition addition;
+    private boolean displayOnStatusPage;
     private Long lastUpdateTimestamp;
     private LocalDateTime createTime;
 }

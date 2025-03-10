@@ -48,11 +48,12 @@ public class TTelemetry extends TableImpl {
     public final Column METRIC_KEY = Column.withName("metric_key").build();
     public final Column METRIC_VALUE = Column.withName("metric_value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.TELEMETRY_ADDITION).build();
+    public final Column DISPLAY_ON_STATUS_PAGE = Column.withName("display_on_status_page").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column LAST_UPDATE_TIMESTAMP = Column.withName("last_update_timestamp").longValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, METRIC_TYPE, METRIC_KEY, METRIC_VALUE, ADDITION, LAST_UPDATE_TIMESTAMP, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, METRIC_TYPE, METRIC_KEY, METRIC_VALUE, ADDITION, DISPLAY_ON_STATUS_PAGE, LAST_UPDATE_TIMESTAMP, CREATE_TIME);
     }
 }

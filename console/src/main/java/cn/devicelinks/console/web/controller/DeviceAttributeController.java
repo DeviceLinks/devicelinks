@@ -15,7 +15,7 @@ import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -127,7 +127,7 @@ public class DeviceAttributeController {
     /**
      * 将未知的上报属性提取成已知属性
      *
-     * @param reportedAttributeId 上报属性ID {@link DeviceAttributeReported#getId()}
+     * @param reportedAttributeId 上报属性ID {@link DeviceAttributeLatest#getId()}
      * @param request             提取上报属性请求参数 {@link ExtractUnknownReportedAttributeRequest}
      * @return 提取后的属性 {@link cn.devicelinks.framework.common.pojos.Attribute}
      * @throws ApiException 遇到的业务逻辑异常

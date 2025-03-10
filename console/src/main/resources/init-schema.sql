@@ -1,25 +1,28 @@
 create table attribute
 (
-    id          varchar(32)                        not null comment 'ID'
+    id          varchar(24)                           not null comment 'ID'
         primary key,
-    product_id  varchar(32)                        not null comment '产品ID，关联product#id',
-    module_id   varchar(32)                        not null comment '功能模块ID，关联function_module#id',
-    pid         varchar(32)                        null comment '上级ID，关联data_model#id',
-    name        varchar(30)                        not null comment '数据模型名称',
-    identifier  varchar(50)                        not null comment '标识符',
-    data_type   varchar(10)                        not null comment '数据类型，INT32：整数型；LONG64：长整数型；FLOAT：单精度浮点型；DOUBLE：双精度浮点型；ENUM：枚举型；BOOLEAN：布尔型；STRING：字符串；DATE：日期；DATETIME：日期时间；TIME：时间；TIMESTAMP：时间戳；JSON：json对象类型；ARRAY：数组',
-    addition    json                               null comment '附加信息，不同数据类型附加信息不同',
-    enabled     bit      default b'1'              not null comment '是否启用',
-    deleted     bit      default b'0'              not null comment '是否删除',
-    create_by   varchar(32)                        null comment '创建人ID，关联sys_user#id',
-    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-    description varchar(100)                       null comment '描述'
+    product_id  varchar(32)                           not null comment '产品ID，关联product#id',
+    module_id   varchar(32)                           not null comment '功能模块ID，关联function_module#id',
+    pid         varchar(32)                           null comment '上级ID，关联data_model#id',
+    name        varchar(30)                           not null comment '数据模型名称',
+    identifier  varchar(50)                           not null comment '标识符',
+    data_type   varchar(10)                           not null comment '数据类型，INT32：整数型；DOUBLE：双精度浮点型；ENUM：枚举型；BOOLEAN：布尔型；STRING：字符串；DATE：日期；DATETIME：日期时间；TIME：时间；TIMESTAMP：时间戳；JSON：json对象类型；ARRAY：数组',
+    addition    json                                  null comment '附加信息，不同数据类型附加信息不同',
+    writable    bit         default b'1'              not null comment '是否可写（决定是否有期望值）',
+    `system`    bit         default b'0'              not null comment '是否为系统内置属性',
+    scope       varchar(10) default 'Common'          not null comment '属性所属范围，Server：服务端属性；Device：设备端属性；Common：公共属性（支持期望属性设置）',
+    enabled     bit         default b'1'              not null comment '是否启用',
+    deleted     bit         default b'0'              not null comment '是否删除',
+    create_by   varchar(32)                           null comment '创建人ID，关联sys_user#id',
+    create_time datetime    default CURRENT_TIMESTAMP not null comment '创建时间',
+    description varchar(100)                          null comment '描述'
 )
     comment '属性';
 
 create table attribute_unit
 (
-    id          varchar(32)                        not null comment 'ID'
+    id          varchar(24)                        not null comment 'ID'
         primary key,
     name        varchar(20)                        not null comment '名称',
     symbol      varchar(20)                        not null comment '单位',
@@ -31,7 +34,7 @@ create table attribute_unit
 
 create table device
 (
-    id               varchar(32)                        not null comment 'ID'
+    id               varchar(24)                        not null comment 'ID'
         primary key,
     department_id    varchar(32)                        not null comment '部门ID，关联sys_department#id',
     product_id       varchar(32)                        not null comment '设备产品ID，关联device_product#id',
@@ -40,6 +43,7 @@ create table device
     name             varchar(30)                        null comment '备注名称',
     status           varchar(15)                        not null comment '设备状态，未激活：NotActivate；在线：Online；离线：Offline',
     tags             varchar(200)                       null comment '设备标签，多个使用","隔开',
+    ip_address       varchar(15)                        null comment 'IP地址',
     activation_time  datetime                           null comment '激活时间',
     last_online_time datetime                           null comment '最后上线时间',
     last_report_time datetime                           null comment '最后上报时间',
@@ -52,9 +56,51 @@ create table device
 )
     comment '设备基本信息表';
 
+create table device_attribute_desired
+(
+    id               varchar(24)                           not null comment 'ID'
+        primary key,
+    device_id        varchar(24)                           not null comment '设备ID',
+    module_id        varchar(24)                           not null comment '功能模块ID',
+    attribute_id     varchar(24)                           null comment '属性ID',
+    identifier       varchar(50)                           not null comment '属性标识符',
+    data_type        varchar(20)                           not null comment '数据类型，INT32：整数型；LONG64：长整数型；FLOAT：单精度浮点型；DOUBLE：双精度浮点型；ENUM：枚举型；BOOLEAN：布尔型；STRING：字符串；DATE：日期；DATETIME：日期时间；TIME：时间；TIMESTAMP：时间戳；JSON：json对象类型；ARRAY：数组',
+    version          int         default 0                 not null comment '期望值版本',
+    desired_value    json                                  not null comment '期望属性值',
+    status           varchar(20) default 'Pending'         not null comment '状态，Pending：等待；Confirmed：已确认；Timeout：超时',
+    last_update_time timestamp                             not null comment '最后更新时间',
+    create_time      timestamp   default CURRENT_TIMESTAMP not null comment '创建时间',
+    expired_time     timestamp                             null comment '过期时间',
+    deleted          bit         default b'0'              not null comment '是否删除'
+)
+    comment '设备期望属性';
+
+create index device_attribute_desired_device_id_index
+    on device_attribute_desired (device_id);
+
+create table device_attribute_latest
+(
+    id                     varchar(24)                         not null comment 'ID'
+        primary key,
+    device_id              varchar(24)                         not null comment '设备ID',
+    module_id              varchar(24)                         not null comment '功能模块ID',
+    attribute_id           varchar(24)                         null comment '属性ID',
+    identifier             varchar(30)                         not null comment '属性标识符',
+    value                  json                                not null comment '属性值',
+    value_source           varchar(15)                         not null comment '值来源，DeviceReport：设备端上报；ServerSet：服务端设置；SystemSet：系统设置',
+    version                int       default 0                 not null comment '属性值版本号（乐观锁）',
+    display_on_status_page bit       default b'0'              not null comment '是否在设备状态页面展示',
+    last_upate_time        timestamp                           not null comment '最后更新时间',
+    create_time            timestamp default CURRENT_TIMESTAMP not null comment '首次上报时间'
+)
+    comment '设备属性最新值';
+
+create index device_attribute_latest_device_id_index
+    on device_attribute_latest (device_id);
+
 create table device_authentication
 (
-    id                    varchar(32)                        not null comment 'ID'
+    id                    varchar(24)                        not null comment 'ID'
         primary key,
     device_id             varchar(32)                        not null comment '设备ID，关联device#id',
     authentication_method varchar(20)                        null comment '鉴权方式，ProductCredential：一型一密；DeviceCredential：一机一密；AccessToken：访问令牌；MqttBasic：mqtt基础认证；X509：X.509',
@@ -67,7 +113,7 @@ create table device_authentication
 
 create table device_ota
 (
-    id                 varchar(32)                        not null comment 'ID'
+    id                 varchar(24)                        not null comment 'ID'
         primary key,
     device_id          varchar(32)                        not null comment '设备ID，关联device#id',
     module_id          varchar(30)                        not null comment '功能模块ID，关联function_module#id',
@@ -78,42 +124,22 @@ create table device_ota
 
 create table device_shadow
 (
-    id                    varchar(32)            not null comment 'ID'
+    id                    varchar(24)                           not null comment 'ID'
         primary key,
-    device_id             varchar(32)            not null comment '设备ID，关联device#id',
-    reported_state        json                   not null comment '设备上报属性状态',
-    desired_state         json                   not null comment '期望属性状态',
-    reported_version      bigint default 1       not null comment '上报版本号',
-    desired_version       bigint default 1       not null comment '期望版本号',
-    status                varchar(20)            not null comment '状态，Normal：正常，InSync：同步中；Conflict：冲突；Error：异常',
-    last_update_timestamp bigint default (now()) null comment '最后更新时间',
-    last_sync_timestamp   bigint                 null comment '最后同步时间',
-    create_time           datetime               not null comment '创建时间',
+    device_id             varchar(32)                           not null comment '设备ID，关联device#id',
+    shadow_data           json                                  null comment '影子数据',
+    status                varchar(20) default 'Consistency'     not null comment '状态，Consistency：数据一致；WaitSync：待同步；InSync：同步中；Error：同步失败',
+    last_update_timestamp datetime    default CURRENT_TIMESTAMP null comment '最后更新时间',
+    last_sync_timestamp   datetime                              null comment '最后同步时间',
+    create_time           datetime                              not null comment '创建时间',
     constraint device_shadow_device_id_uindex
         unique (device_id)
 )
     comment '设备影子';
 
-create table device_shadow_history
-(
-    id                  varchar(32)                   not null comment 'ID'
-        primary key,
-    device_id           varchar(32)                   not null comment '设备ID，关联device#id',
-    shadow_name         varchar(30) default 'default' not null comment '影子名称',
-    operation_type      varchar(30)                   not null comment '操作类型，Update：更新；ConflictResolve：解决冲突；RollBack：回滚',
-    previous_version    bigint                        not null comment '上一个版本号',
-    current_version     bigint                        not null comment '当前版本号',
-    shadow_data         json                          not null comment '完整影子文档（上报+期望）',
-    delta               json                          null comment '增量变更内容',
-    operation_timestamp bigint                        null comment '操作时间戳',
-    operation_source    varchar(20)                   not null comment '操作来源，DeviceReport：设备上报；CloudIssue：云端下发；SystemAuto：系统自动处理',
-    create_time         datetime                      not null comment '创建时间'
-)
-    comment '设备影子历史';
-
 create table function_module
 (
-    id          varchar(32)                        not null comment 'ID'
+    id          varchar(24)                        not null comment 'ID'
         primary key,
     product_id  varchar(32)                        not null comment '商品ID，关联product#id',
     name        varchar(30)                        not null comment '功能名称',
@@ -126,7 +152,7 @@ create table function_module
 
 create table function_module_template
 (
-    id          varchar(32)              not null comment 'ID'
+    id          varchar(24)              not null comment 'ID'
         primary key,
     module_id   varchar(32)              not null comment '功能模块ID，关联function_module#id',
     name        varchar(30)              not null comment '模版名称',
@@ -138,7 +164,7 @@ create table function_module_template
 
 create table notification
 (
-    id            varchar(32)                        not null comment 'ID'
+    id            varchar(24)                        not null comment 'ID'
         primary key,
     department_id varchar(32)                        not null comment '部门ID，关联sys_department#id',
     type_id       varchar(32)                        not null comment '通知类型ID，关联notification_type#id',
@@ -153,7 +179,7 @@ create table notification
 
 create table notification_receiver
 (
-    id              varchar(32)                        not null comment 'ID'
+    id              varchar(24)                        not null comment 'ID'
         primary key,
     name            varchar(30)                        not null comment '名称',
     type            varchar(20)                        not null comment '通知类型，Platform：平台',
@@ -166,7 +192,7 @@ create table notification_receiver
 
 create table notification_rule
 (
-    id              varchar(32)                        not null comment 'ID'
+    id              varchar(24)                        not null comment 'ID'
         primary key,
     name            varchar(30)                        not null comment '规则名称',
     trigger_type_id varchar(30)                        not null comment '触发通知的类型ID，关联notification_type#id',
@@ -182,7 +208,7 @@ create table notification_rule
 
 create table notification_template
 (
-    id          varchar(32)                        not null comment 'ID'
+    id          varchar(24)                        not null comment 'ID'
         primary key,
     name        varchar(30)                        not null comment '模版名称',
     type_id     varchar(20)                        not null comment '通知类型ID，关联notification_type#id',
@@ -196,7 +222,7 @@ create table notification_template
 
 create table notification_type
 (
-    id          varchar(32)                        not null comment 'ID'
+    id          varchar(24)                        not null comment 'ID'
         primary key,
     name        varchar(20)                        not null comment '通知类型名称',
     identifier  varchar(30)                        not null comment '标识符',
@@ -207,7 +233,7 @@ create table notification_type
 
 create table ota
 (
-    id             varchar(32)                        not null comment 'ID'
+    id             varchar(24)                        not null comment 'ID'
         primary key,
     product_id     varchar(32)                        not null comment '产品ID，关联product#id',
     module_id      varchar(32)                        not null comment '设备模块ID，关联fucntion_module#id',
@@ -227,7 +253,7 @@ create table ota
 
 create table ota_file
 (
-    id            varchar(32)                        not null comment 'ID'
+    id            varchar(24)                        not null comment 'ID'
         primary key,
     ota_id        varchar(32)                        not null comment '固件ID，关联device_ota#id',
     file_source   varchar(10)                        not null comment '包文件来源，Binary：二进制文件；Url：外部URL',
@@ -240,7 +266,7 @@ create table ota_file
 
 create table ota_upgrade_batch
 (
-    id             varchar(32)                not null comment 'ID'
+    id             varchar(24)                not null comment 'ID'
         primary key,
     ota_id         varchar(32)                not null comment '固件ID，关联ota#id',
     name           varchar(50)                not null comment '批次名称',
@@ -257,7 +283,7 @@ create table ota_upgrade_batch
 
 create table ota_upgrade_progress
 (
-    id             varchar(32)   not null comment 'ID'
+    id             varchar(24)   not null comment 'ID'
         primary key,
     device_id      varchar(32)   not null comment '设备ID，关联device#id',
     ota_id         varchar(32)   not null comment '设备固件ID，关联device_ota#id',
@@ -273,7 +299,7 @@ create table ota_upgrade_progress
 
 create table ota_upgrade_strategy
 (
-    id                      varchar(32)                        not null comment 'ID'
+    id                      varchar(24)                        not null comment 'ID'
         primary key,
     ota_batch_id            varchar(32)                        not null comment 'OTA批次ID，关联ota_upgrade_batch#id',
     type                    varchar(15)                        not null comment '策略类型，立即升级：Immediately；定时升级：Schedule',
@@ -291,7 +317,7 @@ create table ota_upgrade_strategy
 
 create table product
 (
-    id                      varchar(32)                           not null comment 'ID'
+    id                      varchar(24)                           not null comment 'ID'
         primary key,
     name                    varchar(30)                           not null comment '产品名称',
     product_key             varchar(30)                           not null comment '产品Key',
@@ -312,7 +338,7 @@ create table product
 
 create table sys_department
 (
-    id          varchar(32)                        not null comment 'ID'
+    id          varchar(24)                        not null comment 'ID'
         primary key,
     name        varchar(30)                        not null comment '部门名称',
     identifier  varchar(50)                        not null comment '部门标识符',
@@ -328,7 +354,7 @@ create table sys_department
 
 create table sys_department_level
 (
-    id                   varchar(32)                        not null comment 'ID'
+    id                   varchar(24)                        not null comment 'ID'
         primary key,
     department_id        varchar(32)                        not null comment '部门ID，关联sys_department#id',
     parent_department_id varchar(32)                        not null comment '上级部门ID，关联sys_department#id',
@@ -344,7 +370,7 @@ create index sys_department_level_parent_department_id_index
 
 create table sys_file
 (
-    id             varchar(32)                        not null comment 'ID'
+    id             varchar(24)                        not null comment 'ID'
         primary key,
     name           varchar(50)                        not null comment '文件名称',
     path           varchar(100)                       not null comment '文件位置',
@@ -358,9 +384,26 @@ create table sys_file
 )
     comment '文件基本信息表';
 
+create table sys_log
+(
+    id            varchar(24)                        not null comment 'ID'
+        primary key,
+    user_id       varchar(32)                        not null comment '操作用户ID，关联sys_user#id',
+    session_id    varchar(32)                        not null comment '会话ID',
+    action        varchar(20)                        not null comment '操作动作',
+    object_type   varchar(50)                        not null comment '操作目标类型',
+    object_id     varchar(32)                        not null comment '对象ID',
+    msg           varchar(200)                       null comment '操作描述',
+    success       bit      default b'1'              not null comment '是否成功',
+    addition      json                               null comment '附加信息',
+    activity_data json                               null comment '活动数据',
+    create_time   datetime default CURRENT_TIMESTAMP not null comment '创建时间'
+)
+    comment '用户操作日志';
+
 create table sys_setting
 (
-    id             varchar(32)                        not null comment 'ID'
+    id             varchar(24)                        not null comment 'ID'
         primary key,
     name           varchar(30)                        null comment '参数名称',
     flag           varchar(50)                        not null comment '参数标识码',
@@ -371,31 +414,14 @@ create table sys_setting
     enabled        bit      default b'1'              not null comment '是否启用',
     create_time    datetime default CURRENT_TIMESTAMP not null comment '添加时间',
     mark           varchar(200)                       null comment '备注',
-    constraint sys_setting_flag_uindex
+    constraint sys_global_setting_flag_uindex
         unique (flag)
 )
-    comment '系统参数' row_format = DYNAMIC;
-
-create table sys_log
-(
-    id            varchar(32)                        not null comment 'ID'
-        primary key,
-    user_id       varchar(32)                        not null comment '操作用户ID，关联sys_user#id',
-    session_id    varchar(32)                        not null comment '会话ID',
-    action        varchar(20)                        not null comment '操作动作',
-    object_type   varchar(20)                        not null comment '操作目标类型',
-    object_id     varchar(32)                        not null comment '对象ID',
-    msg           varchar(200)                       null comment '操作描述',
-    success       bit      default b'1'              not null comment '是否成功',
-    addition      json                               null comment '附加信息',
-    activity_data json                               null comment '活动数据',
-    create_time   datetime default CURRENT_TIMESTAMP not null comment '创建时间'
-)
-    comment '用户操作日志';
+    comment '系统设置' row_format = DYNAMIC;
 
 create table sys_user
 (
-    id                   varchar(32)                           not null comment 'ID'
+    id                   varchar(24)                           not null comment 'ID'
         primary key,
     name                 varchar(30)                           not null comment '名称',
     account              varchar(30)                           not null comment '账号',
@@ -418,9 +444,9 @@ create table sys_user
 
 create table sys_user_session
 (
-    id               varchar(32)                  not null comment 'ID'
+    id               varchar(24)                  not null comment 'ID'
         primary key,
-    user_id          varchar(32)                  not null comment '用户ID，关联sys_user#id',
+    user_id          varchar(24)                  not null comment '用户ID，关联sys_user#id',
     username         varchar(50)                  not null comment '授权给的用户',
     token_value      text                         not null comment '令牌值',
     platform_type    varchar(10)                  not null comment '平台类型，Pc：电脑端、App：移动端',
@@ -434,15 +460,16 @@ create table sys_user_session
 
 create table telemetry
 (
-    id                    varchar(32)                        not null comment 'ID'
+    id                     varchar(24)                        not null comment 'ID'
         primary key,
-    device_id             varchar(32)                        not null comment '设备ID，关联device#id',
-    metric_type           varchar(30)                        not null comment '指标类型，DeviceMetadata：设备元数据；DeviceState：设备状态；ProtocolMetadata：协议元数据；TriggerEvent：触发事件；BusinessData：业务数据；Log：日志',
-    metric_key            varchar(50)                        not null comment '遥测数据指标Key',
-    metric_value          json                               not null comment '遥测指标数据值',
-    addition              json                               null comment '附加信息',
-    last_update_timestamp bigint                             not null comment '遥测数据最新上报时间戳',
-    create_time           datetime default CURRENT_TIMESTAMP not null comment '创建时间，首次上报时间'
+    device_id              varchar(32)                        not null comment '设备ID，关联device#id',
+    metric_type            varchar(30)                        not null comment '指标类型，DeviceMetadata：设备元数据；DeviceState：设备状态；ProtocolMetadata：协议元数据；TriggerEvent：触发事件；BusinessData：业务数据；Log：日志',
+    metric_key             varchar(50)                        not null comment '遥测数据指标Key',
+    metric_value           json                               not null comment '遥测指标数据值',
+    addition               json                               null comment '附加信息',
+    display_on_status_page bit      default b'0'              not null comment '是否在设备状态页面展示',
+    last_update_timestamp  bigint                             not null comment '遥测数据最新上报时间戳',
+    create_time            datetime default CURRENT_TIMESTAMP not null comment '创建时间，首次上报时间'
 )
     comment '设备最新遥测数据';
 

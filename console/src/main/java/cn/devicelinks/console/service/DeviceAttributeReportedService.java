@@ -4,7 +4,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.ExtractUnknownReportedAttributeRequest;
 import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeReportedDTO;
@@ -15,7 +15,7 @@ import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeReportedDTO;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface DeviceAttributeReportedService extends BaseService<DeviceAttributeReported, String> {
+public interface DeviceAttributeReportedService extends BaseService<DeviceAttributeLatest, String> {
     /**
      * 分页获取设备上报属性
      *
@@ -28,7 +28,7 @@ public interface DeviceAttributeReportedService extends BaseService<DeviceAttrib
     /**
      * 提取未知上报属性
      *
-     * @param reportAttributeId 上报属性ID {@link DeviceAttributeReported#getId()}
+     * @param reportAttributeId 上报属性ID {@link DeviceAttributeLatest#getId()}
      * @param request           提取未知上报属性的请求参数
      * @return 存储后的已知属性 {@link Attribute}
      */

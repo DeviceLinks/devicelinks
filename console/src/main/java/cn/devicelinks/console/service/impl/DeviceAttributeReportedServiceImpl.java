@@ -11,7 +11,7 @@ import cn.devicelinks.console.web.request.AttributeInfoRequest;
 import cn.devicelinks.console.web.request.ExtractUnknownReportedAttributeRequest;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeReported;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -35,7 +35,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeReported.DEVI
  */
 @Service
 @Slf4j
-public class DeviceAttributeReportedServiceImpl extends BaseServiceImpl<DeviceAttributeReported, String, DeviceAttributeReportedRepository>
+public class DeviceAttributeReportedServiceImpl extends BaseServiceImpl<DeviceAttributeLatest, String, DeviceAttributeReportedRepository>
         implements DeviceAttributeReportedService {
 
     @Autowired
@@ -55,7 +55,7 @@ public class DeviceAttributeReportedServiceImpl extends BaseServiceImpl<DeviceAt
 
     @Override
     public Attribute extractUnknownAttribute(String reportAttributeId, ExtractUnknownReportedAttributeRequest request) {
-        DeviceAttributeReported reportedAttribute = this.selectById(reportAttributeId);
+        DeviceAttributeLatest reportedAttribute = this.selectById(reportAttributeId);
         if (reportedAttribute == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND, reportAttributeId);
         }
