@@ -29,7 +29,6 @@ public class DeviceAttributeLatest implements Serializable {
     private Object value;
     private AttributeValueSource valueSource;
     private int version;
-    private boolean displayOnStatusPage;
     private LocalDateTime lastUpdateTime;
     private LocalDateTime createTime;
 }

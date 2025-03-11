@@ -3,6 +3,8 @@ package cn.devicelinks.console.service;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceTelemetryRequest;
+import cn.devicelinks.console.web.request.AddTelemetryChartRequest;
+import cn.devicelinks.framework.common.pojos.ChartDataConfig;
 import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -42,11 +44,11 @@ public interface DeviceTelemetryService extends BaseService<DeviceTelemetry, Str
     DeviceTelemetry deleteTelemetry(String deviceId, String telemetryId);
 
     /**
-     * 更新遥测数据是否在设备状态页面展示
+     * 添加遥测数据图表
      *
-     * @param deviceId    设备ID {@link DeviceTelemetry#getDeviceId()}
-     * @param telemetryId 遥测数据ID {@link DeviceTelemetry#getId()}
-     * @return {@link DeviceTelemetry}
+     * @param deviceId 设备ID {@link DeviceTelemetry#getDeviceId()}
+     * @param request  添加遥测数据图表请求实体 {@link AddTelemetryChartRequest}
+     * @return 数据图表配置ID {@link ChartDataConfig#getId()}
      */
-    DeviceTelemetry updateDisplayInDeviceStatus(String deviceId, String telemetryId, boolean display);
+    String addTelemetryChart(String deviceId, AddTelemetryChartRequest request);
 }

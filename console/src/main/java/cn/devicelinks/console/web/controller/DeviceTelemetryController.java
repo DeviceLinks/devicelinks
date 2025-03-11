@@ -4,6 +4,7 @@ import cn.devicelinks.console.service.DeviceTelemetryService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceTelemetryRequest;
+import cn.devicelinks.console.web.request.AddTelemetryChartRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -87,22 +88,20 @@ public class DeviceTelemetryController {
     }
 
     /**
-     * 更新遥测数据是否在设备状态展示
+     * 新增遥测数据图表
      *
-     * @param deviceId    设备ID {@link DeviceTelemetry#getDeviceId()}
-     * @param telemetryId 遥测数据ID {@link DeviceTelemetry#getId()}
+     * @param deviceId 设备ID {@link DeviceTelemetry#getDeviceId()}
      * @return 更新显示状态的遥测数据
      * @throws ApiException 处理过程中遇到的业务逻辑异常
      */
-    @PostMapping(value = "/{deviceId}/telemetry/{telemetryId}")
-    @OperationLog(action = LogAction.Update,
+    @PostMapping(value = "/{deviceId}/telemetry/chart")
+    @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.DeviceTelemetry,
-            objectId = "{#p1}",
-            msg = "{#executionSucceed? '更新遥测数据在设备状态显示成功' : '更新遥测数据在设备状态显示失败'}",
-            activateData = "{#p2}")
-    public ApiResponse updateDisplayInDeviceStatus(@PathVariable("deviceId") String deviceId,
-                                                   @PathVariable("telemetryId") String telemetryId,
-                                                   @RequestParam("display") boolean display) throws ApiException {
-        return ApiResponse.success(this.telemetryService.updateDisplayInDeviceStatus(deviceId, telemetryId, display));
+            objectId = "{#executionSucceed? #result.data : #p0}",
+            msg = "{#executionSucceed? '新增遥测数据图表成功' : '新增遥测数据图表失败'}",
+            activateData = "{#p1}")
+    public ApiResponse addTelemetryChart(@PathVariable("deviceId") String deviceId,
+                                         @Valid @RequestBody AddTelemetryChartRequest request) throws ApiException {
+        return ApiResponse.success(this.telemetryService.addTelemetryChart(deviceId, request));
     }
 }

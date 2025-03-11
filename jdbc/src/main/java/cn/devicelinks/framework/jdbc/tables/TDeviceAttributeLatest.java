@@ -34,12 +34,11 @@ public class TDeviceAttributeLatest extends TableImpl {
     public final Column VALUE = Column.withName("value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
     public final Column VALUE_SOURCE = Column.withName("value_source").typeMapper(ColumnValueMappers.ATTRIBUTE_VALUE_SOURCE).build();
     public final Column VERSION = Column.withName("version").intValue().defaultValue(() -> Constants.ZERO).build();
-    public final Column DISPLAY_ON_STATUS_PAGE = Column.withName("display_on_status_page").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column LAST_UPDATE_TIME = Column.withName("last_update_time").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, VALUE, VALUE_SOURCE, VERSION, DISPLAY_ON_STATUS_PAGE, LAST_UPDATE_TIME, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, VALUE, VALUE_SOURCE, VERSION, LAST_UPDATE_TIME, CREATE_TIME);
     }
 }
