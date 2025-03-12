@@ -111,6 +111,11 @@ public class DeviceTelemetryServiceImpl extends BaseServiceImpl<DeviceTelemetry,
             if (telemetry == null) {
                 throw new ApiException(StatusCodeConstants.TELEMETRY_NOT_EXISTS, field.getTelemetryId());
             }
+            // Whether the telemetry data type supports adding to the chart
+            AttributeDataType telemetryDataType = this.getTelemetryDataType(telemetry.getAddition());
+            if (AttributeDataType.INTEGER != telemetryDataType && AttributeDataType.DOUBLE != telemetryDataType) {
+                throw new ApiException(StatusCodeConstants.TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART, telemetry.getMetricKey());
+            }
             ChartDataFields chartField = new ChartDataFields()
                     .setFieldType(ChartDataFieldType.Telemetry)
                     .setFieldId(telemetry.getId())
@@ -130,5 +135,12 @@ public class DeviceTelemetryServiceImpl extends BaseServiceImpl<DeviceTelemetry,
         telemetryMetadata.setDataType(dataType);
         telemetryAddition.setMetadata(telemetryMetadata);
         return telemetryAddition;
+    }
+
+    private AttributeDataType getTelemetryDataType(TelemetryAddition telemetryAddition) {
+        telemetryAddition = telemetryAddition == null ? new TelemetryAddition() : telemetryAddition;
+        TelemetryAddition.TelemetryMetadata telemetryMetadata =
+                telemetryAddition.getMetadata() == null ? new TelemetryAddition.TelemetryMetadata() : telemetryAddition.getMetadata();
+        return telemetryMetadata.getDataType();
     }
 }

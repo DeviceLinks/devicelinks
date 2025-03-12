@@ -94,5 +94,7 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_ATTRIBUTE_NOT_KNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_KNOWN", "设备属性：%s，不是已知属性.");
     StatusCode DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART","设备属性：%s，的数据类型不支持添加到图表.");
 
+
     StatusCode TELEMETRY_NOT_EXISTS = StatusCode.build("TELEMETRY_NOT_EXISTS","设备遥测数据：%s，不存在.");
+    StatusCode TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART","遥测数据：%s，的数据类型不支持添加到图表.");
 }
