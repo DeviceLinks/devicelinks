@@ -12,6 +12,7 @@ import cn.devicelinks.console.web.request.AddAttributeRequest;
 import cn.devicelinks.console.web.request.AddDeviceAttributeChartRequest;
 import cn.devicelinks.console.web.request.AttributeInfoRequest;
 import cn.devicelinks.console.web.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.ChartDataFieldType;
 import cn.devicelinks.framework.common.ChartDataTargetLocation;
 import cn.devicelinks.framework.common.ChartType;
@@ -116,6 +117,15 @@ public class DeviceAttributeServiceImpl extends BaseServiceImpl<DeviceAttribute,
                     DEVICE_ATTRIBUTE.ID.eq(field.getDeviceAttributeId()));
             if (deviceAttribute == null) {
                 throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_NOT_FOUND, field.getDeviceAttributeId());
+            }
+            // Is it a known attribute
+            if (ObjectUtils.isEmpty(deviceAttribute.getAttributeId())) {
+                throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_NOT_KNOWN, deviceAttribute.getIdentifier());
+            }
+            // Whether the attribute data type supports adding to the chart
+            Attribute attribute = this.attributeService.selectById(deviceAttribute.getAttributeId());
+            if (AttributeDataType.INTEGER != attribute.getDataType() && AttributeDataType.DOUBLE != attribute.getDataType()) {
+                throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART, deviceAttribute.getIdentifier());
             }
             ChartDataFields chartField = new ChartDataFields()
                     .setFieldType(ChartDataFieldType.Attribute)
