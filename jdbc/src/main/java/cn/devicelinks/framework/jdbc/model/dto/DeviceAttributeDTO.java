@@ -2,7 +2,7 @@ package cn.devicelinks.framework.jdbc.model.dto;
 
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.pojos.AttributeAddition;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
+import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DeviceAttributeLatestDTO extends DeviceAttributeLatest {
+public class DeviceAttributeDTO extends DeviceAttribute {
 
     private String attributeName;
 

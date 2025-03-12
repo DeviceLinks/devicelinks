@@ -2,7 +2,7 @@ package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
+import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
@@ -12,17 +12,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * The {@link DeviceAttributeLatest} Table impl
+ * The {@link DeviceAttribute} Table impl
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class TDeviceAttributeLatest extends TableImpl {
+public class TDeviceAttribute extends TableImpl {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TDeviceAttributeLatest DEVICE_ATTRIBUTE_LATEST = new TDeviceAttributeLatest("device_attribute_latest");
+    public static final TDeviceAttribute DEVICE_ATTRIBUTE = new TDeviceAttribute("device_attribute");
 
-    private TDeviceAttributeLatest(String tableName) {
+    private TDeviceAttribute(String tableName) {
         super(tableName);
     }
 

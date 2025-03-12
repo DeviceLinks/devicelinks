@@ -1,12 +1,12 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
+import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.jdbc.core.Repository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeLatestDTO;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDTO;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface DeviceAttributeLatestRepository extends Repository<DeviceAttributeLatest, String> {
+public interface DeviceAttributeRepository extends Repository<DeviceAttribute, String> {
     /**
      * 分页获取设备属性
      *
@@ -25,5 +25,5 @@ public interface DeviceAttributeLatestRepository extends Repository<DeviceAttrib
      * @param sortCondition            排序条件
      * @return 设备属性分页对象
      */
-    PageResult<DeviceAttributeLatestDTO> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
+    PageResult<DeviceAttributeDTO> getByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
 }

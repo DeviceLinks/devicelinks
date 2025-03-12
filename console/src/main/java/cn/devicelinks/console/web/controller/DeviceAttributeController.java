@@ -1,7 +1,7 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.service.DeviceAttributeDesiredService;
-import cn.devicelinks.console.service.DeviceAttributeLatestService;
+import cn.devicelinks.console.service.DeviceAttributeService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.*;
@@ -13,7 +13,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.ChartDataConfig;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
+import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class DeviceAttributeController {
 
-    private DeviceAttributeLatestService deviceAttributeService;
+    private DeviceAttributeService deviceAttributeService;
 
     private DeviceAttributeDesiredService desiredAttributeService;
 
@@ -57,7 +57,7 @@ public class DeviceAttributeController {
      * @return 设备期望属性列表
      * @throws ApiException 查询过程中遇到的业务异常
      */
-    @PostMapping(value = "/desired/attribute/filter")
+    @PostMapping(value = "/attribute/desired/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceDesiredAttribute)
     public ApiResponse getDesiredAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                      @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
@@ -71,7 +71,7 @@ public class DeviceAttributeController {
      * @return 新增的期望属性
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @PostMapping(value = "/{deviceId}/module/{moduleId}/desired/attribute")
+    @PostMapping(value = "/{deviceId}/module/{moduleId}/attribute/desired")
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.DeviceDesiredAttribute,
             objectId = "{#executionSucceed ? #result.data.id : #p2.identifier}",
@@ -91,7 +91,7 @@ public class DeviceAttributeController {
      * @return 更新后的设备期望属性
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @PostMapping(value = "/desired/attribute/{desiredAttributeId}")
+    @PostMapping(value = "/attribute/{desiredAttributeId}/desired")
     @OperationLog(action = LogAction.Update,
             objectType = LogObjectType.DeviceDesiredAttribute,
             objectId = "{#executionSucceed ? #result.data.id : #p0}",
@@ -111,7 +111,7 @@ public class DeviceAttributeController {
      * @return 提取后的属性 {@link cn.devicelinks.framework.common.pojos.Attribute}
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @PostMapping(value = "/desired/attribute/{desiredAttributeId}/extract")
+    @PostMapping(value = "/attribute/{desiredAttributeId}/desired/extract")
     @OperationLog(action = LogAction.Extract,
             objectType = LogObjectType.DeviceDesiredAttribute,
             objectId = "{#p0}",
@@ -125,8 +125,8 @@ public class DeviceAttributeController {
     /**
      * 将未知的属性提取成已知属性
      *
-     * @param deviceAttributeId 属性ID {@link DeviceAttributeLatest#getId()}
-     * @param request           提取属性请求参数 {@link ExtractUnknownLatestAttributeRequest}
+     * @param deviceAttributeId 属性ID {@link DeviceAttribute#getId()}
+     * @param request           提取属性请求参数 {@link ExtractUnknownDeviceAttributeRequest}
      * @return 提取后的属性 {@link cn.devicelinks.framework.common.pojos.Attribute}
      * @throws ApiException 遇到的业务逻辑异常
      */
@@ -137,7 +137,7 @@ public class DeviceAttributeController {
             msg = "{#executionSucceed ? '提取未知属性成功' : '提取未知属性失败'}",
             activateData = "{#p1}")
     public ApiResponse extractUnknownReportedAttribute(@PathVariable("deviceAttributeId") String deviceAttributeId,
-                                                       @Valid @RequestBody ExtractUnknownLatestAttributeRequest request) throws ApiException {
+                                                       @Valid @RequestBody ExtractUnknownDeviceAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.deviceAttributeService.extractUnknownAttribute(deviceAttributeId, request));
     }
 
@@ -148,7 +148,7 @@ public class DeviceAttributeController {
      * @return 已删除的期望属性 {@link DeviceAttributeDesired}
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @DeleteMapping(value = "/desired/attribute/{desiredAttributeId}")
+    @DeleteMapping(value = "/attribute/{desiredAttributeId}/desired")
     @OperationLog(action = LogAction.Delete,
             objectType = LogObjectType.DeviceDesiredAttribute,
             objectId = "{#p0}",
@@ -161,7 +161,7 @@ public class DeviceAttributeController {
     /**
      * 新增设备属性图表
      *
-     * @param deviceId 设备ID {@link DeviceAttributeLatest#getDeviceId()}
+     * @param deviceId 设备ID {@link DeviceAttribute#getDeviceId()}
      * @param request  添加设备属性图表请求实体 {@link AddDeviceAttributeChartRequest}
      * @return 数据图表配置ID {@link ChartDataConfig#getId()}
      * @throws ApiException 遇到的业务逻辑异常

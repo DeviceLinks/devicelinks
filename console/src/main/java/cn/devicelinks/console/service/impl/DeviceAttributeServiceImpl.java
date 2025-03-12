@@ -3,7 +3,7 @@ package cn.devicelinks.console.service.impl;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.AttributeService;
 import cn.devicelinks.console.service.ChartDataConfigService;
-import cn.devicelinks.console.service.DeviceAttributeLatestService;
+import cn.devicelinks.console.service.DeviceAttributeService;
 import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
@@ -11,7 +11,7 @@ import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddAttributeRequest;
 import cn.devicelinks.console.web.request.AddDeviceAttributeChartRequest;
 import cn.devicelinks.console.web.request.AttributeInfoRequest;
-import cn.devicelinks.console.web.request.ExtractUnknownLatestAttributeRequest;
+import cn.devicelinks.console.web.request.ExtractUnknownDeviceAttributeRequest;
 import cn.devicelinks.framework.common.ChartDataFieldType;
 import cn.devicelinks.framework.common.ChartDataTargetLocation;
 import cn.devicelinks.framework.common.ChartType;
@@ -21,8 +21,8 @@ import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
 import cn.devicelinks.framework.jdbc.model.dto.ChartDataDTO;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeLatestDTO;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceAttributeLatestRepository;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDTO;
+import cn.devicelinks.framework.jdbc.repositorys.DeviceAttributeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeLatest.DEVICE_ATTRIBUTE_LATEST;
+import static cn.devicelinks.framework.jdbc.tables.TDeviceAttribute.DEVICE_ATTRIBUTE;
 
 /**
  * 设备属性业务逻辑实现类
@@ -41,8 +41,8 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeLatest.DEVICE
  */
 @Service
 @Slf4j
-public class DeviceAttributeLatestServiceImpl extends BaseServiceImpl<DeviceAttributeLatest, String, DeviceAttributeLatestRepository>
-        implements DeviceAttributeLatestService {
+public class DeviceAttributeServiceImpl extends BaseServiceImpl<DeviceAttribute, String, DeviceAttributeRepository>
+        implements DeviceAttributeService {
 
     @Autowired
     private FunctionModuleService functionModuleService;
@@ -53,18 +53,18 @@ public class DeviceAttributeLatestServiceImpl extends BaseServiceImpl<DeviceAttr
     @Autowired
     private ChartDataConfigService chartDataConfigService;
 
-    public DeviceAttributeLatestServiceImpl(DeviceAttributeLatestRepository repository) {
+    public DeviceAttributeServiceImpl(DeviceAttributeRepository repository) {
         super(repository);
     }
 
     @Override
-    public PageResult<DeviceAttributeLatestDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
+    public PageResult<DeviceAttributeDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
         return this.repository.getByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 
     @Override
-    public Attribute extractUnknownAttribute(String deviceAttributeId, ExtractUnknownLatestAttributeRequest request) {
-        DeviceAttributeLatest deviceAttribute = this.selectById(deviceAttributeId);
+    public Attribute extractUnknownAttribute(String deviceAttributeId, ExtractUnknownDeviceAttributeRequest request) {
+        DeviceAttribute deviceAttribute = this.selectById(deviceAttributeId);
         if (deviceAttribute == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_NOT_FOUND, deviceAttributeId);
         }
@@ -93,8 +93,8 @@ public class DeviceAttributeLatestServiceImpl extends BaseServiceImpl<DeviceAttr
         deviceAttribute.setAttributeId(attributeDTO.getId());
 
         this.repository.update(
-                List.of(DEVICE_ATTRIBUTE_LATEST.ATTRIBUTE_ID.set(attributeDTO.getId())),
-                DEVICE_ATTRIBUTE_LATEST.ID.eq(deviceAttribute.getId()));
+                List.of(DEVICE_ATTRIBUTE.ATTRIBUTE_ID.set(attributeDTO.getId())),
+                DEVICE_ATTRIBUTE.ID.eq(deviceAttribute.getId()));
 
         // @formatter:on
         return attributeDTO;
@@ -111,9 +111,9 @@ public class DeviceAttributeLatestServiceImpl extends BaseServiceImpl<DeviceAttr
                 .setCreateBy(UserDetailsContext.getUserId());
         List<ChartDataFields> chartDataFields = new ArrayList<>();
         for (AddDeviceAttributeChartRequest.ChartField field : request.getFields()) {
-            DeviceAttributeLatest deviceAttribute = this.repository.selectOne(
-                    DEVICE_ATTRIBUTE_LATEST.DEVICE_ID.eq(deviceId),
-                    DEVICE_ATTRIBUTE_LATEST.ID.eq(field.getDeviceAttributeId()));
+            DeviceAttribute deviceAttribute = this.repository.selectOne(
+                    DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId),
+                    DEVICE_ATTRIBUTE.ID.eq(field.getDeviceAttributeId()));
             if (deviceAttribute == null) {
                 throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_NOT_FOUND, field.getDeviceAttributeId());
             }
