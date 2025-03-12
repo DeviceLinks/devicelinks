@@ -2,6 +2,7 @@ package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.DeviceService;
+import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.converter.DeviceConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
@@ -36,6 +37,8 @@ import org.springframework.web.bind.annotation.*;
 public class DeviceController {
 
     private DeviceService deviceService;
+
+    private FunctionModuleService functionModuleService;
 
     /**
      * 获取设备列表，支持分页和搜索功能
@@ -154,5 +157,21 @@ public class DeviceController {
                                           @NotNull Boolean enabled) throws ApiException {
         this.deviceService.updateEnabled(deviceId, enabled);
         return ApiResponse.success();
+    }
+
+    /**
+     * 查询设备的功能模块列表
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     * @return 设备所属产品下定义的功能模块列表，仅返回有效并未删除的数据
+     * @throws ApiException 执行过程中遇到的业务逻辑异常
+     */
+    @GetMapping(value = "/{deviceId}/function/module")
+    public ApiResponse getDeviceFunctionModuleList(@PathVariable("deviceId") String deviceId) throws ApiException {
+        Device device = this.deviceService.selectById(deviceId);
+        if (device == null || device.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        return ApiResponse.success(this.functionModuleService.getProductFunctionModule(device.getProductId()));
     }
 }

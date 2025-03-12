@@ -93,4 +93,15 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
     public void deleteFunctionModule(String functionModuleId) {
         this.repository.update(List.of(FUNCTION_MODULE.DELETED.set(Boolean.TRUE)), FUNCTION_MODULE.ID.eq(functionModuleId));
     }
+
+    @Override
+    public List<FunctionModule> getProductFunctionModule(String productId) {
+        // @formatter:off
+        return this.repository.select(
+                FUNCTION_MODULE.CREATE_TIME.desc(),
+                FUNCTION_MODULE.PRODUCT_ID.eq(productId),
+                FUNCTION_MODULE.DELETED.eq(Boolean.FALSE)
+        );
+        // @formatter:on
+    }
 }
