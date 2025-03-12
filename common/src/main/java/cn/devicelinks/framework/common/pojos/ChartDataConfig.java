@@ -22,6 +22,7 @@ public class ChartDataConfig implements Serializable {
     private ChartDataTargetLocation targetLocation;
     private String targetId;
     private ChartType chartType;
+    private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;
 }

@@ -31,11 +31,12 @@ public class TChartDataConfig extends TableImpl {
     public final Column TARGET_LOCATION = Column.withName("target_location").typeMapper(ColumnValueMappers.CHART_DATA_TARGET_LOCATION).build();
     public final Column TARGET_ID = Column.withName("target_id").build();
     public final Column CHART_TYPE = Column.withName("chart_type").typeMapper(ColumnValueMappers.CHART_TYPE).build();
+    public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, TARGET_LOCATION, TARGET_ID, CHART_TYPE, CREATE_BY, CREATE_TIME);
+        return List.of(ID, NAME, TARGET_LOCATION, TARGET_ID, CHART_TYPE, DELETED, CREATE_BY, CREATE_TIME);
     }
 }
