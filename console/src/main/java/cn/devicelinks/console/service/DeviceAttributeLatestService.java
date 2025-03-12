@@ -2,8 +2,10 @@ package cn.devicelinks.console.service;
 
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
+import cn.devicelinks.console.web.request.AddDeviceAttributeChartRequest;
 import cn.devicelinks.console.web.request.ExtractUnknownLatestAttributeRequest;
 import cn.devicelinks.framework.common.pojos.Attribute;
+import cn.devicelinks.framework.common.pojos.ChartDataConfig;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -33,4 +35,13 @@ public interface DeviceAttributeLatestService extends BaseService<DeviceAttribut
      * @return 存储后的已知属性 {@link Attribute}
      */
     Attribute extractUnknownAttribute(String reportAttributeId, ExtractUnknownLatestAttributeRequest request);
+
+    /**
+     * 添加设备属性图表
+     *
+     * @param deviceId 设备ID {@link DeviceAttributeLatest#getDeviceId()}
+     * @param request  添加设备属性图表请求参数 {@link AddDeviceAttributeChartRequest}
+     * @return 数据图表配置ID {@link ChartDataConfig#getId()}
+     */
+    String addDeviceAttributeChart(String deviceId, AddDeviceAttributeChartRequest request);
 }
