@@ -1,5 +1,6 @@
 package cn.devicelinks.console.service.impl;
 
+import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
@@ -30,6 +31,11 @@ import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODU
 @Service
 @Slf4j
 public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, String, FunctionModuleRepository> implements FunctionModuleService {
+
+    private static final String DEFAULT_FUNCTION_MODULE_NAME = "默认模块";
+
+    private static final String DEFAULT_FUNCTION_MODULE_IDENTIFIER = "default";
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -40,6 +46,20 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
     @Override
     public PageResult<FunctionModule> getFunctionModulesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         return this.repository.selectByPage(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+    }
+
+    @Override
+    public FunctionModule addProductDefaultFunctionModule(String productId) {
+        // @formatter:off
+        FunctionModule defaultFunctionModule =
+                new FunctionModule()
+                        .setName(DEFAULT_FUNCTION_MODULE_NAME)
+                        .setIdentifier(DEFAULT_FUNCTION_MODULE_IDENTIFIER)
+                        .setProductId(productId)
+                        .setCreateBy(UserDetailsContext.getUserId());
+        // @formatter:on
+        this.repository.insert(defaultFunctionModule);
+        return defaultFunctionModule;
     }
 
     @Override

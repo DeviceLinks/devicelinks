@@ -25,6 +25,14 @@ public interface FunctionModuleService extends BaseService<FunctionModule, Strin
     PageResult<FunctionModule> getFunctionModulesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
 
     /**
+     * 添加产品的默认功能模块
+     *
+     * @param productId 产品ID {@link FunctionModule#getProductId()}
+     * @return 已添加的默认功能模块 {@link FunctionModule}
+     */
+    FunctionModule addProductDefaultFunctionModule(String productId);
+
+    /**
      * 添加功能模块
      *
      * @param functionModule 功能模块 {@link FunctionModule}
