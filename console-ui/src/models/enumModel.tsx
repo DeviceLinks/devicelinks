@@ -19,6 +19,7 @@ import { history } from '@@/core/history';
 import { useEffect, useState } from 'react';
 import { ProSchemaValueEnumType, ProSchemaValueEnumMap } from '@ant-design/pro-components';
 const loginPath = '/user/login';
+import { Tag } from "antd";
 export default function Page(): {
   fetchEnums: () => Promise<API.Enum | undefined>;
   enums?: API.Enum;
@@ -55,15 +56,10 @@ export default function Page(): {
   //获取AntD Pro 类型的枚举
   const getProSchemaValueEnumObjByEnum = (
     list: API.EnumItem[],
-    showStatus?: boolean,
   ): ProSchemaValueEnumMap => {
     const map = new Map<string | number | boolean, ProSchemaValueEnumType>();
     list.forEach((item: API.EnumItem) => {
-      if (showStatus) {
-        map.set(item.value, { text: item.label, status: item.showStyle });
-      } else {
-        map.set(item.value, { text: item.label });
-      }
+      map.set(item.value, { text: <Tag bordered={false} color={item.showStyle.toLowerCase()}>{item.label}</Tag>});
     });
     return map;
   };
