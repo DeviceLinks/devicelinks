@@ -1,5 +1,6 @@
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.console.web.request.AddDataChartRequest;
 import cn.devicelinks.framework.common.pojos.ChartDataConfig;
 import cn.devicelinks.framework.common.pojos.ChartDataFields;
 import cn.devicelinks.framework.jdbc.BaseService;
@@ -21,5 +22,13 @@ public interface ChartDataConfigService extends BaseService<ChartDataConfig, Str
      * @param fields          图表中的字段列表
      * @return 添加后的数据图表传输实体 {@link ChartDataDTO}
      */
-    ChartDataDTO addChartData(ChartDataConfig chartDataConfig, List<ChartDataFields> fields);
+    ChartDataDTO addChart(ChartDataConfig chartDataConfig, List<ChartDataFields> fields);
+
+    /**
+     * 添加数据图表
+     *
+     * @param request 添加数据图表请求实体 {@link AddDataChartRequest}
+     * @return 添加后的数据图表传输实体 {@link ChartDataDTO}
+     */
+    ChartDataDTO addChart(AddDataChartRequest request);
 }

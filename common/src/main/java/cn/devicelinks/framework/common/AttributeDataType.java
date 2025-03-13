@@ -28,9 +28,9 @@ public enum AttributeDataType {
      */
     INTEGER("整型"),
     /**
-     * 双精度浮点型
+     * 浮点型
      */
-    DOUBLE("双精度浮点型"),
+    DOUBLE("浮点型"),
     /**
      * 枚举
      */
