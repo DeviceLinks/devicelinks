@@ -15,7 +15,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { RequestOptions } from '@@/plugin-request/request';
+import { RequestOptions } from '@@/plugin-request/request';
 import { history, RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
@@ -29,6 +29,7 @@ enum ErrorShowType {
 }
 enum ResponseCodeType {
   SUCCESS = 'SUCCESS',
+  TOKEN_JWT_PARSING_FAILED = 'TOKEN_JWT_PARSING_FAILED',
 }
 // 与后端约定的响应数据格式
 interface ResponseStructure {
@@ -49,6 +50,10 @@ export const errorConfig: RequestConfig = {
     // 错误抛出
     errorThrower: (res) => {
       const { code, message, showType, data } = res as unknown as ResponseStructure;
+      if (code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
+        Cookies.remove('token');
+        return history.replace('/user/login?redirect=' + window.location.href);
+      }
       if (code !== ResponseCodeType.SUCCESS) {
         const error: any = new Error(message);
         error.name = 'BizError';
@@ -87,6 +92,8 @@ export const errorConfig: RequestConfig = {
               message.error(errorMessage);
           }
         }
+      } else if (error.name === 'TokenError') {
+        return history.replace('/user/login?redirect=' + window.location.href);
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
@@ -98,21 +105,21 @@ export const errorConfig: RequestConfig = {
         message.error('None response! Please retry.');
       } else {
         // 发送请求时出了点问题
-        message.error('Request error, please retry.');
+        message.error(error.message);
       }
     },
   },
-
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
       if (PROXY_PREFIX) {
         config.url = `${PROXY_PREFIX}${config.url}`;
       }
-      if (config.skipAuth !== false) {
+      if (config.skipAuth !== true) {
         const Authorization = Cookies.get('Authorization');
         if (!Authorization) {
-          // TODO:跳转到登录
+          history.replace('/user/login?redirect=' + window.location.href);
+          throw new Error('token 不存在');
         }
         config.headers = {
           ...config.headers,
@@ -126,12 +133,11 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response) => {
-      // 拦截响应数据，进行个性化处理
       const responseData = response.data as API.ResponseResult;
-      console.log(responseData);
-      if (responseData.code === 'TOKEN_JWT_PARSING_FAILED') {
-        console.log('执行到了');
+      if (responseData.code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
         history.replace('/user/login?redirect=' + window.location.href);
+        ///抛出异常
+        throw new Error('登录失效');
       }
       return response;
     },
