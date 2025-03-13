@@ -88,9 +88,13 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID", "无效的期望属性值，请检查与数据类型是否匹配.");
     StatusCode DEVICE_DESIRED_ATTRIBUTE_DATA_TYPE_NOT_MATCH = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_DATA_TYPE_NOT_MATCH", "期望属性：%s，与现有的数据类型不匹配.");
     StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND", "设备期望属性：%s，不存在.");
-    StatusCode DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_REPORTED_ATTRIBUTE_NOT_FOUND", "设备上报属性：%s，不存在.");
+    StatusCode DEVICE_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_ATTRIBUTE_NOT_FOUND", "设备上报属性：%s，不存在.");
     StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN", "设备期望属性：%s，不是未知属性，无法提取.");
-    StatusCode DEVICE_REPORTED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_REPORTED_ATTRIBUTE_NOT_UNKNOWN", "设备上报属性：%s，不是未知属性，无法提取.");
+    StatusCode DEVICE_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_UNKNOWN", "设备属性：%s，不是未知属性.");
+    StatusCode DEVICE_ATTRIBUTE_NOT_KNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_KNOWN", "设备属性：%s，不是已知属性.");
+    StatusCode DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART","设备属性：%s，的数据类型不支持添加到图表.");
+
 
     StatusCode TELEMETRY_NOT_EXISTS = StatusCode.build("TELEMETRY_NOT_EXISTS","设备遥测数据：%s，不存在.");
+    StatusCode TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART","遥测数据：%s，的数据类型不支持添加到图表.");
 }

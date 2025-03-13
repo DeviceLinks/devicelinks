@@ -1,6 +1,7 @@
 package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.service.DeviceService;
+import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.service.ProductService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.query.PaginationQuery;
@@ -35,11 +36,13 @@ import static cn.devicelinks.framework.jdbc.tables.TProduct.PRODUCT;
 public class ProductServiceImpl extends BaseServiceImpl<Product, String, ProductRepository> implements ProductService {
     private final int PRODUCT_KEY_LENGTH = 30;
     private final int PRODUCT_SECRET_LENGTH = 50;
-    private DeviceService deviceService;
+    private final DeviceService deviceService;
+    private final FunctionModuleService functionModuleService;
 
-    public ProductServiceImpl(ProductRepository repository, DeviceService deviceService) {
+    public ProductServiceImpl(ProductRepository repository, DeviceService deviceService, FunctionModuleService functionModuleService) {
         super(repository);
         this.deviceService = deviceService;
+        this.functionModuleService = functionModuleService;
     }
 
     @Override
@@ -58,6 +61,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
                 .setProductSecret(StringUtils.getRandomString(PRODUCT_SECRET_LENGTH));
         // @formatter:on
         this.repository.insert(product);
+        // add default function module
+        this.functionModuleService.addProductDefaultFunctionModule(product.getId());
         return product;
     }
 

@@ -10,14 +10,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 设备属性最新值
+ * 设备属性
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
 @Accessors(chain = true)
-public class DeviceAttributeLatest implements Serializable {
+public class DeviceAttribute implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
@@ -29,7 +29,6 @@ public class DeviceAttributeLatest implements Serializable {
     private Object value;
     private AttributeValueSource valueSource;
     private int version;
-    private boolean displayOnStatusPage;
     private LocalDateTime lastUpdateTime;
     private LocalDateTime createTime;
 }

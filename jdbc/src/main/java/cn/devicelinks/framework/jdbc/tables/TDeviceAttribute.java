@@ -2,7 +2,7 @@ package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeLatest;
+import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
@@ -12,17 +12,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * The {@link DeviceAttributeLatest} Table impl
+ * The {@link DeviceAttribute} Table impl
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class TDeviceAttributeLatest extends TableImpl {
+public class TDeviceAttribute extends TableImpl {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
-    public static final TDeviceAttributeLatest DEVICE_ATTRIBUTE_LATEST = new TDeviceAttributeLatest("device_attribute_latest");
+    public static final TDeviceAttribute DEVICE_ATTRIBUTE = new TDeviceAttribute("device_attribute");
 
-    private TDeviceAttributeLatest(String tableName) {
+    private TDeviceAttribute(String tableName) {
         super(tableName);
     }
 
@@ -34,12 +34,11 @@ public class TDeviceAttributeLatest extends TableImpl {
     public final Column VALUE = Column.withName("value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
     public final Column VALUE_SOURCE = Column.withName("value_source").typeMapper(ColumnValueMappers.ATTRIBUTE_VALUE_SOURCE).build();
     public final Column VERSION = Column.withName("version").intValue().defaultValue(() -> Constants.ZERO).build();
-    public final Column DISPLAY_ON_STATUS_PAGE = Column.withName("display_on_status_page").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column LAST_UPDATE_TIME = Column.withName("last_update_time").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, VALUE, VALUE_SOURCE, VERSION, DISPLAY_ON_STATUS_PAGE, LAST_UPDATE_TIME, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, VALUE, VALUE_SOURCE, VERSION, LAST_UPDATE_TIME, CREATE_TIME);
     }
 }

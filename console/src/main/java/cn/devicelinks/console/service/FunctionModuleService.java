@@ -6,6 +6,8 @@ import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
+import java.util.List;
+
 /**
  * 功能模块业务逻辑接口
  *
@@ -21,6 +23,14 @@ public interface FunctionModuleService extends BaseService<FunctionModule, Strin
      * @return {@link FunctionModule}
      */
     PageResult<FunctionModule> getFunctionModulesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
+
+    /**
+     * 添加产品的默认功能模块
+     *
+     * @param productId 产品ID {@link FunctionModule#getProductId()}
+     * @return 已添加的默认功能模块 {@link FunctionModule}
+     */
+    FunctionModule addProductDefaultFunctionModule(String productId);
 
     /**
      * 添加功能模块
@@ -44,4 +54,12 @@ public interface FunctionModuleService extends BaseService<FunctionModule, Strin
      * @param functionModuleId 功能模块ID {@link FunctionModule#getId()}
      */
     void deleteFunctionModule(String functionModuleId);
+
+    /**
+     * 查询产品定义的功能模块列表
+     *
+     * @param productId 产品ID {@link FunctionModule#getProductId()}
+     * @return {@link FunctionModule}
+     */
+    List<FunctionModule> getProductFunctionModule(String productId);
 }

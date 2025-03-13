@@ -15,7 +15,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.pojos.ChartDataFields;
 import com.google.common.base.CaseFormat;
 
 import java.io.File;
@@ -42,7 +42,7 @@ public class RepositoryGenerator {
 
     static void generateSingleClass() throws Exception {
         // entity class
-        Class entityClass = SysUser.class;
+        Class entityClass = ChartDataFields.class;
 
         // Repository
         String repository = generateRepository(entityClass);
