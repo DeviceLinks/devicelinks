@@ -19,7 +19,7 @@ export const FilterButtonBox = ({
     }
   };
   const resetFormList = () => {
-    form.setFieldValue('searchFields', [] as API.SearchFieldItem[]);
+    form.setFieldValue('searchFields', [{}]);
   };
   const changeFieldType = (rowIndex: number, field: string) => {
     const item: API.SearchFieldItem = {
