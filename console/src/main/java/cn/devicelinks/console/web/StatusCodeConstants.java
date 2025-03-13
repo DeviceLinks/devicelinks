@@ -71,7 +71,7 @@ public interface StatusCodeConstants {
     StatusCode ATTRIBUTE_ID_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_ID_CANNOT_BLANK", "属性ID不允许为空.");
     StatusCode ATTRIBUTE_IDENTIFIER_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_IDENTIFIER_CANNOT_BLANK", "属性标识符不允许为空.");
     StatusCode ATTRIBUTE_DATA_TYPE_CANNOT_BLANK = StatusCode.build("ATTRIBUTE_DATA_TYPE_CANNOT_BLANK", "属性数据类型不允许为空.");
-    StatusCode ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED = StatusCode.build("ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED","属性：%s，不是公共属性，不支持设置期望值.");
+    StatusCode ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED = StatusCode.build("ATTRIBUTE_NOT_COMMON_NOT_ALLOW_SET_DESIRED", "属性：%s，不是公共属性，不支持设置期望值.");
 
     StatusCode DEVICE_ALREADY_EXISTS = StatusCode.build("DEVICE_ALREADY_EXISTS", "设备：%s，已经存在，请检查产品下设备唯一码是否重复.");
     StatusCode DEVICE_NOT_EXISTS = StatusCode.build("DEVICE_NOT_EXISTS", "设备：%s，不存在.");
@@ -92,9 +92,12 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN", "设备期望属性：%s，不是未知属性，无法提取.");
     StatusCode DEVICE_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_UNKNOWN", "设备属性：%s，不是未知属性.");
     StatusCode DEVICE_ATTRIBUTE_NOT_KNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_KNOWN", "设备属性：%s，不是已知属性.");
-    StatusCode DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART","设备属性：%s，的数据类型不支持添加到图表.");
+    StatusCode DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART", "设备属性：%s，的数据类型不支持添加到图表.");
 
 
-    StatusCode TELEMETRY_NOT_EXISTS = StatusCode.build("TELEMETRY_NOT_EXISTS","设备遥测数据：%s，不存在.");
-    StatusCode TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART","遥测数据：%s，的数据类型不支持添加到图表.");
+    StatusCode TELEMETRY_NOT_EXISTS = StatusCode.build("TELEMETRY_NOT_EXISTS", "设备遥测数据：%s，不存在.");
+    StatusCode TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART", "遥测数据：%s，的数据类型不支持添加到图表.");
+
+    StatusCode DATA_CHART_ALREADY_EXISTS = StatusCode.build("DATA_CHART_ALREADY_EXISTS", "同一目标位置下数据图表：%s，已经存在.");
+    StatusCode DATA_CHART_NOT_EXISTS = StatusCode.build("DATA_CHART_NOT_EXISTS", "数据图表：%s，不存在.");
 }

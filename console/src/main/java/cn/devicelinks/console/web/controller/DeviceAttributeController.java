@@ -4,16 +4,18 @@ import cn.devicelinks.console.service.DeviceAttributeDesiredService;
 import cn.devicelinks.console.service.DeviceAttributeService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.web.request.*;
+import cn.devicelinks.console.web.request.AddDeviceDesiredAttributeRequest;
+import cn.devicelinks.console.web.request.ExtractUnknownDesiredAttributeRequest;
+import cn.devicelinks.console.web.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceDesiredAttributeRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
-import cn.devicelinks.framework.common.pojos.ChartDataConfig;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
+import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -156,24 +158,5 @@ public class DeviceAttributeController {
             activateData = "{#p0}")
     public ApiResponse deleteDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.deleteDesiredAttribute(desiredAttributeId));
-    }
-
-    /**
-     * 新增设备属性图表
-     *
-     * @param deviceId 设备ID {@link DeviceAttribute#getDeviceId()}
-     * @param request  添加设备属性图表请求实体 {@link AddDeviceAttributeChartRequest}
-     * @return 数据图表配置ID {@link ChartDataConfig#getId()}
-     * @throws ApiException 遇到的业务逻辑异常
-     */
-    @PostMapping(value = "/{deviceId}/attribute/chart")
-    @OperationLog(action = LogAction.Add,
-            objectType = LogObjectType.DeviceAttribute,
-            objectId = "{#executionSucceed? #result.data : #p0}",
-            msg = "{#executionSucceed? '新增设备属性图表成功' : '新增设备属性表失败'}",
-            activateData = "{#p1}")
-    public ApiResponse addDeviceAttributeChart(@PathVariable("deviceId") String deviceId,
-                                               @Valid @RequestBody AddDeviceAttributeChartRequest request) throws ApiException {
-        return ApiResponse.success(this.deviceAttributeService.addDeviceAttributeChart(deviceId, request));
     }
 }

@@ -4,7 +4,6 @@ import cn.devicelinks.console.service.DeviceTelemetryService;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceTelemetryRequest;
-import cn.devicelinks.console.web.request.AddTelemetryChartRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -85,23 +84,5 @@ public class DeviceTelemetryController {
     public ApiResponse deleteTelemetry(@PathVariable("deviceId") String deviceId,
                                        @PathVariable("telemetryId") String telemetryId) throws ApiException {
         return ApiResponse.success(this.telemetryService.deleteTelemetry(deviceId, telemetryId));
-    }
-
-    /**
-     * 新增遥测数据图表
-     *
-     * @param deviceId 设备ID {@link DeviceTelemetry#getDeviceId()}
-     * @return 更新显示状态的遥测数据
-     * @throws ApiException 处理过程中遇到的业务逻辑异常
-     */
-    @PostMapping(value = "/{deviceId}/telemetry/chart")
-    @OperationLog(action = LogAction.Add,
-            objectType = LogObjectType.DeviceTelemetry,
-            objectId = "{#executionSucceed? #result.data : #p0}",
-            msg = "{#executionSucceed? '新增遥测数据图表成功' : '新增遥测数据图表失败'}",
-            activateData = "{#p1}")
-    public ApiResponse addTelemetryChart(@PathVariable("deviceId") String deviceId,
-                                         @Valid @RequestBody AddTelemetryChartRequest request) throws ApiException {
-        return ApiResponse.success(this.telemetryService.addTelemetryChart(deviceId, request));
     }
 }
