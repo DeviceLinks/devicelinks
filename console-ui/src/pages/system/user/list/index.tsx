@@ -5,11 +5,9 @@ import {
   postApiUserFilter,
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
-import  { SearchOutlined } from '@ant-design/icons';
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, Form, Input, message, Modal } from 'antd';
+import { Button, Form, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
-
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -31,6 +29,11 @@ const UserInfo: React.FC = () => {
       message.success(record.enabled ? '禁用成功' : '启用成功');
       tableRef.current?.reload();
     }
+  };
+  const confirmFilter = (val: API.SearchField) => {
+    console.log(val);
+    setSearchField(val);
+    tableRef.current?.reload();
   };
   /**删除用户 */
   const handleDel = (record: API.User) => {
@@ -83,6 +86,29 @@ const UserInfo: React.FC = () => {
       </>
     );
   };
+
+  /**
+   * 查询数据
+   */
+  const fetchData = async (
+    params: API.postApiUserFilterParams & { pageSize?: number; current?: number },
+  ) => {
+    setLoading(true);
+    const result: any = await postApiUserFilter(
+      {
+        page: params.current,
+        pageSize: params.pageSize,
+      },
+      searchField,
+    );
+    setLoading(false);
+    return {
+      data: result.data.result,
+      success: true,
+      total: result.data.totalRows,
+    };
+  };
+
   /**
    * 表格列设置
    */
@@ -119,61 +145,28 @@ const UserInfo: React.FC = () => {
     { title: '操作', dataIndex: 'operation', ellipsis: true, render: operationBtnGroup },
   ];
 
-  /**
-   * 搜索
-   */
-  const searchContainer = ()=>{
-    return(
-      <Form
-        form={contion}
-        name={'contion'}
-        layout={'inline'}
-        style={{ marginBottom: 15 }}
-        variant={'filled'}
-      >
-        <Form.Item>
-          <Input prefix={<SearchOutlined />} placeholder="搜索" />
-
-        </Form.Item>
-        <FilterButtonBox
-          key={'User'}
-          initialValues={searchField}
-          confirm={setSearchField}
-        ></FilterButtonBox>
-      </Form>
-    )
-  }
   return (
     <PageContainer
       title={'用户管理'}
       content={'当前用户池的所有用户，在这里你可以对用户进行统一管理'}
       extra={<Add refresh={() => tableRef.current?.reload()} />}
     >
-        {searchContainer()}
-        <ProTable<API.User, API.postApiUserFilterParams>
-          actionRef={tableRef}
-          loading={loading}
-          columns={TABLE_COLUMNS}
-          search={false}
-          request={async (
-            params: API.postApiUserFilterParams & { pageSize?: number; current?: number },
-          ) => {
-            setLoading(true);
-            const result: any = await postApiUserFilter(
-              {
-                page: params.current,
-                pageSize: params.pageSize,
-              },
-              searchField,
-            );
-            setLoading(false);
-            return {
-              data: result.data.result,
-              success: true,
-              total: result.data.totalRows,
-            };
-          }}
-        />
+      <ProTable<API.User, API.postApiUserFilterParams>
+        actionRef={tableRef}
+        loading={loading}
+        columns={TABLE_COLUMNS}
+        search={false}
+        toolbar={{
+          actions: [
+            <FilterButtonBox
+              key={'User'}
+              initialValues={searchField}
+              confirm={confirmFilter}
+            ></FilterButtonBox>,
+          ],
+        }}
+        request={fetchData}
+      />
     </PageContainer>
   );
 };
