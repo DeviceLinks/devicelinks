@@ -25,4 +25,5 @@ public class ChartDataConfig implements Serializable {
     private boolean deleted;
     private String createBy;
     private LocalDateTime createTime;
+    private String mark;
 }

@@ -34,9 +34,10 @@ public class TChartDataConfig extends TableImpl {
     public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
+    public final Column MARK = Column.withName("mark").build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, TARGET_LOCATION, TARGET_ID, CHART_TYPE, DELETED, CREATE_BY, CREATE_TIME);
+        return List.of(ID, NAME, TARGET_LOCATION, TARGET_ID, CHART_TYPE, DELETED, CREATE_BY, CREATE_TIME, MARK);
     }
 }
