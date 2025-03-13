@@ -31,4 +31,12 @@ public interface ChartDataConfigService extends BaseService<ChartDataConfig, Str
      * @return 添加后的数据图表传输实体 {@link ChartDataDTO}
      */
     ChartDataDTO addChart(AddDataChartRequest request);
+
+    /**
+     * 删除数据图表
+     *
+     * @param chartId 数据图表ID {@link ChartDataConfig#getId()}
+     * @return 已删除的数据图表
+     */
+    ChartDataConfig deleteChart(String chartId);
 }

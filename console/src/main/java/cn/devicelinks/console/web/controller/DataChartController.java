@@ -10,10 +10,7 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.ChartDataConfig;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 数据图表接口控制器
@@ -43,5 +40,22 @@ public class DataChartController {
             activateData = "{#p0}")
     public ApiResponse addDataChart(@Valid @RequestBody AddDataChartRequest request) throws ApiException {
         return ApiResponse.success(this.chartDataConfigService.addChart(request));
+    }
+
+    /**
+     * 删除数据图表
+     *
+     * @param chartId 数据图表ID {@link ChartDataConfig#getId()}
+     * @return 已删除的数据图表 {@link ChartDataConfig}
+     * @throws ApiException 删除过程中遇到的业务逻辑异常
+     */
+    @DeleteMapping(value = "/{chartId}")
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.Chart,
+            objectId = "{#p0}",
+            msg = "{#executionSucceed? '删除数据图表成功' : '删除数据图表失败'}",
+            activateData = "{#executionSucceed? #result.data : #p0}")
+    public ApiResponse deleteDataChart(@PathVariable("chartId") String chartId) throws ApiException {
+        return ApiResponse.success(this.chartDataConfigService.deleteChart(chartId));
     }
 }

@@ -99,4 +99,5 @@ public interface StatusCodeConstants {
     StatusCode TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART = StatusCode.build("TELEMETRY_DATA_TYPE_CANNOT_ADD_CHART", "遥测数据：%s，的数据类型不支持添加到图表.");
 
     StatusCode DATA_CHART_ALREADY_EXISTS = StatusCode.build("DATA_CHART_ALREADY_EXISTS", "同一目标位置下数据图表：%s，已经存在.");
+    StatusCode DATA_CHART_NOT_EXISTS = StatusCode.build("DATA_CHART_NOT_EXISTS", "数据图表：%s，不存在.");
 }

@@ -102,6 +102,17 @@ public class ChartDataConfigServiceImpl extends BaseServiceImpl<ChartDataConfig,
         return this.addChart(chart, chartFields);
     }
 
+    @Override
+    public ChartDataConfig deleteChart(String chartId) {
+        ChartDataConfig dataChart = this.selectById(chartId);
+        if (dataChart == null || dataChart.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DATA_CHART_NOT_EXISTS, chartId);
+        }
+        dataChart.setDeleted(Boolean.TRUE);
+        this.update(dataChart);
+        return dataChart;
+    }
+
     private ChartDataFields toChartField(String targetId, AddDataChartRequest.ChartField field) {
         ChartDataFieldType chartFieldType = ChartDataFieldType.valueOf(field.getFieldType());
         BiFunction<String, String, String> identifierStrategy = FIELD_IDENTIFIER_STRATEGIES.get(chartFieldType);
