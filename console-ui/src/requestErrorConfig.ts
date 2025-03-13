@@ -52,7 +52,7 @@ export const errorConfig: RequestConfig = {
       const { code, message, showType, data } = res as unknown as ResponseStructure;
       if (code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
         Cookies.remove('token');
-        return history.replace('/user/login?redirect=' + window.location.href);
+        history.replace('/user/login?redirect=' + history.location.pathname);
       }
       if (code !== ResponseCodeType.SUCCESS) {
         const error: any = new Error(message);
@@ -118,8 +118,8 @@ export const errorConfig: RequestConfig = {
       if (config.skipAuth !== true) {
         const Authorization = Cookies.get('Authorization');
         if (!Authorization) {
-          history.replace('/user/login?redirect=' + window.location.href);
-          throw new Error('token 不存在');
+          history.replace('/user/login?redirect=' + history.location.pathname);
+          throw new Error('Token 不存在');
         }
         config.headers = {
           ...config.headers,
@@ -135,7 +135,7 @@ export const errorConfig: RequestConfig = {
     (response) => {
       const responseData = response.data as API.ResponseResult;
       if (responseData.code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
-        history.replace('/user/login?redirect=' + window.location.href);
+        history.replace('/user/login?redirect=' + history.location.pathname);
         ///抛出异常
         throw new Error('登录失效');
       }
