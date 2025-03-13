@@ -1,13 +1,16 @@
 package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.service.DataChartService;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDataChartRequest;
+import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.DataChart;
+import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +26,20 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class DataChartController {
 
-    private DataChartService chartDataConfigService;
+    private DataChartService dataChartService;
+
+    /**
+     * 分页查询数据图表
+     *
+     * @param searchFieldQuery 检索字段参数实体 {@link SearchFieldQuery}
+     * @return 数据图表列表 {@link cn.devicelinks.framework.jdbc.model.dto.DataChartDTO}
+     * @throws ApiException 查询过程中遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.DataChart)
+    public ApiResponse getDataChartByPageable(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        return ApiResponse.success(this.dataChartService.getDataChartList(searchFieldQuery.toSearchFieldConditionList()));
+    }
 
     /**
      * 新增数据图表
@@ -39,7 +55,7 @@ public class DataChartController {
             msg = "{#executionSucceed? '新增数据图表成功' : '新增数据图表失败'}",
             activateData = "{#p0}")
     public ApiResponse addDataChart(@Valid @RequestBody AddDataChartRequest request) throws ApiException {
-        return ApiResponse.success(this.chartDataConfigService.addChart(request));
+        return ApiResponse.success(this.dataChartService.addChart(request));
     }
 
     /**
@@ -56,6 +72,6 @@ public class DataChartController {
             msg = "{#executionSucceed? '删除数据图表成功' : '删除数据图表失败'}",
             activateData = "{#executionSucceed? #result.data : #p0}")
     public ApiResponse deleteDataChart(@PathVariable("chartId") String chartId) throws ApiException {
-        return ApiResponse.success(this.chartDataConfigService.deleteChart(chartId));
+        return ApiResponse.success(this.dataChartService.deleteChart(chartId));
     }
 }

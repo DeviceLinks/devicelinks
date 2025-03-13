@@ -1,7 +1,10 @@
 package cn.devicelinks.console.service.impl;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.service.*;
+import cn.devicelinks.console.service.DataChartFieldService;
+import cn.devicelinks.console.service.DataChartService;
+import cn.devicelinks.console.service.DeviceAttributeService;
+import cn.devicelinks.console.service.DeviceTelemetryService;
 import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.converter.DataChartConverter;
 import cn.devicelinks.console.web.request.AddDataChartRequest;
@@ -14,12 +17,14 @@ import cn.devicelinks.framework.common.pojos.DataChartField;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.model.dto.DataChartDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DataChartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +69,26 @@ public class DataChartServiceImpl extends BaseServiceImpl<DataChart, String, Dat
     }
 
     @Override
+    public List<DataChartDTO> getDataChartList(List<SearchFieldCondition> searchFieldConditionList) {
+        List<DataChart> dataChartList = this.repository.getDataChartList(searchFieldConditionList);
+        if (ObjectUtils.isEmpty(dataChartList)) {
+            return null;
+        }
+        return dataChartList.stream()
+                .map(dataChart -> {
+                    DataChartDTO dataChartDTO = DataChartConverter.INSTANCE.fromDataChart(dataChart);
+                    dataChartDTO.setFields(this.chartDataFieldsService.getFieldListByChartId(dataChart.getId()));
+                    return dataChartDTO;
+                }).toList();
+    }
+
+    @Override
     public DataChartDTO addChart(DataChart dataChart, List<DataChartField> fields) {
         Assert.notNull(dataChart, "数据图表对象实例为空，无法添加.");
         Assert.notEmpty(fields, "数据图表需要至少包含一个字段.");
         this.repository.insert(dataChart);
         for (DataChartField field : fields) {
-            field.setConfigId(dataChart.getId());
+            field.setChartId(dataChart.getId());
             this.chartDataFieldsService.insert(field);
         }
         DataChartDTO dataChartDTO = DataChartConverter.INSTANCE.fromDataChart(dataChart);

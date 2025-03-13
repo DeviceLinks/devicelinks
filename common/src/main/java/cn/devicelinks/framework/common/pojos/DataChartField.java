@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class DataChartField implements Serializable {
     private String id;
-    private String configId;
+    private String chartId;
     private DataChartFieldType fieldType;
     private String fieldId;
     private String fieldIdentifier;

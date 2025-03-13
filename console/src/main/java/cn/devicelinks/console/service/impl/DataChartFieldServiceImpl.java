@@ -7,6 +7,10 @@ import cn.devicelinks.framework.jdbc.repositorys.DataChartFieldRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.tables.TDataChartField.DATA_CHART_FIELD;
+
 /**
  * 数据图表字段业务逻辑实现类
  *
@@ -18,5 +22,10 @@ import org.springframework.stereotype.Service;
 public class DataChartFieldServiceImpl extends BaseServiceImpl<DataChartField, String, DataChartFieldRepository> implements DataChartFieldService {
     public DataChartFieldServiceImpl(DataChartFieldRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public List<DataChartField> getFieldListByChartId(String chartId) {
+        return this.repository.select(DATA_CHART_FIELD.CHART_ID.eq(chartId));
     }
 }

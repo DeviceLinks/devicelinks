@@ -26,7 +26,7 @@ public class TDataChartField extends TableImpl {
     }
 
     public final Column ID = Column.withName("id").primaryKey().build();
-    public final Column CONFIG_ID = Column.withName("config_id").build();
+    public final Column CHART_ID = Column.withName("chart_id").build();
     public final Column FIELD_TYPE = Column.withName("field_type").typeMapper(ColumnValueMappers.DATA_CHART_FIELD_TYPE).build();
     public final Column FIELD_ID = Column.withName("field_id").build();
     public final Column FIELD_IDENTIFIER = Column.withName("field_identifier").build();
@@ -35,6 +35,6 @@ public class TDataChartField extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, CONFIG_ID, FIELD_TYPE, FIELD_ID, FIELD_IDENTIFIER, FIELD_LABEL, CREATE_TIME);
+        return List.of(ID, CHART_ID, FIELD_TYPE, FIELD_ID, FIELD_IDENTIFIER, FIELD_LABEL, CREATE_TIME);
     }
 }
