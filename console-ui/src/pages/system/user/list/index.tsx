@@ -5,8 +5,8 @@ import {
   postApiUserFilter,
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
-import { SearchOutlined } from '@ant-design/icons';
-import { ActionType, PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
+import  { SearchOutlined } from '@ant-design/icons';
+import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, Form, Input, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
 
@@ -62,6 +62,11 @@ const UserInfo: React.FC = () => {
     console.log(record);
   };
 
+  /**
+   * 表格操作按钮
+   * @param _text
+   * @param record
+   */
   const operationBtnGroup = (_text: ReactNode, record: API.User) => {
     return (
       <>
@@ -80,6 +85,9 @@ const UserInfo: React.FC = () => {
       </>
     );
   };
+  /**
+   * 表格列设置
+   */
   const TABLE_COLUMNS = [
     {
       title: '名称',
@@ -112,26 +120,37 @@ const UserInfo: React.FC = () => {
     },
     { title: '操作', dataIndex: 'operation', ellipsis: true, render: operationBtnGroup },
   ];
+
+  /**
+   * 搜索
+   */
+  const searchContainer = ()=>{
+    return(
+      <Form
+        form={contion}
+        name={'contion'}
+        layout={'inline'}
+        style={{ marginBottom: 15 }}
+        variant={'filled'}
+      >
+        <Form.Item>
+          <Input prefix={<SearchOutlined />} placeholder="搜索" />
+
+        </Form.Item>
+        <FilterButtonBox
+          module={'User'}
+          confirm={(val) => handleFilter(val)}
+        ></FilterButtonBox>
+      </Form>
+    )
+  }
   return (
     <PageContainer
       title={'用户管理'}
       content={'当前用户池的所有用户，在这里你可以对用户进行统一管理'}
       extra={<Add refresh={() => tableRef.current?.reload()} />}
     >
-      <ProCard direction="column" ghost gutter={[0, 16]}>
-        <Form
-          form={contion}
-          name={'contion'}
-          layout={'inline'}
-          style={{ marginBottom: 15 }}
-          variant={'filled'}
-        >
-          <Form.Item>
-            <Input prefix={<SearchOutlined />} placeholder="搜索" />
-          </Form.Item>
-          <FilterButtonBox module={'User'} confirm={(val) => handleFilter(val)}></FilterButtonBox>
-        </Form>
-
+        {searchContainer()}
         <ProTable
           actionRef={tableRef}
           loading={loading}
@@ -158,7 +177,6 @@ const UserInfo: React.FC = () => {
             };
           }}
         />
-      </ProCard>
     </PageContainer>
   );
 };
