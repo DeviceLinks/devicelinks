@@ -11089,8 +11089,7 @@
         },
         "title": "检索字段Item",
         "required": [
-          "field",
-          "value"
+          "field"
         ]
       },
       "SearchFieldModuleItem": {

@@ -24,16 +24,14 @@ export const FilterButtonBox = ({
   const changeFieldType = (rowIndex: number, field: string) => {
     const item: API.SearchFieldItem = {
       field: field,
-      value: '',
     };
     form.setFieldValue([`searchFields`, rowIndex], item);
-    console.log(form.getFieldsValue());
   };
   /**
    * 判断最后一个表单项应该显示什么组件
    */
   const getLastFormItem = (formItem: FormListFieldData) => {
-    let row = filterOption.find((item) => item.field === searchFields[formItem.name].field);
+    let row = filterOption.find((item) => item.field === searchFields[formItem.name]?.field);
     if (row && row.componentType === 'SELECT') {
       return (
         <Select
