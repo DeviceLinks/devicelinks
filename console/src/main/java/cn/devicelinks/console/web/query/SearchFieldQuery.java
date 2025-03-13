@@ -22,10 +22,7 @@ import cn.devicelinks.console.web.search.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.utils.StringUtils;
-import cn.devicelinks.framework.common.web.SearchField;
-import cn.devicelinks.framework.common.web.SearchFieldMatch;
-import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
-import cn.devicelinks.framework.common.web.SearchFieldValueType;
+import cn.devicelinks.framework.common.web.*;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
@@ -35,10 +32,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -98,7 +92,14 @@ public class SearchFieldQuery {
                         Object filterValue = filter.getValue();
                         if (SearchFieldValueType.ENUM == searchField.getValueType() && searchField.getEnumClass() != null) {
                             try {
-                                filterValue = Enum.valueOf(searchField.getEnumClass(), filter.getValue().toString());
+                                // If an enum array is passed
+                                if (filterValue instanceof List &&
+                                        (SearchFieldOperator.In.toString().equals(filter.getOperator()) || SearchFieldOperator.NotIn.toString().equals(filter.getOperator()))) {
+                                    List<String> enumList = (List<String>) filterValue;
+                                    filterValue = enumList.stream().map(enumString -> Enum.valueOf(searchField.getEnumClass(), enumString)).toList();
+                                } else {
+                                    filterValue = Enum.valueOf(searchField.getEnumClass(), filter.getValue().toString());
+                                }
                             } catch (Exception e) {
                                 throw new ApiException(StatusCodeConstants.SEARCH_FIELD_ENUM_VALUE_ILLEGAL, filter.getField(), filter.getValue());
                             }
