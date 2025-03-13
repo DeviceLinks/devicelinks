@@ -22,14 +22,10 @@ export async function getApiCommonSearchField(
   options?: { [key: string]: any },
 ) {
   return request<{
-    field: string;
-    fieldText: string;
-    valueType: API.SearchFieldValueType;
-    componentType: string;
-    optionDataSource: string;
-    optionApiDataCode: any;
-    optionStaticData: { label?: string; value?: string }[];
-    operators: { description?: string; value?: string }[];
+    code: string;
+    message: string;
+    data: API.SearchFieldModuleItem[];
+    additional: Record<string, any>;
   }>('/api/common/search/field', {
     method: 'GET',
     params: {

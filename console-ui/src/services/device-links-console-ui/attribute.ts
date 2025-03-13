@@ -344,9 +344,9 @@ export async function postApiAttributeFilter(
     /** 检索字段模块 */
     searchFieldModule: string;
     /** 检索字段之间的匹配方式 */
-    searchMatch: string;
+    searchMatch: 'ANY' | 'ALL';
     /** 检索字段列表 */
-    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
+    searchFields?: API.SearchFieldItem[];
   },
   options?: { [key: string]: any },
 ) {
@@ -374,16 +374,101 @@ export async function postApiAttributeFilter(
   });
 }
 
-/** 查询设备上报属性 GET /api/device/${param0}/attribute/reported */
-export async function getApiDeviceDeviceIdAttributeReported(
+/** 删除期望属性 DELETE /api/device/attribute/${param0}/desired */
+export async function deleteApiDeviceAttributeDesiredAttributeIdDesired(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getApiDeviceDeviceIdAttributeReportedParams,
+  params: API.deleteApiDeviceAttributeDesiredAttributeIdDesiredParams,
   options?: { [key: string]: any },
 ) {
-  const { deviceId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/device/${param0}/attribute/reported`, {
-    method: 'GET',
+  const { desiredAttributeId: param0, ...queryParams } = params;
+  return request<{
+    code: string;
+    message: string;
+    data: API.DesiredAttribute;
+    additional: Record<string, any>;
+  }>(`/api/device/attribute/${param0}/desired`, {
+    method: 'DELETE',
     params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 提取未知期望属性 POST /api/device/attribute/${param0}/desired/extract */
+export async function postApiDeviceAttributeDesiredAttributeIdDesiredExtract(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postApiDeviceAttributeDesiredAttributeIdDesiredExtractParams,
+  body: {
+    /** 属性名称 */
+    attributeName: string;
+    /** 附加信息，参考新增属性接口 */
+    addition: {
+      unitId?: string;
+      dataLength?: number;
+      valueRange: { min?: number; max?: number };
+      valueMap?: Record<string, any>;
+      elementCount?: number;
+      elementDataType?: string;
+    };
+    /** 描述 */
+    description?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  const { desiredAttributeId: param0, ...queryParams } = params;
+  return request<{
+    code: string;
+    message: string;
+    data: API.Attribute;
+    additional: Record<string, any>;
+  }>(`/api/device/attribute/${param0}/desired/extract`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { ...queryParams },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 提取未知设备属性 POST /api/device/attribute/${param0}/extract */
+export async function postApiDeviceAttributeDeviceAttributeIdExtract(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postApiDeviceAttributeDeviceAttributeIdExtractParams,
+  body: {
+    /** 属性名称 */
+    attributeName: string;
+    /** 数据类型 */
+    dataType: string;
+    /** 是否可写 */
+    writable: boolean;
+    /** 附加信息，参考新增属性接口 */
+    addition: {
+      unitId?: string;
+      dataLength?: number;
+      valueRange: { min?: number; max?: number };
+      valueMap?: Record<string, any>;
+      elementCount?: number;
+      elementDataType?: string;
+    };
+    /** 描述 */
+    description?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  const { deviceAttributeId: param0, ...queryParams } = params;
+  return request<{
+    code: string;
+    message: string;
+    data: API.Attribute;
+    additional: Record<string, any>;
+  }>(`/api/device/attribute/${param0}/extract`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { ...queryParams },
+    data: body,
     ...(options || {}),
   });
 }

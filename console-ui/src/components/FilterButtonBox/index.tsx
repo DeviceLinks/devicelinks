@@ -2,37 +2,38 @@ import { getApiCommonSearchField } from '@/services/device-links-console-ui/comm
 import { CloseOutlined, FilterOutlined } from '@ant-design/icons';
 import { Button, Form, FormListFieldData, Input, Popover, Select, Space } from 'antd';
 import React from 'react';
-import style from './styles/index.module.css';
-export const FilterButtonBox = ({ module, confirm }) => {
-  const [form] = Form.useForm();
-  const [filterOption, setfilterOption] = React.useState([]);
-  const [selectedValues, setSelectedValues] = React.useState({});
+export const FilterButtonBox = ({
+  initialValues,
+  confirm,
+}: {
+  initialValues: API.SearchField;
+  confirm: (values: API.SearchField) => void;
+}) => {
+  const [form] = Form.useForm<API.SearchField>();
+  const searchFields = Form.useWatch<API.SearchFieldItem[]>('searchFields', form);
+  const [filterOption, setFilterOption] = React.useState<API.SearchFieldModuleItem[]>([]);
   const getCommonSearchField = async (open: boolean) => {
     if (open) {
-      const { data } = await getApiCommonSearchField({ module: module });
-      setfilterOption(data);
+      const { data } = await getApiCommonSearchField({ module: initialValues.searchFieldModule });
+      setFilterOption(data);
     }
   };
   const resetFormList = () => {
-    form.resetFields();
+    form.setFieldValue('searchFields', [] as API.SearchFieldItem[]);
   };
-  const changeFileldType = (rowIndex: any, value: any) => {
-    // 清空运算符和值
-    form.setFieldsValue({
-      items: {
-        [rowIndex]: {
-          value: undefined,
-          operator: undefined,
-        },
-      },
-    });
-    setSelectedValues((prev) => ({ ...prev, [rowIndex]: value }));
+  const changeFieldType = (rowIndex: number, field: string) => {
+    const item: API.SearchFieldItem = {
+      field: field,
+      value: '',
+    };
+    form.setFieldValue([`searchFields`, rowIndex], item);
+    console.log(form.getFieldsValue());
   };
   /**
    * 判断最后一个表单项应该显示什么组件
    */
   const getLastFormItem = (formItem: FormListFieldData) => {
-    let row = filterOption.find((item) => item.field === selectedValues[formItem.name]);
+    let row = filterOption.find((item) => item.field === searchFields[formItem.name].field);
     if (row && row.componentType === 'SELECT') {
       return (
         <Select
@@ -58,13 +59,17 @@ export const FilterButtonBox = ({ module, confirm }) => {
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
         form={form}
-        name={'formList'}
         style={{ maxWidth: 600, zIndex: 9999 }}
         autoComplete="off"
-        initialValues={{ items: [{}] }}
+        initialValues={{
+          ...initialValues,
+          searchFields: [{}],
+        }}
         onFinish={confirm}
       >
-        <Form.List name={'items'}>
+        <Form.Item name={'searchFieldModule'} hidden={true}></Form.Item>
+        <Form.Item name={'searchMatch'} hidden={true}></Form.Item>
+        <Form.List name={'searchFields'}>
           {(fields, { add, remove }) => (
             <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
               {fields.map((formItem) => {
@@ -83,7 +88,7 @@ export const FilterButtonBox = ({ module, confirm }) => {
                           label: 'fieldText',
                           value: 'field',
                         }}
-                        onChange={(v) => changeFileldType(formItem.name, v)}
+                        onChange={(v) => changeFieldType(formItem.name, v)}
                       ></Select>
                     </Form.Item>
                     <Form.Item
@@ -94,8 +99,9 @@ export const FilterButtonBox = ({ module, confirm }) => {
                       <Select
                         placeholder={'请选择运算符'}
                         options={
-                          filterOption.find((item) => item.field === selectedValues[formItem.name])
-                            ?.operators || []
+                          filterOption.find(
+                            (item) => item.field === searchFields[formItem.name]?.field,
+                          )?.operators
                         }
                         style={{ width: '140px' }}
                         fieldNames={{
@@ -149,15 +155,7 @@ export const FilterButtonBox = ({ module, confirm }) => {
       trigger={'click'}
       onOpenChange={(open: boolean) => getCommonSearchField(open)}
     >
-      <div className={style.FilterButtonBoxContainer}>
-        <Button
-          className={style.ghostBtn}
-          type="link"
-          icon={<FilterOutlined />}
-          size={'small'}
-          variant={'filled'}
-        ></Button>
-      </div>
+      <Button type="text" icon={<FilterOutlined />}></Button>
     </Popover>
   );
 };

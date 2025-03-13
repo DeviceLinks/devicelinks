@@ -58,6 +58,7 @@ export const errorConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
+      console.log(error,'error')
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
@@ -106,7 +107,6 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      console.log(config, '222');
       if (PROXY_PREFIX) {
         config.url = `${PROXY_PREFIX}${config.url}`;
       }
@@ -127,7 +127,6 @@ export const errorConfig: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     (response) => {
-      console.log(response, 'response');
       // 拦截响应数据，进行个性化处理
       return response;
     },

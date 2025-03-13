@@ -10,9 +10,9 @@ export async function postApiLogFilter(
     /** 检索字段模块 */
     searchFieldModule: string;
     /** 检索字段之间的匹配方式 */
-    searchMatch: string;
+    searchMatch: 'ANY' | 'ALL';
     /** 检索字段列表 */
-    searchFields?: { field?: string; operator?: string; value?: (string | number)[] }[];
+    searchFields?: API.SearchFieldItem[];
   },
   options?: { [key: string]: any },
 ) {

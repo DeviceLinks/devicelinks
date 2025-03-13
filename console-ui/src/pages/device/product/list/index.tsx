@@ -1,10 +1,11 @@
 import React from 'react';
 import { PageContainer, ProTable, ProColumns } from '@ant-design/pro-components';
-import { Button } from 'antd';
+import {Button, Form, Input, Select} from 'antd';
 import { postApiProductFilter } from '@/services/device-links-console-ui/product';
 import { useModel } from '@umijs/max';
 import {FilterButtonBox} from "@/components/FilterButtonBox";
-
+import {SortOrder} from "antd/es/table/interface";
+import _ from 'lodash'
 const Product: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
   const { DeviceType, ProductStatus,DeviceNetworkingAway,AccessGatewayProtocol } = enums!;
@@ -12,6 +13,7 @@ const Product: React.FC = () => {
     {
       title: '产品名称',
       dataIndex: 'name',
+      search: false,
       sorter: true,
       key: 'name',
     },
@@ -34,6 +36,7 @@ const Product: React.FC = () => {
     {
       title: '联网方式',
       dataIndex: 'networkingAway',
+      key: 'networkingAway',
       sorter: true,
       valueType: 'select',
       fieldProps:{
@@ -43,6 +46,7 @@ const Product: React.FC = () => {
     {
       title: '接入网关协议',
       dataIndex: 'accessGatewayProtocol',
+      key: 'accessGatewayProtocol',
       sorter: true,
       valueType: 'select',
       fieldProps:{
@@ -52,6 +56,7 @@ const Product: React.FC = () => {
     {
       title: '状态',
       dataIndex: 'status',
+      key: 'status',
       sorter: true,
       search: false,
       valueEnum: getProSchemaValueEnumObjByEnum(ProductStatus,true),
@@ -59,6 +64,7 @@ const Product: React.FC = () => {
     {
       title: '操作',
       valueType: 'option',
+      key: 'option',
       render: () => {
         return (
           <>
@@ -70,18 +76,66 @@ const Product: React.FC = () => {
       },
     },
   ];
+  const [searchForm] = Form.useForm<API.Product>();
+  const customSearchFields =Form.useWatch((value)=>{
+    const fields:API.SearchFieldItem[]=[]
+    if(value.name){
+      fields.push({
+        field:'name',
+        operator:'Like',
+        value:[`${value.name}`],
+      })
+    }
+    if(value.deviceType){
+      fields.push({
+        field:'deviceType',
+        operator:'EqualTo',
+        value:[`${value.deviceType}`],
+      })
+    }
+    if(value.accessGatewayProtocol){
+      fields.push({
+        field:'accessGatewayProtocol',
+        operator:'EqualTo',
+        value:[`${value.accessGatewayProtocol}`],
+      })
+    }
+    if(value.networkingAway){
+      fields.push({
+        field:'networkingAway',
+        operator:'EqualTo',
+        value:[`${value.networkingAway}`],
+      })
+    }
+    return fields
+  },searchForm);
+  const [searchField, setSearchField] = React.useState<API.SearchField>({
+    searchFieldModule: 'Product',
+    searchMatch: 'ANY',
+    searchFields: [],
+  });
   //获取表格数据
   const fetchData = async (
     params: API.postApiProductFilterParams & { pageSize?: number; current?: number },
+    sort:  Record<string, SortOrder>,
   ) => {
     const { data } = await postApiProductFilter(
       {
         pageSize: params.pageSize,
         page: params.current,
+        ...(sort && !_.isEmpty(sort)
+          ? {
+            sortProperty: Object.keys(sort)[0], // 排序字段
+            sortOrder: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
+          }
+          : {}),
       },
       {
-        searchFieldModule: 'Product',
-        searchMatch: 'ALL',
+        ...searchField,
+        searchFields: [
+          ...(searchField.searchFields || []),
+          ...customSearchFields
+        ]
       },
     );
     return {
@@ -97,15 +151,42 @@ const Product: React.FC = () => {
       }}
       content="维护不同厂商的设备产品列表"
     >
-      <ProTable<API.Product, API.postApiProductFilterParams>
+      <ProTable<API.Product,API.postApiProductFilterParams&API.SearchField>
         columns={columns}
+        params={searchField}
+        rowKey="id"
         search={false}
-        toolBarRender={
-          () => [
-             // <Form></Form>,
-             <FilterButtonBox key={'Product'} module={'Product'} confirm={()=>{}}></FilterButtonBox>
-            ]
+        toolbar={
+          {
+            search:(
+              <>
+                <Form<API.Product>
+                  key={'search'}
+                  layout="inline"
+                  form={searchForm}
+                >
+                  <Form.Item name="name">
+                    <Input.Search placeholder="请输入产品名称进行搜索数据" />
+                  </Form.Item>
+                  <Form.Item name="deviceType">
+                    <Select placeholder="请选择设备类型" allowClear={true} options={DeviceType}></Select>
+                  </Form.Item>
+                  <Form.Item name="networkingAway">
+                    <Select placeholder="请选择联网方式" allowClear={true}  options={DeviceNetworkingAway}></Select>
+                  </Form.Item>
+                  <Form.Item name="accessGatewayProtocol">
+                    <Select placeholder="请选择接入网关协议" allowClear={true}  options={AccessGatewayProtocol}></Select>
+                  </Form.Item>
+                </Form>
+              </>
+            ),
+            actions: (
+              [
+                <FilterButtonBox key={'Product'} initialValues={searchField} confirm={setSearchField}></FilterButtonBox>
+              ]
+            )
           }
+        }
         request={fetchData}
       ></ProTable>
     </PageContainer>
