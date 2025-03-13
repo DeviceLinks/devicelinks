@@ -24,10 +24,8 @@ export const FilterButtonBox = ({
   const changeFieldType = (rowIndex: number, field: string) => {
     const item: API.SearchFieldItem = {
       field: field,
-      value: '',
     };
     form.setFieldValue([`searchFields`, rowIndex], item);
-    console.log(form.getFieldsValue());
   };
   /**
    * 判断最后一个表单项应该显示什么组件

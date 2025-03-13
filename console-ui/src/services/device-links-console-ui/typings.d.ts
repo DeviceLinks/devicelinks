@@ -815,7 +815,7 @@ declare namespace API {
       | 'Like'
       | 'NotLike';
     /** 匹配检索值列表 */
-    value: string | (string | number)[] | number | boolean | any;
+    value?: string | (string | number)[] | number | boolean | any;
   };
 
   type SearchFieldMatch = EnumItem[];
