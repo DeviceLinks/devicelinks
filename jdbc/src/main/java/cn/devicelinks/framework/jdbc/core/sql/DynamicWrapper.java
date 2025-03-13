@@ -164,40 +164,8 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             Assert.notEmpty(this.resultColumns, "The resultColumns must not be empty.");
             Assert.notNull(this.resultType, "The resultType must not be null.");
 
-            if (!ObjectUtils.isEmpty(this.whereConditionList)) {
-                boolean hasWhereKeyword = hasWhereKeyword(this.sql);
-                StringBuilder whereSqlBuilder = new StringBuilder(this.sql);
-                if (!hasWhereKeyword) {
-                    whereSqlBuilder = new StringBuilder(StringUtils.removeTrailingSpaces(whereSqlBuilder.toString()));
-                    whereSqlBuilder.append(WhereBuilder.WHERE);
-                }
-                for (int i = 0; i < this.whereConditionList.size(); i++) {
-                    DynamicWhereCondition condition = this.whereConditionList.get(i);
-
-                    // append where condition sql
-                    if ((!hasWhereKeyword && i == Constants.ZERO) || condition.getFederationAway() == null) {
-                        whereSqlBuilder.append(condition.getConditionSql());
-                    } else {
-                        whereSqlBuilder.append(condition.getFederationAway().getValue())
-                                .append(condition.getConditionSql());
-                    }
-
-                    // add parameter value
-                    if (!ObjectUtils.isEmpty(condition.getConditionValue())) {
-                        if (ObjectUtils.isArray(condition.getConditionValue())) {
-                            // @formatter:off
-                            List<Object> parameterValueList = Arrays
-                                    .stream((Object[]) condition.getConditionValue())
-                                    .map(DynamicWrapper::conditionValueConvert).toList();
-                            // @formatter:on
-                            this.parameters.addAll(parameterValueList);
-                        } else {
-                            this.parameters.add(condition.getConditionValue());
-                        }
-                    }
-                }
-                this.sql = whereSqlBuilder.toString();
-            }
+            // append where condition sql
+            this.sql = appendWhereConditionSql(this.sql, this.parameters, this.whereConditionList);
 
             // append sort sql
             if (!ObjectUtils.isEmpty(sort)) {
@@ -208,6 +176,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             if (!ObjectUtils.isEmpty(limit)) {
                 this.sql += limit.getSql();
             }
+
             return new DynamicWrapper(Dynamic.buildSelect(this.sql, this.resultColumns, this.resultType), this.parameters.toArray(Object[]::new));
         }
     }
@@ -219,6 +188,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
         private String sql;
         private final List<Column> parameterColumns = new ArrayList<>();
         private final List<Object> parameters = new ArrayList<>();
+        private final List<DynamicWhereCondition> whereConditionList = new ArrayList<>();
 
         public ModifyBuilder(String sql) {
             this.sql = sql;
@@ -231,22 +201,14 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
 
         public ModifyBuilder appendCondition(boolean allowAppend, SqlFederationAway federationAway, Condition condition) {
             if (allowAppend) {
-                this.sql += federationAway.getValue() + condition.getSql();
-                this.parameters.add(conditionValueConvert(condition.getParameterValue()));
+                this.whereConditionList.add(DynamicWhereCondition.create(federationAway, condition.getSql(), condition.getParameterValue()));
             }
             return this;
         }
 
         public ModifyBuilder appendCondition(boolean allowAppend, String condition, Object... parameterValues) {
             if (allowAppend) {
-                this.sql += condition;
-                if (!ObjectUtils.isEmpty(parameterValues)) {
-                    // @formatter:off
-                    List<Object> parameterValueList = Arrays.stream(parameterValues)
-                            .map(DynamicWrapper::conditionValueConvert).toList();
-                    // @formatter:on
-                    this.parameters.addAll(parameterValueList);
-                }
+                this.whereConditionList.add(DynamicWhereCondition.create(condition, parameterValues));
             }
             return this;
         }
@@ -254,6 +216,10 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
         public DynamicWrapper build() {
             Assert.hasText(this.sql, "The modify sql must not be empty.");
             Assert.notEmpty(this.parameters, "The parameters must not be empty.");
+
+            // append where condition sql
+            this.sql = appendWhereConditionSql(this.sql, this.parameters, this.whereConditionList);
+
             return new DynamicWrapper(Dynamic.buildModify(this.sql, this.parameterColumns), this.parameters.toArray(Object[]::new));
         }
     }
@@ -262,11 +228,63 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
         return conditionValue instanceof Enum<?> ? conditionValue.toString() : conditionValue;
     }
 
+    /**
+     * Check if the sql contains the where keyword
+     *
+     * @param sql original sql
+     * @return true if the sql contains the where keyword
+     */
     private static boolean hasWhereKeyword(String sql) {
         SQLStatementParser parser = new SQLStatementParser(sql);
         SQLStatement stmt = parser.parseStatement();
         SQLSelectQueryBlock query = (SQLSelectQueryBlock) ((SQLSelectStatement) stmt).getSelect().getQuery();
         return query.getWhere() != null;
+    }
+
+    /**
+     * Append sql according to conditions
+     *
+     * @param sql                original sql
+     * @param parameters         Parameter set corresponding to the conditional placeholder in sql
+     * @param whereConditionList List of where conditions
+     * @return SQL after appending
+     */
+    private static String appendWhereConditionSql(String sql, List<Object> parameters, List<DynamicWhereCondition> whereConditionList) {
+        if (!ObjectUtils.isEmpty(whereConditionList)) {
+            boolean hasWhereKeyword = hasWhereKeyword(sql);
+            StringBuilder whereSqlBuilder = new StringBuilder(sql);
+            if (!hasWhereKeyword) {
+                whereSqlBuilder = new StringBuilder(StringUtils.removeTrailingSpaces(whereSqlBuilder.toString()));
+                whereSqlBuilder.append(WhereBuilder.WHERE);
+            }
+            for (int i = 0; i < whereConditionList.size(); i++) {
+                DynamicWhereCondition condition = whereConditionList.get(i);
+
+                // append where condition sql
+                if ((!hasWhereKeyword && i == Constants.ZERO) || condition.getFederationAway() == null) {
+                    whereSqlBuilder.append(condition.getConditionSql());
+                } else {
+                    whereSqlBuilder.append(condition.getFederationAway().getValue())
+                            .append(condition.getConditionSql());
+                }
+
+                // add parameter value
+                if (!ObjectUtils.isEmpty(condition.getConditionValue())) {
+                    if (ObjectUtils.isArray(condition.getConditionValue())) {
+                        // @formatter:off
+                        List<Object> parameterValueList = Arrays
+                                .stream((Object[]) condition.getConditionValue())
+                                .map(DynamicWrapper::conditionValueConvert).toList();
+                        // @formatter:on
+                        parameters.addAll(parameterValueList);
+                    } else {
+                        parameters.add(conditionValueConvert(condition.getConditionValue()));
+                    }
+                }
+            }
+            return whereSqlBuilder.toString();
+        }
+        return sql;
     }
 
     @Getter
