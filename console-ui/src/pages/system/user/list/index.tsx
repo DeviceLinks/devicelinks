@@ -151,12 +151,14 @@ const UserInfo: React.FC = () => {
       extra={<Add refresh={() => tableRef.current?.reload()} />}
     >
         {searchContainer()}
-        <ProTable
+        <ProTable<API.User, API.postApiUserFilterParams>
           actionRef={tableRef}
           loading={loading}
           columns={TABLE_COLUMNS}
           search={false}
-          request={async (params: { pageSize: number; current: number }) => {
+          request={async (
+            params: API.postApiUserFilterParams & { pageSize?: number; current?: number },
+          ) => {
             setLoading(true);
             const result: any = await postApiUserFilter(
               {
