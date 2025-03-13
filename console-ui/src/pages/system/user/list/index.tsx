@@ -10,13 +10,14 @@ import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components'
 import { Button, Form, Input, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
 
-const [searchField, setSearchField] = useState<API.SearchField>({
-  searchFieldModule: 'User',
-  searchMatch: 'ANY',
-  searchFields: [],
-});
+
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchField, setSearchField] = useState<API.SearchField>({
+    searchFieldModule: 'User',
+    searchMatch: 'ANY',
+    searchFields: [],
+  });
   const tableRef = useRef<ActionType>();
   const [contion] = Form.useForm();
 
