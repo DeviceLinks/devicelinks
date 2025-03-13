@@ -10,18 +10,16 @@ import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components'
 import { Button, Form, Input, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
 
+
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [filterBoxVlaues, setFilterBoxVlaues] = useState<any>();
+  const [searchField, setSearchField] = useState<API.SearchField>({
+    searchFieldModule: 'User',
+    searchMatch: 'ANY',
+    searchFields: [],
+  });
   const tableRef = useRef<ActionType>();
   const [contion] = Form.useForm();
-  /**
-   *
-   */
-  const handleFilter = (val) => {
-    setFilterBoxVlaues(val);
-    tableRef.current?.reload();
-  };
 
   /**启用/禁用 */
   const handleEnabled = async (record: API.User) => {
@@ -138,8 +136,9 @@ const UserInfo: React.FC = () => {
 
         </Form.Item>
         <FilterButtonBox
-          module={'User'}
-          confirm={(val) => handleFilter(val)}
+          key={'User'}
+          initialValues={searchField}
+          confirm={setSearchField}
         ></FilterButtonBox>
       </Form>
     )
@@ -165,11 +164,7 @@ const UserInfo: React.FC = () => {
                 page: params.current,
                 pageSize: params.pageSize,
               },
-              {
-                searchFields: filterBoxVlaues,
-                searchFieldModule: 'User',
-                searchMatch: 'ANY',
-              },
+              searchField,
             );
             setLoading(false);
             return {
