@@ -1,6 +1,6 @@
 package cn.devicelinks.framework.common.pojos;
 
-import cn.devicelinks.framework.common.ChartDataFieldType;
+import cn.devicelinks.framework.common.DataChartFieldType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-public class ChartDataFields implements Serializable {
+public class DataChartField implements Serializable {
     private String id;
     private String configId;
-    private ChartDataFieldType fieldType;
+    private DataChartFieldType fieldType;
     private String fieldId;
     private String fieldIdentifier;
     private String fieldLabel;

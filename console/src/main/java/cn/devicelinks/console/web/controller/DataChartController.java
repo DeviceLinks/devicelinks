@@ -1,13 +1,13 @@
 package cn.devicelinks.console.web.controller;
 
-import cn.devicelinks.console.service.ChartDataConfigService;
+import cn.devicelinks.console.service.DataChartService;
 import cn.devicelinks.console.web.request.AddDataChartRequest;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
-import cn.devicelinks.framework.common.pojos.ChartDataConfig;
+import cn.devicelinks.framework.common.pojos.DataChart;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class DataChartController {
 
-    private ChartDataConfigService chartDataConfigService;
+    private DataChartService chartDataConfigService;
 
     /**
      * 新增数据图表
      *
      * @param request 新增数据图表请求参数实体 {@link AddDataChartRequest}
-     * @return 已添加的数据图表配置ID {@link ChartDataConfig#getId()}
+     * @return 已添加的数据图表ID {@link DataChart#getId()}
      * @throws ApiException 新增过程中遇到的业务逻辑异常
      */
     @PostMapping
@@ -45,8 +45,8 @@ public class DataChartController {
     /**
      * 删除数据图表
      *
-     * @param chartId 数据图表ID {@link ChartDataConfig#getId()}
-     * @return 已删除的数据图表 {@link ChartDataConfig}
+     * @param chartId 数据图表ID {@link DataChart#getId()}
+     * @return 已删除的数据图表 {@link DataChart}
      * @throws ApiException 删除过程中遇到的业务逻辑异常
      */
     @DeleteMapping(value = "/{chartId}")

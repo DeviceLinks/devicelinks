@@ -1,6 +1,6 @@
 package cn.devicelinks.console.service;
 
-import cn.devicelinks.framework.common.pojos.ChartDataFields;
+import cn.devicelinks.framework.common.pojos.DataChartField;
 import cn.devicelinks.framework.jdbc.BaseService;
 
 /**
@@ -9,6 +9,6 @@ import cn.devicelinks.framework.jdbc.BaseService;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface ChartDataFieldsService extends BaseService<ChartDataFields, String> {
+public interface DataChartFieldService extends BaseService<DataChartField, String> {
 
 }

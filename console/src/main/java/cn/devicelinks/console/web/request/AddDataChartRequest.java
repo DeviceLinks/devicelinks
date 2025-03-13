@@ -1,8 +1,8 @@
 package cn.devicelinks.console.web.request;
 
-import cn.devicelinks.framework.common.ChartDataFieldType;
-import cn.devicelinks.framework.common.ChartDataTargetLocation;
-import cn.devicelinks.framework.common.ChartType;
+import cn.devicelinks.framework.common.DataChartFieldType;
+import cn.devicelinks.framework.common.DataChartTargetLocation;
+import cn.devicelinks.framework.common.DataChartType;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -27,14 +27,14 @@ public class AddDataChartRequest {
     private String chartName;
 
     @NotBlank(message = "报表类型不可以为空")
-    @EnumValid(target = ChartType.class, message = "报表类型参数值非法")
+    @EnumValid(target = DataChartType.class, message = "报表类型参数值非法")
     private String chartType;
 
     @NotBlank(message = "图表所属目标ID不可以为空")
     private String targetId;
 
     @NotBlank(message = "图表所属目标位置不可以为空")
-    @EnumValid(target = ChartDataTargetLocation.class, message = "图表所属目标位置参数值非法")
+    @EnumValid(target = DataChartTargetLocation.class, message = "图表所属目标位置参数值非法")
     private String targetLocation;
 
     @Length(max = 100, message = "报表备注最大支持100个字符")
@@ -50,7 +50,7 @@ public class AddDataChartRequest {
         private String fieldId;
 
         @NotBlank(message = "字段类型不可以为空")
-        @EnumValid(target = ChartDataFieldType.class, message = "字段类型参数值非法")
+        @EnumValid(target = DataChartFieldType.class, message = "字段类型参数值非法")
         private String fieldType;
 
         @NotBlank(message = "字段描述不可以为空")

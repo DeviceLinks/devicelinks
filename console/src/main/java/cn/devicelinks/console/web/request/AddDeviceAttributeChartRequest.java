@@ -1,6 +1,6 @@
 package cn.devicelinks.console.web.request;
 
-import cn.devicelinks.framework.common.ChartType;
+import cn.devicelinks.framework.common.DataChartType;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +26,7 @@ public class AddDeviceAttributeChartRequest {
     private String chartName;
 
     @NotBlank(message = "图表类型不可以为空")
-    @EnumValid(target = ChartType.class, message = "图表类型参数值非法")
+    @EnumValid(target = DataChartType.class, message = "图表类型参数值非法")
     private String chartType;
 
     @NotEmpty(message = "图表字段列表不可以为空")
