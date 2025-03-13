@@ -28,7 +28,7 @@ import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
+import cn.devicelinks.framework.common.utils.ObjectIdUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -70,6 +70,7 @@ public class LogoutAuthenticationProvider implements AuthenticationProvider {
                 throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_EXPIRED);
             }
         } catch (BadJwtException e) {
+            e.printStackTrace();
             throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_JWT_PARSING_FAILED);
         }
 
@@ -87,7 +88,7 @@ public class LogoutAuthenticationProvider implements AuthenticationProvider {
             String ipAddress = HttpRequestUtils.getIp(request);
             // save user login log
             SysLog userLoginLog = new SysLog()
-                    .setId(UUIDUtils.generateNoDelimiter())
+                    .setId(ObjectIdUtils.generateId())
                     .setUserId(userSession.getUserId())
                     .setSessionId(userSession.getId())
                     .setAction(LogAction.Logout)

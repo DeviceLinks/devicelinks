@@ -81,7 +81,7 @@ public class LogoutEndpointFilter extends OncePerRequestFilter {
             this.authenticationSuccessHandler.onAuthenticationSuccess(request, response, logoutAuthenticationToken);
         } catch (Exception e) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
+                    e instanceof DeviceLinksAuthorizationException ? (AuthenticationException) e : new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
         }
     }
 
