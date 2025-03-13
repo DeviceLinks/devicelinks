@@ -69,13 +69,21 @@ import { useModel } from '@umijs/max';
 
 const Demo: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
-  const {Status} = enums!
+  const {Status,Type} = enums!
   const columns: ProColumns<API.Demo>[] = [
+    {
+      title: '类型',
+      dataIndex: 'type',
+      valueType: 'select',
+      fieldProps:{
+        options:Type
+      }
+    },
     {
       title: '状态',
       dataIndex: 'status',
       valueType: 'select',
-      valueEnum: getProSchemaValueEnumObjByEnum(Status) //可选参数 showStatus 是否显示状态
+      valueEnum: getProSchemaValueEnumObjByEnum(Status) 
     }
   ];
   return (

@@ -3,10 +3,11 @@ import { PageContainer, ProTable, ProColumns } from '@ant-design/pro-components'
 import { Button } from 'antd';
 import { postApiProductFilter } from '@/services/device-links-console-ui/product';
 import { useModel } from '@umijs/max';
+import {FilterButtonBox} from "@/components/FilterButtonBox";
 
 const Product: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
-  const { DeviceType, ProductStatus } = enums!;
+  const { DeviceType, ProductStatus,DeviceNetworkingAway,AccessGatewayProtocol } = enums!;
   const columns: ProColumns<API.Product>[] = [
     {
       title: '产品名称',
@@ -25,26 +26,35 @@ const Product: React.FC = () => {
       dataIndex: 'deviceType',
       sorter: true,
       key: 'deviceType',
-      valueEnum: getProSchemaValueEnumObjByEnum(DeviceType),
+      valueType: 'select',
+      fieldProps:{
+        options: DeviceType,
+      },
     },
     {
       title: '联网方式',
       dataIndex: 'networkingAway',
       sorter: true,
       valueType: 'select',
+      fieldProps:{
+        options: DeviceNetworkingAway,
+      },
     },
     {
       title: '接入网关协议',
       dataIndex: 'accessGatewayProtocol',
       sorter: true,
       valueType: 'select',
+      fieldProps:{
+        options: AccessGatewayProtocol,
+      },
     },
     {
       title: '状态',
       dataIndex: 'status',
       sorter: true,
       search: false,
-      valueEnum: getProSchemaValueEnumObjByEnum(ProductStatus),
+      valueEnum: getProSchemaValueEnumObjByEnum(ProductStatus,true),
     },
     {
       title: '操作',
@@ -89,9 +99,13 @@ const Product: React.FC = () => {
     >
       <ProTable<API.Product, API.postApiProductFilterParams>
         columns={columns}
-        search={{
-          labelWidth: 'auto',
-        }}
+        search={false}
+        toolBarRender={
+          () => [
+             // <Form></Form>,
+             <FilterButtonBox key={'Product'} module={'Product'} confirm={()=>{}}></FilterButtonBox>
+            ]
+          }
         request={fetchData}
       ></ProTable>
     </PageContainer>
