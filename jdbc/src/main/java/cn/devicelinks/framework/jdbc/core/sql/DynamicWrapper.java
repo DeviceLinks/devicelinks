@@ -166,29 +166,37 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
 
             if (!ObjectUtils.isEmpty(this.whereConditionList)) {
                 boolean hasWhereKeyword = hasWhereKeyword(this.sql);
+                StringBuilder whereSqlBuilder = new StringBuilder(this.sql);
                 if (!hasWhereKeyword) {
-                    this.sql = StringUtils.removeTrailingSpaces(this.sql);
-                    this.sql += WhereBuilder.WHERE;
+                    whereSqlBuilder = new StringBuilder(StringUtils.removeTrailingSpaces(whereSqlBuilder.toString()));
+                    whereSqlBuilder.append(WhereBuilder.WHERE);
                 }
                 for (int i = 0; i < this.whereConditionList.size(); i++) {
                     DynamicWhereCondition condition = this.whereConditionList.get(i);
 
                     // append where condition sql
-                    this.sql += ((!hasWhereKeyword && i == Constants.ZERO) || condition.getFederationAway() == null) ? condition.getConditionSql() :
-                            condition.getFederationAway().getValue() + condition.getConditionSql();
+                    if ((!hasWhereKeyword && i == Constants.ZERO) || condition.getFederationAway() == null) {
+                        whereSqlBuilder.append(condition.getConditionSql());
+                    } else {
+                        whereSqlBuilder.append(condition.getFederationAway().getValue())
+                                .append(condition.getConditionSql());
+                    }
 
                     // add parameter value
-                    if (ObjectUtils.isArray(condition.getConditionValue()) && !ObjectUtils.isEmpty(condition.getConditionValue())) {
-                        // @formatter:off
-                        List<Object> parameterValueList = Arrays
-                                .stream((Object[]) condition.getConditionValue())
-                                .map(DynamicWrapper::conditionValueConvert).toList();
-                        // @formatter:on
-                        this.parameters.addAll(parameterValueList);
-                    } else {
-                        this.parameters.add(condition.getConditionValue());
+                    if (!ObjectUtils.isEmpty(condition.getConditionValue())) {
+                        if (ObjectUtils.isArray(condition.getConditionValue())) {
+                            // @formatter:off
+                            List<Object> parameterValueList = Arrays
+                                    .stream((Object[]) condition.getConditionValue())
+                                    .map(DynamicWrapper::conditionValueConvert).toList();
+                            // @formatter:on
+                            this.parameters.addAll(parameterValueList);
+                        } else {
+                            this.parameters.add(condition.getConditionValue());
+                        }
                     }
                 }
+                this.sql = whereSqlBuilder.toString();
             }
 
             // append sort sql
