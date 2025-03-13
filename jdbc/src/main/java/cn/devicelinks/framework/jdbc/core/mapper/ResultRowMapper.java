@@ -88,11 +88,12 @@ public class ResultRowMapper<T> implements RowMapper<T> {
                     .forEach(field -> {
                         String alias = field.isAnnotationPresent(Alias.class) ? field.getAnnotation(Alias.class).value() : null;
                         String columnName = StringUtils.lowerCamelToLowerUnder(!ObjectUtils.isEmpty(alias) ? alias : field.getName());
-                        if (!this.columnMap.containsKey(columnName)) {
+                        String adjustedColumnName = EntityStructure.handleReservedColumnName(columnName);
+                        if (!this.columnMap.containsKey(adjustedColumnName)) {
                             logger.warn("ResultType: [{}], Column: [{}] is not defined.", this.mapEntityClass.getName(), columnName);
                             return;
                         }
-                        Column column = this.columnMap.get(columnName);
+                        Column column = this.columnMap.get(adjustedColumnName);
                         // Get the converted column value
                         Object columnValue;
                         try {

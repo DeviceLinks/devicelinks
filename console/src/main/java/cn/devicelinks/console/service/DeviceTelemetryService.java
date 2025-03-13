@@ -3,8 +3,7 @@ package cn.devicelinks.console.service;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceTelemetryRequest;
-import cn.devicelinks.console.web.request.AddTelemetryChartRequest;
-import cn.devicelinks.framework.common.pojos.ChartDataConfig;
+import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -44,11 +43,11 @@ public interface DeviceTelemetryService extends BaseService<DeviceTelemetry, Str
     DeviceTelemetry deleteTelemetry(String deviceId, String telemetryId);
 
     /**
-     * 添加遥测数据图表
+     * 检查遥测数据ID作为图表字段是否被允许
      *
-     * @param deviceId 设备ID {@link DeviceTelemetry#getDeviceId()}
-     * @param request  添加遥测数据图表请求实体 {@link AddTelemetryChartRequest}
-     * @return 数据图表配置ID {@link ChartDataConfig#getId()}
+     * @param deviceId    设备ID，图表目标ID {@link  DeviceTelemetry#getDeviceId()}
+     * @param telemetryId 遥测数据ID，字段ID {@link DeviceTelemetry#getId()}
+     * @return 如果允许则返回{@link DeviceTelemetry}，否者抛出{@link ApiException}异常
      */
-    String addTelemetryChart(String deviceId, AddTelemetryChartRequest request);
+    DeviceTelemetry checkTelemetryIdChartField(String deviceId, String telemetryId);
 }

@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.jdbc.model.dto;
 
-import cn.devicelinks.framework.common.pojos.ChartDataConfig;
-import cn.devicelinks.framework.common.pojos.ChartDataFields;
+import cn.devicelinks.framework.common.pojos.DataChart;
+import cn.devicelinks.framework.common.pojos.DataChartField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +15,6 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ChartDataDTO extends ChartDataConfig {
-    private List<ChartDataFields> fields;
+public class DataChartDTO extends DataChart {
+    private List<DataChartField> fields;
 }

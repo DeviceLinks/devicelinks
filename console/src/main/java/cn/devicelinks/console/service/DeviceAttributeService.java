@@ -2,10 +2,9 @@ package cn.devicelinks.console.service;
 
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.web.request.AddDeviceAttributeChartRequest;
 import cn.devicelinks.console.web.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.ChartDataConfig;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -37,11 +36,11 @@ public interface DeviceAttributeService extends BaseService<DeviceAttribute, Str
     Attribute extractUnknownAttribute(String reportAttributeId, ExtractUnknownDeviceAttributeRequest request);
 
     /**
-     * 添加设备属性图表
+     * 检查设备属性ID作为图表字段是否被允许
      *
-     * @param deviceId 设备ID {@link DeviceAttribute#getDeviceId()}
-     * @param request  添加设备属性图表请求参数 {@link AddDeviceAttributeChartRequest}
-     * @return 数据图表配置ID {@link ChartDataConfig#getId()}
+     * @param deviceId          设备ID，图表目标ID {@link  DeviceAttribute#getDeviceId()}
+     * @param deviceAttributeId 设备属性ID，字段ID {@link DeviceAttribute#getId()}
+     * @return 如果允许则返回{@link DeviceAttribute}，否者抛出{@link ApiException}异常
      */
-    String addDeviceAttributeChart(String deviceId, AddDeviceAttributeChartRequest request);
+    DeviceAttribute checkAttributeIdChartField(String deviceId, String deviceAttributeId);
 }

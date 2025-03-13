@@ -10,10 +10,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +21,21 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class EntityStructure {
+    /**
+     * MYSQL保留关键字
+     */
+    private static final Set<String> RESERVED_KEYWORDS = new HashSet<>(Arrays.asList(
+            "system", "order", "group", "key", "select", "from", "where", "insert",
+            "update", "delete", "create", "table", "index", "view", "procedure",
+            "function", "trigger", "database", "schema", "column", "row", "join",
+            "union", "alter", "drop", "truncate", "grant", "revoke", "commit",
+            "rollback", "savepoint", "transaction", "foreign", "primary", "unique",
+            "check", "constraint", "references", "cascade", "restrict", "temporary",
+            "if", "else", "case", "when", "then", "end", "declare", "fetch", "close",
+            "open", "cursor", "continue", "exit", "return", "call", "do", "repeat",
+            "loop", "while", "for", "each"
+    ));
+
     @Getter
     private final Table table;
     @Getter
@@ -54,7 +66,8 @@ public class EntityStructure {
         this.fieldColumnMapping = new LinkedHashMap<>();
         for (Field field : fieldList) {
             String columnName = StringUtils.lowerCamelToLowerUnder(field.getName());
-            Column column = table.getColumn(columnName);
+            String adjustedColumnName = handleReservedColumnName(columnName);
+            Column column = table.getColumn(adjustedColumnName);
             if (column != null) {
                 columnFieldMapping.put(column, field);
                 fieldColumnMapping.put(field, column);
@@ -62,6 +75,13 @@ public class EntityStructure {
                 log.error("在表中[{}]找不到列名[{}]，无法建立与字段[{}]的映射关系。", table.getTableName(), columnName, field.getName());
             }
         }
+    }
+
+    public static String handleReservedColumnName(String columnName) {
+        if (RESERVED_KEYWORDS.contains(columnName.toLowerCase())) {
+            return "`" + columnName + "`";
+        }
+        return columnName;
     }
 
     public String getPrimaryKeyFieldName() {
