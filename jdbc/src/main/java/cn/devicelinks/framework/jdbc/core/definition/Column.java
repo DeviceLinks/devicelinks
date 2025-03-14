@@ -25,10 +25,7 @@ import cn.devicelinks.framework.jdbc.core.sql.Condition;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionValue;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlQueryOperator;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -45,7 +42,7 @@ import java.util.function.Supplier;
  * @author 恒宇少年
  * @since 1.0
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @ToString
 @Getter
 public class Column {
@@ -62,7 +59,7 @@ public class Column {
 
     private int sqlType;
 
-    @Getter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE)
     private ColumnValueMapper columnValueMapper;
     /**
      * The PrivateKey generation strategy for the column value

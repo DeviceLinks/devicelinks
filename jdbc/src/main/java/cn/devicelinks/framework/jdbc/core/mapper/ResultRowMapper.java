@@ -21,6 +21,7 @@ import cn.devicelinks.framework.common.utils.ObjectClassUtils;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.core.annotation.Alias;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -55,7 +56,14 @@ public class ResultRowMapper<T> implements RowMapper<T> {
 
     public ResultRowMapper(List<Column> columnList, Class<T> mapEntityClass) {
         if (!ObjectUtils.isEmpty(columnList)) {
-            this.columnMap = columnList.stream().collect(Collectors.toMap(Column::getName, v -> v));
+            this.columnMap = columnList.stream().collect(Collectors.toMap(column -> {
+                // If the specific type of the column object is DynamicColumn and alias is not empty,
+                // use alias instead of column name to add it to columnMap
+                if (column instanceof DynamicColumn dynamicColumn) {
+                    return !ObjectUtils.isEmpty(dynamicColumn.getAlias()) ? dynamicColumn.getAlias() : column.getName();
+                }
+                return column.getName();
+            }, column -> column));
         }
         this.mapEntityClass = mapEntityClass;
         this.allRowValueMap = new ArrayList<>();
