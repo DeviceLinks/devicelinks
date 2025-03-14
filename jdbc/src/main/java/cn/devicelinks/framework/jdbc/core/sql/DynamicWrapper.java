@@ -262,9 +262,12 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
 
                 // append where condition sql
                 if ((!hasWhereKeyword && i == Constants.ZERO) || condition.getFederationAway() == null) {
-                    whereSqlBuilder.append(condition.getConditionSql());
+                    whereSqlBuilder
+                            .append(StringUtils.removeTrailingSpaces(condition.getConditionSql()))
+                            .append(Constants.SPACE);
                 } else {
-                    whereSqlBuilder.append(condition.getFederationAway().getValue())
+                    whereSqlBuilder
+                            .append(condition.getFederationAway().getValue())
                             .append(condition.getConditionSql());
                 }
 
