@@ -14,6 +14,8 @@ import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
+import cn.devicelinks.framework.common.pojos.Attribute;
+import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
@@ -35,6 +37,24 @@ public class DeviceAttributeController {
     private DeviceAttributeService deviceAttributeService;
 
     private DeviceAttributeDesiredService desiredAttributeService;
+
+    /**
+     * 查询设备属性的最新值
+     *
+     * @param deviceId            设备ID {@link Device#getId()}
+     * @param moduleId            功能模块ID {@link Attribute#getModuleId()}
+     * @param attributeName       属性名称 {@link Attribute#getName()}
+     * @param attributeIdentifier 属性标识符 {@link Attribute#getIdentifier()}
+     * @return 设备属性最新值列表
+     * @throws ApiException 查询过程中遇到的业务逻辑异常
+     */
+    @GetMapping(value = "/{deviceId}/module/{moduleId}/attribute/latest")
+    public ApiResponse getDeviceLatestAttribute(@PathVariable("deviceId") String deviceId,
+                                                @PathVariable("moduleId") String moduleId,
+                                                @RequestParam(value = "attributeName", required = false) String attributeName,
+                                                @RequestParam(value = "attributeIdentifier", required = false) String attributeIdentifier) throws ApiException {
+        return ApiResponse.success(this.deviceAttributeService.getLatestAttribute(deviceId, moduleId, attributeName, attributeIdentifier));
+    }
 
     /**
      * 分页查询设备的属性列表
