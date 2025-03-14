@@ -45,7 +45,7 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
     // @formatter:off
     private static final String SELECT_USER_DTO_SQL = "select su.*, sd.name department_name" +
             " from sys_user su" +
-            " left join sys_department sd on sd.id = su.department_id";
+            " left join sys_department sd on sd.id = su.department_id where su.deleted is false";
     // @formatter:on
     private static final Column COLUMN_DEPARTMENT_NAME = Column.withName("department_name").build();
 
