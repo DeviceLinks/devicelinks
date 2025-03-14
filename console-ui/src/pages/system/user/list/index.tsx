@@ -90,8 +90,29 @@ const UserInfo: React.FC = () => {
   /**
    * 输入框
    */
-  const handleSearchInput = (e: string) => {
-    console.log(e);
+  const handleSearchInput = (value: string) => {
+    console.log(value);
+    const filterInputParams:API.SearchField = {
+      searchFieldModule: 'User',
+      searchMatch: 'ANY',
+      searchFields: [
+        {
+          field: "name",
+          operator: "Like",
+          value: value,
+        },{
+          field: "account",
+          operator: "Like",
+          value: value,
+        },{
+          field: "phone",
+          operator: "Like",
+          value: value,
+        }
+      ],
+    }
+    setSearchField(filterInputParams);
+    tableRef.current?.reload();
   };
 
   /**
@@ -177,7 +198,7 @@ const UserInfo: React.FC = () => {
                 <Form.Item name={'keyWord'}>
                   <Input.Search
                     placeholder="请输入名称/账号/手机号进行搜索数据"
-                    allowClear
+                    allowClear={true}
                     style={{ width: '350px' }}
                     onSearch={handleSearchInput}
                   />
