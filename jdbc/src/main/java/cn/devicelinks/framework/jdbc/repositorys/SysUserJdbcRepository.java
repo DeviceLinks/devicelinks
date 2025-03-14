@@ -20,7 +20,7 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
@@ -32,6 +32,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
 
+import static cn.devicelinks.framework.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
 import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
 
 /**
@@ -47,7 +48,6 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
             " from sys_user su" +
             " left join sys_department sd on sd.id = su.department_id where su.deleted is false";
     // @formatter:on
-    private static final Column COLUMN_DEPARTMENT_NAME = Column.withName("department_name").build();
 
     public SysUserJdbcRepository(JdbcOperations jdbcOperations) {
         super(SYS_USER, jdbcOperations);
@@ -64,7 +64,7 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
         DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_USER_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(SYS_USER.getColumns());
-                    resultColumns.add(COLUMN_DEPARTMENT_NAME);
+                    resultColumns.add(DynamicColumn.withColumn(SYS_DEPARTMENT.NAME).alias("department_name").build());
                 })
                 .appendSearchFieldCondition(SYS_USER, searchFieldConditions, consumer -> consumer.tableAlias("su"))
                 .sort(sortCondition);

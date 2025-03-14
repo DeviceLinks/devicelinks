@@ -2,9 +2,8 @@ package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
-import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
@@ -19,9 +18,10 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.ColumnValueMappers.ATTRIBUTE_ADDITION;
-import static cn.devicelinks.framework.jdbc.ColumnValueMappers.ATTRIBUTE_DATA_TYPE;
+import static cn.devicelinks.framework.jdbc.tables.TAttribute.ATTRIBUTE;
+import static cn.devicelinks.framework.jdbc.tables.TAttributeUnit.ATTRIBUTE_UNIT;
 import static cn.devicelinks.framework.jdbc.tables.TDeviceAttribute.DEVICE_ATTRIBUTE;
+import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeDesired.DEVICE_ATTRIBUTE_DESIRED;
 
 /**
  * 设备属性数据接口实现类
@@ -57,21 +57,6 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
             " left join attribute_unit au on au.id = json_unquote(json_extract(a.addition, '$.unitId'))";
     // @formatter:on
 
-    private static final Column COLUMN_ATTRIBUTE_ID = cn.devicelinks.framework.jdbc.core.definition.Column.withName("attribute_id").build();
-    private static final Column COLUMN_ATTRIBUTE_NAME = Column.withName("attribute_name").build();
-    private static final Column COLUMN_ATTRIBUTE_IDENTIFIER = Column.withName("identifier").build();
-    private static final Column COLUMN_ATTRIBUTE_SCOPE = Column.withName("scope").typeMapper(ColumnValueMappers.ATTRIBUTE_SCOPE).build();
-    private static final Column COLUMN_UNIT_NAME = Column.withName("unit_name").build();
-    private static final Column COLUMN_ATTRIBUTE_VALUE_SOURCE = Column.withName("value_source").typeMapper(ColumnValueMappers.ATTRIBUTE_VALUE_SOURCE).build();
-    private static final Column COLUMN_LAST_REPORT_VALUE = Column.withName("last_report_value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
-    private static final Column COLUMN_LAST_REPORT_TIME = Column.withName("last_report_time").localDateTimeValue().build();
-    private static final Column COLUMN_LAST_DESIRED_VALUE = Column.withName("last_desired_value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
-    private static final Column COLUMN_LAST_DESIRED_TIME = Column.withName("last_desired_time").localDateTimeValue().build();
-
-    private static final Column COLUMN_ATTRIBUTE_DATA_TYPE = Column.withName("attribute_data_type").typeMapper(ATTRIBUTE_DATA_TYPE).build();
-    private static final Column COLUMN_ATTRIBUTE_ADDITION = Column.withName("attribute_addition").typeMapper(ATTRIBUTE_ADDITION).build();
-    private static final Column COLUMN_ATTRIBUTE_DESCRIPTION = Column.withName("attribute_description").build();
-
     public DeviceAttributeJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_ATTRIBUTE, jdbcOperations);
     }
@@ -82,10 +67,10 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
         DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_ATTRIBUTE_REPORTED_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(DEVICE_ATTRIBUTE.getColumns());
-                    resultColumns.add(COLUMN_ATTRIBUTE_NAME);
-                    resultColumns.add(COLUMN_ATTRIBUTE_DATA_TYPE);
-                    resultColumns.add(COLUMN_ATTRIBUTE_ADDITION);
-                    resultColumns.add(COLUMN_ATTRIBUTE_DESCRIPTION);
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.NAME).alias("attribute_name").build());
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.DATA_TYPE).alias("attribute_data_type").build());
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.ADDITION).alias("attribute_addition").build());
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.DESCRIPTION).alias("attribute_description").build());
                 })
                 .appendSearchFieldCondition(DEVICE_ATTRIBUTE, searchFieldConditionList, consumer -> consumer.tableAlias("da"))
                 .sort(sortCondition);
@@ -107,17 +92,17 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
                 .appendCondition(!ObjectUtils.isEmpty(attributeName), "and a.name like ?", "%" + attributeName + "%")
                 .appendCondition(!ObjectUtils.isEmpty(attributeIdentifier), "and a.identifier = ?", attributeIdentifier)
                 .resultColumns(columns -> {
-                    columns.add(COLUMN_ATTRIBUTE_ID);
-                    columns.add(COLUMN_ATTRIBUTE_NAME);
-                    columns.add(COLUMN_ATTRIBUTE_IDENTIFIER);
-                    columns.add(COLUMN_ATTRIBUTE_DATA_TYPE);
-                    columns.add(COLUMN_ATTRIBUTE_SCOPE);
-                    columns.add(COLUMN_UNIT_NAME);
-                    columns.add(COLUMN_ATTRIBUTE_VALUE_SOURCE);
-                    columns.add(COLUMN_LAST_REPORT_VALUE);
-                    columns.add(COLUMN_LAST_REPORT_TIME);
-                    columns.add(COLUMN_LAST_DESIRED_VALUE);
-                    columns.add(COLUMN_LAST_DESIRED_TIME);
+                    columns.add(DynamicColumn.withColumn(ATTRIBUTE.ID).alias("attribute_id").build());
+                    columns.add(DynamicColumn.withColumn(ATTRIBUTE.NAME).alias("attribute_name").build());
+                    columns.add(DynamicColumn.withColumn(ATTRIBUTE.IDENTIFIER).build());
+                    columns.add(DynamicColumn.withColumn(ATTRIBUTE.DATA_TYPE).alias("attribute_data_type").build());
+                    columns.add(DynamicColumn.withColumn(ATTRIBUTE.SCOPE).build());
+                    columns.add(DynamicColumn.withColumn(ATTRIBUTE_UNIT.NAME).alias("unit_name").build());
+                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.VALUE_SOURCE).build());
+                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.VALUE).alias("last_report_value").build());
+                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.LAST_UPDATE_TIME).alias("last_report_time").build());
+                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE_DESIRED.DESIRED_VALUE).alias("last_desired_value").build());
+                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE_DESIRED.LAST_UPDATE_TIME).alias("last_desired_time").build());
                 })
                 .resultType(DeviceAttributeLatestDTO.class)
                 .build();

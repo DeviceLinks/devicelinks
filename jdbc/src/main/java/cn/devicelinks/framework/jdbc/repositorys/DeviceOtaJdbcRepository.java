@@ -20,7 +20,7 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceOta;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
@@ -29,6 +29,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TDeviceOta.DEVICE_OTA;
+import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODULE;
 
 /**
  * The {@link DeviceOta} JDBC Repository
@@ -45,10 +46,6 @@ public class DeviceOtaJdbcRepository extends JdbcRepository<DeviceOta, String> i
 			" left join function_module fm on fm.id = do.module_id" +
             " where do.device_id = ?";
 	// @formatter:on
-    private static final Column COLUMN_MODULE_ID = Column.withName("module_id").build();
-    private static final Column COLUMN_MODULE_IDENTIFIER = Column.withName("module_identifier").build();
-    private static final Column COLUMN_OTA_ID = Column.withName("ota_id").build();
-    private static final Column COLUMN_OTA_VERSION = Column.withName("ota_version").build();
 
     public DeviceOtaJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_OTA, jdbcOperations);
@@ -59,10 +56,10 @@ public class DeviceOtaJdbcRepository extends JdbcRepository<DeviceOta, String> i
         // @formatter:off
 		DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_DEVICE_OTA_DTO_SQL)
 				.resultColumns(resultColumns -> {
-					resultColumns.add(COLUMN_MODULE_ID);
-                    resultColumns.add(COLUMN_MODULE_IDENTIFIER);
-                    resultColumns.add(COLUMN_OTA_ID);
-                    resultColumns.add(COLUMN_OTA_VERSION);
+                    resultColumns.add(DynamicColumn.withColumn(FUNCTION_MODULE.ID).alias("module_id").build());
+                    resultColumns.add(DynamicColumn.withColumn(FUNCTION_MODULE.IDENTIFIER).alias("module_identifier").build());
+                    resultColumns.add(DynamicColumn.withColumn(DEVICE_OTA.ID).alias("ota_id").build());
+                    resultColumns.add(DynamicColumn.withColumn(DEVICE_OTA.LATEST_VERSION).alias("ota_version").build());
 				});
 		// @formatter:on
 

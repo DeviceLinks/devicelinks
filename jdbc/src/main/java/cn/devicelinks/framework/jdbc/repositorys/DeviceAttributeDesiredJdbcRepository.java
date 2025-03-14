@@ -3,7 +3,7 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
@@ -15,8 +15,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.ColumnValueMappers.ATTRIBUTE_ADDITION;
-import static cn.devicelinks.framework.jdbc.ColumnValueMappers.ATTRIBUTE_DATA_TYPE;
+import static cn.devicelinks.framework.jdbc.tables.TAttribute.ATTRIBUTE;
 import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeDesired.DEVICE_ATTRIBUTE_DESIRED;
 
 /**
@@ -36,10 +35,6 @@ public class DeviceAttributeDesiredJdbcRepository extends JdbcRepository<DeviceA
             " from device_attribute_desired dad" +
             " left join attribute a on a.id = dad.attribute_id";
     // @formatter:on
-    private static final Column COLUMN_ATTRIBUTE_NAME = Column.withName("attribute_name").build();
-    private static final Column COLUMN_ATTRIBUTE_DATA_TYPE = Column.withName("attribute_data_type").typeMapper(ATTRIBUTE_DATA_TYPE).build();
-    private static final Column COLUMN_ATTRIBUTE_ADDITION = Column.withName("attribute_addition").typeMapper(ATTRIBUTE_ADDITION).build();
-    private static final Column COLUMN_ATTRIBUTE_DESCRIPTION = Column.withName("attribute_description").build();
 
     public DeviceAttributeDesiredJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_ATTRIBUTE_DESIRED, jdbcOperations);
@@ -51,10 +46,12 @@ public class DeviceAttributeDesiredJdbcRepository extends JdbcRepository<DeviceA
         DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_ATTRIBUTE_DESIRED_DTO_SQL)
                 .resultColumns(resultColumns -> {
                     resultColumns.addAll(DEVICE_ATTRIBUTE_DESIRED.getColumns());
-                    resultColumns.add(COLUMN_ATTRIBUTE_NAME);
-                    resultColumns.add(COLUMN_ATTRIBUTE_DATA_TYPE);
-                    resultColumns.add(COLUMN_ATTRIBUTE_ADDITION);
-                    resultColumns.add(COLUMN_ATTRIBUTE_DESCRIPTION);
+
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.NAME).alias("attribute_name").build());
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.DATA_TYPE).alias("attribute_data_type").build());
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.ADDITION).alias("attribute_addition").build());
+                    resultColumns.add(DynamicColumn.withColumn(ATTRIBUTE.DESCRIPTION).alias("attribute_description").build());
+
                 })
                 .appendSearchFieldCondition(DEVICE_ATTRIBUTE_DESIRED, searchFieldConditionList, consumer -> consumer.tableAlias("dad"))
                 .sort(sortCondition);
