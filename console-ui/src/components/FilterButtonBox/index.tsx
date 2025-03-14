@@ -43,12 +43,8 @@ export const FilterButtonBox = ({
     fetchApiCommonSearchField();
   }, []);
 
-  React.useEffect(() => {
-    console.log(filterOption);
-  }, [filterOption]);
-
   const resetFormList = () => {
-    form.setFieldValue('searchFields', [{ field: '', operator: '', value: '' }]);
+    form.setFieldValue('searchFields', [{}]);
   };
   const changeFieldType = (rowIndex: number, field: string) => {
     const item: API.SearchFieldItem = {
@@ -63,7 +59,9 @@ export const FilterButtonBox = ({
    * 判断最后一个表单项应该显示什么组件
    */
   const getLastFormItem = (formItem: FormListFieldData) => {
-    let row = filterOption.find((item) => item.field === searchFields[formItem.name]?.field);
+    let row = filterOption.find(
+      (item) => item.field === (searchFields && searchFields[formItem.name])?.field,
+    );
     if (row && row.componentType === 'SELECT') {
       return (
         <Select
@@ -99,7 +97,7 @@ export const FilterButtonBox = ({
           }}
           onFinish={confirm}
         >
-          {/*<Form.Item name={'searchFieldModule'} hidden={true}></Form.Item>*/}
+          <Form.Item name={'searchFieldModule'} hidden={true}></Form.Item>
           <Form.Item
             name={'searchMatch'}
             className={style.searchMatchBox}
@@ -153,7 +151,8 @@ export const FilterButtonBox = ({
                           placeholder={'请选择运算符'}
                           options={
                             filterOption?.find(
-                              (item) => item.field === searchFields[formItem.name]?.field,
+                              (item) =>
+                                item.field === (searchFields && searchFields[formItem.name])?.field,
                             )?.operators ?? []
                           }
                           style={{ width: '140px' }}
