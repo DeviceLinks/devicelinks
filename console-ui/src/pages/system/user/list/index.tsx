@@ -6,7 +6,7 @@ import {
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, Form, message, Modal } from 'antd';
+import {Button, Form, Input, message, Modal} from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
 
 const UserInfo: React.FC = () => {
@@ -17,7 +17,7 @@ const UserInfo: React.FC = () => {
     searchFields: [],
   });
   const tableRef = useRef<ActionType>();
-  const [contion] = Form.useForm();
+  const [condition] = Form.useForm();
 
   /**启用/禁用 */
   const handleEnabled = async (record: API.User) => {
@@ -86,6 +86,14 @@ const UserInfo: React.FC = () => {
       </>
     );
   };
+
+  /**
+   * 输入框
+   */
+  const handleSearchInput = (e:string)=>{
+      console.log(e);
+
+  }
 
   /**
    * 查询数据
@@ -164,6 +172,22 @@ const UserInfo: React.FC = () => {
               confirm={confirmFilter}
             ></FilterButtonBox>,
           ],
+          search:(
+            <>
+              <Form<API.User >
+                layout="inline" form={condition}
+                >
+                <Form.Item name={'keyWord'}>
+                  <Input.Search
+                    placeholder="请输入名称/账号/手机号进行搜索数据"
+                    allowClear
+                    style={{width:'350px'}}
+                    onSearch={handleSearchInput}
+                  />
+                </Form.Item>
+              </Form>
+            </>
+          )
         }}
         request={fetchData}
       />

@@ -1,20 +1,28 @@
 
-.FilterButtonBoxContainer{
-  background: rgb(239, 239, 239);
-  border: 1px solid #e5e7eb;
-  color: #545968;
-  border-radius: 4px;
-  padding: 1px;
-}
-.FilterButtonBoxContainer:hover{
-  background: rgb(234, 234, 234);
+.filterIcon {
+  font-size: 17px;
 }
 
-.spaceBox{
-  margin-bottom: 12px;
-  .ant-space{
-     .anticon .anticon-close{
-      margin-bottom: 25px !important;
+.filterIcon:hover {
+  color: #40a9ff;
+}
+
+.searchMatchBox {
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  color: #5a5a5a;
+  font-size: 12px;
+
+  .searchMatchSelect {
+    display: flex;
+    justifyContent: flex-end;
+    align-items: center;
+    width: 200px;
+    font-size: 14px;
+
+    div {
+      margin: 0px 10px;
     }
   }
 }
