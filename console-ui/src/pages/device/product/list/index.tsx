@@ -110,11 +110,12 @@ const Product: React.FC = () => {
     }
     return fields;
   }, searchForm);
-  const [searchField, setSearchField] = React.useState<API.SearchField>({
+  const initialSearchField: API.SearchField = {
     searchFieldModule: 'Product',
     searchMatch: 'ANY',
     searchFields: [],
-  });
+  };
+  const [searchField, setSearchField] = React.useState<API.SearchField>(initialSearchField);
   //获取表格数据
   const fetchData = async (
     params: API.postApiProductFilterParams & { pageSize?: number; current?: number },
@@ -194,7 +195,7 @@ const Product: React.FC = () => {
           actions: [
             <FilterButtonBox
               key={'Product'}
-              initialValues={searchField}
+              initialValues={initialSearchField}
               confirm={setSearchField}
             ></FilterButtonBox>,
           ],

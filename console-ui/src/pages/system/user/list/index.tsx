@@ -6,16 +6,17 @@ import {
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
-import {Button, Form, Input, message, Modal} from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [searchField, setSearchField] = useState<API.SearchField>({
+  const initialSearchField: API.SearchField = {
     searchFieldModule: 'User',
     searchMatch: 'ANY',
     searchFields: [],
-  });
+  };
+  const [searchField, setSearchField] = useState<API.SearchField>(initialSearchField);
   const tableRef = useRef<ActionType>();
   const [condition] = Form.useForm();
 
@@ -31,7 +32,6 @@ const UserInfo: React.FC = () => {
     }
   };
   const confirmFilter = (val: API.SearchField) => {
-    console.log(val);
     setSearchField(val);
     tableRef.current?.reload();
   };
@@ -90,10 +90,9 @@ const UserInfo: React.FC = () => {
   /**
    * 输入框
    */
-  const handleSearchInput = (e:string)=>{
-      console.log(e);
-
-  }
+  const handleSearchInput = (e: string) => {
+    console.log(e);
+  };
 
   /**
    * 查询数据
@@ -168,26 +167,24 @@ const UserInfo: React.FC = () => {
           actions: [
             <FilterButtonBox
               key={'User'}
-              initialValues={searchField}
+              initialValues={initialSearchField}
               confirm={confirmFilter}
             ></FilterButtonBox>,
           ],
-          search:(
+          search: (
             <>
-              <Form<API.User >
-                layout="inline" form={condition}
-                >
+              <Form<API.User> layout="inline" form={condition}>
                 <Form.Item name={'keyWord'}>
                   <Input.Search
                     placeholder="请输入名称/账号/手机号进行搜索数据"
                     allowClear
-                    style={{width:'350px'}}
+                    style={{ width: '350px' }}
                     onSearch={handleSearchInput}
                   />
                 </Form.Item>
               </Form>
             </>
-          )
+          ),
         }}
         request={fetchData}
       />
