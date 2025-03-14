@@ -18,6 +18,7 @@ import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDTO;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeLatestDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceAttributeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class DeviceAttributeServiceImpl extends BaseServiceImpl<DeviceAttribute,
     @Override
     public PageResult<DeviceAttributeDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
         return this.repository.getByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+    }
+
+    @Override
+    public List<DeviceAttributeLatestDTO> getLatestAttribute(String deviceId, String moduleId, String attributeName, String attributeIdentifier) {
+        return this.repository.getLatestAttribute(deviceId, moduleId, attributeName, attributeIdentifier);
     }
 
     @Override
