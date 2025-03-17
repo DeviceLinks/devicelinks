@@ -64,6 +64,10 @@ const Product: React.FC = () => {
     },
     {
       title: '新增时间',
+      dataIndex: 'createTime',
+      key: 'createTime',
+      valueType: 'dateTime',
+      sorter: true,
     },
     {
       title: '操作',
