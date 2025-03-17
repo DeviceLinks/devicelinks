@@ -20,11 +20,11 @@ export async function postApiLogFilter(
     code: string;
     message: string;
     data: {
-      page?: number;
-      pageSize?: number;
-      totalPages?: number;
-      totalRows?: number;
-      result?: API.Log[];
+      page: number;
+      pageSize: number;
+      totalPages: number;
+      totalRows: number;
+      result: API.Log[];
     };
     additional: Record<string, any>;
   }>('/api/log/filter', {

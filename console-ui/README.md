@@ -19,12 +19,16 @@ or (更推荐)
 ```bash
   npm run dev
 ```
+
 ## OpenAPI 替换
-  1. 将 `config/openapi.json` 替换为你的 OpenAPI 配置文件
-  2. 运行
-```bash 
+
+1. 将 `config/openapi.json` 替换为你的 OpenAPI 配置文件
+2. 运行
+
+```bash
   npm run openapi
 ```
+
 ## 目录结构
 
 ```
@@ -69,29 +73,23 @@ import { useModel } from '@umijs/max';
 
 const Demo: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
-  const {Status,Type} = enums!
+  const { Status, Type } = enums!;
   const columns: ProColumns<API.Demo>[] = [
     {
       title: '类型',
       dataIndex: 'type',
       valueType: 'select',
-      fieldProps:{
-        options:Type
-      }
+      fieldProps: {
+        options: Type,
+      },
     },
     {
       title: '状态',
       dataIndex: 'status',
       valueType: 'select',
-      valueEnum: getProSchemaValueEnumObjByEnum(Status) 
-    }
+      valueEnum: getProSchemaValueEnumObjByEnum(Status),
+    },
   ];
-  return (
-    <ProTable columns={columns}></ProTable>
-  )
-  
-}
-
+  return <ProTable columns={columns}></ProTable>;
+};
 ```
-
-

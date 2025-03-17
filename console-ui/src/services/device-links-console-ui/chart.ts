@@ -10,14 +10,14 @@ export async function postApiChart(
     targetId: string;
     targetLocation: string;
     mark?: string;
-    fields: { fieldId?: string; fieldType?: string; fieldLabel?: string }[];
+    fields: { fieldId: string; fieldType: string; fieldLabel: string }[];
   },
   options?: { [key: string]: any },
 ) {
   return request<{
     code: string;
     message: string;
-    data: API.E695B0E68DAEE59BBEE8A1A8E6A8A1E59E8B;
+    data: API.Chart;
     additional: Record<string, any>;
   }>('/api/chart', {
     method: 'POST',
@@ -34,7 +34,7 @@ export async function postApiChartFilter(body: API.SearchField, options?: { [key
   return request<{
     code: string;
     message: string;
-    data: API.E695B0E68DAEE59BBEE8A1A8E6A8A1E59E8B;
+    data: API.Chart;
     additional: Record<string, any>;
   }>('/api/chart/filter', {
     method: 'POST',

@@ -233,18 +233,18 @@ export async function postApiAttribute(
     moduleId: string;
     /** 属性基本信息 */
     info: {
-      name?: string;
-      identifier?: string;
-      dataType?: string;
+      name: string;
+      identifier: string;
+      dataType: string;
       addition: {
-        unitId?: string;
-        dataLength?: number;
-        valueRange: { min?: number; max?: number };
+        unitId: string;
+        dataLength: number;
+        valueRange: { min: number; max: number };
         valueMap?: Record<string, any>;
-        elementCount?: number;
-        elementDataType?: string;
+        elementCount: number;
+        elementDataType: string;
       };
-      description?: string;
+      description: string;
     };
     /** 子属性列表 */
     childAttributes: string[];
@@ -268,14 +268,16 @@ export async function getApiAttributeAttributeId(
   options?: { [key: string]: any },
 ) {
   const { attributeId: param0, ...queryParams } = params;
-  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
-    `/api/attribute/${param0}`,
-    {
-      method: 'GET',
-      params: { ...queryParams },
-      ...(options || {}),
-    },
-  );
+  return request<{
+    code: string;
+    message: string;
+    data: API.Attribute | null;
+    additional: Record<string, any>;
+  }>(`/api/attribute/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
 }
 
 /** 更新属性 更新属性Body的请求json数据格式与新增属性一致，可参考新增数据的json数据格式 POST /api/attribute/${param0} */
@@ -289,18 +291,18 @@ export async function postApiAttributeAttributeId(
     moduleId: string;
     /** 属性基本信息 */
     info: {
-      name?: string;
-      identifier?: string;
-      dataType?: string;
+      name: string;
+      identifier: string;
+      dataType: string;
       addition: {
-        unitId?: string;
-        dataLength?: number;
-        valueRange: { min?: number; max?: number };
+        unitId: string;
+        dataLength: number;
+        valueRange: { min: number; max: number };
         valueMap?: Record<string, any>;
-        elementCount?: number;
-        elementDataType?: string;
+        elementCount: number;
+        elementDataType: string;
       };
-      description?: string;
+      description: string;
     };
     /** 子属性列表 */
     childAttributes: string[];
@@ -308,18 +310,20 @@ export async function postApiAttributeAttributeId(
   options?: { [key: string]: any },
 ) {
   const { attributeId: param0, ...queryParams } = params;
-  return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
-    `/api/attribute/${param0}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: { ...queryParams },
-      data: body,
-      ...(options || {}),
+  return request<{
+    code: string;
+    message: string;
+    data: API.Attribute | null;
+    additional: Record<string, any>;
+  }>(`/api/attribute/${param0}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    params: { ...queryParams },
+    data: body,
+    ...(options || {}),
+  });
 }
 
 /** 删除属性 DELETE /api/attribute/${param0} */
@@ -354,11 +358,11 @@ export async function postApiAttributeFilter(
     code: string;
     message: string;
     data: {
-      page?: number;
-      pageSize?: number;
-      totalPages?: number;
-      totalRows?: number;
-      result?: API.Attribute[];
+      page: number;
+      pageSize: number;
+      totalPages: number;
+      totalRows: number;
+      result: API.Attribute[];
     };
     additional: Record<string, any>;
   }>('/api/attribute/filter', {
@@ -418,12 +422,12 @@ export async function postApiDeviceAttributeDesiredAttributeIdDesiredExtract(
     attributeName: string;
     /** 附加信息，参考新增属性接口 */
     addition: {
-      unitId?: string;
-      dataLength?: number;
-      valueRange: { min?: number; max?: number };
+      unitId: string;
+      dataLength: number;
+      valueRange: { min: number; max: number };
       valueMap?: Record<string, any>;
-      elementCount?: number;
-      elementDataType?: string;
+      elementCount: number;
+      elementDataType: string;
     };
     /** 描述 */
     description?: string;
@@ -460,12 +464,12 @@ export async function postApiDeviceAttributeDeviceAttributeIdExtract(
     writable: boolean;
     /** 附加信息，参考新增属性接口 */
     addition: {
-      unitId?: string;
-      dataLength?: number;
-      valueRange: { min?: number; max?: number };
+      unitId: string;
+      dataLength: number;
+      valueRange: { min: number; max: number };
       valueMap?: Record<string, any>;
-      elementCount?: number;
-      elementDataType?: string;
+      elementCount: number;
+      elementDataType: string;
     };
     /** 描述 */
     description?: string;

@@ -23,10 +23,10 @@ export async function postApiDevice(
     authenticationMethod: string;
     /** 鉴权附加信息 */
     authenticationAddition: {
-      accessToken?: string;
-      x509Pem?: string;
-      mqttBasic: { clientId?: string; username?: string; password?: string };
-      deviceCredential: { deviceKey?: string; deviceSecret?: string };
+      accessToken: string;
+      x509Pem: string;
+      mqttBasic: { clientId: string; username: string; password: string };
+      deviceCredential: { deviceKey: string; deviceSecret: string };
     };
   },
   options?: { [key: string]: any },
@@ -143,10 +143,10 @@ export async function postApiDeviceDeviceIdAuthorization(
     authenticationMethod: string;
     /** 认证附加信息 */
     authenticationAddition: {
-      accessToken?: string;
-      x509Pem?: string;
-      mqttBasic: { clientId?: string; username?: string; password?: string };
-      deviceCredential: { deviceKey?: string; deviceSecret?: string };
+      accessToken: string;
+      x509Pem: string;
+      mqttBasic: { clientId: string; username: string; password: string };
+      deviceCredential: { deviceKey: string; deviceSecret: string };
     };
   },
   options?: { [key: string]: any },
@@ -351,11 +351,11 @@ export async function postApiDeviceFilter(
     code: string;
     message: string;
     data: {
-      page?: number;
-      pageSize?: number;
-      totalPages?: number;
-      totalRows?: number;
-      result?: API.Device[];
+      page: number;
+      pageSize: number;
+      totalPages: number;
+      totalRows: number;
+      result: API.Device[];
     };
     additional: Record<string, any>;
   }>('/api/device/filter', {

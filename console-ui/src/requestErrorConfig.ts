@@ -17,7 +17,7 @@
 
 import { RequestOptions } from '@@/plugin-request/request';
 import { history, RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
+import { message } from 'antd';
 import Cookies from 'js-cookie';
 // 错误处理方案： 错误类型
 enum ErrorShowType {

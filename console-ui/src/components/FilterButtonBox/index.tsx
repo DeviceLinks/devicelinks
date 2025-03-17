@@ -45,7 +45,7 @@ export const FilterButtonBox = ({
 
   const resetFormList = () => {
     form.setFieldValue('searchFields', [{}]);
-    confirm(initialValues)
+    confirm(initialValues);
   };
   const changeFieldType = (rowIndex: number, field: string) => {
     const item: API.SearchFieldItem = {

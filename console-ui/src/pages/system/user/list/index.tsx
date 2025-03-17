@@ -6,7 +6,7 @@ import {
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, Form, Input, message, Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
 import { SortOrder } from 'antd/es/table/interface';
 import _ from 'lodash';
@@ -20,7 +20,6 @@ const UserInfo: React.FC = () => {
   };
   const [searchField, setSearchField] = useState<API.SearchField>(initialSearchField);
   const tableRef = useRef<ActionType>();
-  const [condition] = Form.useForm();
 
   /**启用/禁用 */
   const handleEnabled = async (record: API.User) => {

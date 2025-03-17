@@ -20,11 +20,11 @@ declare namespace API {
     dataType: string;
     /** 附加信息 */
     addition: {
-      unitId?: string;
-      step?: number;
-      dataLength?: number;
-      valueRange: { min?: number; max?: number };
-      valueMap?: Record<string, any>;
+      unitId: string;
+      step: number;
+      dataLength: number;
+      valueRange: { min: number; max: number };
+      valueMap: Record<string, any>;
     };
     /** 是否启用 */
     enabled: boolean;
@@ -41,6 +41,45 @@ declare namespace API {
   };
 
   type AttributeDataType = EnumItem[];
+
+  type Chart = {
+    /** 数据图表ID */
+    id: string;
+    /** 图表名称 */
+    name: string;
+    /** 图表位置 */
+    targetLocation: string;
+    /** 图表目标ID */
+    targetId: string;
+    /** 图表类型 */
+    chartType: string;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 创建人 */
+    createBy: string;
+    /** 创建时间 */
+    createTime: string;
+    /** 备注 */
+    mark: null;
+    fields: ChartFieldItem[];
+  };
+
+  type ChartFieldItem = {
+    /** 数据图表字段ID */
+    id: string;
+    /** 图表ID */
+    chartId: string;
+    /** 业务字段类型 */
+    fieldType: string;
+    /** 业务字段ID */
+    fieldId: string;
+    /** 业务字段标识符 */
+    fieldIdentifier: string;
+    /** 业务字段描述 */
+    fieldLabel: string;
+    /** 创建时间 */
+    createTime: string;
+  };
 
   type CurrentUser = {
     user: User;
@@ -121,7 +160,7 @@ declare namespace API {
     /** 功能模块ID */
     moduleId: string;
     /** 定义属性ID */
-    attributeId: any;
+    attributeId: null;
     /** 属性标识符 */
     identifier: string;
     /** 属性数据类型 */
@@ -137,15 +176,15 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 过期时间 */
-    expiredTime: any;
+    expiredTime: null;
     /** 定义属性名称 */
-    attributeName: any;
+    attributeName: null;
     /** 定义属性数据类型 */
-    attributeDataType: any;
+    attributeDataType: null;
     /** 定义属性附加信息 */
-    attributeAddition: any;
+    attributeAddition: null;
     /** 定义属性描述 */
-    attributeDescription: any;
+    attributeDescription: null;
   };
 
   type Device = {
@@ -164,25 +203,25 @@ declare namespace API {
     /** 设备状态 */
     status: string;
     /** 设备标签 */
-    tags: any;
+    tags: null;
     /** 激活时间 */
-    activationTime: any;
+    activationTime: null;
     /** 最后上线时间 */
-    lastOnlineTime: any;
+    lastOnlineTime: null;
     /** 最后上报时间 */
-    lastReportTime: any;
+    lastReportTime: null;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 附加信息 */
-    addition: any;
+    addition: null;
     /** 创建人ID */
     createBy: string;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark: any;
+    mark: null;
   };
 
   type DeviceAttribute = {
@@ -193,7 +232,7 @@ declare namespace API {
     /** 模块ID */
     moduleId: string;
     /** 定义属性ID */
-    attributeId: any;
+    attributeId: null;
     /** 属性标识符 */
     identifier: string;
     /** 属性值，动态值，格式不固定 */
@@ -209,13 +248,13 @@ declare namespace API {
     /** 首次上报时间 */
     createTime: string;
     /** 定义属性名称 */
-    attributeName: any;
+    attributeName: null;
     /** 定义属性数据类型 */
-    attributeDataType: any;
+    attributeDataType: null;
     /** 定义属性附加信息 */
-    attributeAddition: any;
+    attributeAddition: null;
     /** 定义属性描述 */
-    attributeDescription: any;
+    attributeDescription: null;
   };
 
   type DeviceAuth = {
@@ -227,13 +266,13 @@ declare namespace API {
     authenticationMethod: string;
     /** 附加信息 */
     addition: {
-      accessToken?: string;
-      x509Pem?: string;
-      mqttBasic: { clientId?: string; username?: string; password?: string };
-      deviceCredential: { deviceKey?: string; deviceSecret?: string };
+      accessToken: string;
+      x509Pem: string;
+      mqttBasic: { clientId: string; username: string; password: string };
+      deviceCredential: { deviceKey: string; deviceSecret: string };
     };
     /** 过期时间 */
-    expirationTime: any;
+    expirationTime: null;
     /** 是否删除 */
     deleted: boolean;
     /** 创建时间 */
@@ -258,25 +297,25 @@ declare namespace API {
     /** 设备状态 */
     status: string;
     /** 设备标签 */
-    tags: any;
+    tags: null;
     /** 激活时间 */
-    activationTime: any;
+    activationTime: null;
     /** 最后上线时间 */
-    lastOnlineTime: any;
+    lastOnlineTime: null;
     /** 最后上报时间 */
-    lastReportTime: any;
+    lastReportTime: null;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 附加信息 */
-    addition: any;
+    addition: null;
     /** 创建人ID */
     createBy: string;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark: any;
+    mark: null;
     /** 设备认证方式 */
     authenticationMethod: string;
     /** 功能模块OTA版本 */
@@ -292,16 +331,16 @@ declare namespace API {
     deviceId: string;
     /** 设备影子JSON数据 */
     shadowData: {
-      module?: string;
-      reported: { state?: Record<string, any>; metadata?: Record<string, any> };
-      desired: { state?: Record<string, any>; metadata?: Record<string, any> };
+      module: string;
+      reported: { state: Record<string, any>; metadata: Record<string, any> };
+      desired: { state: Record<string, any>; metadata: Record<string, any> };
     }[];
     /** 设备影子状态 */
     status: string;
     /** 最后更新时间 */
     lastUpdateTimestamp: string;
     /** 最后同步时间 */
-    lastSyncTimestamp?: any;
+    lastSyncTimestamp?: null;
     /** 影子创建时间 */
     createTime: string;
   };
@@ -492,12 +531,12 @@ declare namespace API {
       location?: string;
       failureReason?: string;
       failureStackTrace?: string;
-      objectFields?: {
-        field?: string;
-        fieldName?: string;
-        beforeValue?: string;
-        afterValue?: string;
-        different?: boolean;
+      objectFields: {
+        field: string;
+        fieldName: string;
+        beforeValue: string;
+        afterValue: string;
+        different: boolean;
       }[];
     };
     /** 活动数据 */
@@ -800,7 +839,7 @@ declare namespace API {
     code: string;
     /** 消息 */
     message: string;
-    data: any;
+    data: string;
     additional: Record<string, any>;
     success: boolean;
   };
@@ -832,7 +871,7 @@ declare namespace API {
       | 'Like'
       | 'NotLike';
     /** 匹配检索值列表 */
-    value?: string | (string | number)[] | number | boolean | any;
+    value?: string | (string | number)[] | number | boolean | null;
   };
 
   type SearchFieldMatch = EnumItem[];
@@ -861,11 +900,11 @@ declare namespace API {
     /** 数据源为API时查询数据的编码 */
     optionApiDataCode: string;
     /** 数据源为STATIC时的静态数据 */
-    optionStaticData: { label?: string; value?: string | boolean }[];
+    optionStaticData: { label: string; value: string | boolean }[];
     /** 支持的运算法 */
     operators: {
-      description?: string;
-      value?:
+      description: string;
+      value:
         | 'EqualTo'
         | 'NotEqualTo'
         | 'GreaterThan'
@@ -887,45 +926,6 @@ declare namespace API {
 
   type SessionStatus = EnumItem[];
 
-  type shujutubiaomoxing = {
-    /** 数据图表ID */
-    id: string;
-    /** 图表名称 */
-    name: string;
-    /** 图表位置 */
-    targetLocation: string;
-    /** 图表目标ID */
-    targetId: string;
-    /** 图表类型 */
-    chartType: string;
-    /** 是否删除 */
-    deleted: boolean;
-    /** 创建人 */
-    createBy: string;
-    /** 创建时间 */
-    createTime: string;
-    /** 备注 */
-    mark: any;
-    fields: E695B0E68DAEE59BBEE8A1A8E5AD97E6AEB5E6A8A1E59E8B[];
-  };
-
-  type shujutubiaoziduanmoxing = {
-    /** 数据图表字段ID */
-    id: string;
-    /** 图表ID */
-    chartId: string;
-    /** 业务字段类型 */
-    fieldType: string;
-    /** 业务字段ID */
-    fieldId: string;
-    /** 业务字段标识符 */
-    fieldIdentifier: string;
-    /** 业务字段描述 */
-    fieldLabel: string;
-    /** 创建时间 */
-    createTime: string;
-  };
-
   type SignAlgorithm = EnumItem[];
 
   type SignatureAlgorithm = EnumItem[];
@@ -942,7 +942,7 @@ declare namespace API {
     /** 遥测数据值，JSON字符串 */
     metricValue: string;
     /** 附加信息 */
-    addition: { metadata: { dataType?: string } };
+    addition: { metadata: { dataType: string } };
     /** 是否在设备状态展示 */
     displayOnStatusPage: boolean;
     /** 最后更新时间 */
