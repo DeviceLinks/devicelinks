@@ -8,8 +8,8 @@ import {
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, Form, Input, message, Modal } from 'antd';
 import React, { ReactNode, useRef, useState } from 'react';
-import {SortOrder} from "antd/es/table/interface";
-import _ from "lodash";
+import { SortOrder } from 'antd/es/table/interface';
+import _ from 'lodash';
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -94,25 +94,27 @@ const UserInfo: React.FC = () => {
    */
   const handleSearchInput = (value: string) => {
     console.log(value);
-    const filterInputParams:API.SearchField = {
+    const filterInputParams: API.SearchField = {
       searchFieldModule: 'User',
       searchMatch: 'ANY',
       searchFields: [
         {
-          field: "name",
-          operator: "Like",
+          field: 'name',
+          operator: 'Like',
           value: value,
-        },{
-          field: "account",
-          operator: "Like",
+        },
+        {
+          field: 'account',
+          operator: 'Like',
           value: value,
-        },{
-          field: "phone",
-          operator: "Like",
+        },
+        {
+          field: 'phone',
+          operator: 'Like',
           value: value,
-        }
+        },
       ],
-    }
+    };
     setSearchField(filterInputParams);
     tableRef.current?.reload();
   };
@@ -131,9 +133,9 @@ const UserInfo: React.FC = () => {
         pageSize: params.pageSize,
         ...(sort && !_.isEmpty(sort)
           ? {
-            sortProperty: Object.keys(sort)[0], // 排序字段
-            sortDirection: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
-          }
+              sortProperty: Object.keys(sort)[0], // 排序字段
+              sortDirection: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
+            }
           : {}),
       },
       searchField,
@@ -159,11 +161,11 @@ const UserInfo: React.FC = () => {
         return <Button type="link">{record.name}</Button>;
       },
     },
-    { title: '账号', dataIndex: 'account', ellipsis: true, sorter: true, },
-    { title: '手机号', dataIndex: 'phone', ellipsis: true, sorter: true, },
-    { title: '激活方式', dataIndex: 'activateMethod', ellipsis: true, sorter: true, },
-    { title: '邮箱', dataIndex: 'email', ellipsis: true, sorter: true, },
-    { title: '状态', dataIndex: 'xxxx', ellipsis: true, },
+    { title: '账号', dataIndex: 'account', ellipsis: true, sorter: true },
+    { title: '手机号', dataIndex: 'phone', ellipsis: true, sorter: true },
+    { title: '激活方式', dataIndex: 'activateMethod', ellipsis: true, sorter: true },
+    { title: '邮箱', dataIndex: 'email', ellipsis: true, sorter: true },
+    { title: '状态', dataIndex: 'xxxx', ellipsis: true },
     {
       title: '最后登录时间',
       dataIndex: 'lastLoginTime',
@@ -195,7 +197,7 @@ const UserInfo: React.FC = () => {
         actionRef={tableRef}
         loading={loading}
         columns={TABLE_COLUMNS}
-        rowKey={record => record.id}
+        rowKey={(record) => record.id}
         search={false}
         toolbar={{
           actions: [
@@ -205,20 +207,14 @@ const UserInfo: React.FC = () => {
               confirm={confirmFilter}
             ></FilterButtonBox>,
           ],
-          search: (
-            <>
-              <Form<API.User> layout="inline" form={condition}>
-                <Form.Item name={'keyWord'}>
-                  <Input.Search
-                    placeholder="请输入名称/账号/手机号进行搜索数据"
-                    allowClear={true}
-                    style={{ width: '350px' }}
-                    onSearch={handleSearchInput}
-                  />
-                </Form.Item>
-              </Form>
-            </>
-          ),
+          search: {
+            placeholder: '请输入名称/账号/手机号进行搜索数据',
+            allowClear: true,
+            onSearch: handleSearchInput,
+            style: {
+              width: '350px',
+            },
+          },
         }}
         request={fetchData}
       />

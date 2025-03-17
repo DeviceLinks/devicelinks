@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { PageContainer, ProTable, ProColumns, ActionType } from '@ant-design/pro-components';
 import { Button, Form, Input, Select } from 'antd';
 import { postApiProductFilter } from '@/services/device-links-console-ui/product';
@@ -61,6 +61,9 @@ const Product: React.FC = () => {
       sorter: true,
       search: false,
       valueEnum: getProSchemaValueEnumObjByEnum(ProductStatus, true),
+    },
+    {
+      title: '新增时间',
     },
     {
       title: '操作',
@@ -139,7 +142,7 @@ const Product: React.FC = () => {
       },
     );
     return {
-      data: data.result,
+      data: data.result || [],
       total: data.totalRows,
       success: true,
     };
@@ -159,7 +162,17 @@ const Product: React.FC = () => {
         toolbar={{
           search: (
             <>
-              <Form<API.Product> key={'search'} layout="inline" form={searchForm}>
+              <Form<API.Product>
+                key={'search'}
+                layout="inline"
+                form={searchForm}
+                onValuesChange={(changedValues) => {
+                  // 产品名称更新时，不立即刷新
+                  if (!changedValues.name) {
+                    tableActionRef.current?.reload();
+                  }
+                }}
+              >
                 <Form.Item name="name">
                   <Input.Search
                     placeholder="请输入产品名称进行搜索数据"
