@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { PageContainer, ProTable, ProColumns, ActionType } from '@ant-design/pro-components';
 import { Button, Form, Input, message, Modal, Select } from 'antd';
 import {
   deleteApiProductProductId,
   postApiProductFilter,
+  postApiProductProductIdPublish,
 } from '@/services/device-links-console-ui/product';
 import { useModel, useRequest } from '@umijs/max';
 import { FilterButtonBox } from '@/components/FilterButtonBox';
@@ -22,6 +23,13 @@ const Product: React.FC = () => {
       tableActionRef.current?.reload();
     },
   });
+  const { run: publishProduct } = useRequest(postApiProductProductIdPublish, {
+    manual: true,
+    onSuccess: () => {
+      messageApi?.success('发布产品成功');
+      tableActionRef.current?.reload();
+    },
+  });
   const handleDel = (record: API.Product) => {
     Modal.confirm({
       title: '提示',
@@ -33,6 +41,17 @@ const Product: React.FC = () => {
       },
     });
   };
+  const handlePublish = (record: API.Product) => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定要发布该产品吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: async () => {
+        await publishProduct({ productId: record.id });
+      },
+    });
+  };
   const columns: ProColumns<API.Product>[] = [
     {
       title: '产品名称',
@@ -40,6 +59,9 @@ const Product: React.FC = () => {
       search: false,
       sorter: true,
       key: 'name',
+      render: (_, record: API.Product) => {
+        return <Button type="link">{record.name}</Button>;
+      },
     },
     {
       title: '产品Key',
@@ -102,6 +124,11 @@ const Product: React.FC = () => {
             <Button type="link" onClick={() => handleDel(record)} danger>
               删除
             </Button>
+            {record.status !== 'Published' && (
+              <Button type="link" onClick={() => handlePublish(record)}>
+                发布
+              </Button>
+            )}
           </>
         );
       },

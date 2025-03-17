@@ -31,11 +31,19 @@ export default [
       {
         path: '/device/product',
         name: '产品',
+        flatMenu: true,
         routes: [
           { path: '/device/product', redirect: '/device/product/list' },
           {
             path: '/device/product/list',
+            name: '产品',
             component: './device/product/list',
+          },
+          {
+            path: '/device/product/profile',
+            name: '产品详情',
+            hideInMenu: true,
+            component: './device/product/profile',
           },
         ],
       },
@@ -58,6 +66,42 @@ export default [
           },
         ],
       },
+    ],
+  },
+  {
+    path: '/list',
+    icon: 'table',
+    name: '列表页',
+    routes: [
+      {
+        path: '/list/search',
+        name: '搜索列表',
+        component: './list/search',
+        routes: [
+          { path: '/list/search', redirect: '/list/search/articles' },
+          {
+            name: '搜索列表（文章）',
+            icon: 'smile',
+            path: '/list/search/articles',
+            component: './list/search/articles',
+          },
+          {
+            name: '搜索列表（项目）',
+            icon: 'smile',
+            path: '/list/search/projects',
+            component: './list/search/projects',
+          },
+          {
+            name: '搜索列表（应用）',
+            icon: 'smile',
+            path: '/list/search/applications',
+            component: './list/search/applications',
+          },
+        ],
+      },
+      { path: '/list', redirect: '/list/table-list' },
+      { name: '标准列表', icon: 'smile', path: '/list/basic-list', component: './list/basic-list' },
+      { name: '卡片列表', icon: 'smile', path: '/list/card-list', component: './list/card-list' },
     ],
   },
   { path: '/', redirect: '/home' },

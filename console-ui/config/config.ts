@@ -92,7 +92,7 @@ export default defineConfig({
    */
   title: 'Devicelinks',
   layout: {
-    locale: true,
+    locale: false,
     ...defaultSettings,
   },
   /**
