@@ -35,6 +35,25 @@ export async function postApiUser(
   );
 }
 
+/** 获取用户详情 GET /api/user/${param0} */
+export async function getApiUserUserId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getApiUserUserIdParams,
+  options?: { [key: string]: any },
+) {
+  const { userId: param0, ...queryParams } = params;
+  return request<{
+    code: string;
+    message: string;
+    data: API.User;
+    additional: Record<string, any>;
+  }>(`/api/user/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 更新用户 POST /api/user/${param0} */
 export async function postApiUserUserId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

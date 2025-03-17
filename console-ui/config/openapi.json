@@ -132,7 +132,7 @@
             "in": "header",
             "description": "请求令牌",
             "required": false,
-            "example": "Bearer eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzYyNDEwNDgsImlhdCI6MTczNjIzMzg0OH0.CcA60ZuKyDXhAHoNyYY5rrIniW4aNCYYCM5hgYf44BA6UGZAOTtbNxR_53VYKH81_mNcVkT7eaasychqb-k3n-pmF4sJr9982PVAFm16WxhWgmh2WktDSbz1yl9Vw2LXFgQYlcfcMPkc5MVF74qjdtuyLwTSqE9DV2n1CcJZ5qudJsYNvByhtc46b61eI1ff7a204kONphcaxUP-UKkKV3dwWWCpVeAY4T_p8kQfdXh8csZRikCPp6ZzDFiDu7mV-1Oy929XS4FDZCVUPKpwsSTSkVxgG3P_HAuLXmCAEofVfj7VY6qqC9VSbOs2fRM89yiYackEQzSDKgalM9PVcg",
+            "example": "Bearer eyJraWQiOiI0NTc0Nzk1NyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2RldmljZWxpbmtzLmNuIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3NDE5NTIwNDYsImlhdCI6MTc0MTk0NDg0Nn0.PYdcI1bhIV_C4S5qDnwkoCW1e94U7t2fRr_8O5rq7wTHAO_whsZpszcMH-vIQ4ZJoRksZl1likLYwz3J_4IfSVXfKvYoR1qh4K4SkVurhB3ZR7hzKQGspPT_2S9PLuhpmHaH8_FGBorpQg1zZVSlPQh09HtlobOkIe7e_t3CLdveLO5zK5Eblp5fHQOz8AJ_Ke56iwGjgxOmvWptjsE2_xT8IadVcXAo3TqNELUe_GH5oCzLdjEq0wM9zrPuZKq63u2LO0C1AbbHj3i5-Qd3GcE608gkCPEdFzsH1jRtISOj0JCtRIYm8F9lk2Ir1spoz9VM71ByoGXR0dsX6hQc-w",
             "schema": {
               "type": "string"
             }
@@ -149,6 +149,7 @@
                 "examples": {
                   "1": {
                     "summary": "成功示例",
+                    "description": "",
                     "value": {
                       "code": "SUCCESS",
                       "message": "success",
@@ -162,7 +163,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/user": {
@@ -173,19 +178,7 @@
         "tags": [
           "user"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -335,17 +328,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -488,17 +470,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -572,6 +543,67 @@
             "bearer": []
           }
         ]
+      },
+      "get": {
+        "summary": "获取用户详情",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "example": "001a8f5dbd43000100000000",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/user/status/{userId}": {
@@ -601,17 +633,6 @@
             "example": "true",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -693,17 +714,6 @@
             "example": "DESC",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -921,19 +931,7 @@
         "tags": [
           "user"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "",
@@ -1076,17 +1074,6 @@
             "example": "DESC",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -1293,19 +1280,7 @@
         "tags": [
           "device"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1540,17 +1515,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -1655,17 +1619,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -1726,17 +1679,6 @@
             "example": "67c127a3fd75f8b64d59c2dc",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -1847,17 +1789,6 @@
             "schema": {
               "type": "boolean"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -1897,17 +1828,6 @@
             "example": "67c127a3fd75f8b64d59c2dc",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -1995,17 +1915,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -2089,17 +1998,6 @@
             "example": "67c127a3fd75f8b64d59c2dc",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -2262,17 +2160,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -2425,68 +2312,12 @@
         "tags": [
           "product"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "名称"
-                  },
-                  "deviceType": {
-                    "type": "string",
-                    "description": "设备类型",
-                    "const": "DeviceType"
-                  },
-                  "networkingAway": {
-                    "type": "string",
-                    "description": "设备网络方式",
-                    "const": "DeviceNetworkingAway"
-                  },
-                  "accessGatewayProtocol": {
-                    "type": "string",
-                    "description": "接入网关协议，仅网关子设备类型传递该参数",
-                    "const": "AccessGatewayProtocol"
-                  },
-                  "dataFormat": {
-                    "type": "string",
-                    "description": "数据格式",
-                    "const": "DataFormat"
-                  },
-                  "authenticationMethod": {
-                    "type": "string",
-                    "description": "鉴权方式",
-                    "const": "DeviceAuthenticationMethod"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "描述"
-                  }
-                },
-                "required": [
-                  "name",
-                  "deviceType",
-                  "networkingAway",
-                  "accessGatewayProtocol",
-                  "dataFormat",
-                  "authenticationMethod",
-                  "description"
-                ]
+                "$ref": "#/components/schemas/Product"
               },
               "examples": {
                 "1": {
@@ -2547,6 +2378,7 @@
                 "examples": {
                   "1": {
                     "summary": "成功示例",
+                    "description": "",
                     "value": {
                       "code": "SUCCESS",
                       "message": "success",
@@ -2600,17 +2432,6 @@
             "example": "7136c22e59634264853f9c00e9e6cf1c",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -2748,17 +2569,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -2855,17 +2665,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -2955,17 +2754,6 @@
             "example": "7136c22e59634264853f9c00e9e6cf1c",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -3057,17 +2845,6 @@
             "example": "7136c22e59634264853f9c00e9e6cf1c",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -3163,19 +2940,7 @@
         "tags": [
           "department"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3265,17 +3030,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -3344,17 +3098,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -3392,17 +3135,6 @@
             "example": "23e5ab0237d047b8b6a969c070d2612e",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -3488,17 +3220,6 @@
             "example": "Product",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -3926,19 +3647,7 @@
         "tags": [
           "common"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "",
@@ -5562,19 +5271,7 @@
         "tags": [
           "common"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "",
@@ -5652,19 +5349,7 @@
         "tags": [
           "common"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5788,17 +5473,6 @@
             "example": "DESC",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -5954,17 +5628,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -6052,17 +5715,6 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -6166,17 +5818,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -6207,19 +5848,7 @@
         "tags": [
           "functionModule"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6357,17 +5986,6 @@
             "example": "DESC",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -6551,17 +6169,6 @@
             "example": "101084785836818486",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -6752,17 +6359,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -6800,17 +6396,6 @@
             "example": "bc868f0a25814bd495efd4fdaaa90bc0",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -7030,19 +6615,7 @@
         "tags": [
           "attribute"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -7270,17 +6843,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -7498,17 +7060,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -7633,17 +7184,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -7757,17 +7297,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -7861,17 +7390,6 @@
             "example": "DESC",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -8033,17 +7551,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -8191,6 +7698,74 @@
         ]
       }
     },
+    "/api/device/{deviceId}/module/{moduleId}/attribute/latest": {
+      "get": {
+        "summary": "查询设备功能下全部属性最新值",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "设备ID",
+            "required": true,
+            "example": "67c127a3fd75f8b64d59c2dc",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "moduleId",
+            "in": "path",
+            "description": "功能模块ID",
+            "required": true,
+            "example": "001a8f5d1bdb000100000000",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attributeName",
+            "in": "query",
+            "description": "属性名称",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attributeIdentifier",
+            "in": "query",
+            "description": "属性标识符",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResult"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/device/attribute/desired/filter": {
       "post": {
         "summary": "查询设备期望属性",
@@ -8238,17 +7813,6 @@
             "example": "DESC",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -8413,17 +7977,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -8561,17 +8114,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "requestBody": {
@@ -8692,17 +8234,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -8766,17 +8297,6 @@
             "example": "67ca5b43c706829993afc1f2",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
             }
           }
         ],
@@ -8931,17 +8451,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
           }
         ],
         "responses": {
@@ -9065,19 +8574,7 @@
         "tags": [
           "chart"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9239,19 +8736,7 @@
         "tags": [
           "chart"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "请求令牌",
-            "required": true,
-            "example": "{{accessToken}}",
-            "schema": {
-              "type": "string",
-              "default": "{{accessToken}}"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -10224,21 +9709,13 @@
           }
         },
         "required": [
-          "id",
           "name",
-          "productKey",
-          "productSecret",
           "deviceType",
           "networkingAway",
           "accessGatewayProtocol",
           "dataFormat",
           "authenticationMethod",
-          "dynamicRegistration",
-          "status",
-          "deleted",
-          "description",
-          "createBy",
-          "createTime"
+          "description"
         ],
         "title": "产品模型"
       },

@@ -49,7 +49,7 @@ or (更推荐)
 │   │         │   └──index.tsx    # 详情业务
 │   │         └── styles          # 样式
 │   │         └── modules         # 业务通用模块（组件）
-|   |             └── CreateForm.tsx     # 添加业务组件
+|   |             └── CreateProductForm.tsx     # 添加业务组件
 │   ├── services                  # 后台接口服务
 │   ├── utils                     # 工具库
 │   ├── access.ts                 # 权限配置

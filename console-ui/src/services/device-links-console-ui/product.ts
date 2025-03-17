@@ -3,25 +3,7 @@
 import { request } from '@umijs/max';
 
 /** 新增产品 POST /api/product */
-export async function postApiProduct(
-  body: {
-    /** 名称 */
-    name: string;
-    /** 设备类型 */
-    deviceType: string;
-    /** 设备网络方式 */
-    networkingAway: string;
-    /** 接入网关协议，仅网关子设备类型传递该参数 */
-    accessGatewayProtocol: string;
-    /** 数据格式 */
-    dataFormat: string;
-    /** 鉴权方式 */
-    authenticationMethod: string;
-    /** 描述 */
-    description: string;
-  },
-  options?: { [key: string]: any },
-) {
+export async function postApiProduct(body: API.Product, options?: { [key: string]: any }) {
   return request<{ code: string; message: string; data: any; additional: Record<string, any> }>(
     '/api/product',
     {

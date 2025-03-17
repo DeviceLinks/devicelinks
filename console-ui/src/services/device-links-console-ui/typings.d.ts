@@ -411,6 +411,17 @@ declare namespace API {
     deviceId: string;
   };
 
+  type getApiDeviceDeviceIdModuleModuleIdAttributeLatestParams = {
+    /** 设备ID */
+    deviceId: string;
+    /** 功能模块ID */
+    moduleId: string;
+    /** 属性名称 */
+    attributeName?: string;
+    /** 属性标识符 */
+    attributeIdentifier?: string;
+  };
+
   type getApiDeviceDeviceIdParams = {
     /** 设备ID */
     deviceId: string;
@@ -424,6 +435,11 @@ declare namespace API {
   type getApiProductProductIdParams = {
     /** 产品ID */
     productId: string;
+  };
+
+  type getApiUserUserIdParams = {
+    /** 用户ID */
+    userId: string;
   };
 
   type GlobalParam = {
@@ -746,13 +762,13 @@ declare namespace API {
 
   type Product = {
     /** ID */
-    id: string;
+    id?: string;
     /** 产品名称 */
     name: string;
     /** 产品Key */
-    productKey: string;
+    productKey?: string;
     /** 产品Secret */
-    productSecret: string;
+    productSecret?: string;
     /** 设备类型 */
     deviceType: string;
     /** 联网方式 */
@@ -764,17 +780,17 @@ declare namespace API {
     /** 鉴权方式 */
     authenticationMethod: string;
     /** 是否开启动态注册（仅适用一型一密） */
-    dynamicRegistration: boolean;
+    dynamicRegistration?: boolean;
     /** 状态 */
-    status: string;
+    status?: string;
     /** 是否删除 */
-    deleted: boolean;
+    deleted?: boolean;
     /** 描述 */
     description: string;
     /** 创建人 */
-    createBy: string;
+    createBy?: string;
     /** 创建时间 */
-    createTime: string;
+    createTime?: string;
   };
 
   type ProductStatus = EnumItem[];

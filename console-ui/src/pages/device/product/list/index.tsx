@@ -6,6 +6,7 @@ import { useModel } from '@umijs/max';
 import { FilterButtonBox } from '@/components/FilterButtonBox';
 import { SortOrder } from 'antd/es/table/interface';
 import _ from 'lodash';
+import CreateProductForm from '@/pages/device/product/modules/CreateProductForm';
 const Product: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
   const { DeviceType, ProductStatus, DeviceNetworkingAway, AccessGatewayProtocol } = enums!;
@@ -157,6 +158,7 @@ const Product: React.FC = () => {
         title: '产品管理',
       }}
       content="维护不同厂商的设备产品列表"
+      extra={<CreateProductForm key="create" reload={tableActionRef.current?.reload} />}
     >
       <ProTable<API.Product, API.postApiProductFilterParams & API.SearchField>
         columns={columns}

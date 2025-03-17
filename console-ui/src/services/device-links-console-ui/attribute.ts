@@ -374,6 +374,22 @@ export async function postApiAttributeFilter(
   });
 }
 
+/** 查询设备功能下全部属性最新值 GET /api/device/${param0}/module/${param1}/attribute/latest */
+export async function getApiDeviceDeviceIdModuleModuleIdAttributeLatest(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getApiDeviceDeviceIdModuleModuleIdAttributeLatestParams,
+  options?: { [key: string]: any },
+) {
+  const { deviceId: param0, moduleId: param1, ...queryParams } = params;
+  return request<API.ResponseResult>(`/api/device/${param0}/module/${param1}/attribute/latest`, {
+    method: 'GET',
+    params: {
+      ...queryParams,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 删除期望属性 DELETE /api/device/attribute/${param0}/desired */
 export async function deleteApiDeviceAttributeDesiredAttributeIdDesired(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
