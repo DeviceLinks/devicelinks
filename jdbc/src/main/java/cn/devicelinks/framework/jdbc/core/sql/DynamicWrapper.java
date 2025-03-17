@@ -36,6 +36,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
@@ -141,7 +142,20 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             return this;
         }
 
+        public SelectBuilder appendSearchFieldConditionWithAllow(Table table, List<SearchFieldCondition> searchFieldConditions, BiFunction<Condition, SearchFieldCondition, Boolean> function) {
+            this.appendSearchFieldConditions(table, searchFieldConditions, null, function);
+            return this;
+        }
+
         public SelectBuilder appendSearchFieldCondition(Table table, List<SearchFieldCondition> searchFieldConditions, Consumer<Condition> consumer) {
+            this.appendSearchFieldConditions(table, searchFieldConditions, consumer, (condition, searchFieldCondition) -> true);
+            return this;
+        }
+
+        private void appendSearchFieldConditions(Table table, List<SearchFieldCondition> searchFieldConditions,
+                                                 Consumer<Condition> consumer,
+                                                 BiFunction<Condition, SearchFieldCondition, Boolean> function) {
+            List<Condition> allowConditions = new ArrayList<>();
             searchFieldConditions.forEach(searchFieldCondition -> {
                 Column searchColumn = table.getColumn(searchFieldCondition.getColumnName());
                 if (searchColumn == null) {
@@ -153,10 +167,19 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
                     if (consumer != null) {
                         consumer.accept(condition);
                     }
-                    this.appendCondition(!ObjectUtils.isEmpty(searchFieldCondition.getValue()), searchFieldCondition.getFederationAway(), condition);
+                    boolean allowAppend = function.apply(condition, searchFieldCondition);
+                    if (allowAppend) {
+                        allowConditions.add(condition);
+                    }
                 }
             });
-            return this;
+            if (!ObjectUtils.isEmpty(allowConditions)) {
+                SqlFederationAway federationAway = searchFieldConditions.getFirst().getFederationAway();
+                ConditionGroup conditionGroup = ConditionGroup.withCondition(federationAway, allowConditions.toArray(Condition[]::new));
+                conditionGroup.setFirst(true);
+                this.whereConditionList.add(DynamicWhereCondition.create(SqlFederationAway.AND, conditionGroup.getSql(),
+                        allowConditions.stream().map(Condition::getParameterValue).toArray()));
+            }
         }
 
         public DynamicWrapper build() {
