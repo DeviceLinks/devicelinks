@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { PageContainer, ProTable, ProColumns, ActionType } from '@ant-design/pro-components';
 import { Button, Form, Input, Select } from 'antd';
 import { postApiProductFilter } from '@/services/device-links-console-ui/product';
@@ -110,6 +110,7 @@ const Product: React.FC = () => {
     }
     return fields;
   }, searchForm);
+
   const initialSearchField: API.SearchField = {
     searchFieldModule: 'Product',
     searchMatch: 'ANY',
@@ -128,7 +129,7 @@ const Product: React.FC = () => {
         ...(sort && !_.isEmpty(sort)
           ? {
               sortProperty: Object.keys(sort)[0], // 排序字段
-              sortOrder: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
+              sortDirection: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
             }
           : {}),
       },

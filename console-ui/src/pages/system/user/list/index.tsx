@@ -132,7 +132,7 @@ const UserInfo: React.FC = () => {
         ...(sort && !_.isEmpty(sort)
           ? {
             sortProperty: Object.keys(sort)[0], // 排序字段
-            sortOrder: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
+            sortDirection: sort[Object.keys(sort)[0]] === 'ascend' ? 'ASC' : 'DESC', // 排序顺序
           }
           : {}),
       },
