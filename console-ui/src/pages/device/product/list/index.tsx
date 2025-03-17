@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { PageContainer, ProTable, ProColumns, ActionType } from '@ant-design/pro-components';
-import { Button, Form, Input, Select } from 'antd';
-import { postApiProductFilter } from '@/services/device-links-console-ui/product';
-import { useModel } from '@umijs/max';
+import { Button, Form, Input, message, Modal, Select } from 'antd';
+import {
+  deleteApiProductProductId,
+  postApiProductFilter,
+} from '@/services/device-links-console-ui/product';
+import { useModel, useRequest } from '@umijs/max';
 import { FilterButtonBox } from '@/components/FilterButtonBox';
 import { SortOrder } from 'antd/es/table/interface';
 import _ from 'lodash';
@@ -11,6 +14,25 @@ const Product: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
   const { DeviceType, ProductStatus, DeviceNetworkingAway, AccessGatewayProtocol } = enums!;
   const tableActionRef = React.useRef<ActionType>();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { run: deleteProduct } = useRequest(deleteApiProductProductId, {
+    manual: true,
+    onSuccess: () => {
+      messageApi?.success('删除产品成功');
+      tableActionRef.current?.reload();
+    },
+  });
+  const handleDel = (record: API.Product) => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定要删除该产品吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: async () => {
+        await deleteProduct({ productId: record.id });
+      },
+    });
+  };
   const columns: ProColumns<API.Product>[] = [
     {
       title: '产品名称',
@@ -74,10 +96,10 @@ const Product: React.FC = () => {
       title: '操作',
       valueType: 'option',
       key: 'option',
-      render: () => {
+      render: (_, record) => {
         return (
           <>
-            <Button type="link" onClick={() => {}} danger>
+            <Button type="link" onClick={() => handleDel(record)} danger>
               删除
             </Button>
           </>
@@ -160,6 +182,7 @@ const Product: React.FC = () => {
       content="维护不同厂商的设备产品列表"
       extra={<CreateProductForm key="create" reload={tableActionRef.current?.reload} />}
     >
+      {contextHolder}
       <ProTable<API.Product, API.postApiProductFilterParams & API.SearchField>
         columns={columns}
         params={searchField}

@@ -53,8 +53,7 @@ export const errorConfig: RequestConfig = {
       if (code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
         Cookies.remove('token');
         history.replace('/user/login?redirect=' + history.location.pathname);
-      }
-      if (code !== ResponseCodeType.SUCCESS) {
+      } else if (code !== ResponseCodeType.SUCCESS) {
         const error: any = new Error(message);
         error.name = 'BizError';
         error.info = { code, message, showType, data };
@@ -68,32 +67,11 @@ export const errorConfig: RequestConfig = {
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
-          const { message: errorMessage, code } = errorInfo;
-          switch (errorInfo.showType) {
-            case ErrorShowType.SILENT:
-              // do nothing
-              break;
-            case ErrorShowType.WARN_MESSAGE:
-              message.warning(errorMessage);
-              break;
-            case ErrorShowType.ERROR_MESSAGE:
-              message.error(errorMessage);
-              break;
-            case ErrorShowType.NOTIFICATION:
-              notification.open({
-                description: errorMessage,
-                message: code,
-              });
-              break;
-            case ErrorShowType.REDIRECT:
-              // TODO: redirect
-              break;
-            default:
-              message.error(errorMessage);
-          }
+          const { message: errorMessage } = errorInfo;
+          message.error(errorMessage);
         }
       } else if (error.name === 'TokenError') {
-        return history.replace('/user/login?redirect=' + window.location.href);
+        history.replace('/user/login?redirect=' + history.location.pathname);
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
@@ -117,10 +95,6 @@ export const errorConfig: RequestConfig = {
       }
       if (config.skipAuth !== true) {
         const Authorization = Cookies.get('Authorization');
-        if (!Authorization) {
-          history.replace('/user/login?redirect=' + history.location.pathname);
-          throw new Error('Token 不存在');
-        }
         config.headers = {
           ...config.headers,
           Authorization: `Bearer ${Authorization!}`,
@@ -134,10 +108,12 @@ export const errorConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       const responseData = response.data as API.ResponseResult;
+      console.log(responseData.success);
+      const { code } = responseData;
       if (responseData.code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
-        history.replace('/user/login?redirect=' + history.location.pathname);
-        ///抛出异常
-        throw new Error('登录失效');
+        responseData.success = false;
+      } else if (code !== ResponseCodeType.SUCCESS && !responseData.success) {
+        responseData.success = false;
       }
       return response;
     },

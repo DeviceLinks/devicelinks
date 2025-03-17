@@ -3648,6 +3648,16 @@
           "common"
         ],
         "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "",
@@ -9715,7 +9725,15 @@
           "accessGatewayProtocol",
           "dataFormat",
           "authenticationMethod",
-          "description"
+          "description",
+          "id",
+          "productKey",
+          "productSecret",
+          "dynamicRegistration",
+          "status",
+          "deleted",
+          "createBy",
+          "createTime"
         ],
         "title": "产品模型"
       },

@@ -3,7 +3,7 @@
 import { request } from '@umijs/max';
 
 /** 查询枚举列表 返回前端可用的全部枚举定义，包含枚举值、描述。 GET /api/common/enums */
-export async function getApiCommonEnums(options?: { [key: string]: any }) {
+export async function getApiCommonEnums(body: {}, options?: { [key: string]: any }) {
   return request<{
     code: string;
     message: string;
@@ -11,6 +11,10 @@ export async function getApiCommonEnums(options?: { [key: string]: any }) {
     additional: Record<string, any>;
   }>('/api/common/enums', {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
