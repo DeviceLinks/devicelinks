@@ -66,6 +66,12 @@ export default [
           },
         ],
       },
+      {
+        path: '/system/user/profile',
+        name: '用户详情',
+        component: './system/user/profile',
+        hideInMenu: true,
+      },
     ],
   },
   { path: '/', redirect: '/home' },

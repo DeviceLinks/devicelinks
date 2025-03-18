@@ -6,10 +6,11 @@ import {
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
+import { history } from '@umijs/max';
 import { Button, message, Modal } from 'antd';
-import React, { ReactNode, useRef, useState } from 'react';
 import { SortOrder } from 'antd/es/table/interface';
 import _ from 'lodash';
+import React, { ReactNode, useRef, useState } from 'react';
 
 const UserInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -157,7 +158,14 @@ const UserInfo: React.FC = () => {
       ellipsis: true,
       sorter: true,
       render: (_: any, record: API.User) => {
-        return <Button type="link">{record.name}</Button>;
+        return (
+          <Button
+            type="link"
+            onClick={() => history.push(`/system/user/profile?userId=${record.id}`)}
+          >
+            {record.name}
+          </Button>
+        );
       },
     },
     { title: '账号', dataIndex: 'account', ellipsis: true, sorter: true },
