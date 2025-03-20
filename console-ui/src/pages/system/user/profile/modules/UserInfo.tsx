@@ -10,7 +10,7 @@ import { useModel } from '@umijs/max';
 import { Form, message } from 'antd';
 
 interface Props {
-  userInfo: API.User;
+  userInfo: API.User | undefined;
 }
 
 export default (props: Props) => {
