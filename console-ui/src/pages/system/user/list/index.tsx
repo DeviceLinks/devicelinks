@@ -6,13 +6,15 @@ import {
   postApiUserStatusUserId,
 } from '@/services/device-links-console-ui/user';
 import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components';
-import { history } from '@umijs/max';
+import { history, useModel } from '@umijs/max';
 import { Button, message, Modal } from 'antd';
 import { SortOrder } from 'antd/es/table/interface';
 import _ from 'lodash';
 import React, { ReactNode, useRef, useState } from 'react';
 
 const UserInfo: React.FC = () => {
+  const { enums } = useModel('enumModel');
+  const { UserActivateMethod } = enums!;
   const [loading, setLoading] = useState<boolean>(true);
   const initialSearchField: API.SearchField = {
     searchFieldModule: 'User',
@@ -170,7 +172,15 @@ const UserInfo: React.FC = () => {
     },
     { title: '账号', dataIndex: 'account', ellipsis: true, sorter: true },
     { title: '手机号', dataIndex: 'phone', ellipsis: true, sorter: true },
-    { title: '激活方式', dataIndex: 'activateMethod', ellipsis: true, sorter: true },
+    {
+      title: '激活方式',
+      dataIndex: 'activateMethod',
+      ellipsis: true,
+      sorter: true,
+      fieldProps: {
+        options: UserActivateMethod,
+      },
+    },
     { title: '邮箱', dataIndex: 'email', ellipsis: true, sorter: true },
     { title: '状态', dataIndex: 'xxxx', ellipsis: true },
     {

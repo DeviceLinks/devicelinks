@@ -8,19 +8,20 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-components';
+import { useModel } from '@umijs/max';
 import { Button, Form, message } from 'antd';
+
 interface Props {
   refresh: () => void;
 }
+
 export default (prop: Props) => {
   const { refresh } = prop;
-  const [form] = Form.useForm<{ name: string; username: string; activateMethod: string }>();
+  const [form] = Form.useForm<API.User>();
+  const { enums } = useModel('enumModel');
+  const { UserActivateMethod } = enums!;
   return (
-    <ModalForm<{
-      name: string;
-      username: string;
-      activateMethod: string;
-    }>
+    <ModalForm<API.User>
       title="成员入职"
       trigger={
         <Button type="primary">
@@ -50,28 +51,28 @@ export default (prop: Props) => {
           allowClear
           tooltip="最长为 30 位"
           placeholder="请输入名称"
+          rules={[{ required: true, message: '请输入用户名' }]}
         />
 
-        <ProFormText width="md" allowClear name="account" label="账号" placeholder="请输入账号" />
+        <ProFormText
+          width="md"
+          allowClear
+          name="account"
+          label="账号"
+          placeholder="请输入账号"
+          rules={[{ required: true, message: '请输入账号' }]}
+        />
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText width="md" allowClear name="phone" label="手机号" placeholder="请输入手机号" />
         <ProFormSelect
-          request={async () => [
-            {
-              value: 'SendUrlToEmail',
-              label: '发送激活邮件',
-            },
-            {
-              value: 'ShowUrl',
-              label: '显示激活链接',
-            },
-          ]}
+          options={UserActivateMethod}
           width="md"
           allowClear
           name="activateMethod"
           label="激活方式"
           placeholder="请选择激活方式"
+          rules={[{ required: true, message: '请选择激活方式' }]}
         />
       </ProForm.Group>
       <ProForm.Group>
