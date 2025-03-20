@@ -40,7 +40,7 @@ export default [
             component: './device/product/list',
           },
           {
-            path: '/device/product/profile',
+            path: '/device/product/profile/:productId',
             name: '产品详情',
             hideInMenu: true,
             component: './device/product/profile',

@@ -32,7 +32,7 @@
     "test:coverage": "npm run jest -- --coverage",
     "test:update": "npm run jest -- -u",
     "tsc": "tsc --noEmit",
-    "prepare": "cd.. && husky install console-ui/.husky"
+    "prepare": "cd .. && husky install console-ui/.husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,less}": [

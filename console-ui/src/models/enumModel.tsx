@@ -22,14 +22,57 @@ const loginPath = '/user/login';
 import { Tag } from 'antd';
 export default function Page(): {
   fetchEnums: () => Promise<API.Enum | undefined>;
-  enums?: API.Enum;
+  enums: API.Enum;
   setData: (data: API.Enum) => void;
   getProSchemaValueEnumObjByEnum: (
     list: API.EnumItem[],
     showStatus?: boolean,
   ) => ProSchemaValueEnumMap;
 } {
-  const [enums, setEnums] = useState<API.Enum>();
+  const initEnums = {
+    AttributeDataType: [],
+    OtaUpgradeStrategyRetryInterval: [],
+    SearchFieldComponentType: [],
+    SessionStatus: [],
+    NotificationPushAway: [],
+    NotificationType: [],
+    AlarmType: [],
+    SearchFieldOperator: [],
+    OtaUpgradeBatchMethod: [],
+    UserActivateMethod: [],
+    DeviceType: [],
+    OtaUpgradeBatchScope: [],
+    NotificationSeverity: [],
+    ProductStatus: [],
+    DeviceNetworkingAway: [],
+    SearchFieldValueType: [],
+    PlatformType: [],
+    AccessGatewayProtocol: [],
+    DeviceStatus: [],
+    OtaUpgradeStrategyType: [],
+    SearchFieldOptionDataSource: [],
+    SearchFieldModuleIdentifier: [],
+    OtaUpgradeBatchType: [],
+    GlobalSettingDataType: [],
+    SignatureAlgorithm: [],
+    NotificationMatchUserAway: [],
+    LogAction: [],
+    DeviceAuthenticationMethod: [],
+    NotificationTypeIdentifier: [],
+    SignAlgorithm: [],
+    DataFormat: [],
+    OtaPackageType: [],
+    OtaUpgradeProgressState: [],
+    OtaPackageDownloadProtocol: [],
+    EntityAction: [],
+    NotificationStatus: [],
+    SearchFieldMatch: [],
+    OTAFileSource: [],
+    LogObjectType: [],
+    OtaUpgradeBatchState: [],
+    UserIdentity: [],
+  } as API.Enum;
+  const [enums, setEnums] = useState<API.Enum>(initEnums);
   const fetchEnums = async () => {
     try {
       const { data } = await getApiCommonEnums({
@@ -37,7 +80,7 @@ export default function Page(): {
       });
       return data;
     } catch (error) {
-      return undefined;
+      return initEnums;
     }
   };
   // 如果不是登录页面，执行

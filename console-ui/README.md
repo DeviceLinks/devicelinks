@@ -73,7 +73,7 @@ import { useModel } from '@umijs/max';
 
 const Demo: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
-  const { Status, Type } = enums!;
+  const { Status, Type } = enums;
   const columns: ProColumns<API.Demo>[] = [
     {
       title: '类型',

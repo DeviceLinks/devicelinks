@@ -13,7 +13,7 @@ import _ from 'lodash';
 import CreateProductForm from '@/pages/device/product/modules/CreateProductForm';
 const Product: React.FC = () => {
   const { enums, getProSchemaValueEnumObjByEnum } = useModel('enumModel');
-  const { DeviceType, ProductStatus, DeviceNetworkingAway, AccessGatewayProtocol } = enums!;
+  const { DeviceType, ProductStatus, DeviceNetworkingAway, AccessGatewayProtocol } = enums;
   const tableActionRef = React.useRef<ActionType>();
   const [messageApi, contextHolder] = message.useMessage();
   const { run: deleteProduct } = useRequest(deleteApiProductProductId, {
@@ -60,7 +60,11 @@ const Product: React.FC = () => {
       sorter: true,
       key: 'name',
       render: (_, record: API.Product) => {
-        return <Button type="link">{record.name}</Button>;
+        return (
+          <Button type="link" href={`#/device/product/profile/${record.id}`}>
+            {record.name}
+          </Button>
+        );
       },
     },
     {

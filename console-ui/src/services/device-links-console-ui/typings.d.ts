@@ -841,7 +841,6 @@ declare namespace API {
     message: string;
     data: string;
     additional: Record<string, any>;
-    success: boolean;
   };
 
   type SearchField = {

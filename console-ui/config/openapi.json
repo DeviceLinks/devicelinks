@@ -46,7 +46,9 @@
         "summary": "登录",
         "deprecated": false,
         "description": "",
-        "tags": ["login"],
+        "tags": [
+          "login"
+        ],
         "parameters": [
           {
             "name": "username",
@@ -89,7 +91,12 @@
                       "type": "string"
                     }
                   },
-                  "required": ["expires_in", "message", "success", "token"],
+                  "required": [
+                    "expires_in",
+                    "message",
+                    "success",
+                    "token"
+                  ],
                   "$ref": "#/components/schemas/LoginResult"
                 },
                 "examples": {
@@ -116,7 +123,9 @@
         "summary": "退出登录",
         "deprecated": false,
         "description": "",
-        "tags": ["login"],
+        "tags": [
+          "login"
+        ],
         "parameters": [
           {
             "name": "Authorization",
@@ -166,7 +175,9 @@
         "summary": "新增用户",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -204,7 +215,11 @@
                     "type": "string"
                   }
                 },
-                "required": ["username", "account", "activateMethod"]
+                "required": [
+                  "username",
+                  "account",
+                  "activateMethod"
+                ]
               },
               "examples": {
                 "1": {
@@ -247,7 +262,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -295,7 +315,9 @@
         "summary": "更新用户",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -335,7 +357,13 @@
                     "type": "string"
                   }
                 },
-                "required": ["username", "email", "phone", "departmentId", "mark"]
+                "required": [
+                  "username",
+                  "email",
+                  "phone",
+                  "departmentId",
+                  "mark"
+                ]
               },
               "examples": {
                 "1": {
@@ -378,7 +406,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -424,7 +457,9 @@
         "summary": "删除用户",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -462,7 +497,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -508,7 +548,9 @@
         "summary": "获取用户详情",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -544,7 +586,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -564,7 +611,9 @@
         "summary": "启用 / 禁用",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -623,7 +672,9 @@
         "summary": "查询用户列表",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -680,7 +731,10 @@
                   "searchMatch": {
                     "type": "string",
                     "description": "检索字段之间的匹配方式",
-                    "enum": ["ANY", "ALL"]
+                    "enum": [
+                      "ANY",
+                      "ALL"
+                    ]
                   },
                   "searchFields": {
                     "type": "array",
@@ -710,13 +764,20 @@
                           "description": "匹配检索值列表"
                         }
                       },
-                      "required": ["field", "operator", "value"],
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ],
                       "$ref": "#/components/schemas/SearchFieldItem"
                     },
                     "description": "检索字段列表"
                   }
                 },
-                "required": ["searchFieldModule", "searchMatch"]
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
               },
               "examples": {
                 "1": {
@@ -791,7 +852,13 @@
                         }
                       },
                       "description": "响应数据",
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ],
                       "nullable": true
                     },
                     "additional": {
@@ -799,7 +866,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -856,7 +928,9 @@
         "summary": "获取登录人信息",
         "deprecated": false,
         "description": "",
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -891,7 +965,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -953,7 +1032,9 @@
         "summary": "查询设备列表",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -1010,7 +1091,10 @@
                   "searchMatch": {
                     "type": "string",
                     "description": "检索字段之间的匹配方式",
-                    "enum": ["ANY", "ALL"]
+                    "enum": [
+                      "ANY",
+                      "ALL"
+                    ]
                   },
                   "searchFields": {
                     "type": "array",
@@ -1040,13 +1124,20 @@
                           "description": "匹配检索值列表"
                         }
                       },
-                      "required": ["field", "operator", "value"],
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ],
                       "$ref": "#/components/schemas/SearchFieldItem"
                     },
                     "description": "检索字段列表"
                   }
                 },
-                "required": ["searchFieldModule", "searchMatch"]
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
               },
               "examples": {
                 "1": {
@@ -1111,7 +1202,13 @@
                         }
                       },
                       "description": "响应数据",
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ],
                       "nullable": true
                     },
                     "additional": {
@@ -1119,7 +1216,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -1175,7 +1277,9 @@
         "summary": "新增设备",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1247,7 +1351,11 @@
                             "description": "密码"
                           }
                         },
-                        "required": ["clientId", "username", "password"],
+                        "required": [
+                          "clientId",
+                          "username",
+                          "password"
+                        ],
                         "description": "MQTT Basic"
                       },
                       "deviceCredential": {
@@ -1262,11 +1370,19 @@
                             "description": "设备Secret"
                           }
                         },
-                        "required": ["deviceKey", "deviceSecret"],
+                        "required": [
+                          "deviceKey",
+                          "deviceSecret"
+                        ],
                         "description": "一机一密"
                       }
                     },
-                    "required": ["accessToken", "x509Pem", "mqttBasic", "deviceCredential"],
+                    "required": [
+                      "accessToken",
+                      "x509Pem",
+                      "mqttBasic",
+                      "deviceCredential"
+                    ],
                     "description": "鉴权附加信息"
                   }
                 },
@@ -1290,7 +1406,10 @@
                     "deviceType": "Direct",
                     "deviceCode": "test001",
                     "name": "测试设备",
-                    "tags": ["car", "gps"],
+                    "tags": [
+                      "car",
+                      "gps"
+                    ],
                     "mark": "这是备注信息....",
                     "authenticationMethod": "AccessToken",
                     "authenticationAddition": {
@@ -1326,7 +1445,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -1343,7 +1467,10 @@
                         "deviceType": "Direct",
                         "name": "测试设备",
                         "status": "NotActivate",
-                        "tags": ["car", "gps"],
+                        "tags": [
+                          "car",
+                          "gps"
+                        ],
                         "activationTime": null,
                         "lastOnlineTime": null,
                         "lastReportTime": null,
@@ -1375,7 +1502,9 @@
         "summary": "更新设备",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1410,13 +1539,19 @@
                     "description": "备注信息"
                   }
                 },
-                "required": ["name", "tags", "mark"]
+                "required": [
+                  "name",
+                  "tags",
+                  "mark"
+                ]
               },
               "examples": {
                 "1": {
                   "value": {
                     "name": "测试设备xxx",
-                    "tags": ["car"],
+                    "tags": [
+                      "car"
+                    ],
                     "mark": "这是备注信息...."
                   },
                   "description": ""
@@ -1448,7 +1583,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -1466,7 +1606,9 @@
         "summary": "删除设备",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1502,7 +1644,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -1520,7 +1667,9 @@
         "summary": "查询设备信息",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1557,7 +1706,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -1575,7 +1729,9 @@
                         "deviceType": "Direct",
                         "name": "测试设备xxx",
                         "status": "NotActivate",
-                        "tags": ["car"],
+                        "tags": [
+                          "car"
+                        ],
                         "ipAddress": null,
                         "activationTime": null,
                         "lastOnlineTime": null,
@@ -1610,7 +1766,9 @@
         "summary": "启用/禁用设备",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1658,7 +1816,9 @@
         "summary": "查询设备功能模块列表",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1695,7 +1855,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -1737,7 +1902,9 @@
         "summary": "查询设备凭证",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1774,7 +1941,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -1814,7 +1986,9 @@
         "summary": "更新设备凭证",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -1865,7 +2039,11 @@
                             "description": "密码"
                           }
                         },
-                        "required": ["clientId", "username", "password"],
+                        "required": [
+                          "clientId",
+                          "username",
+                          "password"
+                        ],
                         "description": "mqtt 基础认证"
                       },
                       "deviceCredential": {
@@ -1880,15 +2058,26 @@
                             "description": "设备Secret"
                           }
                         },
-                        "required": ["deviceKey", "deviceSecret"],
+                        "required": [
+                          "deviceKey",
+                          "deviceSecret"
+                        ],
                         "description": "设备凭证"
                       }
                     },
-                    "required": ["accessToken", "x509Pem", "mqttBasic", "deviceCredential"],
+                    "required": [
+                      "accessToken",
+                      "x509Pem",
+                      "mqttBasic",
+                      "deviceCredential"
+                    ],
                     "description": "认证附加信息"
                   }
                 },
-                "required": ["authenticationMethod", "authenticationAddition"]
+                "required": [
+                  "authenticationMethod",
+                  "authenticationAddition"
+                ]
               },
               "examples": {
                 "1": {
@@ -1928,7 +2117,9 @@
         "summary": "查询产品列表",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -2045,7 +2236,13 @@
                         }
                       },
                       "description": "响应数据",
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ],
                       "nullable": true
                     },
                     "additional": {
@@ -2053,7 +2250,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2107,7 +2309,9 @@
         "summary": "新增产品",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2164,7 +2368,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2211,7 +2420,9 @@
         "summary": "更新产品",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [
           {
             "name": "productId",
@@ -2323,7 +2534,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 }
               }
             },
@@ -2340,7 +2556,9 @@
         "summary": "删除产品",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [
           {
             "name": "productId",
@@ -2385,7 +2603,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2429,7 +2652,9 @@
         "summary": "查询产品详情",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [
           {
             "name": "productId",
@@ -2466,7 +2691,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2512,7 +2742,9 @@
         "summary": "发布产品",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [
           {
             "name": "productId",
@@ -2550,7 +2782,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2596,7 +2833,9 @@
         "summary": "重新生成KeySecret",
         "deprecated": false,
         "description": "",
-        "tags": ["product"],
+        "tags": [
+          "product"
+        ],
         "parameters": [
           {
             "name": "productId",
@@ -2646,14 +2885,24 @@
                         }
                       },
                       "description": "响应数据",
-                      "required": ["productId", "productName", "productKey", "productSecret"]
+                      "required": [
+                        "productId",
+                        "productName",
+                        "productKey",
+                        "productSecret"
+                      ]
                     },
                     "additional": {
                       "type": "object",
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2688,7 +2937,9 @@
         "summary": "新增部门",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2721,7 +2972,10 @@
                     "description": "描述"
                   }
                 },
-                "required": ["identifier", "name"]
+                "required": [
+                  "identifier",
+                  "name"
+                ]
               },
               "examples": {
                 "1": {
@@ -2764,7 +3018,9 @@
         "summary": "更新部门",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "departmentId",
@@ -2799,7 +3055,9 @@
                     "description": "描述"
                   }
                 },
-                "required": ["name"]
+                "required": [
+                  "name"
+                ]
               }
             }
           }
@@ -2827,7 +3085,9 @@
         "summary": "删除部门",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "departmentId",
@@ -2863,7 +3123,9 @@
         "summary": "获取信息",
         "deprecated": false,
         "description": "",
-        "tags": ["department"],
+        "tags": [
+          "department"
+        ],
         "parameters": [
           {
             "name": "departmentId",
@@ -2900,7 +3162,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -2941,7 +3208,9 @@
         "summary": "查询检索字段",
         "deprecated": false,
         "description": "",
-        "tags": ["common"],
+        "tags": [
+          "common"
+        ],
         "parameters": [
           {
             "name": "module",
@@ -2982,7 +3251,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -3370,7 +3644,9 @@
         "summary": "查询枚举列表",
         "deprecated": false,
         "description": "返回前端可用的全部枚举定义，包含枚举值、描述。",
-        "tags": ["common"],
+        "tags": [
+          "common"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -3410,7 +3686,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeStrategyRetryInterval": {
@@ -3425,7 +3704,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SearchFieldComponentType": {
@@ -3440,7 +3722,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SessionStatus": {
@@ -3455,7 +3740,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "NotificationPushAway": {
@@ -3470,7 +3758,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "NotificationType": {
@@ -3499,7 +3790,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SearchFieldOperator": {
@@ -3514,7 +3808,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeBatchMethod": {
@@ -3529,7 +3826,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "UserActivateMethod": {
@@ -3544,7 +3844,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "DeviceType": {
@@ -3559,7 +3862,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeBatchScope": {
@@ -3574,7 +3880,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "NotificationSeverity": {
@@ -3589,7 +3898,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "ProductStatus": {
@@ -3604,7 +3916,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "DeviceNetworkingAway": {
@@ -3619,7 +3934,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SearchFieldValueType": {
@@ -3634,7 +3952,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "PlatformType": {
@@ -3649,7 +3970,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "AccessGatewayProtocol": {
@@ -3664,7 +3988,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "DeviceStatus": {
@@ -3679,7 +4006,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeStrategyType": {
@@ -3694,7 +4024,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SearchFieldOptionDataSource": {
@@ -3709,7 +4042,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SearchFieldModuleIdentifier": {
@@ -3724,7 +4060,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeBatchType": {
@@ -3739,7 +4078,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "GlobalSettingDataType": {
@@ -3754,7 +4096,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SignatureAlgorithm": {
@@ -3769,7 +4114,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "NotificationMatchUserAway": {
@@ -3784,7 +4132,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "LogAction": {
@@ -3799,7 +4150,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "DeviceAuthenticationMethod": {
@@ -3814,7 +4168,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "NotificationTypeIdentifier": {
@@ -3829,7 +4186,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SignAlgorithm": {
@@ -3844,7 +4204,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "DataFormat": {
@@ -3859,7 +4222,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaPackageType": {
@@ -3874,7 +4240,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeProgressState": {
@@ -3889,7 +4258,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaPackageDownloadProtocol": {
@@ -3904,7 +4276,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "EntityAction": {
@@ -3919,7 +4294,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "NotificationStatus": {
@@ -3934,7 +4312,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "SearchFieldMatch": {
@@ -3949,7 +4330,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OTAFileSource": {
@@ -3964,7 +4348,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "LogObjectType": {
@@ -3979,7 +4366,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "OtaUpgradeBatchState": {
@@ -3994,7 +4384,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         },
                         "UserIdentity": {
@@ -4009,7 +4402,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["label", "value"]
+                            "required": [
+                              "label",
+                              "value"
+                            ]
                           }
                         }
                       },
@@ -4063,7 +4459,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -4877,7 +5278,9 @@
         "summary": "查询全局设置列表",
         "deprecated": false,
         "description": "",
-        "tags": ["common"],
+        "tags": [
+          "common"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -4903,7 +5306,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -4948,7 +5356,9 @@
         "summary": "更新全局设置",
         "deprecated": false,
         "description": "",
-        "tags": ["common"],
+        "tags": [
+          "common"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -4965,7 +5375,10 @@
                     "description": "设置值"
                   }
                 },
-                "required": ["settingId", "value"]
+                "required": [
+                  "settingId",
+                  "value"
+                ]
               },
               "examples": {
                 "1": {
@@ -5003,7 +5416,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -5023,7 +5441,9 @@
         "summary": "查询功能模块列表",
         "deprecated": false,
         "description": "",
-        "tags": ["functionModule"],
+        "tags": [
+          "functionModule"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -5141,7 +5561,13 @@
                         }
                       },
                       "description": "响应数据",
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ],
                       "nullable": true
                     },
                     "additional": {
@@ -5149,7 +5575,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -5195,7 +5626,9 @@
         "summary": "查询功能模块详情",
         "deprecated": false,
         "description": "",
-        "tags": ["functionModule"],
+        "tags": [
+          "functionModule"
+        ],
         "parameters": [
           {
             "name": "moduleId",
@@ -5240,7 +5673,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -5276,7 +5714,9 @@
         "summary": "更新功能模块",
         "deprecated": false,
         "description": "",
-        "tags": ["functionModule"],
+        "tags": [
+          "functionModule"
+        ],
         "parameters": [
           {
             "name": "moduleId",
@@ -5303,7 +5743,10 @@
                     "title": "功能模块标识符"
                   }
                 },
-                "required": ["name", "identifier"]
+                "required": [
+                  "name",
+                  "identifier"
+                ]
               },
               "examples": {
                 "1": {
@@ -5350,7 +5793,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 }
               }
             },
@@ -5367,7 +5815,9 @@
         "summary": "删除功能模块",
         "deprecated": false,
         "description": "",
-        "tags": ["functionModule"],
+        "tags": [
+          "functionModule"
+        ],
         "parameters": [
           {
             "name": "moduleId",
@@ -5405,7 +5855,9 @@
         "summary": "添加功能模块",
         "deprecated": false,
         "description": "",
-        "tags": ["functionModule"],
+        "tags": [
+          "functionModule"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -5426,7 +5878,11 @@
                     "title": "功能模块标识符"
                   }
                 },
-                "required": ["productId", "name", "identifier"]
+                "required": [
+                  "productId",
+                  "name",
+                  "identifier"
+                ]
               },
               "examples": {
                 "1": {
@@ -5474,7 +5930,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 }
               }
             },
@@ -5493,7 +5954,9 @@
         "summary": "查询属性列表",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -5550,7 +6013,10 @@
                   "searchMatch": {
                     "type": "string",
                     "description": "检索字段之间的匹配方式",
-                    "enum": ["ANY", "ALL"]
+                    "enum": [
+                      "ANY",
+                      "ALL"
+                    ]
                   },
                   "searchFields": {
                     "type": "array",
@@ -5580,13 +6046,20 @@
                           "description": "匹配检索值列表"
                         }
                       },
-                      "required": ["field", "operator", "value"],
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ],
                       "$ref": "#/components/schemas/SearchFieldItem"
                     },
                     "description": "检索字段列表"
                   }
                 },
-                "required": ["searchFieldModule", "searchMatch"]
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
               },
               "examples": {
                 "1": {
@@ -5656,7 +6129,13 @@
                         }
                       },
                       "description": "响应数据",
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ],
                       "nullable": true
                     },
                     "additional": {
@@ -5664,7 +6143,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 }
               }
             },
@@ -5683,7 +6167,9 @@
         "summary": "查询属性详情",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "attributeId",
@@ -5728,7 +6214,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -5865,7 +6356,9 @@
         "summary": "删除属性",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "attributeId",
@@ -5901,7 +6394,9 @@
         "summary": "更新属性",
         "deprecated": false,
         "description": "更新属性Body的请求json数据格式与新增属性一致，可参考新增数据的json数据格式",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "attributeId",
@@ -5966,7 +6461,10 @@
                                 "description": "最大值"
                               }
                             },
-                            "required": ["min", "max"],
+                            "required": [
+                              "min",
+                              "max"
+                            ],
                             "description": "值范围"
                           },
                           "valueMap": {
@@ -5997,7 +6495,13 @@
                         "description": "描述"
                       }
                     },
-                    "required": ["name", "identifier", "dataType", "addition", "description"],
+                    "required": [
+                      "name",
+                      "identifier",
+                      "dataType",
+                      "addition",
+                      "description"
+                    ],
                     "description": "属性基本信息"
                   },
                   "childAttributes": {
@@ -6008,7 +6512,12 @@
                     "description": "子属性列表"
                   }
                 },
-                "required": ["productId", "moduleId", "info", "childAttributes"]
+                "required": [
+                  "productId",
+                  "moduleId",
+                  "info",
+                  "childAttributes"
+                ]
               },
               "examples": {
                 "1": {
@@ -6089,7 +6598,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 }
               }
             },
@@ -6108,7 +6622,9 @@
         "summary": "新增属性",
         "deprecated": false,
         "description": "**单个INT32类型属性：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试int属性\",\n        \"identifier\": \"testInt\",\n        \"dataType\": \"INT32\",\n        \"addition\": {\n            \"unitId\": \"\",\n            \"valueRange\": {\n                \"min\": 100,\n                \"max\": 2000\n            }\n        },\n        \"description\": \"测试int属性\"\n    }\n}\n```\n\n**数组中单个元素STRING类型：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试array属性\",\n        \"identifier\": \"testArray\",\n        \"dataType\": \"ARRAY\",\n        \"addition\": {\n            \"elementCount\": 10,\n            \"elementDataType\": \"STRING\"\n        },\n        \"description\": \"测试Array属性\"\n    }\n}\n```\n\n**数组中单个元素OBJECT类型，每个元素配置两个子属性：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试array属性\",\n        \"identifier\": \"testArray\",\n        \"dataType\": \"ARRAY\",\n        \"addition\": {\n            \"elementCount\": 10,\n            \"elementDataType\": \"OBJECT\"\n        },\n        \"description\": \"测试Array属性\"\n    },\n    \"childAttributes\": [\n        {\n            \"name\": \"数组元素string属性\",\n            \"identifier\": \"elementString\",\n            \"dataType\": \"STRING\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"dataLength\": 10240\n            },\n            \"description\": \"数组中单个元素的属性\"\n        },\n        {\n            \"name\": \"数组元素int属性\",\n            \"identifier\": \"elementInt\",\n            \"dataType\": \"INT32\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10,\n                    \"max\": 1000\n                }\n            },\n            \"description\": \"数组中单个元素的属性\"\n        }\n    ]\n}\n```\n\n**OBJECT对象属性以及子属性：**\n```json\n{\n    \"productId\": \"101189666270609425\",\n    \"moduleId\": \"156a891ac35b11ef91220242ac110004\",\n    \"info\": {\n        \"name\": \"测试对象属性\",\n        \"identifier\": \"testObject\",\n        \"dataType\": \"OBJECT\",\n        \"description\": \"测试对象属性\"\n    },\n    \"childAttributes\": [\n        {\n            \"name\": \"测试String属性\",\n            \"identifier\": \"subString\",\n            \"dataType\": \"STRING\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"dataLength\": 10240\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试int属性\",\n            \"identifier\": \"subInt\",\n            \"dataType\": \"INT32\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10,\n                    \"max\": 1000\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试long属性\",\n            \"identifier\": \"subLong\",\n            \"dataType\": \"LONG64\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10,\n                    \"max\": 1000\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试float属性\",\n            \"identifier\": \"subFloat\",\n            \"dataType\": \"FLOAT\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10.0,\n                    \"max\": 1000.0\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试double属性\",\n            \"identifier\": \"subDouble\",\n            \"dataType\": \"DOUBLE\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueRange\": {\n                    \"min\": 10.00,\n                    \"max\": 1000.00\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试enum属性\",\n            \"identifier\": \"subEnum\",\n            \"dataType\": \"ENUM\",\n            \"addition\": {\n                \"unitId\": \"516363ecd4ab11efa7700242c0a8d704\",\n                \"valueMap\": {\n                    \"enum1\": \"枚举1\",\n                    \"enum2\": \"枚举2\",\n                    \"enum3\": \"枚举3\"\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试boolean属性\",\n            \"identifier\": \"subBoolean\",\n            \"dataType\": \"BOOLEAN\",\n            \"addition\": {\n                \"unitId\": \"\",\n                \"valueMap\": {\n                    \"0\": \"关闭\",\n                    \"1\": \"打开\"\n                }\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试Date属性\",\n            \"identifier\": \"subDate\",\n            \"dataType\": \"DATE\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试DateTime属性\",\n            \"identifier\": \"subDateTime\",\n            \"dataType\": \"DATETIME\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试Time属性\",\n            \"identifier\": \"subTime\",\n            \"dataType\": \"TIME\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        },\n        {\n            \"name\": \"测试Timestamp属性\",\n            \"identifier\": \"subTimestamp\",\n            \"dataType\": \"TIMESTAMP\",\n            \"addition\": {\n                \"unitId\": \"\"\n            },\n            \"description\": \"测试子属性\"\n        }\n    ]\n}\n```\n",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -6163,7 +6679,10 @@
                                 "description": "最大值"
                               }
                             },
-                            "required": ["min", "max"],
+                            "required": [
+                              "min",
+                              "max"
+                            ],
                             "description": "值范围"
                           },
                           "valueMap": {
@@ -6195,7 +6714,13 @@
                         "description": "描述"
                       }
                     },
-                    "required": ["name", "identifier", "dataType", "addition", "description"],
+                    "required": [
+                      "name",
+                      "identifier",
+                      "dataType",
+                      "addition",
+                      "description"
+                    ],
                     "description": "属性基本信息"
                   },
                   "childAttributes": {
@@ -6206,7 +6731,12 @@
                     "description": "子属性列表"
                   }
                 },
-                "required": ["productId", "moduleId", "info", "childAttributes"]
+                "required": [
+                  "productId",
+                  "moduleId",
+                  "info",
+                  "childAttributes"
+                ]
               },
               "examples": {
                 "1": {
@@ -6280,7 +6810,9 @@
         "summary": "查询日志列表",
         "deprecated": false,
         "description": "",
-        "tags": ["log"],
+        "tags": [
+          "log"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -6337,7 +6869,10 @@
                   "searchMatch": {
                     "type": "string",
                     "description": "检索字段之间的匹配方式",
-                    "enum": ["ANY", "ALL"]
+                    "enum": [
+                      "ANY",
+                      "ALL"
+                    ]
                   },
                   "searchFields": {
                     "type": "array",
@@ -6367,13 +6902,20 @@
                           "description": "匹配检索值列表"
                         }
                       },
-                      "required": ["field", "operator", "value"],
+                      "required": [
+                        "field",
+                        "operator",
+                        "value"
+                      ],
                       "$ref": "#/components/schemas/SearchFieldItem"
                     },
                     "description": "检索字段列表"
                   }
                 },
-                "required": ["searchFieldModule", "searchMatch"]
+                "required": [
+                  "searchFieldModule",
+                  "searchMatch"
+                ]
               },
               "examples": {
                 "1": {
@@ -6448,14 +6990,25 @@
                           "description": "分页数据列表"
                         }
                       },
-                      "required": ["page", "pageSize", "totalPages", "totalRows", "result"]
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalPages",
+                        "totalRows",
+                        "result"
+                      ]
                     },
                     "additional": {
                       "type": "object",
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 }
               }
             },
@@ -6474,7 +7027,9 @@
         "summary": "获取设备遥测数据列表",
         "deprecated": false,
         "description": "",
-        "tags": ["telemetry"],
+        "tags": [
+          "telemetry"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -6567,7 +7122,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"]
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ]
                 },
                 "examples": {
                   "1": {
@@ -6621,7 +7181,9 @@
         "summary": "新增设备遥测数据",
         "deprecated": false,
         "description": "",
-        "tags": ["telemetry"],
+        "tags": [
+          "telemetry"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -6654,7 +7216,11 @@
                     "const": "AttributeDataType"
                   }
                 },
-                "required": ["identifier", "value", "dataType"]
+                "required": [
+                  "identifier",
+                  "value",
+                  "dataType"
+                ]
               },
               "examples": {
                 "1": {
@@ -6693,7 +7259,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -6713,7 +7284,9 @@
         "summary": "删除设备遥测数据",
         "deprecated": false,
         "description": "",
-        "tags": ["telemetry"],
+        "tags": [
+          "telemetry"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -6760,7 +7333,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -6780,7 +7358,9 @@
         "summary": "查询设备属性列表",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -6872,7 +7452,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -6963,7 +7548,9 @@
         "summary": "提取未知设备属性",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "deviceAttributeId",
@@ -7018,7 +7605,10 @@
                             "description": "最大值"
                           }
                         },
-                        "required": ["min", "max"],
+                        "required": [
+                          "min",
+                          "max"
+                        ],
                         "description": "值范围"
                       },
                       "valueMap": {
@@ -7050,7 +7640,12 @@
                     "description": "描述"
                   }
                 },
-                "required": ["attributeName", "addition", "dataType", "writable"],
+                "required": [
+                  "attributeName",
+                  "addition",
+                  "dataType",
+                  "writable"
+                ],
                 "description": "属性基本信息"
               },
               "examples": {
@@ -7093,7 +7688,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -7113,7 +7713,9 @@
         "summary": "查询设备功能下全部属性最新值",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -7179,7 +7781,9 @@
         "summary": "查询设备期望属性",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "pageSize",
@@ -7270,7 +7874,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -7355,7 +7964,9 @@
         "summary": "新增设备期望属性",
         "deprecated": false,
         "description": "新增期望值时，未知属性除了ENUM数据类型不允许使用，其他数据类型都可以。\n\n同一个功能模块下相同标识符的属性，如果已经存在则执行更新，version+1。",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -7407,7 +8018,10 @@
                     "description": "属性期望值，根据数据类型传递，ARRAY类型直接传递\"[xx,xxx,xx]\"即可"
                   }
                 },
-                "required": ["knowType", "desiredValue"]
+                "required": [
+                  "knowType",
+                  "desiredValue"
+                ]
               },
               "examples": {
                 "1": {
@@ -7446,7 +8060,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -7492,7 +8111,9 @@
         "summary": "更新设备期望属性",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "desiredAttributeId",
@@ -7521,7 +8142,9 @@
                     "description": "期望值"
                   }
                 },
-                "required": ["desiredValue"]
+                "required": [
+                  "desiredValue"
+                ]
               },
               "examples": {
                 "1": {
@@ -7559,7 +8182,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -7603,7 +8231,9 @@
         "summary": "删除期望属性",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "desiredAttributeId",
@@ -7640,7 +8270,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -7660,7 +8295,9 @@
         "summary": "提取未知期望属性",
         "deprecated": false,
         "description": "",
-        "tags": ["attribute"],
+        "tags": [
+          "attribute"
+        ],
         "parameters": [
           {
             "name": "desiredAttributeId",
@@ -7706,7 +8343,10 @@
                             "description": "最大值"
                           }
                         },
-                        "required": ["min", "max"],
+                        "required": [
+                          "min",
+                          "max"
+                        ],
                         "description": "值范围"
                       },
                       "valueMap": {
@@ -7738,7 +8378,10 @@
                     "description": "描述"
                   }
                 },
-                "required": ["attributeName", "addition"],
+                "required": [
+                  "attributeName",
+                  "addition"
+                ],
                 "description": "属性基本信息"
               },
               "examples": {
@@ -7780,7 +8423,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 }
               }
@@ -7800,7 +8448,9 @@
         "summary": "查询设备影子",
         "deprecated": false,
         "description": "",
-        "tags": ["device"],
+        "tags": [
+          "device"
+        ],
         "parameters": [
           {
             "name": "deviceId",
@@ -7837,7 +8487,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -7926,7 +8581,9 @@
         "summary": "新增数据图表（设备属性）",
         "deprecated": false,
         "description": "",
-        "tags": ["chart"],
+        "tags": [
+          "chart"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -7967,11 +8624,21 @@
                           "type": "string"
                         }
                       },
-                      "required": ["fieldId", "fieldType", "fieldLabel"]
+                      "required": [
+                        "fieldId",
+                        "fieldType",
+                        "fieldLabel"
+                      ]
                     }
                   }
                 },
-                "required": ["chartName", "chartType", "targetLocation", "targetId", "fields"]
+                "required": [
+                  "chartName",
+                  "chartType",
+                  "targetLocation",
+                  "targetId",
+                  "fields"
+                ]
               },
               "examples": {
                 "1": {
@@ -8018,7 +8685,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -8071,7 +8743,9 @@
         "summary": "查询数据图表列表",
         "deprecated": false,
         "description": "",
-        "tags": ["chart"],
+        "tags": [
+          "chart"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -8127,7 +8801,12 @@
                       "properties": {}
                     }
                   },
-                  "required": ["code", "message", "data", "additional"],
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
                   "type": "object"
                 },
                 "examples": {
@@ -8205,7 +8884,11 @@
             "description": "回显样式"
           }
         },
-        "required": ["label", "value", "showStyle"]
+        "required": [
+          "label",
+          "value",
+          "showStyle"
+        ]
       },
       "AttributeDataType": {
         "type": "array",
@@ -8574,6 +9257,7 @@
           "SearchFieldComponentType",
           "SessionStatus",
           "NotificationPushAway",
+          "NotificationType",
           "AlarmType",
           "SearchFieldOperator",
           "OtaUpgradeBatchMethod",
@@ -8608,8 +9292,7 @@
           "OTAFileSource",
           "LogObjectType",
           "OtaUpgradeBatchState",
-          "UserIdentity",
-          "NotificationType"
+          "UserIdentity"
         ]
       },
       "NotificationType": {
@@ -8641,7 +9324,10 @@
           "searchMatch": {
             "type": "string",
             "description": "检索字段之间的匹配方式",
-            "enum": ["ANY", "ALL"]
+            "enum": [
+              "ANY",
+              "ALL"
+            ]
           },
           "searchFields": {
             "type": "array",
@@ -8671,13 +9357,20 @@
                   "description": "匹配检索值列表"
                 }
               },
-              "required": ["field", "operator", "value"],
+              "required": [
+                "field",
+                "operator",
+                "value"
+              ],
               "$ref": "#/components/schemas/SearchFieldItem"
             },
             "description": "检索字段列表"
           }
         },
-        "required": ["searchMatch", "searchFieldModule"],
+        "required": [
+          "searchMatch",
+          "searchFieldModule"
+        ],
         "title": "检索字段查询模型"
       },
       "CurrentUser": {
@@ -8690,7 +9383,10 @@
             "$ref": "#/components/schemas/Department"
           }
         },
-        "required": ["user", "department"],
+        "required": [
+          "user",
+          "department"
+        ],
         "title": "当前登录用户模型"
       },
       "DeviceAttribute": {
@@ -8837,7 +9533,10 @@
                     "title": "最大值"
                   }
                 },
-                "required": ["min", "max"],
+                "required": [
+                  "min",
+                  "max"
+                ],
                 "description": "值范围"
               },
               "valueMap": {
@@ -8846,7 +9545,13 @@
                 "description": "值Map"
               }
             },
-            "required": ["unitId", "step", "dataLength", "valueRange", "valueMap"],
+            "required": [
+              "unitId",
+              "step",
+              "dataLength",
+              "valueRange",
+              "valueMap"
+            ],
             "description": "附加信息"
           },
           "enabled": {
@@ -8930,7 +9635,15 @@
             "description": "创建时间"
           }
         },
-        "required": ["id", "productId", "name", "identifier", "deleted", "createBy", "createTime"],
+        "required": [
+          "id",
+          "productId",
+          "name",
+          "identifier",
+          "deleted",
+          "createBy",
+          "createTime"
+        ],
         "title": "功能模块模型"
       },
       "Product": {
@@ -9043,7 +9756,12 @@
             "properties": {}
           }
         },
-        "required": ["code", "message", "data", "additional"],
+        "required": [
+          "code",
+          "message",
+          "data",
+          "additional"
+        ],
         "title": "通用响应数据模型"
       },
       "Log": {
@@ -9142,12 +9860,20 @@
                       "description": "是否存在更新"
                     }
                   },
-                  "required": ["field", "fieldName", "afterValue", "different", "beforeValue"]
+                  "required": [
+                    "field",
+                    "fieldName",
+                    "afterValue",
+                    "different",
+                    "beforeValue"
+                  ]
                 },
                 "description": "操作对象字段列表"
               }
             },
-            "required": ["objectFields"],
+            "required": [
+              "objectFields"
+            ],
             "description": "附加信息"
           },
           "activityData": {
@@ -9362,10 +10088,14 @@
                     "description": "数据类型"
                   }
                 },
-                "required": ["dataType"]
+                "required": [
+                  "dataType"
+                ]
               }
             },
-            "required": ["metadata"],
+            "required": [
+              "metadata"
+            ],
             "description": "附加信息"
           },
           "displayOnStatusPage": {
@@ -9442,7 +10172,11 @@
                     "description": "密码"
                   }
                 },
-                "required": ["clientId", "username", "password"],
+                "required": [
+                  "clientId",
+                  "username",
+                  "password"
+                ],
                 "description": "mqtt基础认证"
               },
               "deviceCredential": {
@@ -9457,11 +10191,19 @@
                     "description": "设备Secret"
                   }
                 },
-                "required": ["deviceKey", "deviceSecret"],
+                "required": [
+                  "deviceKey",
+                  "deviceSecret"
+                ],
                 "description": "设备凭证"
               }
             },
-            "required": ["accessToken", "x509Pem", "mqttBasic", "deviceCredential"],
+            "required": [
+              "accessToken",
+              "x509Pem",
+              "mqttBasic",
+              "deviceCredential"
+            ],
             "description": "附加信息"
           },
           "expirationTime": {
@@ -9612,7 +10354,10 @@
                       "description": "影子元数据"
                     }
                   },
-                  "required": ["state", "metadata"],
+                  "required": [
+                    "state",
+                    "metadata"
+                  ],
                   "description": "上报属性影子"
                 },
                 "desired": {
@@ -9629,11 +10374,18 @@
                       "description": "影子元数据"
                     }
                   },
-                  "required": ["state", "metadata"],
+                  "required": [
+                    "state",
+                    "metadata"
+                  ],
                   "description": "期望属性影子"
                 }
               },
-              "required": ["module", "reported", "desired"]
+              "required": [
+                "module",
+                "reported",
+                "desired"
+              ]
             },
             "description": "设备影子JSON数据"
           },
@@ -9655,7 +10407,14 @@
             "description": "影子创建时间"
           }
         },
-        "required": ["id", "deviceId", "shadowData", "status", "lastUpdateTimestamp", "createTime"],
+        "required": [
+          "id",
+          "deviceId",
+          "shadowData",
+          "status",
+          "lastUpdateTimestamp",
+          "createTime"
+        ],
         "title": "设备影子模型"
       },
       "DeviceDetailInfo": {
@@ -9824,7 +10583,9 @@
           }
         },
         "title": "检索字段Item",
-        "required": ["field"]
+        "required": [
+          "field"
+        ]
       },
       "SearchFieldModuleItem": {
         "type": "object",
@@ -9840,12 +10601,26 @@
           "valueType": {
             "type": "string",
             "description": "字段值类型",
-            "enum": ["STRING", " INTEGER", " FLOAT", "BOOLEAN", "DATE", "DATE_TIME", "TIME", "ENUM"]
+            "enum": [
+              "STRING",
+              " INTEGER",
+              " FLOAT",
+              "BOOLEAN",
+              "DATE",
+              "DATE_TIME",
+              "TIME",
+              "ENUM"
+            ]
           },
           "componentType": {
             "type": "string",
             "description": "前端组件类型",
-            "enum": ["INPUT", "SELECT", "DATE", "DATE_TIME"]
+            "enum": [
+              "INPUT",
+              "SELECT",
+              "DATE",
+              "DATE_TIME"
+            ]
           },
           "optionDataSource": {
             "type": "string",
@@ -9878,7 +10653,10 @@
                   "description": "取值"
                 }
               },
-              "required": ["label", "value"]
+              "required": [
+                "label",
+                "value"
+              ]
             },
             "description": "数据源为STATIC时的静态数据",
             "nullable": true
@@ -9909,7 +10687,10 @@
                   ]
                 }
               },
-              "required": ["description", "value"]
+              "required": [
+                "description",
+                "value"
+              ]
             },
             "description": "支持的运算法"
           }
@@ -10079,7 +10860,11 @@
           "identity": {
             "type": "string",
             "description": "身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员",
-            "enum": ["User", "SystemAdmin", "TenantAdmin"]
+            "enum": [
+              "User",
+              "SystemAdmin",
+              "TenantAdmin"
+            ]
           },
           "lastLoginTime": {
             "type": "string"
@@ -10180,7 +10965,13 @@
             "description": "分页数据列表"
           }
         },
-        "required": ["page", "pageSize", "totalPages", "totalRows", "result"],
+        "required": [
+          "page",
+          "pageSize",
+          "totalPages",
+          "totalRows",
+          "result"
+        ],
         "title": "分页数据模型"
       },
       "Department": {
