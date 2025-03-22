@@ -609,17 +609,6 @@ declare namespace API {
 
   type PlatformType = EnumItem[];
 
-  type postApi_openAPI_functionModuleFilterParams = {
-    /** 每页条数 */
-    pageSize?: number;
-    /** 当前页码 */
-    page?: number;
-    /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
-    sortProperty?: string;
-    /** 排序顺序，ASC：正序；DESC：倒序 */
-    sortDirection?: string;
-  };
-
   type postApi_openAPI_functionModuleModuleIdParams = {
     moduleId: string;
   };

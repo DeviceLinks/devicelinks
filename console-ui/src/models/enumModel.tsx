@@ -17,9 +17,10 @@
 import { getApiCommonEnums } from '@/services/device-links-console-ui/common';
 import { history } from '@@/core/history';
 import { useEffect, useState } from 'react';
-import { ProSchemaValueEnumType, ProSchemaValueEnumMap } from '@ant-design/pro-components';
-const loginPath = '/user/login';
+import { ProSchemaValueEnumMap, ProSchemaValueEnumType } from '@ant-design/pro-components';
 import { Tag } from 'antd';
+
+const loginPath = '/user/login';
 export default function Page(): {
   fetchEnums: () => Promise<API.Enum | undefined>;
   enums: API.Enum;
@@ -28,6 +29,10 @@ export default function Page(): {
     list: API.EnumItem[],
     showStatus?: boolean,
   ) => ProSchemaValueEnumMap;
+  getEnumByValue: (
+    list: API.EnumItem[],
+    value: string | number | boolean,
+  ) => API.EnumItem | undefined;
 } {
   const initEnums = {
     AttributeDataType: [],
@@ -96,7 +101,10 @@ export default function Page(): {
   const setData = (data: API.Enum) => {
     setEnums(data);
   };
-  //获取AntD Pro 类型的枚举
+  /**
+   * 获取AntD Pro 类型的枚举
+   * @param list
+   */
   const getProSchemaValueEnumObjByEnum = (list: API.EnumItem[]): ProSchemaValueEnumMap => {
     const map = new Map<string | number | boolean, ProSchemaValueEnumType>();
     list.forEach((item: API.EnumItem) => {
@@ -110,11 +118,20 @@ export default function Page(): {
     });
     return map;
   };
+  /**
+   *  根据值获取枚举
+   * @param list
+   * @param value
+   */
+  const getEnumByValue = (list: API.EnumItem[], value: string | number | boolean) => {
+    return list.find((item) => item.value === value);
+  };
 
   return {
     fetchEnums,
     enums,
     setData,
     getProSchemaValueEnumObjByEnum,
+    getEnumByValue,
   };
 }

@@ -64,13 +64,13 @@ export async function postApiUserUserId(
     /** 用户名 */
     username: string;
     /** 邮箱地址 */
-    email: string;
+    email?: string;
     /** 手机号 */
-    phone: string;
+    phone?: string;
     /** 所属部门ID */
     departmentId: string;
     /** 备注 */
-    mark: string;
+    mark?: string;
   },
   options?: { [key: string]: any },
 ) {
