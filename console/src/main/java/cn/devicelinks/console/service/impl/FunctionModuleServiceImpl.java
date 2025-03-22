@@ -3,13 +3,11 @@ package cn.devicelinks.console.service.impl;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.web.StatusCodeConstants;
-import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.Product;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.framework.jdbc.repositorys.FunctionModuleRepository;
@@ -44,8 +42,8 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
     }
 
     @Override
-    public PageResult<FunctionModule> getFunctionModulesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
-        return this.repository.selectByPage(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+    public List<FunctionModule> selectBySearchField(SearchFieldQuery searchFieldQuery) {
+        return this.repository.selectBySearchField(searchFieldQuery.toSearchFieldConditionList());
     }
 
     @Override

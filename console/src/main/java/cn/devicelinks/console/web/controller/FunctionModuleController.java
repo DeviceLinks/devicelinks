@@ -3,7 +3,6 @@ package cn.devicelinks.console.web.controller;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.console.service.FunctionModuleService;
 import cn.devicelinks.console.web.StatusCodeConstants;
-import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddFunctionModuleRequest;
 import cn.devicelinks.console.web.request.UpdateFunctionModuleRequest;
@@ -16,12 +15,13 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 功能模块接口控制器
@@ -42,8 +42,6 @@ public class FunctionModuleController {
      * <p>此方法通过提供的分页和搜索参数来获取功能模块列表。
      * 它将返回一个包含符合查询条件的功能模块的分页结果。</p>
      *
-     * @param paginationQuery  分页查询参数 {@link PaginationQuery}
-     *                         包含分页信息，如页码和每页记录数。
      * @param searchFieldQuery 搜索字段查询参数 {@link SearchFieldQuery}
      *                         包含用于搜索功能模块的字段和值。
      * @return {@link cn.devicelinks.framework.common.pojos.FunctionModule}
@@ -52,10 +50,9 @@ public class FunctionModuleController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.FunctionModule)
-    public ApiResponse getFunctionModuleByPageable(@Valid PaginationQuery paginationQuery,
-                                                   @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
-        PageResult<FunctionModule> pageResult = this.functionModuleService.getFunctionModulesByPage(paginationQuery, searchFieldQuery);
-        return ApiResponse.success(pageResult);
+    public ApiResponse getFunctionModuleByPageable(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        List<FunctionModule> functionModuleList = this.functionModuleService.selectBySearchField(searchFieldQuery);
+        return ApiResponse.success(functionModuleList);
     }
 
     /**
