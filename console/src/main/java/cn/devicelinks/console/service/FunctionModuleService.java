@@ -1,10 +1,8 @@
 package cn.devicelinks.console.service;
 
-import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
 import java.util.List;
 
@@ -18,11 +16,10 @@ public interface FunctionModuleService extends BaseService<FunctionModule, Strin
     /**
      * 获取功能模块列表
      *
-     * @param paginationQuery  分页参数实体
      * @param searchFieldQuery 检索字段参数实体
      * @return {@link FunctionModule}
      */
-    PageResult<FunctionModule> getFunctionModulesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
+    List<FunctionModule> selectBySearchField(SearchFieldQuery searchFieldQuery);
 
     /**
      * 添加产品的默认功能模块

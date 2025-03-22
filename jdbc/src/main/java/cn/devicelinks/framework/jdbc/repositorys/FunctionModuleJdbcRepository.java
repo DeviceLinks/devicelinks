@@ -20,11 +20,8 @@ package cn.devicelinks.framework.jdbc.repositorys;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
-import cn.devicelinks.framework.jdbc.core.page.PageQuery;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.jdbc.core.JdbcOperations;
 
@@ -46,16 +43,16 @@ public class FunctionModuleJdbcRepository extends JdbcRepository<FunctionModule,
     }
 
     @Override
-    public PageResult<FunctionModule> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition) {
+    public List<FunctionModule> selectBySearchField(List<SearchFieldCondition> searchFieldConditions) {
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(FUNCTION_MODULE.getQuerySql())
                 .appendCondition(true, SqlFederationAway.AND, FUNCTION_MODULE.DELETED.eq(false))
                 .appendSearchFieldCondition(FUNCTION_MODULE, searchFieldConditions, NONE_CONDITION_CONSUMER)
-                .sort(sortCondition)
+                .sort(FUNCTION_MODULE.CREATE_TIME.desc())
                 .resultColumns(columns -> columns.addAll(FUNCTION_MODULE.getColumns()))
                 .resultType(FunctionModule.class)
                 .build();
         // @formatter:on
-        return this.page(wrapper.dynamic(), pageQuery, wrapper.parameters());
+        return this.dynamicSelect(wrapper.dynamic(), wrapper.parameters());
     }
 }
