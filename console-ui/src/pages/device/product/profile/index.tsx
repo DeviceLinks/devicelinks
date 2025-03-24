@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   PageContainer,
   ProForm,
@@ -7,7 +7,6 @@ import {
   ProFormTextArea,
   ProSkeleton,
   ProCard,
-  ProFormRadio,
   ProList,
 } from '@ant-design/pro-components';
 import { useModel, useParams, useRequest } from '@umijs/max';
@@ -17,8 +16,8 @@ import {
   postApiProductProductId,
   postApiProductProductIdPublish,
 } from '@/services/device-links-console-ui/product';
-import { DeleteOutlined, DownOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Dropdown, MenuProps, message, Modal, Progress, Space, Tag } from 'antd';
+import { DeleteOutlined, DownOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons';
+import { Button, Dropdown, MenuProps, message, Modal, Space, Tag } from 'antd';
 import { Typography } from 'antd';
 import { postApiOpenApiFunctionModuleFilter } from '@/services/device-links-console-ui/functionModule';
 const { Paragraph } = Typography;
@@ -134,8 +133,8 @@ type ProductFunctionModuleInfoProps = {
   productId: string | undefined;
 };
 const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ productId }) => {
-  const { data: functionModuleList } = useRequest(() =>
-    postApiOpenApiFunctionModuleFilter({
+  const fetchData = async () => {
+    return await postApiOpenApiFunctionModuleFilter({
       searchFieldModule: 'FunctionModule',
       searchMatch: 'ALL',
       searchFields: [
@@ -145,64 +144,58 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ p
           value: productId,
         },
       ],
-    } as API.SearchField),
-  );
-  const data = [
-    '语雀的天空',
-    'Ant Design',
-    '蚂蚁金服体验科技',
-    'TechUI',
-    'TechUI 2.0',
-    'Bigfish',
-    'Umi',
-    'Ant Design Pro',
-  ].map((item) => ({
-    title: item,
-    subTitle: <Tag color="#5BD8A6">语雀专栏</Tag>,
-    actions: [<a key="run">邀请</a>, <a key="delete">删除</a>],
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
-    content: (
-      <div
-        style={{
-          flex: 1,
-        }}
-      >
-        <div
-          style={{
-            width: 200,
-          }}
-        >
-          <div>发布中</div>
-          <Progress percent={80} />
-        </div>
-      </div>
-    ),
-  }));
+    } as API.SearchFieldQuery);
+  };
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   return (
     <ProCard split="vertical">
-      <ProCard
-        colSpan={{
-          xs: 24,
-          sm: 24,
-          md: 6,
-          xl: 5,
-          lg: 5,
-        }}
-        ghost
-      >
+      <ProCard colSpan="30%" ghost>
         <ProList<API.FunctionModule>
+          ghost
+          tableAlertRender={false}
           rowKey={'id'}
-          itemCardProps={{
-            size: 'small',
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                setSelectedRowKeys([record.id]);
+              },
+            };
           }}
+          request={fetchData}
           rowSelection={{
             type: 'radio',
-            selections: false,
+            selectedRowKeys: selectedRowKeys,
+            hideSelectAll: true,
+            renderCell: () => null,
           }}
-          dataSource={functionModuleList}
+          split
+          rowClassName={(record: API.FunctionModule) => {
+            return record.id === selectedRowKeys[0] ? 'bg-[#f2f2f2]' : '';
+          }}
           metas={{
             title: {
               dataIndex: 'name',
+              render: (text) => <div style={{ paddingInline: '16px' }}>{text}</div>,
+            },
+            description: {
+              dataIndex: 'identifier',
+              render: (text) => (
+                <div
+                  style={{
+                    paddingInline: '16px',
+                  }}
+                >
+                  标识符：{text}
+                </div>
+              ),
+            },
+            actions: {
+              dataIndex: 'actions',
+              cardActionProps: 'extra',
+              render: () => [
+                <Button icon={<EditOutlined />} key="edit" type={'text'}></Button>,
+                <Button icon={<DeleteOutlined />} key="delete" type={'text'} danger></Button>,
+              ],
             },
           }}
           toolbar={{
@@ -212,6 +205,9 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ p
                 console.log(value);
               },
             },
+            style: {
+              padding: '0 16px',
+            },
             actions: [
               <Button type="primary" key="primary">
                 新增模块
@@ -220,7 +216,9 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ p
           }}
         ></ProList>
       </ProCard>
-      <ProCard></ProCard>
+      <ProCard>
+        <div>111222</div>
+      </ProCard>
     </ProCard>
   );
 };

@@ -226,32 +226,10 @@ import { request } from '@umijs/max';
 ```
  POST /api/attribute */
 export async function postApiAttribute(
-  body: {
-    /** 产品ID */
-    productId: string;
-    /** 功能模块ID */
-    moduleId: string;
-    /** 属性基本信息 */
-    info: {
-      name: string;
-      identifier: string;
-      dataType: string;
-      addition: {
-        unitId: string;
-        dataLength: number;
-        valueRange: { min: number; max: number };
-        valueMap?: Record<string, any>;
-        elementCount: number;
-        elementDataType: string;
-      };
-      description: string;
-    };
-    /** 子属性列表 */
-    childAttributes: string[];
-  },
+  body: API.AddAttributeRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseResult>('/api/attribute', {
+  return request<API.ApiResponse>('/api/attribute', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -273,6 +251,7 @@ export async function getApiAttributeAttributeId(
     message: string;
     data: API.Attribute | null;
     additional: Record<string, any>;
+    success?: boolean;
   }>(`/api/attribute/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
@@ -284,29 +263,7 @@ export async function getApiAttributeAttributeId(
 export async function postApiAttributeAttributeId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiAttributeAttributeIdParams,
-  body: {
-    /** 产品ID */
-    productId: string;
-    /** 功能模块ID */
-    moduleId: string;
-    /** 属性基本信息 */
-    info: {
-      name: string;
-      identifier: string;
-      dataType: string;
-      addition: {
-        unitId: string;
-        dataLength: number;
-        valueRange: { min: number; max: number };
-        valueMap?: Record<string, any>;
-        elementCount: number;
-        elementDataType: string;
-      };
-      description: string;
-    };
-    /** 子属性列表 */
-    childAttributes: string[];
-  },
+  body: API.UpdateAttributeRequest,
   options?: { [key: string]: any },
 ) {
   const { attributeId: param0, ...queryParams } = params;
@@ -315,6 +272,7 @@ export async function postApiAttributeAttributeId(
     message: string;
     data: API.Attribute | null;
     additional: Record<string, any>;
+    success?: boolean;
   }>(`/api/attribute/${param0}`, {
     method: 'POST',
     headers: {
@@ -333,7 +291,7 @@ export async function deleteApiAttributeAttributeId(
   options?: { [key: string]: any },
 ) {
   const { attributeId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/attribute/${param0}`, {
+  return request<API.ApiResponse>(`/api/attribute/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),
@@ -344,14 +302,7 @@ export async function deleteApiAttributeAttributeId(
 export async function postApiAttributeFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiAttributeFilterParams,
-  body: {
-    /** 检索字段模块 */
-    searchFieldModule: string;
-    /** 检索字段之间的匹配方式 */
-    searchMatch: 'ANY' | 'ALL';
-    /** 检索字段列表 */
-    searchFields?: API.SearchFieldItem[];
-  },
+  body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
   return request<{
@@ -365,6 +316,7 @@ export async function postApiAttributeFilter(
       result: API.Attribute[];
     };
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/attribute/filter', {
     method: 'POST',
     headers: {
@@ -385,7 +337,7 @@ export async function getApiDeviceDeviceIdModuleModuleIdAttributeLatest(
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, moduleId: param1, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/device/${param0}/module/${param1}/attribute/latest`, {
+  return request<API.ApiResponse>(`/api/device/${param0}/module/${param1}/attribute/latest`, {
     method: 'GET',
     params: {
       ...queryParams,
@@ -404,7 +356,7 @@ export async function deleteApiDeviceAttributeDesiredAttributeIdDesired(
   return request<{
     code: string;
     message: string;
-    data: API.DesiredAttribute;
+    data: API.DeviceAttributeDesired;
     additional: Record<string, any>;
   }>(`/api/device/attribute/${param0}/desired`, {
     method: 'DELETE',
@@ -417,21 +369,7 @@ export async function deleteApiDeviceAttributeDesiredAttributeIdDesired(
 export async function postApiDeviceAttributeDesiredAttributeIdDesiredExtract(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceAttributeDesiredAttributeIdDesiredExtractParams,
-  body: {
-    /** 属性名称 */
-    attributeName: string;
-    /** 附加信息，参考新增属性接口 */
-    addition: {
-      unitId: string;
-      dataLength: number;
-      valueRange: { min: number; max: number };
-      valueMap?: Record<string, any>;
-      elementCount: number;
-      elementDataType: string;
-    };
-    /** 描述 */
-    description?: string;
-  },
+  body: API.ExtractUnknownDesiredAttributeRequest,
   options?: { [key: string]: any },
 ) {
   const { desiredAttributeId: param0, ...queryParams } = params;
@@ -455,25 +393,7 @@ export async function postApiDeviceAttributeDesiredAttributeIdDesiredExtract(
 export async function postApiDeviceAttributeDeviceAttributeIdExtract(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceAttributeDeviceAttributeIdExtractParams,
-  body: {
-    /** 属性名称 */
-    attributeName: string;
-    /** 数据类型 */
-    dataType: string;
-    /** 是否可写 */
-    writable: boolean;
-    /** 附加信息，参考新增属性接口 */
-    addition: {
-      unitId: string;
-      dataLength: number;
-      valueRange: { min: number; max: number };
-      valueMap?: Record<string, any>;
-      elementCount: number;
-      elementDataType: string;
-    };
-    /** 描述 */
-    description?: string;
-  },
+  body: API.ExtractUnknownDeviceAttributeRequest,
   options?: { [key: string]: any },
 ) {
   const { deviceAttributeId: param0, ...queryParams } = params;

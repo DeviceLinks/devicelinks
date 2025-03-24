@@ -28,8 +28,9 @@ export async function getApiCommonSearchField(
   return request<{
     code: string;
     message: string;
-    data: API.SearchFieldModuleItem[];
+    data: API.SearchField[];
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/common/search/field', {
     method: 'GET',
     params: {
@@ -52,7 +53,7 @@ export async function postApiGlobalSetting(
   return request<{
     code: string;
     message: string;
-    data: API.GlobalParam;
+    data: API.GlobalSetting;
     additional: Record<string, any>;
   }>('/api/global/setting', {
     method: 'POST',
@@ -69,7 +70,7 @@ export async function getApiSetting(options?: { [key: string]: any }) {
   return request<{
     code: string;
     message: string;
-    data: API.GlobalParam;
+    data: API.GlobalSetting;
     additional: Record<string, any>;
   }>('/api/setting', {
     method: 'GET',

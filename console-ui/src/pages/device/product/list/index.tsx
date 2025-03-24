@@ -140,7 +140,7 @@ const Product: React.FC = () => {
   ];
   const [searchForm] = Form.useForm<API.Product>();
   const customSearchFields = Form.useWatch((value) => {
-    const fields: API.SearchFieldItem[] = [];
+    const fields: API.SearchFieldFilter[] = [];
     if (value.name) {
       fields.push({
         field: 'name',
@@ -172,12 +172,12 @@ const Product: React.FC = () => {
     return fields;
   }, searchForm);
 
-  const initialSearchField: API.SearchField = {
+  const initialSearchField: API.SearchFieldQuery = {
     searchFieldModule: 'Product',
     searchMatch: 'ANY',
     searchFields: [],
   };
-  const [searchField, setSearchField] = React.useState<API.SearchField>(initialSearchField);
+  const [searchField, setSearchField] = React.useState<API.SearchFieldQuery>(initialSearchField);
   //获取表格数据
   const fetchData = async (
     params: API.postApiProductFilterParams & { pageSize?: number; current?: number },
@@ -214,7 +214,7 @@ const Product: React.FC = () => {
       extra={<CreateProductForm key="create" reload={tableActionRef.current?.reload} />}
     >
       {contextHolder}
-      <ProTable<API.Product, API.postApiProductFilterParams & API.SearchField>
+      <ProTable<API.Product, API.postApiProductFilterParams & API.SearchFieldQuery>
         columns={columns}
         params={searchField}
         rowKey="id"

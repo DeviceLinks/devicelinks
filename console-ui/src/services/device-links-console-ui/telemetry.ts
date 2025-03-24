@@ -6,21 +6,14 @@ import { request } from '@umijs/max';
 export async function postApiDeviceDeviceIdTelemetry(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceDeviceIdTelemetryParams,
-  body: {
-    /** 遥测数据标识符 */
-    identifier: string;
-    /** 遥测数据值 */
-    value: string;
-    /** 数据类型 */
-    dataType: string;
-  },
+  body: API.AddDeviceTelemetryRequest,
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, ...queryParams } = params;
   return request<{
     code: string;
     message: string;
-    data: API.Telemetry;
+    data: API.DeviceTelemetry;
     additional: Record<string, any>;
   }>(`/api/device/${param0}/telemetry`, {
     method: 'POST',
@@ -43,7 +36,7 @@ export async function deleteApiDeviceDeviceIdTelemetryTelemetryId(
   return request<{
     code: string;
     message: string;
-    data: API.Telemetry;
+    data: API.DeviceTelemetry;
     additional: Record<string, any>;
   }>(`/api/device/${param0}/telemetry/${param1}`, {
     method: 'DELETE',
@@ -56,14 +49,15 @@ export async function deleteApiDeviceDeviceIdTelemetryTelemetryId(
 export async function postApiDeviceTelemetryFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceTelemetryFilterParams,
-  body: API.SearchField,
+  body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
   return request<{
     code: string;
     message: string;
-    data: API.Telemetry;
+    data: API.DeviceTelemetry;
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/device/telemetry/filter', {
     method: 'POST',
     headers: {

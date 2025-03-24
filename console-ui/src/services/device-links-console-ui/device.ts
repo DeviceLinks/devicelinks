@@ -3,34 +3,7 @@
 import { request } from '@umijs/max';
 
 /** 新增设备 POST /api/device */
-export async function postApiDevice(
-  body: {
-    /** 产品ID */
-    productId: string;
-    /** 部门ID */
-    departmentId: string;
-    /** 设备类型 */
-    deviceType: string;
-    /** 设备唯一码 */
-    deviceCode: string;
-    /** 备注名称 */
-    name: string;
-    /** 标签列表 */
-    tags: string[];
-    /** 备注 */
-    mark: string;
-    /** 鉴权方式 */
-    authenticationMethod: string;
-    /** 鉴权附加信息 */
-    authenticationAddition: {
-      accessToken: string;
-      x509Pem: string;
-      mqttBasic: { clientId: string; username: string; password: string };
-      deviceCredential: { deviceKey: string; deviceSecret: string };
-    };
-  },
-  options?: { [key: string]: any },
-) {
+export async function postApiDevice(body: API.AddDeviceRequest, options?: { [key: string]: any }) {
   return request<{
     code: string;
     message: string;
@@ -56,7 +29,7 @@ export async function getApiDeviceDeviceId(
   return request<{
     code: string;
     message: string;
-    data: API.DeviceDetailInfo;
+    data: API.DeviceDTO;
     additional: Record<string, any>;
   }>(`/api/device/${param0}`, {
     method: 'GET',
@@ -69,14 +42,7 @@ export async function getApiDeviceDeviceId(
 export async function postApiDeviceDeviceId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceDeviceIdParams,
-  body: {
-    /** 设备备注名称 */
-    name: string;
-    /** 设备标签列表 */
-    tags: string[];
-    /** 备注信息 */
-    mark: string;
-  },
+  body: API.UpdateDeviceRequest,
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, ...queryParams } = params;
@@ -125,7 +91,7 @@ export async function getApiDeviceDeviceIdAuthorization(
   return request<{
     code: string;
     message: string;
-    data: API.DeviceAuth;
+    data: API.DeviceAuthentication;
     additional: Record<string, any>;
   }>(`/api/device/${param0}/authorization`, {
     method: 'GET',
@@ -138,21 +104,16 @@ export async function getApiDeviceDeviceIdAuthorization(
 export async function postApiDeviceDeviceIdAuthorization(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceDeviceIdAuthorizationParams,
-  body: {
-    /** 认证方式 */
-    authenticationMethod: string;
-    /** 认证附加信息 */
-    authenticationAddition: {
-      accessToken: string;
-      x509Pem: string;
-      mqttBasic: { clientId: string; username: string; password: string };
-      deviceCredential: { deviceKey: string; deviceSecret: string };
-    };
-  },
+  body: API.UpdateDeviceAuthorizationRequest,
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/device/${param0}/authorization`, {
+  return request<{
+    code: string;
+    message: string;
+    data: API.DeviceAuthentication;
+    additional: Record<string, any>;
+  }>(`/api/device/${param0}/authorization`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -170,7 +131,7 @@ export async function postApiDeviceDeviceIdEnabled(
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/device/${param0}/enabled`, {
+  return request<API.ApiResponse>(`/api/device/${param0}/enabled`, {
     method: 'POST',
     params: {
       ...queryParams,
@@ -204,25 +165,14 @@ export async function getApiDeviceDeviceIdOpenApiFunctionModule(
 export async function postApiDeviceDeviceIdModuleModuleIdAttributeDesired(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceDeviceIdModuleModuleIdAttributeDesiredParams,
-  body: {
-    /** 属性知晓类型 */
-    knowType: string;
-    /** 属性ID，对于已经在功能模块下定义的属性需要传递属性ID，已知属性类型必填 */
-    attributeId?: string;
-    /** 属性标识符，未知属性必填 */
-    identifier?: string;
-    /** 数据类型，未知属性必填 */
-    dataType?: string;
-    /** 属性期望值，根据数据类型传递，ARRAY类型直接传递"[xx,xxx,xx]"即可 */
-    desiredValue: string;
-  },
+  body: API.AddDeviceDesiredAttributeRequest,
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, moduleId: param1, ...queryParams } = params;
   return request<{
     code: string;
     message: string;
-    data: API.DesiredAttribute;
+    data: API.DeviceAttributeDesired;
     additional: Record<string, any>;
   }>(`/api/device/${param0}/module/${param1}/attribute/desired`, {
     method: 'POST',
@@ -258,19 +208,14 @@ export async function getApiDeviceDeviceIdShadow(
 export async function postApiDeviceAttributeDesiredAttributeIdDesired(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceAttributeDesiredAttributeIdDesiredParams,
-  body: {
-    /** 数据类型，未知属性时传递该参数 */
-    dataType?: string;
-    /** 期望值 */
-    desiredValue: string;
-  },
+  body: API.UpdateDeviceDesiredAttributeRequest,
   options?: { [key: string]: any },
 ) {
   const { desiredAttributeId: param0, ...queryParams } = params;
   return request<{
     code: string;
     message: string;
-    data: API.DesiredAttribute;
+    data: API.DeviceAttributeDesired;
     additional: Record<string, any>;
   }>(`/api/device/attribute/${param0}/desired`, {
     method: 'POST',
@@ -287,13 +232,13 @@ export async function postApiDeviceAttributeDesiredAttributeIdDesired(
 export async function postApiDeviceAttributeDesiredFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceAttributeDesiredFilterParams,
-  body: API.SearchField,
+  body: {},
   options?: { [key: string]: any },
 ) {
   return request<{
     code: string;
     message: string;
-    data: API.DesiredAttribute;
+    data: API.DeviceAttributeDesired;
     additional: Record<string, any>;
   }>('/api/device/attribute/desired/filter', {
     method: 'POST',
@@ -312,13 +257,13 @@ export async function postApiDeviceAttributeDesiredFilter(
 export async function postApiDeviceAttributeFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceAttributeFilterParams,
-  body: API.SearchField,
+  body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
   return request<{
     code: string;
     message: string;
-    data: API.DeviceAttribute;
+    data: API.DeviceAttributeDTO;
     additional: Record<string, any>;
   }>('/api/device/attribute/filter', {
     method: 'POST',
@@ -337,14 +282,7 @@ export async function postApiDeviceAttributeFilter(
 export async function postApiDeviceFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDeviceFilterParams,
-  body: {
-    /** 检索字段模块 */
-    searchFieldModule: string;
-    /** 检索字段之间的匹配方式 */
-    searchMatch: 'ANY' | 'ALL';
-    /** 检索字段列表 */
-    searchFields?: API.SearchFieldItem[];
-  },
+  body: {},
   options?: { [key: string]: any },
 ) {
   return request<{
@@ -358,6 +296,7 @@ export async function postApiDeviceFilter(
       result: API.Device[];
     };
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/device/filter', {
     method: 'POST',
     headers: {
