@@ -13,8 +13,8 @@ import org.hibernate.validator.constraints.Length;
  */
 @Data
 public class AddFunctionModuleRequest {
-    @NotEmpty(message = "功能模块名称不可以为空")
-    @Length(max = 32, message = "功能模块名称不可以超过32个字符")
+    @NotEmpty(message = "产品ID不可以为空")
+    @Length(max = 32, message = "产品ID不可以超过32个字符")
     private String productId;
 
     @NotEmpty(message = "功能模块名称不可以为空")
