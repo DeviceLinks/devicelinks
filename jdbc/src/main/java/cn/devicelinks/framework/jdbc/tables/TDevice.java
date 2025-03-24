@@ -46,6 +46,7 @@ public class TDevice extends TableImpl {
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column DEPARTMENT_ID = Column.withName("department_id").build();
     public final Column PRODUCT_ID = Column.withName("product_id").build();
+    public final Column PROFILE_ID = Column.withName("profile_id").build();
     public final Column DEVICE_CODE = Column.withName("device_code").build();
     public final Column DEVICE_TYPE = Column.withName("device_type").typeMapper(ColumnValueMappers.DEVICE_TYPE).build();
     public final Column NAME = Column.withName("name").build();
@@ -64,6 +65,6 @@ public class TDevice extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEPARTMENT_ID, PRODUCT_ID, DEVICE_CODE, DEVICE_TYPE, NAME, STATUS, IP_ADDRESS, TAGS, ACTIVATION_TIME, LAST_ONLINE_TIME, LAST_REPORT_TIME, ENABLED, DELETED, ADDITION, CREATE_BY, CREATE_TIME, MARK);
+        return List.of(ID, DEPARTMENT_ID, PRODUCT_ID, PROFILE_ID, DEVICE_CODE, DEVICE_TYPE, NAME, STATUS, IP_ADDRESS, TAGS, ACTIVATION_TIME, LAST_ONLINE_TIME, LAST_REPORT_TIME, ENABLED, DELETED, ADDITION, CREATE_BY, CREATE_TIME, MARK);
     }
 }

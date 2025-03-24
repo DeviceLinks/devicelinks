@@ -48,6 +48,7 @@ public class TProduct extends TableImpl {
     public final Column PRODUCT_KEY = Column.withName("product_key").build();
     public final Column PRODUCT_SECRET = Column.withName("product_secret").build();
     public final Column DEVICE_TYPE = Column.withName("device_type").typeMapper(ColumnValueMappers.DEVICE_TYPE).build();
+    public final Column DEVICE_PROFILE_ID = Column.withName("device_profile_id").build();
     public final Column NETWORKING_AWAY = Column.withName("networking_away").typeMapper(ColumnValueMappers.DEVICE_NETWORKING_AWAY).build();
     public final Column ACCESS_GATEWAY_PROTOCOL = Column.withName("access_gateway_protocol").typeMapper(ColumnValueMappers.ACCESS_GATEWAY_PROTOCOL).build();
     public final Column DATA_FORMAT = Column.withName("data_format").typeMapper(ColumnValueMappers.DATA_FORMAT).build();
@@ -61,6 +62,6 @@ public class TProduct extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, DEVICE_TYPE, NETWORKING_AWAY, ACCESS_GATEWAY_PROTOCOL, DATA_FORMAT, AUTHENTICATION_METHOD, DYNAMIC_REGISTRATION, STATUS, DELETED, DESCRIPTION, CREATE_BY, CREATE_TIME);
+        return List.of(ID, NAME, PRODUCT_KEY, PRODUCT_SECRET, DEVICE_TYPE, DEVICE_PROFILE_ID, NETWORKING_AWAY, ACCESS_GATEWAY_PROTOCOL, DATA_FORMAT, AUTHENTICATION_METHOD, DYNAMIC_REGISTRATION, STATUS, DELETED, DESCRIPTION, CREATE_BY, CREATE_TIME);
     }
 }
