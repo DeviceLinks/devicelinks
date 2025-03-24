@@ -4,20 +4,13 @@ import { request } from '@umijs/max';
 
 /** 新增数据图表（设备属性） POST /api/chart */
 export async function postApiChart(
-  body: {
-    chartName: string;
-    chartType: string;
-    targetId: string;
-    targetLocation: string;
-    mark?: string;
-    fields: { fieldId: string; fieldType: string; fieldLabel: string }[];
-  },
+  body: API.AddDataChartRequest,
   options?: { [key: string]: any },
 ) {
   return request<{
     code: string;
     message: string;
-    data: API.Chart;
+    data: API.DataChartDTO;
     additional: Record<string, any>;
   }>('/api/chart', {
     method: 'POST',
@@ -30,11 +23,14 @@ export async function postApiChart(
 }
 
 /** 查询数据图表列表 POST /api/chart/filter */
-export async function postApiChartFilter(body: API.SearchField, options?: { [key: string]: any }) {
+export async function postApiChartFilter(
+  body: API.SearchFieldQuery,
+  options?: { [key: string]: any },
+) {
   return request<{
     code: string;
     message: string;
-    data: API.Chart;
+    data: API.DataChartDTO;
     additional: Record<string, any>;
   }>('/api/chart/filter', {
     method: 'POST',

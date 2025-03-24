@@ -3,12 +3,16 @@
 import { request } from '@umijs/max';
 
 /** 新增产品 POST /api/product */
-export async function postApiProduct(body: API.Product, options?: { [key: string]: any }) {
+export async function postApiProduct(
+  body: API.AddProductRequest,
+  options?: { [key: string]: any },
+) {
   return request<{
     code: string;
     message: string;
     data: API.Product | null;
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/product', {
     method: 'POST',
     headers: {
@@ -42,22 +46,7 @@ export async function getApiProductProductId(
 export async function postApiProductProductId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiProductProductIdParams,
-  body: {
-    /** 名称 */
-    name: string;
-    /** 设备类型 */
-    deviceType: string;
-    /** 设备网络方式 */
-    networkingAway: string;
-    /** 接入网关协议，仅网关子设备类型传递该参数 */
-    accessGatewayProtocol: string;
-    /** 数据格式 */
-    dataFormat: string;
-    /** 鉴权方式 */
-    authenticationMethod: string;
-    /** 描述 */
-    description: string;
-  },
+  body: API.UpdateProductRequest,
   options?: { [key: string]: any },
 ) {
   const { productId: param0, ...queryParams } = params;
@@ -103,14 +92,16 @@ export async function postApiProductProductIdPublish(
   options?: { [key: string]: any },
 ) {
   const { productId: param0, ...queryParams } = params;
-  return request<{ code: boolean; message: string; data: null; additional: Record<string, any> }>(
-    `/api/product/${param0}/publish`,
-    {
-      method: 'POST',
-      params: { ...queryParams },
-      ...(options || {}),
-    },
-  );
+  return request<{
+    code: boolean;
+    message: string;
+    data: API.Product;
+    additional: Record<string, any>;
+  }>(`/api/product/${param0}/publish`, {
+    method: 'POST',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
 }
 
 /** 重新生成KeySecret POST /api/product/${param0}/regenerate/key-secret */
@@ -123,7 +114,7 @@ export async function postApiProductProductIdRegenerateKeySecret(
   return request<{
     code: boolean;
     message: string;
-    data: { productId: string; productName: string; productKey: string; productSecret: string };
+    data: API.RegenerateKeySecretResponse;
     additional: Record<string, any>;
   }>(`/api/product/${param0}/regenerate/key-secret`, {
     method: 'POST',
@@ -136,7 +127,7 @@ export async function postApiProductProductIdRegenerateKeySecret(
 export async function postApiProductFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiProductFilterParams,
-  body: API.SearchField,
+  body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
   return request<{
@@ -150,6 +141,7 @@ export async function postApiProductFilter(
       result: API.Product[];
     };
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/product/filter', {
     method: 'POST',
     headers: {

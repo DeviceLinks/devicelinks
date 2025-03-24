@@ -16,12 +16,12 @@ const UserInfo: React.FC = () => {
   const { enums } = useModel('enumModel');
   const { UserActivateMethod } = enums!;
   const [loading, setLoading] = useState<boolean>(true);
-  const initialSearchField: API.SearchField = {
+  const initialSearchField: API.SearchFieldQuery = {
     searchFieldModule: 'User',
     searchMatch: 'ANY',
     searchFields: [],
   };
-  const [searchField, setSearchField] = useState<API.SearchField>(initialSearchField);
+  const [searchField, setSearchField] = useState<API.SearchFieldQuery>(initialSearchField);
   const tableRef = useRef<ActionType>();
 
   /**启用/禁用 */
@@ -35,7 +35,7 @@ const UserInfo: React.FC = () => {
       tableRef.current?.reload();
     }
   };
-  const confirmFilter = (val: API.SearchField) => {
+  const confirmFilter = (val: API.SearchFieldQuery) => {
     setSearchField(val);
     tableRef.current?.reload();
   };
@@ -96,7 +96,7 @@ const UserInfo: React.FC = () => {
    */
   const handleSearchInput = (value: string) => {
     console.log(value);
-    const filterInputParams: API.SearchField = {
+    const filterInputParams: API.SearchFieldQuery = {
       searchFieldModule: 'User',
       searchMatch: 'ANY',
       searchFields: [

@@ -4,11 +4,7 @@ import { request } from '@umijs/max';
 
 /** 添加功能模块 POST /api/function/module */
 export async function postApiOpenApiFunctionModule(
-  body: {
-    productId: string;
-    name: string;
-    identifier: string;
-  },
+  body: API.AddFunctionModuleRequest,
   options?: { [key: string]: any },
 ) {
   return request<{
@@ -16,6 +12,7 @@ export async function postApiOpenApiFunctionModule(
     message: string;
     data: API.FunctionModule | null;
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/function/module', {
     method: 'POST',
     headers: {
@@ -38,6 +35,7 @@ export async function getApiOpenApiFunctionModuleModuleId(
     message: string;
     data: API.FunctionModule | null;
     additional: Record<string, any>;
+    success?: boolean;
   }>(`/api/function/module/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
@@ -49,10 +47,7 @@ export async function getApiOpenApiFunctionModuleModuleId(
 export async function postApiOpenApiFunctionModuleModuleId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApi_openAPI_functionModuleModuleIdParams,
-  body: {
-    name: string;
-    identifier: string;
-  },
+  body: API.UpdateFunctionModuleRequest,
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
@@ -61,6 +56,7 @@ export async function postApiOpenApiFunctionModuleModuleId(
     message: string;
     data: API.FunctionModule | null;
     additional: Record<string, any>;
+    success?: boolean;
   }>(`/api/function/module/${param0}`, {
     method: 'POST',
     headers: {
@@ -79,7 +75,7 @@ export async function deleteApiOpenApiFunctionModuleModuleId(
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/function/module/${param0}`, {
+  return request<API.ApiResponse>(`/api/function/module/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),
@@ -88,7 +84,7 @@ export async function deleteApiOpenApiFunctionModuleModuleId(
 
 /** 查询功能模块列表 POST /api/function/module/filter */
 export async function postApiOpenApiFunctionModuleFilter(
-  body: API.SearchField,
+  body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
   return request<{

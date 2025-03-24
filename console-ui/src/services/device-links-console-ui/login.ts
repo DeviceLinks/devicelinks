@@ -19,7 +19,7 @@ export async function postAuthLogin(
 
 /** 退出登录 POST /auth/logout */
 export async function postAuthLogout(options?: { [key: string]: any }) {
-  return request<API.ResponseResult>('/auth/logout', {
+  return request<API.ApiResponse>('/auth/logout', {
     method: 'POST',
     ...(options || {}),
   });

@@ -4,23 +4,10 @@ import { request } from '@umijs/max';
 
 /** 新增部门 POST /api/department */
 export async function postApiDepartment(
-  body: {
-    /** 名称 */
-    name: string;
-    /** 标识 */
-    identifier: string;
-    /** 上级部门ID */
-    pid?: string;
-    /** 排序 */
-    sort?: number;
-    /** 等级 */
-    level?: number;
-    /** 描述 */
-    description?: string;
-  },
+  body: API.AddDepartmentRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.ResponseResult>('/api/department', {
+  return request<API.ApiResponse>('/api/department', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +17,7 @@ export async function postApiDepartment(
   });
 }
 
-/** 获取信息 GET /api/department/${param0} */
+/** 获取部门信息 GET /api/department/${param0} */
 export async function getApiDepartmentDepartmentId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getApiDepartmentDepartmentIdParams,
@@ -42,6 +29,7 @@ export async function getApiDepartmentDepartmentId(
     message: string;
     data: API.Department;
     additional: Record<string, any>;
+    success?: boolean;
   }>(`/api/department/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
@@ -53,20 +41,16 @@ export async function getApiDepartmentDepartmentId(
 export async function postApiDepartmentDepartmentId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiDepartmentDepartmentIdParams,
-  body: {
-    /** 名称 */
-    name: string;
-    /** 上级ID */
-    pid?: string;
-    /** 排序 */
-    sort?: number;
-    /** 描述 */
-    description?: string;
-  },
+  body: API.UpdateDepartmentRequest,
   options?: { [key: string]: any },
 ) {
   const { departmentId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/department/${param0}`, {
+  return request<{
+    code: string;
+    message: string;
+    data: API.Department;
+    additional: Record<string, any>;
+  }>(`/api/department/${param0}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +68,7 @@ export async function deleteApiDepartmentDepartmentId(
   options?: { [key: string]: any },
 ) {
   const { departmentId: param0, ...queryParams } = params;
-  return request<API.ResponseResult>(`/api/department/${param0}`, {
+  return request<API.ApiResponse>(`/api/department/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),

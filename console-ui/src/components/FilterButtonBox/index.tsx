@@ -18,12 +18,12 @@ export const FilterButtonBox = ({
   initialValues,
   confirm,
 }: {
-  initialValues: API.SearchField;
-  confirm: (values: API.SearchField) => void;
+  initialValues: API.SearchFieldQuery;
+  confirm: (values: API.SearchFieldQuery) => void;
 }) => {
-  const [form] = Form.useForm<API.SearchField>();
-  const searchFields = Form.useWatch<API.SearchFieldItem[]>('searchFields', form);
-  const [filterOption, setFilterOption] = React.useState<API.SearchFieldModuleItem[]>([]);
+  const [form] = Form.useForm<API.SearchFieldQuery>();
+  const searchFields = Form.useWatch<API.SearchFieldFilter[]>('searchFields', form);
+  const [filterOption, setFilterOption] = React.useState<API.SearchField[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   /**
    * 加载弹框数据
@@ -48,10 +48,8 @@ export const FilterButtonBox = ({
     confirm(initialValues);
   };
   const changeFieldType = (rowIndex: number, field: string) => {
-    const item: API.SearchFieldItem = {
+    const item: API.SearchFieldFilter = {
       field: field,
-      operator: undefined,
-      value: undefined,
     };
     form.setFieldValue([`searchFields`, rowIndex], item);
   };

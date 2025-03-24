@@ -6,14 +6,7 @@ import { request } from '@umijs/max';
 export async function postApiLogFilter(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.postApiLogFilterParams,
-  body: {
-    /** 检索字段模块 */
-    searchFieldModule: string;
-    /** 检索字段之间的匹配方式 */
-    searchMatch: 'ANY' | 'ALL';
-    /** 检索字段列表 */
-    searchFields?: API.SearchFieldItem[];
-  },
+  body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
   return request<{
@@ -27,6 +20,7 @@ export async function postApiLogFilter(
       result: API.Log[];
     };
     additional: Record<string, any>;
+    success?: boolean;
   }>('/api/log/filter', {
     method: 'POST',
     headers: {
