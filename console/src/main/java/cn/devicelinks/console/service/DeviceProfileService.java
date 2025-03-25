@@ -30,4 +30,12 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
      * @return 已添加的设备配置文件 {@link DeviceProfile}
      */
     DeviceProfile addDeviceProfile(AddDeviceProfileRequest request);
+
+    /**
+     * 更新设备配置文件
+     *
+     * @param deviceProfile 待更新的设备配置文件对象实例
+     * @return 更新后的设备配置文件对象实例
+     */
+    DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile);
 }

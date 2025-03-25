@@ -14,12 +14,10 @@ import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
-import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceProfileRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,11 +65,21 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     public DeviceProfile addDeviceProfile(AddDeviceProfileRequest request) {
         DeviceProfile deviceProfile = DeviceProfileConverter.INSTANCE.fromAddDeviceProfileRequest(request);
         // check request data
-        this.checkData(deviceProfile, request.getExtension(), false);
+        this.checkData(deviceProfile, false);
         deviceProfile
-                .setExtension(!ObjectUtils.isEmpty(request.getExtension()) ? JacksonUtils.jsonToMap(request.getExtension(), String.class, Object.class) : null)
                 .setCreateBy(UserDetailsContext.getUserId());
         this.repository.insert(deviceProfile);
+        return deviceProfile;
+    }
+
+    @Override
+    public DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile) {
+        this.checkData(deviceProfile, true);
+        // From enabled to disabled, clear the pre-registration configuration
+        if (ProvisionRegistrationStrategy.Disabled == deviceProfile.getProvisionRegistrationStrategy() && !ObjectUtils.isEmpty(deviceProfile.getProvisionRegistrationAddition())) {
+            deviceProfile.setProvisionRegistrationAddition(null);
+        }
+        this.repository.update(deviceProfile);
         return deviceProfile;
     }
 
@@ -79,10 +87,9 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
      * 检查数据
      *
      * @param deviceProfile 设备配置文件对象实例
-     * @param extensionJson 自定义扩展Json
      * @param doUpdate      是否为更新操作
      */
-    private void checkData(DeviceProfile deviceProfile, String extensionJson, boolean doUpdate) {
+    private void checkData(DeviceProfile deviceProfile, boolean doUpdate) {
         // Check Firmware Exists
         if (!ObjectUtils.isEmpty(deviceProfile.getFirmwareId())) {
             Ota ota = otaService.selectByFirmwareId(deviceProfile.getFirmwareId());
@@ -144,18 +151,8 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
                 }
             }
         }
-        // Check Extension Json
-        if (!ObjectUtils.isEmpty(deviceProfile.getExtension())) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.readTree(extensionJson);
-            } catch (Exception e) {
-                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_EXTENSION_JSON_INVALID);
-            }
-        }
 
         // Check uniqueness
-
         List<ConditionGroup> conditionGroups = new ArrayList<>();
         // update
         if (doUpdate) {
