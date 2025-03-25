@@ -1,6 +1,7 @@
 package cn.devicelinks.framework.common.pojos;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -23,9 +24,10 @@ public class DeviceProfile implements Serializable {
 
     private String id;
     private String name;
-    private boolean isDefault;
+    private boolean defaultProfile;
     private String firmwareId;
     private String softwareId;
+    private ProvisionRegistrationStrategy provisionRegistrationStrategy;
     private DeviceProfileLogAddition logAddition;
     private DeviceProfileAlarmAddition alarmAddition;
     private DeviceProfileProvisionRegistrationAddition provisionRegistrationAddition;

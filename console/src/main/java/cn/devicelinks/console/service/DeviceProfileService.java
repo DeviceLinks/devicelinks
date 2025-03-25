@@ -1,7 +1,10 @@
 package cn.devicelinks.console.service;
 
+import cn.devicelinks.console.web.query.PaginationQuery;
+import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
 /**
  * 设备配置文件业务逻辑接口定义
@@ -10,5 +13,12 @@ import cn.devicelinks.framework.jdbc.BaseService;
  * @since 1.0
  */
 public interface DeviceProfileService extends BaseService<DeviceProfile, String> {
-
+    /**
+     * 分页查询设备配置文件列表
+     *
+     * @param paginationQuery  分页查询参数 {@link PaginationQuery}
+     * @param searchFieldQuery 检索字段查询参数 {@link SearchFieldQuery}
+     * @return 设备配置文件列表 {@link DeviceProfile}
+     */
+    PageResult<DeviceProfile> getDeviceProfileListByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
 }

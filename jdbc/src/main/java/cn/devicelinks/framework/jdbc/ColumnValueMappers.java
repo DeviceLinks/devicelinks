@@ -81,6 +81,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper DATA_CHART_TARGET_LOCATION = new EnumColumnValueMapper(DataChartTargetLocation.class);
     EnumColumnValueMapper DATA_CHART_TYPE = new EnumColumnValueMapper(DataChartType.class);
     EnumColumnValueMapper DATA_CHART_FIELD_TYPE = new EnumColumnValueMapper(DataChartFieldType.class);
+    EnumColumnValueMapper PROVISION_REGISTRATION_STRATEGY = new EnumColumnValueMapper(ProvisionRegistrationStrategy.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);

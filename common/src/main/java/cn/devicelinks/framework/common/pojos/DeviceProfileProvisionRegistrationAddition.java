@@ -1,6 +1,5 @@
 package cn.devicelinks.framework.common.pojos;
 
-import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +14,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeviceProfileProvisionRegistrationAddition {
-    private ProvisionRegistrationStrategy strategy;
     private String deviceKey;
     private String deviceSecret;
     private boolean allowCreateDeviceByX509Certificate;

@@ -88,9 +88,15 @@ public enum SearchFieldVariable {
 
     DATA_CHART_NAME("name", "数据图表名称"),
     DATA_CHART_TYPE("chartType", "数据图表类型"),
-    DATA_CHART_TARGET_LOCATION("targetLocation","数据图表位置"),
-    DATA_CHART_TARGET_ID("targetId","数据图表业务目标ID")
+    DATA_CHART_TARGET_LOCATION("targetLocation", "数据图表位置"),
+    DATA_CHART_TARGET_ID("targetId", "数据图表业务目标ID"),
 
+
+    DEVICE_PROFILE_ID("profileId", "设备配置文件ID"),
+    DEVICE_PROFILE_NAME("name", "设备配置文件名称"),
+    DEVICE_PROFILE_FIRMWARE_ID("firmwareId", "固件ID"),
+    DEVICE_PROFILE_SOFTWARE_ID("softwareId", "软件ID"),
+    DEVICE_PROFILE_PROVISION_REGISTRATION_STRATEGY("provisionRegistrationStrategy","预注册策略")
     ;
     private final String field;
     private final String text;

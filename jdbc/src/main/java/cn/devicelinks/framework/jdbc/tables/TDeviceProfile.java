@@ -1,6 +1,7 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
@@ -28,9 +29,10 @@ public class TDeviceProfile extends TableImpl {
 
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column NAME = Column.withName("name").build();
-    public final Column IS_DEFAULT = Column.withName("is_default").booleanValue().defaultValue(() -> Boolean.FALSE).build();
+    public final Column DEFAULT_PROFILE = Column.withName("default_profile").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column FIRMWARE_ID = Column.withName("firmware_id").build();
     public final Column SOFTWARE_ID = Column.withName("software_id").build();
+    public final Column PROVISION_REGISTRATION_STRATEGY = Column.withName("provision_registration_strategy").typeMapper(ColumnValueMappers.PROVISION_REGISTRATION_STRATEGY).defaultValue(() -> ProvisionRegistrationStrategy.Disabled).build();
     public final Column LOG_ADDITION = Column.withName("log_addition").typeMapper(ColumnValueMappers.DEVICE_PROFILE_LOG_ADDITION).build();
     public final Column ALARM_ADDITION = Column.withName("alarm_addition").typeMapper(ColumnValueMappers.DEVICE_PROFILE_ALARM_ADDITION).build();
     public final Column PROVISION_REGISTRATION_ADDITION = Column.withName("provision_registration_addition").typeMapper(ColumnValueMappers.DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION).build();
@@ -42,6 +44,6 @@ public class TDeviceProfile extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, IS_DEFAULT, FIRMWARE_ID, SOFTWARE_ID, LOG_ADDITION, ALARM_ADDITION, PROVISION_REGISTRATION_ADDITION, EXTENSION, CREATE_BY, CREATE_TIME, DELETED, DESCRIPTION);
+        return List.of(ID, NAME, DEFAULT_PROFILE, FIRMWARE_ID, SOFTWARE_ID, PROVISION_REGISTRATION_STRATEGY, LOG_ADDITION, ALARM_ADDITION, PROVISION_REGISTRATION_ADDITION, EXTENSION, CREATE_BY, CREATE_TIME, DELETED, DESCRIPTION);
     }
 }
