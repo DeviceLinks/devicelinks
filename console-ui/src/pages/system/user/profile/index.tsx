@@ -1,5 +1,5 @@
 import UserInfo from '@/pages/system/user/profile/modules/UserInfo';
-import { getApiUserUserId } from '@/services/device-links-console-ui/user';
+import { getApiUserUserId, postApiUserUserId } from '@/services/device-links-console-ui/user';
 import { useSearchParams } from '@@/exports';
 import { PageContainer } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -31,7 +31,17 @@ const UserProfile = () => {
     {
       label: '用户信息',
       key: 'userInfo',
-      children: <UserInfo userInfo={user} />,
+      children: (
+        <UserInfo
+          initialValues={user}
+          onSubmit={async (value) => {
+            await postApiUserUserId({ userId: user?.id ?? '' }, {
+              ...value,
+            } as API.UpdateUserRequest);
+            message.success('保存成员信息成功');
+          }}
+        />
+      ),
     },
     {
       label: '审计日志',
