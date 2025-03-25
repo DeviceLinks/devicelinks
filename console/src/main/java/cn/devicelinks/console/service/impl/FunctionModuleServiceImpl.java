@@ -30,9 +30,9 @@ import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODU
 @Slf4j
 public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, String, FunctionModuleRepository> implements FunctionModuleService {
 
-    private static final String DEFAULT_FUNCTION_MODULE_NAME = "默认模块";
+    public static final String DEFAULT_FUNCTION_MODULE_NAME = "默认模块";
 
-    private static final String DEFAULT_FUNCTION_MODULE_IDENTIFIER = "default";
+    public static final String DEFAULT_FUNCTION_MODULE_IDENTIFIER = "default";
 
     @Autowired
     private ProductRepository productRepository;
@@ -121,5 +121,10 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
                 FUNCTION_MODULE.DELETED.eq(Boolean.FALSE)
         );
         // @formatter:on
+    }
+
+    @Override
+    public FunctionModule selectByIdentifier(String identifier) {
+        return this.repository.selectOne(FUNCTION_MODULE.IDENTIFIER.eq(identifier));
     }
 }

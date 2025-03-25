@@ -30,6 +30,7 @@ public class TDeviceProfile extends TableImpl {
     public final Column ID = Column.withName("id").primaryKey().build();
     public final Column NAME = Column.withName("name").build();
     public final Column DEFAULT_PROFILE = Column.withName("default_profile").booleanValue().defaultValue(() -> Boolean.FALSE).build();
+    public final Column PRODUCT_ID = Column.withName("product_id").build();
     public final Column FIRMWARE_ID = Column.withName("firmware_id").build();
     public final Column SOFTWARE_ID = Column.withName("software_id").build();
     public final Column PROVISION_REGISTRATION_STRATEGY = Column.withName("provision_registration_strategy").typeMapper(ColumnValueMappers.PROVISION_REGISTRATION_STRATEGY).defaultValue(() -> ProvisionRegistrationStrategy.Disabled).build();
@@ -44,6 +45,6 @@ public class TDeviceProfile extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, NAME, DEFAULT_PROFILE, FIRMWARE_ID, SOFTWARE_ID, PROVISION_REGISTRATION_STRATEGY, LOG_ADDITION, ALARM_ADDITION, PROVISION_REGISTRATION_ADDITION, EXTENSION, CREATE_BY, CREATE_TIME, DELETED, DESCRIPTION);
+        return List.of(ID, NAME, DEFAULT_PROFILE, PRODUCT_ID, FIRMWARE_ID, SOFTWARE_ID, PROVISION_REGISTRATION_STRATEGY, LOG_ADDITION, ALARM_ADDITION, PROVISION_REGISTRATION_ADDITION, EXTENSION, CREATE_BY, CREATE_TIME, DELETED, DESCRIPTION);
     }
 }

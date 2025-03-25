@@ -25,6 +25,7 @@ public class DeviceProfile implements Serializable {
     private String id;
     private String name;
     private boolean defaultProfile;
+    private String productId;
     private String firmwareId;
     private String softwareId;
     private ProvisionRegistrationStrategy provisionRegistrationStrategy;

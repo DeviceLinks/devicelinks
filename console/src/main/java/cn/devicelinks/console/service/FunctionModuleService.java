@@ -59,4 +59,12 @@ public interface FunctionModuleService extends BaseService<FunctionModule, Strin
      * @return {@link FunctionModule}
      */
     List<FunctionModule> getProductFunctionModule(String productId);
+
+    /**
+     * 根据标识符查询功能模块
+     *
+     * @param identifier 功能模块标识符 {@link FunctionModule#getIdentifier()}
+     * @return {@link FunctionModule}
+     */
+    FunctionModule selectByIdentifier(String identifier);
 }

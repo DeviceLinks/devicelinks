@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 设备配置文件 - 日志配置
@@ -20,13 +20,15 @@ import java.util.List;
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeviceProfileLogAddition {
-    
-    private List<FunctionModuleLogLevel> logLevels = new ArrayList<>();
+
+    private Map<String, FunctionModuleLogLevel> logLevels = new LinkedHashMap<>();
 
     @Getter
     @Setter
     public static class FunctionModuleLogLevel {
-        private String module;
-        private LogLevel level;
+
+        private LogLevel level = LogLevel.Info;
+
+        private int reportIntervalSeconds = 300;
     }
 }
