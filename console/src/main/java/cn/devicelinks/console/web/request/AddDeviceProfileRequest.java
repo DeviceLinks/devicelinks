@@ -4,6 +4,7 @@ import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
 import cn.devicelinks.framework.common.pojos.DeviceProfileProvisionRegistrationAddition;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.framework.common.web.validator.JsonValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class AddDeviceProfileRequest {
 
     private DeviceProfileLogAddition logAddition;
 
+    @JsonValid(message = "自定义扩展配置格式必须为Json.")
     private String extension;
 
     @Length(max = 100, message = "设备配置文件描述不允许超过100个字符.")
