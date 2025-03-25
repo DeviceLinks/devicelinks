@@ -11,13 +11,13 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * 添加设备配置文件请求参数
+ * 更新设备配置文件请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
-public class AddDeviceProfileRequest {
+public class UpdateDeviceProfileRequest {
 
     @NotBlank
     @Length(max = 30, message = "设备配置文件名称不允许超过30个字符.")

@@ -2,9 +2,11 @@ package cn.devicelinks.console.web.controller;
 
 import cn.devicelinks.console.service.DeviceProfileService;
 import cn.devicelinks.console.web.StatusCodeConstants;
+import cn.devicelinks.console.web.converter.DeviceProfileConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceProfileRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -79,5 +81,31 @@ public class DeviceProfileController {
     public ApiResponse addDeviceProfile(@Valid @RequestBody AddDeviceProfileRequest request) throws ApiException {
         DeviceProfile addedDeviceProfile = this.deviceProfileService.addDeviceProfile(request);
         return ApiResponse.success(addedDeviceProfile);
+    }
+
+    /**
+     * 更新设备配置文件
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   更新设备配置文件请求实体参数 {@link UpdateDeviceProfileRequest}
+     * @return 更新后的设备配置文件
+     * @throws ApiException 更新过程中遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/{profileId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#executionSucceed? #result.data.id : #p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '设备配置文件更新成功' : '设备配置文件更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDeviceProfile(@PathVariable("profileId") String profileId,
+                                           @Valid @RequestBody UpdateDeviceProfileRequest request) throws ApiException {
+        DeviceProfile deviceProfile = this.deviceProfileService.selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+        DeviceProfileConverter.INSTANCE.fromUpdateDeviceProfileRequest(request, deviceProfile);
+        deviceProfile = this.deviceProfileService.updateDeviceProfile(deviceProfile);
+        return ApiResponse.success(deviceProfile);
     }
 }
