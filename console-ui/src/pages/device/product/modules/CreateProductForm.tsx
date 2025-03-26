@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React from 'react';
 import {
   ActionType,
   ModalForm,
@@ -10,10 +10,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import { useModel, useRequest } from '@umijs/max';
 import { postApiProduct } from '@/services/device-links-console-ui/product';
-interface CreateFormProps {
+type CreateFormProps = {
   reload?: ActionType['reload'];
-}
-const CreateProductForm: FC<CreateFormProps> = (props) => {
+};
+const CreateProductForm: React.FC<CreateFormProps> = (props) => {
   const { reload } = props;
   const [messageApi, contextHolder] = message.useMessage();
   const { run, loading } = useRequest(postApiProduct, {
@@ -52,7 +52,13 @@ const CreateProductForm: FC<CreateFormProps> = (props) => {
         <ProFormText
           label={'产品名称'}
           key={'name'}
-          rules={[{ required: true, message: '请输入产品名称' }]}
+          rules={[
+            { required: true, message: '请输入产品名称' },
+            {
+              pattern: /^[\u4e00-\u9fa5a-zA-Z0-9][\u4e00-\u9fa5a-zA-Z0-9_-]*$/,
+              message: '必须以汉字、字母或数字开头，后续可包含汉字、字母、数字、_ 或 -',
+            },
+          ]}
           name={'name'}
         ></ProFormText>
         <ProFormSelect

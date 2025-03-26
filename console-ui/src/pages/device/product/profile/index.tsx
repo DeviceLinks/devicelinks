@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import RcResizeObserver from 'rc-resize-observer';
 import {
   PageContainer,
   ProForm,
@@ -8,6 +9,9 @@ import {
   ProSkeleton,
   ProCard,
   ProList,
+  ActionType,
+  ProTable,
+  ProColumns,
 } from '@ant-design/pro-components';
 import { useModel, useParams, useRequest } from '@umijs/max';
 import {
@@ -16,16 +20,31 @@ import {
   postApiProductProductId,
   postApiProductProductIdPublish,
 } from '@/services/device-links-console-ui/product';
-import { DeleteOutlined, DownOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Dropdown, MenuProps, message, Modal, Space, Tag } from 'antd';
 import { Typography } from 'antd';
-import { postApiOpenApiFunctionModuleFilter } from '@/services/device-links-console-ui/functionModule';
+import {
+  deleteApiOpenApiFunctionModuleModuleId,
+  postApiOpenApiFunctionModuleFilter,
+} from '@/services/device-links-console-ui/functionModule';
+import CreateFunctionModuleForm from '@/pages/device/product/modules/CreateFunctionModuleForm';
+import { MessageInstance } from 'antd/lib/message/interface';
+import UpdateFunctionModuleForm from '@/pages/device/product/modules/UpdateFunctionModuleForm';
+import { postApiAttributeFilter } from '@/services/device-links-console-ui/attribute';
+import CreateAttributeForm from '@/pages/device/product/modules/CreateAttributeForm';
 const { Paragraph } = Typography;
 type ProductBaseInfoProps = {
   productInfo: API.Product | undefined;
   submit: (values: API.Product) => Promise<void>;
   enums: API.Enum;
 };
+/**
+ * 产品基本信息
+ * @param productInfo
+ * @param submit
+ * @param enums
+ * @constructor
+ */
 const ProductBasicInfoForm: React.FC<ProductBaseInfoProps> = ({ productInfo, submit, enums }) => {
   const { DeviceType, ProductStatus, DeviceNetworkingAway, DeviceAuthenticationMethod } = enums;
   return (
@@ -131,10 +150,29 @@ const ProductBasicInfoForm: React.FC<ProductBaseInfoProps> = ({ productInfo, sub
 };
 type ProductFunctionModuleInfoProps = {
   productId: string | undefined;
+  responsive: boolean;
+  messageApi?: MessageInstance;
 };
-const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ productId }) => {
-  const fetchData = async () => {
-    return await postApiOpenApiFunctionModuleFilter({
+
+/**
+ * 产品功能模块
+ * @param productId
+ * @param responsive
+ * @param messageApi
+ * @constructor
+ */
+const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
+  productId,
+  responsive,
+  messageApi,
+}) => {
+  const [currentModel, setCurrentModel] = useState<API.FunctionModule>();
+  const functionModuleActionRef = React.useRef<ActionType>();
+  /**
+   * 获取功能模块列表
+   */
+  const fetchFunctionModuleData = async () => {
+    const res = await postApiOpenApiFunctionModuleFilter({
       searchFieldModule: 'FunctionModule',
       searchMatch: 'ALL',
       searchFields: [
@@ -145,56 +183,190 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ p
         },
       ],
     } as API.SearchFieldQuery);
+    const { data } = res;
+    const defaultModule = data?.find((item) => item.identifier === 'default');
+    if (defaultModule && !currentModel) setCurrentModel(defaultModule);
+    return res;
   };
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  /**
+   * 删除功能模块API
+   */
+  const { run: deleteFunctionModule } = useRequest(deleteApiOpenApiFunctionModuleModuleId, {
+    manual: true,
+    onSuccess: () => {
+      messageApi?.success('删除功能模块成功');
+      functionModuleActionRef.current?.reload();
+    },
+  });
+  /**
+   * 处理删除功能模块
+   * @param record
+   */
+  const handleDeleteFunctionModule = async (record: API.FunctionModule) => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定要删除该功能模块吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: async () => {
+        deleteFunctionModule({ moduleId: record.id });
+      },
+    });
+  };
+  const attributeColumns: ProColumns<API.Attribute>[] = [
+    {
+      title: '属性ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: '属性名称',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '数据类型',
+      dataIndex: 'dataType',
+      key: 'dataType',
+    },
+    {
+      title: '附加信息',
+      dataIndex: 'addition',
+      key: 'addition',
+    },
+    {
+      title: '新增时间',
+      dataIndex: 'createTime',
+      key: 'createTime',
+    },
+    {
+      title: '描述',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      key: 'option',
+      render: (_, record) => [
+        <a
+          key="delete"
+          onClick={() => {
+            handleDeleteFunctionModule(record);
+          }}
+        >
+          删除
+        </a>,
+      ],
+    },
+  ];
+  const fetchAttributeData = async (
+    params: API.postApiAttributeFilterParams & {
+      pageSize?: number;
+      current?: number;
+    },
+  ) => {
+    if (!currentModel?.id || !currentModel.productId) {
+      return {
+        data: [],
+        total: 0,
+        success: true,
+      };
+    }
+    const { data } = await postApiAttributeFilter(
+      {
+        pageSize: params.pageSize,
+        page: params.current,
+      },
+      {
+        searchFieldModule: 'Attribute',
+        searchMatch: 'ALL',
+        searchFields: [
+          {
+            field: 'moduleId',
+            operator: 'EqualTo',
+            value: currentModel.id,
+          },
+          {
+            field: 'productId',
+            operator: 'EqualTo',
+            value: currentModel.productId,
+          },
+        ],
+      } as API.SearchFieldQuery,
+    );
+    return {
+      data: data.result || [],
+      total: data.totalRows,
+      success: true,
+    };
+  };
   return (
-    <ProCard split="vertical">
-      <ProCard colSpan="30%" ghost>
+    <ProCard split={responsive ? 'horizontal' : 'vertical'}>
+      <ProCard
+        colSpan={{
+          md: 24,
+          xl: 8,
+        }}
+        ghost
+      >
         <ProList<API.FunctionModule>
-          ghost
           tableAlertRender={false}
+          actionRef={functionModuleActionRef}
           rowKey={'id'}
           onRow={(record) => {
             return {
               onClick: () => {
-                setSelectedRowKeys([record.id]);
+                setCurrentModel(record);
               },
             };
           }}
-          request={fetchData}
+          rowClassName={(record: API.FunctionModule) => {
+            const selectedClassName = '!bg-[#f5f5f5] border-r-2 border-primary';
+            const defaultClassName = '!px-4 h-16';
+            if (record.id === currentModel?.id) {
+              return `${selectedClassName} ${defaultClassName}`;
+            }
+            return defaultClassName;
+          }}
+          request={fetchFunctionModuleData}
           rowSelection={{
             type: 'radio',
-            selectedRowKeys: selectedRowKeys,
+            selectedRowKeys: (currentModel && [currentModel.id]) || [],
             hideSelectAll: true,
             renderCell: () => null,
-          }}
-          split
-          rowClassName={(record: API.FunctionModule) => {
-            return record.id === selectedRowKeys[0] ? 'bg-[#f2f2f2]' : '';
           }}
           metas={{
             title: {
               dataIndex: 'name',
-              render: (text) => <div style={{ paddingInline: '16px' }}>{text}</div>,
             },
             description: {
               dataIndex: 'identifier',
-              render: (text) => (
-                <div
-                  style={{
-                    paddingInline: '16px',
-                  }}
-                >
-                  标识符：{text}
-                </div>
-              ),
+              render: (text, record) =>
+                record.identifier !== 'default' && <span>标识符：{text}</span>,
             },
             actions: {
               dataIndex: 'actions',
               cardActionProps: 'extra',
-              render: () => [
-                <Button icon={<EditOutlined />} key="edit" type={'text'}></Button>,
-                <Button icon={<DeleteOutlined />} key="delete" type={'text'} danger></Button>,
+              render: (_, record) => [
+                record.identifier !== 'default' && (
+                  <>
+                    <UpdateFunctionModuleForm
+                      moduleId={record.id}
+                      key="update"
+                      reload={() => {
+                        functionModuleActionRef.current?.reload();
+                      }}
+                    ></UpdateFunctionModuleForm>
+                    <Button
+                      icon={<DeleteOutlined />}
+                      key="delete"
+                      type={'text'}
+                      danger
+                      onClick={() => handleDeleteFunctionModule(record)}
+                    ></Button>
+                  </>
+                ),
               ],
             },
           }}
@@ -205,19 +377,37 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({ p
                 console.log(value);
               },
             },
-            style: {
-              padding: '0 16px',
-            },
             actions: [
-              <Button type="primary" key="primary">
-                新增模块
-              </Button>,
+              <CreateFunctionModuleForm
+                key="createFunctionModule"
+                productId={productId}
+                reload={() => {
+                  functionModuleActionRef.current?.reload();
+                }}
+              ></CreateFunctionModuleForm>,
             ],
           }}
         ></ProList>
       </ProCard>
       <ProCard>
-        <div>111222</div>
+        <ProTable<API.Attribute & API.FunctionModule & API.postApiAttributeFilterParams>
+          params={currentModel}
+          rowKey={'id'}
+          search={false}
+          columns={attributeColumns}
+          request={fetchAttributeData}
+          toolbar={{
+            actions: [
+              <CreateAttributeForm
+                initialValues={{
+                  productId: currentModel?.productId,
+                  moduleId: currentModel?.id,
+                }}
+                key="createAttribute"
+              ></CreateAttributeForm>,
+            ],
+          }}
+        ></ProTable>
       </ProCard>
     </ProCard>
   );
@@ -320,74 +510,87 @@ const ProductProfile: React.FC = () => {
       danger: true,
     },
   ];
-
+  const [responsive, setResponsive] = useState(false);
   if (loading) {
     return <ProSkeleton type="descriptions" />;
   }
   return (
-    <PageContainer
-      tags={
-        productInfo && (
-          <Tag color={getEnumByValue(ProductStatus, productInfo.status)?.showStyle.toLowerCase()}>
-            {getEnumByValue(ProductStatus, productInfo.status)?.label}
-          </Tag>
-        )
-      }
-      tabList={[
-        {
-          key: 'profile',
-          tab: '产品信息',
-          children: (
-            <ProductBasicInfoForm
-              productInfo={productInfo}
-              enums={enums}
-              submit={async (values) => {
-                await updateProduct(
-                  {
-                    productId: productInfo?.id,
-                  } as API.postApiProductProductIdParams,
-                  {
-                    ...productInfo,
-                    ...values,
-                  },
-                );
-              }}
-            ></ProductBasicInfoForm>
-          ),
-        },
-        {
-          key: 'function',
-          tab: '功能模块',
-          children: <ProductFunctionModuleInfo productId={productId}></ProductFunctionModuleInfo>,
-        },
-        {
-          key: 'device',
-          tab: '设备列表',
-        },
-      ]}
-      title={`产品名称：${productInfo?.name || '-'}`}
-      content={
-        <Paragraph
-          copyable={{
-            text: `${productInfo?.id}`,
-          }}
-        >
-          ID：{productInfo?.id || '-'}
-        </Paragraph>
-      }
-      extra={
-        <Dropdown menu={{ items: menuItems, onClick: handleMenuClick }}>
-          <Button type={'primary'}>
-            <Space>
-              更多
-              <DownOutlined />
-            </Space>
-          </Button>
-        </Dropdown>
-      }
+    <RcResizeObserver
+      key="resize-observer"
+      onResize={(offset) => {
+        setResponsive(offset.width < 596);
+      }}
     >
-      {contextHolder}
-    </PageContainer>
+      <PageContainer
+        tags={
+          productInfo && (
+            <Tag color={getEnumByValue(ProductStatus, productInfo.status)?.showStyle.toLowerCase()}>
+              {getEnumByValue(ProductStatus, productInfo.status)?.label}
+            </Tag>
+          )
+        }
+        tabList={[
+          {
+            key: 'profile',
+            tab: '产品信息',
+            children: (
+              <ProductBasicInfoForm
+                productInfo={productInfo}
+                enums={enums}
+                submit={async (values) => {
+                  await updateProduct(
+                    {
+                      productId: productInfo?.id,
+                    } as API.postApiProductProductIdParams,
+                    {
+                      ...productInfo,
+                      ...values,
+                    },
+                  );
+                }}
+              ></ProductBasicInfoForm>
+            ),
+          },
+          {
+            key: 'function',
+            tab: '功能模块',
+            children: (
+              <ProductFunctionModuleInfo
+                responsive={responsive}
+                productId={productId}
+                messageApi={messageApi}
+              ></ProductFunctionModuleInfo>
+            ),
+          },
+          {
+            key: 'device',
+            tab: '设备列表',
+          },
+        ]}
+        title={`产品名称：${productInfo?.name || '-'}`}
+        content={
+          <Paragraph
+            copyable={{
+              text: `${productInfo?.id}`,
+            }}
+          >
+            ID：{productInfo?.id || '-'}
+          </Paragraph>
+        }
+        extra={
+          <Dropdown menu={{ items: menuItems, onClick: handleMenuClick }}>
+            <Button type={'primary'}>
+              <Space>
+                更多
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        }
+      >
+        {contextHolder}
+      </PageContainer>
+    </RcResizeObserver>
   );
 };
 export default ProductProfile;
