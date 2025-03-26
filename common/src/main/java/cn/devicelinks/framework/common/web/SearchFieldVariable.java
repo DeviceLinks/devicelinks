@@ -96,7 +96,9 @@ public enum SearchFieldVariable {
     DEVICE_PROFILE_NAME("name", "设备配置文件名称"),
     DEVICE_PROFILE_FIRMWARE_ID("firmwareId", "固件ID"),
     DEVICE_PROFILE_SOFTWARE_ID("softwareId", "软件ID"),
-    DEVICE_PROFILE_PROVISION_REGISTRATION_STRATEGY("provisionRegistrationStrategy","预注册策略")
+    DEVICE_PROFILE_PROVISION_REGISTRATION_STRATEGY("provisionRegistrationStrategy","预注册策略"),
+
+    DEVICE_TAG_NAME("name","设备标签名称"),
     ;
     private final String field;
     private final String text;

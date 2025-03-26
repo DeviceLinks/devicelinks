@@ -41,7 +41,8 @@ public enum LogObjectType {
     DeviceAttribute("设备属性"),
     DeviceTelemetry("设备遥测数据"),
     Chart("数据图表"),
-    DeviceProfile("设备配置文件");
+    DeviceProfile("设备配置文件"),
+    DeviceTag("设备标签");
 
     private final String description;
 
