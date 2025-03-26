@@ -136,9 +136,9 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             return this;
         }
 
-        public SelectBuilder appendCondition(boolean allowAppend, String condition, Object... parameterValues) {
+        public SelectBuilder appendCondition(boolean allowAppend, String condition, Object parameterValue) {
             if (allowAppend) {
-                this.whereConditionList.add(DynamicWhereCondition.create(condition, parameterValues));
+                this.whereConditionList.add(DynamicWhereCondition.create(condition, parameterValue));
             }
             return this;
         }
@@ -229,9 +229,9 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             return this;
         }
 
-        public ModifyBuilder appendCondition(boolean allowAppend, String condition, Object... parameterValues) {
+        public ModifyBuilder appendCondition(boolean allowAppend, String condition, Object parameterValue) {
             if (allowAppend) {
-                this.whereConditionList.add(DynamicWhereCondition.create(condition, parameterValues));
+                this.whereConditionList.add(DynamicWhereCondition.create(condition, parameterValue));
             }
             return this;
         }
@@ -301,7 +301,12 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
 
                 // add parameter value
                 if (!ObjectUtils.isEmpty(condition.getConditionValue())) {
-                    if (ObjectUtils.isArray(condition.getConditionValue())) {
+                    // list
+                    if (condition.getConditionValue() instanceof List<?>) {
+                        parameters.addAll((List<?>) condition.getConditionValue());
+                    }
+                    // array
+                    else if (ObjectUtils.isArray(condition.getConditionValue())) {
                         // @formatter:off
                         List<Object> parameterValueList = Arrays
                                 .stream((Object[]) condition.getConditionValue())
