@@ -42,4 +42,11 @@ public interface DeviceRepository extends Repository<Device, String> {
      * @return 返回一个 {@link PageResult} 对象，包含符合条件的 {@link Device} 列表和分页信息。
      */
     PageResult<Device> selectByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
+
+    /**
+     * 清空设置指定配置文件的ID
+     *
+     * @param profileId 设备配置文件ID {@link Device#getProfileId()}
+     */
+    void clearDeviceProfileId(String profileId);
 }

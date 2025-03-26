@@ -38,4 +38,12 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
      * @return 更新后的设备配置文件对象实例
      */
     DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile);
+
+    /**
+     * 删除设备配置文件
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @return 已删除的设备配置文件 {@link DeviceProfile}
+     */
+    DeviceProfile deleteDeviceProfile(String profileId);
 }

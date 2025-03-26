@@ -106,6 +106,7 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_PROFILE_EXTENSION_JSON_INVALID = StatusCode.build("DEVICE_PROFILE_EXTENSION_JSON_INVALID", "设备配置文件自定义扩展格式错误，仅支持Json格式字符串.");
     StatusCode DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION_INVALID = StatusCode.build("DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION_INVALID", "设备配置文件预注册附加信息验证失败，请根据预注册策略传递参数.");
     StatusCode DEVICE_PROFILE_LOG_LEVELS_INVALID = StatusCode.build("DEVICE_PROFILE_LOG_LEVELS_INVALID", "设备配置日志等级附加信息验证失败，如果选择了产品请检查功能模块是否所属该产品，如果并未选择产品仅允许传递[default]功能模块的日志配置.");
+    StatusCode DEVICE_PROFILE_DEFAULT_CANNOT_DELETE = StatusCode.build("DEVICE_PROFILE_DEFAULT_CANNOT_DELETE", "默认的设备配置文件不允许删除.");
 
     StatusCode OTA_FIRMWARE_NOT_EXISTS = StatusCode.build("OTA_FIRMWARE_NOT_EXISTS", "固件OTA：%s，不存在.");
     StatusCode OTA_SOFTWARE_NOT_EXISTS = StatusCode.build("OTA_SOFTWARE_NOT_EXISTS", "软件OTA：%s，不存在.");

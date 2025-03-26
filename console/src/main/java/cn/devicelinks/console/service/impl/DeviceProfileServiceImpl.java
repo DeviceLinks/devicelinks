@@ -18,6 +18,8 @@ import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceProfileRepository;
+import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
+import cn.devicelinks.framework.jdbc.repositorys.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,12 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private DeviceRepository deviceRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     public DeviceProfileServiceImpl(DeviceProfileRepository repository) {
         super(repository);
     }
@@ -80,6 +88,27 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
             deviceProfile.setProvisionRegistrationAddition(null);
         }
         this.repository.update(deviceProfile);
+        return deviceProfile;
+    }
+
+    @Override
+    public DeviceProfile deleteDeviceProfile(String profileId) {
+        DeviceProfile deviceProfile = selectById(profileId);
+        if (deviceProfile == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+        if (Boolean.TRUE.equals(deviceProfile.isDefaultProfile())) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_DEFAULT_CANNOT_DELETE, profileId);
+        }
+        if (Boolean.FALSE.equals(deviceProfile.isDeleted())) {
+            // Update is deleted
+            deviceProfile.setDeleted(Boolean.TRUE);
+            this.update(deviceProfile);
+
+            // Clear device profile id for devices and products
+            this.deviceRepository.clearDeviceProfileId(profileId);
+            this.productRepository.clearDeviceProfileId(profileId);
+        }
         return deviceProfile;
     }
 

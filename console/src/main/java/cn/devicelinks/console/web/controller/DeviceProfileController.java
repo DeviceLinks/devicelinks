@@ -108,4 +108,23 @@ public class DeviceProfileController {
         deviceProfile = this.deviceProfileService.updateDeviceProfile(deviceProfile);
         return ApiResponse.success(deviceProfile);
     }
+
+    /**
+     * 删除设备配置文件
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @return 已删除的设备配置文件 {@link DeviceProfile}
+     * @throws ApiException 删除过程中遇到的异常
+     */
+    @DeleteMapping(value = "/{profileId}")
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#executionSucceed? #result.data.id : #p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed ? '设备配置文件删除成功' : '设备配置文件删除失败'}",
+            activateData = "{#p0}")
+    public ApiResponse deleteDeviceProfile(@PathVariable("profileId") String profileId) throws ApiException {
+        DeviceProfile deletedDeviceProfile = this.deviceProfileService.deleteDeviceProfile(profileId);
+        return ApiResponse.success(deletedDeviceProfile);
+    }
 }

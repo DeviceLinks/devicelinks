@@ -22,11 +22,9 @@ import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.Condition;
-import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
+import cn.devicelinks.framework.jdbc.core.sql.*;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -40,6 +38,9 @@ import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
  */
 @RegisterBean
 public class DeviceJdbcRepository extends JdbcRepository<Device, String> implements DeviceRepository {
+
+    private static final String CLEAR_DEVICE_PROFILE_ID_SQL = "update device set profile_id = null where profile_id = ?";
+
     public DeviceJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE, jdbcOperations);
     }
@@ -56,5 +57,12 @@ public class DeviceJdbcRepository extends JdbcRepository<Device, String> impleme
                 .build();
         // @formatter:on
         return this.page(fusionCondition, pageQuery);
+    }
+
+    @Override
+    public void clearDeviceProfileId(String profileId) {
+        Assert.hasText(profileId, "The profileId cannot be empty");
+        Dynamic dynamic = Dynamic.buildModify(CLEAR_DEVICE_PROFILE_ID_SQL, List.of(DEVICE.PRODUCT_ID));
+        this.dynamicModify(dynamic, profileId);
     }
 }

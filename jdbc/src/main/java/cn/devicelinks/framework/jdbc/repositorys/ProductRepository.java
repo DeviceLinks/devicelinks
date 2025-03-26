@@ -42,4 +42,11 @@ public interface ProductRepository extends Repository<Product, String> {
      * @return 返回一个 {@link PageResult} 对象，包含符合条件的 {@link Product} 列表和分页信息。
      */
     PageResult<Product> getProductsByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
+
+    /**
+     * 清空产品绑定的设备配置ID
+     *
+     * @param profileId 设备配置ID {@link Product#getDeviceProfileId()}
+     */
+    void clearDeviceProfileId(String profileId);
 }
