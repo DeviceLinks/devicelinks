@@ -25,6 +25,7 @@ import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -209,7 +210,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
      */
     public static class ModifyBuilder {
         private String sql;
-        private final List<Column> parameterColumns = new ArrayList<>();
+        private final List<Column> columns = new ArrayList<>();
         private final List<Object> parameters = new ArrayList<>();
         private final List<DynamicWhereCondition> whereConditionList = new ArrayList<>();
 
@@ -217,8 +218,13 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             this.sql = sql;
         }
 
-        public ModifyBuilder parameters(Consumer<List<Column>> parametersConsumer) {
-            parametersConsumer.accept(this.parameterColumns);
+        public ModifyBuilder columns(Consumer<List<Column>> columnConsumer) {
+            columnConsumer.accept(this.columns);
+            return this;
+        }
+
+        public ModifyBuilder parameters(Consumer<List<Object>> parametersConsumer) {
+            parametersConsumer.accept(this.parameters);
             return this;
         }
 
@@ -243,7 +249,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             // append where condition sql
             this.sql = appendWhereConditionSql(this.sql, this.parameters, this.whereConditionList);
 
-            return new DynamicWrapper(Dynamic.buildModify(this.sql, this.parameterColumns), this.parameters.toArray(Object[]::new));
+            return new DynamicWrapper(Dynamic.buildModify(this.sql, this.columns), this.parameters.toArray(Object[]::new));
         }
     }
 
@@ -260,8 +266,13 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
     private static boolean hasWhereKeyword(String sql) {
         SQLStatementParser parser = new SQLStatementParser(sql);
         SQLStatement stmt = parser.parseStatement();
-        SQLSelectQueryBlock query = (SQLSelectQueryBlock) ((SQLSelectStatement) stmt).getSelect().getQuery();
-        return query.getWhere() != null;
+        if (stmt instanceof SQLSelectStatement statement) {
+            SQLSelectQueryBlock query = (SQLSelectQueryBlock) (statement).getSelect().getQuery();
+            return query.getWhere() != null;
+        } else if (stmt instanceof SQLUpdateStatement statement) {
+            return statement.getWhere() != null;
+        }
+        return false;
     }
 
     /**
