@@ -42,6 +42,10 @@ public enum SearchFieldModuleIdentifier {
      */
     DeviceProfile("设备配置文件"),
     /**
+     * 设备标签
+     */
+    DeviceTag("设备标签"),
+    /**
      * 日志
      */
     Log("日志模块"),
