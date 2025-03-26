@@ -73,6 +73,15 @@ public interface RepositoryOperations {
     int update(String sql, List<SqlParameterValue> sqlParameterValues);
 
     /**
+     * 更新数据执行方法
+     *
+     * @param sql        更新SQL
+     * @param parameters 更新SQL所需要的参数列表，需要跟占位符一一对应
+     * @return 数据更新影响的行数
+     */
+    int update(String sql, Object... parameters);
+
+    /**
      * 新增数据执行方法
      *
      * @param sql                新增SQL

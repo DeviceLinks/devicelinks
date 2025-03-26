@@ -128,6 +128,20 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
     }
 
     @Override
+    public int update(String sql, Object... parameters) {
+        int affectedRows = Constants.ZERO;
+        try {
+            affectedRows = this.jdbcOperations.update(sql, parameters);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiException(StatusCode.MODIFY_ERROR);
+        } finally {
+            this.sqlPrinter.print(RepositoryMethod.Update, sql, parameters, null, affectedRows);
+        }
+        return affectedRows;
+    }
+
+    @Override
     public int insert(String sql, List<SqlParameterValue> sqlParameterValues) {
         return this.executeUpdate(sql, sqlParameterValues, RepositoryMethod.Insert);
     }
