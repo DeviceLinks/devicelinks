@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.framework.common.DeviceType;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.core.Repository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
@@ -49,4 +50,30 @@ public interface DeviceRepository extends Repository<Device, String> {
      * @param profileId 设备配置文件ID {@link Device#getProfileId()}
      */
     void clearDeviceProfileId(String profileId);
+
+    /**
+     * 根据设备ID列表批量更新设备配置文件
+     *
+     * @param profileId 设备配置文件ID {@link Device#getProfileId()}
+     * @param deviceIds 设备ID列表 {@link Device#getId()}
+     */
+    void updateDeviceProfileIdWithDeviceIds(String profileId, List<String> deviceIds);
+
+    /**
+     * 根据设备标签批量更新设备配置文件ID
+     *
+     * @param productId 产品ID {@link Device#getProductId()}
+     * @param profileId 设备配置文件ID {@link Device#getProductId()}
+     * @param tags      设备标签列表，多个标签之间通过"Or"方式匹配
+     */
+    void updateDeviceProfileIdWithTags(String productId, String profileId, List<String> tags);
+
+    /**
+     * 根据设备类型匹配更新设备匹配文件ID
+     *
+     * @param productId  产品ID {@link Device#getProductId()}
+     * @param profileId  设备配置文件ID {@link Device#getProductId()}
+     * @param deviceType 设备类型 {@link DeviceType}
+     */
+    void updateDeviceProfileIdWithDeviceType(String productId, String profileId, DeviceType deviceType);
 }

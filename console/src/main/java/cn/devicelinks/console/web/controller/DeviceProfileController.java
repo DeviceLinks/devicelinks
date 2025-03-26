@@ -6,6 +6,7 @@ import cn.devicelinks.console.web.converter.DeviceProfileConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
+import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceProfileRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
@@ -126,5 +127,25 @@ public class DeviceProfileController {
     public ApiResponse deleteDeviceProfile(@PathVariable("profileId") String profileId) throws ApiException {
         DeviceProfile deletedDeviceProfile = this.deviceProfileService.deleteDeviceProfile(profileId);
         return ApiResponse.success(deletedDeviceProfile);
+    }
+
+    /**
+     * 将设备配置文件批量设置给设备
+     *
+     * @param profileId 配置文件ID {@link DeviceProfile#getId()}
+     * @param request   批量设置请求参数实体 {@link BatchSetDeviceProfileRequest}
+     * @return 统一响应实体
+     * @throws ApiException 批量设置过程中遇到的异常
+     */
+    @PostMapping(value = "/{profileId}/batch/set")
+    @OperationLog(action = LogAction.Bind,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#p0}",
+            msg = "{#executionSucceed? '批量绑定成功' : '批量绑定失败'}",
+            activateData = "{#p1}")
+    public ApiResponse batchSetDeviceProfile(@PathVariable("profileId") String profileId,
+                                             @Valid @RequestBody BatchSetDeviceProfileRequest request) throws ApiException {
+        this.deviceProfileService.batchSet(profileId, request);
+        return ApiResponse.success();
     }
 }

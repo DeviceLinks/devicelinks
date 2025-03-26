@@ -39,8 +39,6 @@ import static cn.devicelinks.framework.jdbc.tables.TProduct.PRODUCT;
 @RegisterBean
 public class ProductJdbcRepository extends JdbcRepository<Product, String> implements ProductRepository {
 
-    private static final String CLEAR_DEVICE_PROFILE_ID_SQL = "update product set device_profile_id = null where device_profile_id = ?";
-
     public ProductJdbcRepository(JdbcOperations jdbcOperations) {
         super(PRODUCT, jdbcOperations);
     }
@@ -61,7 +59,6 @@ public class ProductJdbcRepository extends JdbcRepository<Product, String> imple
     @Override
     public void clearDeviceProfileId(String profileId) {
         Assert.hasText(profileId, "The profileId cannot be empty");
-        Dynamic dynamic = Dynamic.buildModify(CLEAR_DEVICE_PROFILE_ID_SQL, List.of(PRODUCT.DEVICE_PROFILE_ID));
-        this.dynamicModify(dynamic, profileId);
+        this.update(List.of(PRODUCT.DEVICE_PROFILE_ID.set(null)), PRODUCT.DEVICE_PROFILE_ID.eq(profileId));
     }
 }

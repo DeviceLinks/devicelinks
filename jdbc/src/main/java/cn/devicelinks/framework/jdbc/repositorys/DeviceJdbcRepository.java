@@ -17,16 +17,21 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.framework.common.DeviceType;
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.*;
+import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
 
@@ -38,8 +43,6 @@ import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
  */
 @RegisterBean
 public class DeviceJdbcRepository extends JdbcRepository<Device, String> implements DeviceRepository {
-
-    private static final String CLEAR_DEVICE_PROFILE_ID_SQL = "update device set profile_id = null where profile_id = ?";
 
     public DeviceJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE, jdbcOperations);
@@ -62,7 +65,33 @@ public class DeviceJdbcRepository extends JdbcRepository<Device, String> impleme
     @Override
     public void clearDeviceProfileId(String profileId) {
         Assert.hasText(profileId, "The profileId cannot be empty");
-        Dynamic dynamic = Dynamic.buildModify(CLEAR_DEVICE_PROFILE_ID_SQL, List.of(DEVICE.PRODUCT_ID));
-        this.dynamicModify(dynamic, profileId);
+        this.update(List.of(DEVICE.PROFILE_ID.set(null)), DEVICE.PROFILE_ID.eq(profileId));
+    }
+
+    @Override
+    public void updateDeviceProfileIdWithDeviceIds(String profileId, List<String> deviceIds) {
+        this.update(List.of(DEVICE.PROFILE_ID.set(profileId)),
+                DEVICE.ID.in(deviceIds.stream().map(deviceId -> (Object) deviceId).toList()));
+    }
+
+    @Override
+    public void updateDeviceProfileIdWithTags(String productId, String profileId, List<String> tags) {
+        String tagSql = tags.stream().map(tag -> "find_in_set(?, tags) > 0").collect(Collectors.joining(SqlFederationAway.OR.getValue()));
+        DynamicWrapper dynamicWrapper = DynamicWrapper.modify("update device set profile_id = ?")
+                .parameters(params -> params.add(profileId))
+                .appendCondition(!ObjectUtils.isEmpty(tagSql), "( " + tagSql + " )", tags)
+                .appendCondition(!ObjectUtils.isEmpty(productId), SqlFederationAway.AND, DEVICE.PRODUCT_ID.eq(productId))
+                .build();
+        this.dynamicModify(dynamicWrapper.dynamic(), dynamicWrapper.parameters());
+    }
+
+    @Override
+    public void updateDeviceProfileIdWithDeviceType(String productId, String profileId, DeviceType deviceType) {
+        List<Condition> conditions = new ArrayList<>();
+        conditions.add(DEVICE.DEVICE_TYPE.eq(deviceType));
+        if (!ObjectUtils.isEmpty(productId)) {
+            conditions.add(DEVICE.PRODUCT_ID.eq(productId));
+        }
+        this.update(List.of(DEVICE.PROFILE_ID.set(profileId)), conditions.toArray(Condition[]::new));
     }
 }

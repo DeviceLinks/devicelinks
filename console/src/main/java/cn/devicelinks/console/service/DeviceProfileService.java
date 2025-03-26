@@ -3,6 +3,7 @@ package cn.devicelinks.console.service;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
+import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -46,4 +47,12 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
      * @return 已删除的设备配置文件 {@link DeviceProfile}
      */
     DeviceProfile deleteDeviceProfile(String profileId);
+
+    /**
+     * 将设备配置文件匹配设置给设备
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   匹配设置请求实体参数
+     */
+    void batchSet(String profileId, BatchSetDeviceProfileRequest request);
 }

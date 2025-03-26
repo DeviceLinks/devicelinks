@@ -10,7 +10,10 @@ import cn.devicelinks.console.web.converter.DeviceProfileConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
+import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
 import cn.devicelinks.framework.common.Constants;
+import cn.devicelinks.framework.common.DeviceProfileBatchSetAway;
+import cn.devicelinks.framework.common.DeviceType;
 import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
@@ -110,6 +113,40 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
             this.productRepository.clearDeviceProfileId(profileId);
         }
         return deviceProfile;
+    }
+
+    @Override
+    public void batchSet(String profileId, BatchSetDeviceProfileRequest request) {
+        DeviceProfile deviceProfile = this.selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+        DeviceProfileBatchSetAway batchSetAway = DeviceProfileBatchSetAway.valueOf(request.getBatchSetAway());
+        switch (batchSetAway) {
+            // Batch settings based on device ids
+            case SpecifyDevice -> {
+                if (ObjectUtils.isEmpty(request.getDeviceIds())) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID, request.getBatchSetAway());
+                }
+                // If the deviceProfile belongs to a product, the deviceIds parameter contains only the device ID of the product.
+                this.deviceRepository.updateDeviceProfileIdWithDeviceIds(deviceProfile.getId(), request.getDeviceIds());
+            }
+            // Batch settings based on device tags
+            case DeviceTag -> {
+                if (ObjectUtils.isEmpty(request.getDeviceTags())) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID, request.getBatchSetAway());
+                }
+                this.deviceRepository.updateDeviceProfileIdWithTags(deviceProfile.getProductId(), deviceProfile.getId(), request.getDeviceTags());
+            }
+            // Batch settings based on device type
+            case DeviceType -> {
+                if (ObjectUtils.isEmpty(request.getDeviceType())) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID, request.getBatchSetAway());
+                }
+                this.deviceRepository.updateDeviceProfileIdWithDeviceType(deviceProfile.getProductId(),
+                        deviceProfile.getId(), DeviceType.valueOf(request.getDeviceType()));
+            }
+        }
     }
 
     /**
