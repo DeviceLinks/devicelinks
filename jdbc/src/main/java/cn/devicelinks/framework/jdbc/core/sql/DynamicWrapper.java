@@ -210,17 +210,11 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
      */
     public static class ModifyBuilder {
         private String sql;
-        private final List<Column> columns = new ArrayList<>();
         private final List<Object> parameters = new ArrayList<>();
         private final List<DynamicWhereCondition> whereConditionList = new ArrayList<>();
 
         public ModifyBuilder(String sql) {
             this.sql = sql;
-        }
-
-        public ModifyBuilder columns(Consumer<List<Column>> columnConsumer) {
-            columnConsumer.accept(this.columns);
-            return this;
         }
 
         public ModifyBuilder parameters(Consumer<List<Object>> parametersConsumer) {
@@ -249,7 +243,7 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             // append where condition sql
             this.sql = appendWhereConditionSql(this.sql, this.parameters, this.whereConditionList);
 
-            return new DynamicWrapper(Dynamic.buildModify(this.sql, this.columns), this.parameters.toArray(Object[]::new));
+            return new DynamicWrapper(Dynamic.buildModify(this.sql), this.parameters.toArray(Object[]::new));
         }
     }
 

@@ -36,13 +36,13 @@ import java.util.List;
 public class Dynamic {
     private String sql;
     private boolean modifying;
-    private List<Column> columns;
+    private List<Column> resultColumns;
     private Class<?> rowMappingClass;
 
-    public Dynamic(String sql, boolean modifying, List<Column> columns, Class<?> rowMappingClass) {
+    public Dynamic(String sql, boolean modifying, List<Column> resultColumns, Class<?> rowMappingClass) {
         this.sql = sql;
         this.modifying = modifying;
-        this.columns = columns;
+        this.resultColumns = resultColumns;
         this.rowMappingClass = rowMappingClass;
     }
 
@@ -53,9 +53,8 @@ public class Dynamic {
         return new Dynamic(sql, false, resultColumns, rowMappingClass);
     }
 
-    public static Dynamic buildModify(String sql, List<Column> parameterColumns) {
+    public static Dynamic buildModify(String sql) {
         Assert.hasText(sql, "dynamic modify sql must not be empty");
-        Assert.notEmpty(parameterColumns, "parameterColumns cannot be empty");
-        return new Dynamic(sql, true, parameterColumns, null);
+        return new Dynamic(sql, true, null, null);
     }
 }

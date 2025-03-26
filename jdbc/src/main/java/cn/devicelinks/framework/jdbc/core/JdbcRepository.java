@@ -19,7 +19,9 @@ package cn.devicelinks.framework.jdbc.core;
 
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
-import cn.devicelinks.framework.common.utils.*;
+import cn.devicelinks.framework.common.utils.ObjectIdUtils;
+import cn.devicelinks.framework.common.utils.SnowflakeIdUtils;
+import cn.devicelinks.framework.common.utils.UUIDUtils;
 import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
@@ -43,8 +45,10 @@ import org.springframework.util.ObjectUtils;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.Types;
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * 数据存储库接口JDBC实现类
@@ -371,7 +375,7 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
         }
         // Query Current Page Results
         String pageQuerySql = this.formatSql(pageQuery.getCurrentPageQuerySql(dynamic.getSql()));
-        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getColumns(), (Class<R>) dynamic.getRowMappingClass());
+        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getResultColumns(), (Class<R>) dynamic.getRowMappingClass());
         List<R> resultList = this.jdbcRepositoryOperations.query(pageQuerySql, resultRowMapper, parameterValues);
         builder
                 .totalRows(totalRows)
@@ -384,35 +388,22 @@ public class JdbcRepository<T extends Serializable, PK> implements Repository<T,
     @Override
     public <R> List<R> dynamicSelect(Dynamic dynamic, Object... parameterValues) {
         Assert.notNull(dynamic, "Dynamic不可以为null.");
-        Assert.notEmpty(dynamic.getColumns(), "Dynamic请至少配置一个TableColumn.");
+        Assert.notEmpty(dynamic.getResultColumns(), "Dynamic请至少配置一个ResultColumn.");
         if (dynamic.isModifying()) {
             throw new DeviceLinksException("不允许执行Modifying自定义SQL的数据查询.");
         }
-        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getColumns(), (Class<R>) dynamic.getRowMappingClass());
+        ResultRowMapper<R> resultRowMapper = new ResultRowMapper<>(dynamic.getResultColumns(), (Class<R>) dynamic.getRowMappingClass());
         return this.jdbcRepositoryOperations.query(this.formatSql(dynamic.getSql()), resultRowMapper, parameterValues);
     }
 
     @Override
     public int dynamicModify(Dynamic dynamic, Object... parameterValues) {
         Assert.notNull(dynamic, "Dynamic不可以为null.");
-        Assert.notEmpty(dynamic.getColumns(), "Dynamic请至少配置一个TableColumn.");
         Assert.notEmpty(parameterValues, "请至少传递一个DynamicParameterValue.");
-        if (dynamic.getColumns().size() != parameterValues.length) {
-            throw new DeviceLinksException("参数值与定义的TableColumn数量不一致.");
-        }
         if (!dynamic.isModifying()) {
             throw new DeviceLinksException("不允许执行非Modifying类型的自定义SQL.");
         }
-        // @formatter:off
-        List<SqlParameterValue> sqlParameterValues =
-                IntStream.range(Constants.ZERO, dynamic.getColumns().size())
-                        .mapToObj(index -> {
-                            Column column = dynamic.getColumns().get(index);
-                            Object convertedValue = column.toColumnValue(parameterValues[index]);
-                            return new SqlParameterValue(column.getSqlType(), convertedValue);
-                        }).toList();
-        // @formatter:on
-        return this.jdbcRepositoryOperations.update(this.formatSql(dynamic.getSql()), sqlParameterValues);
+        return this.jdbcRepositoryOperations.update(this.formatSql(dynamic.getSql()), parameterValues);
     }
 
     /**
