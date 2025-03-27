@@ -41,6 +41,25 @@ export default ({
     >
       <ProFormText
         width="md"
+        name="id"
+        label="用户ID"
+        allowClear
+        disabled
+        fieldProps={{
+          suffix: (
+            <Paragraph
+              style={{
+                margin: 0,
+              }}
+              copyable={{
+                text: initialValues?.id,
+              }}
+            ></Paragraph>
+          ),
+        }}
+      />
+      <ProFormText
+        width="md"
         name="username"
         label="用户名"
         allowClear
@@ -67,6 +86,7 @@ export default ({
         label="激活方式"
         placeholder="请选择激活方式"
       />
+
       <ProFormText
         allowClear
         width="md"
@@ -83,6 +103,31 @@ export default ({
         rules={[{ required: true, message: '请选择部门' }]}
       />
       <ProFormSwitch name="switch" label="强制用户在首次登陆时修改密码" />
+      <ProFormText
+        allowClear
+        width="md"
+        disabled
+        name="lastLoginTime"
+        label="最后登录时间"
+        placeholder="尚未登录"
+      />
+      <ProFormText
+        allowClear
+        width="md"
+        disabled
+        name="lastChangePwdTime"
+        label="最后修改密码时间"
+        placeholder="暂未修改密码"
+      />
+      <ProFormText
+        allowClear
+        width="md"
+        disabled
+        name="createTime"
+        label="新增时间"
+        placeholder="新增时间"
+      />
+
       <ProFormTextArea
         colProps={{
           span: 24,
