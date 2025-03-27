@@ -1,6 +1,6 @@
 package cn.devicelinks.framework.common.web.validator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -19,7 +19,7 @@ public class JsonValidator implements ConstraintValidator<JsonValid, Object> {
         if (value instanceof String) {
             try {
                 String json = (String) value;
-                ObjectMapper objectMapper = new ObjectMapper();
+                DeviceLinksJsonMapper objectMapper = new DeviceLinksJsonMapper();
                 objectMapper.readTree(json);
             } catch (Exception e) {
                 return false;

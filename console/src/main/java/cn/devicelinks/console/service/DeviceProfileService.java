@@ -8,6 +8,8 @@ import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
+import java.util.Map;
+
 /**
  * 设备配置文件业务逻辑接口定义
  *
@@ -39,6 +41,15 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
      * @return 更新后的设备配置文件对象实例
      */
     DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile);
+
+    /**
+     * 更新扩展配置
+     *
+     * @param profileId 设备配置文件 {@link DeviceProfile#getId()}
+     * @param extension 扩展配置
+     * @return 更新后的扩展
+     */
+    Map<String, Object> updateDeviceProfileExtension(String profileId, Map<String, Object> extension);
 
     /**
      * 删除设备配置文件

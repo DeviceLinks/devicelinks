@@ -95,6 +95,16 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     }
 
     @Override
+    public Map<String, Object> updateDeviceProfileExtension(String profileId, Map<String, Object> extension) {
+        DeviceProfile deviceProfile = selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+        this.repository.update(List.of(DEVICE_PROFILE.EXTENSION.set(extension)), DEVICE_PROFILE.ID.eq(profileId));
+        return extension;
+    }
+
+    @Override
     public DeviceProfile deleteDeviceProfile(String profileId) {
         DeviceProfile deviceProfile = selectById(profileId);
         if (deviceProfile == null) {

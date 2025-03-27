@@ -181,6 +181,7 @@ public class ApiExceptionAdvice {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ApiResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        log.error(REQUEST_BODY_UNABLE_PARSE.getMessage(), exception);
         return ApiResponse.error(REQUEST_BODY_UNABLE_PARSE);
     }
 

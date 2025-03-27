@@ -7,6 +7,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
 import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceProfileExtensionRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceProfileRequest;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
@@ -20,6 +21,8 @@ import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 设备配置文件接口控制器
@@ -108,6 +111,27 @@ public class DeviceProfileController {
         DeviceProfileConverter.INSTANCE.fromUpdateDeviceProfileRequest(request, deviceProfile);
         deviceProfile = this.deviceProfileService.updateDeviceProfile(deviceProfile);
         return ApiResponse.success(deviceProfile);
+    }
+
+    /**
+     * 更新扩展配置
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   更新设备配置文件扩展配置请求实体 {@link UpdateDeviceProfileExtensionRequest}
+     * @return 更新后的扩展配置
+     * @throws ApiException 更新过程中遇到的业务逻辑异常
+     */
+    @PutMapping(value = "/{profileId}/extension")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '设备配置文件扩展配置更新成功' : '设备配置文件扩展配置更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDeviceProfileExtension(@PathVariable("profileId") String profileId,
+                                                    @Valid @RequestBody UpdateDeviceProfileExtensionRequest request) throws ApiException {
+        Map<String,Object> extensionJson = this.deviceProfileService.updateDeviceProfileExtension(profileId, request.getExtension());
+        return ApiResponse.success(extensionJson);
     }
 
     /**

@@ -29,8 +29,7 @@ public interface DeviceProfileConverter {
      * @return {@link DeviceProfile}
      */
     @Mappings({
-            @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))"),
-            @Mapping(target = "extension", expression = "java(!org.springframework.util.ObjectUtils.isEmpty(request.getExtension()) ? cn.devicelinks.framework.common.utils.JacksonUtils.jsonToMap(request.getExtension(), String.class, Object.class) : null)")
+            @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))")
     })
     DeviceProfile fromAddDeviceProfileRequest(AddDeviceProfileRequest request);
 
@@ -41,8 +40,7 @@ public interface DeviceProfileConverter {
      * @param deviceProfile {@link DeviceProfile}
      */
     @Mappings({
-            @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))"),
-            @Mapping(target = "extension", expression = "java(!org.springframework.util.ObjectUtils.isEmpty(request.getExtension()) ? cn.devicelinks.framework.common.utils.JacksonUtils.jsonToMap(request.getExtension(), String.class, Object.class) : null)")
+            @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))")
     })
     void fromUpdateDeviceProfileRequest(UpdateDeviceProfileRequest request, @MappingTarget DeviceProfile deviceProfile);
 }
