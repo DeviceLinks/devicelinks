@@ -30,7 +30,7 @@ import java.util.List;
  * @since 1.0
  */
 @RestController
-@RequestMapping(value = "/api/function/module")
+@RequestMapping(value = "/api/function-module")
 @AllArgsConstructor
 public class FunctionModuleController {
 
