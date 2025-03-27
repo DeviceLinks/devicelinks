@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 1.0
  */
 @RestController
-@RequestMapping(value = "/api/device/profile")
+@RequestMapping(value = "/api/device-profile")
 @AllArgsConstructor
 public class DeviceProfileController {
 
@@ -137,7 +137,7 @@ public class DeviceProfileController {
      * @return 统一响应实体
      * @throws ApiException 批量设置过程中遇到的异常
      */
-    @PostMapping(value = "/{profileId}/batch/set")
+    @PostMapping(value = "/{profileId}/batch-set")
     @OperationLog(action = LogAction.Bind,
             objectType = LogObjectType.DeviceProfile,
             objectId = "{#p0}",

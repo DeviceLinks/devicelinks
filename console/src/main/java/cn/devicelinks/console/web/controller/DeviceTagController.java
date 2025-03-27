@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 1.0
  */
 @RestController
-@RequestMapping(value = "/api/device/tag")
+@RequestMapping(value = "/api/device-tag")
 @AllArgsConstructor
 public class DeviceTagController {
 
