@@ -113,6 +113,27 @@ public class DeviceProfileController {
     }
 
     /**
+     * 更新基础信息
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   更新设备配置文件基本信息 {@link UpdateDeviceProfileBasicInfoRequest}
+     * @return 更新后的基本信息
+     * @throws ApiException 更新过程中遇到的业务逻辑异常
+     */
+    @PutMapping(value = "/{profileId}/basic-info")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '设备配置文件基础信息更新成功' : '设备配置文件基础信息更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDeviceProfileBasicInfo(@PathVariable("profileId") String profileId,
+                                                    @Valid @RequestBody UpdateDeviceProfileBasicInfoRequest request) throws ApiException {
+        DeviceProfile deviceProfile = this.deviceProfileService.updateDeviceProfileBasicInfo(profileId, request);
+        return ApiResponse.success(deviceProfile);
+    }
+
+    /**
      * 更新扩展配置
      *
      * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}

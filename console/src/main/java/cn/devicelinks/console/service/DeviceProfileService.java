@@ -4,6 +4,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
 import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
@@ -44,6 +45,14 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
      * @return 更新后的设备配置文件对象实例
      */
     DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile);
+
+    /**
+     * 更新基础信息
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   更新设备配置文件基本信息请求实体 {@link UpdateDeviceProfileBasicInfoRequest}
+     */
+    DeviceProfile updateDeviceProfileBasicInfo(String profileId, UpdateDeviceProfileBasicInfoRequest request);
 
     /**
      * 更新扩展配置

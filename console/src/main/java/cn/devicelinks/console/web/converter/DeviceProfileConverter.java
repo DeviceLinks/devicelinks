@@ -1,6 +1,7 @@
 package cn.devicelinks.console.web.converter;
 
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceProfileRequest;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import org.mapstruct.Mapper;
@@ -43,4 +44,12 @@ public interface DeviceProfileConverter {
             @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))")
     })
     void fromUpdateDeviceProfileRequest(UpdateDeviceProfileRequest request, @MappingTarget DeviceProfile deviceProfile);
+
+    /**
+     * Update {@link DeviceProfile} from {@link UpdateDeviceProfileBasicInfoRequest}
+     *
+     * @param request       {@link UpdateDeviceProfileBasicInfoRequest}
+     * @param deviceProfile {@link DeviceProfile}
+     */
+    void updateBasicInfo(UpdateDeviceProfileBasicInfoRequest request, @MappingTarget DeviceProfile deviceProfile);
 }

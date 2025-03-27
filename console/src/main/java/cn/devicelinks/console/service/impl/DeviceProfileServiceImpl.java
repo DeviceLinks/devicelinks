@@ -11,6 +11,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
 import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
+import cn.devicelinks.console.web.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DeviceProfileBatchSetAway;
 import cn.devicelinks.framework.common.DeviceType;
@@ -91,6 +92,22 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
             deviceProfile.setProvisionRegistrationAddition(null);
         }
         this.repository.update(deviceProfile);
+        return deviceProfile;
+    }
+
+    @Override
+    public DeviceProfile updateDeviceProfileBasicInfo(String profileId, UpdateDeviceProfileBasicInfoRequest request) {
+        DeviceProfile deviceProfile = this.selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+        DeviceProfileConverter.INSTANCE.updateBasicInfo(request, deviceProfile);
+
+        // check basic info
+        this.checkBasicInfo(deviceProfile, true);
+
+        this.repository.update(deviceProfile);
+
         return deviceProfile;
     }
 
