@@ -105,6 +105,16 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     }
 
     @Override
+    public DeviceProfileLogAddition updateDeviceProfileLogAddition(String profileId, DeviceProfileLogAddition logAddition) {
+        DeviceProfile deviceProfile = selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+        this.repository.update(List.of(DEVICE_PROFILE.LOG_ADDITION.set(logAddition)), DEVICE_PROFILE.ID.eq(profileId));
+        return logAddition;
+    }
+
+    @Override
     public DeviceProfile deleteDeviceProfile(String profileId) {
         DeviceProfile deviceProfile = selectById(profileId);
         if (deviceProfile == null) {

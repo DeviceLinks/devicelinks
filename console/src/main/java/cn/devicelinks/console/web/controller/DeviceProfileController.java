@@ -5,10 +5,7 @@ import cn.devicelinks.console.web.StatusCodeConstants;
 import cn.devicelinks.console.web.converter.DeviceProfileConverter;
 import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
-import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
-import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
-import cn.devicelinks.console.web.request.UpdateDeviceProfileExtensionRequest;
-import cn.devicelinks.console.web.request.UpdateDeviceProfileRequest;
+import cn.devicelinks.console.web.request.*;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -16,6 +13,7 @@ import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
+import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
@@ -130,8 +128,29 @@ public class DeviceProfileController {
             activateData = "{#p1}")
     public ApiResponse updateDeviceProfileExtension(@PathVariable("profileId") String profileId,
                                                     @Valid @RequestBody UpdateDeviceProfileExtensionRequest request) throws ApiException {
-        Map<String,Object> extensionJson = this.deviceProfileService.updateDeviceProfileExtension(profileId, request.getExtension());
+        Map<String, Object> extensionJson = this.deviceProfileService.updateDeviceProfileExtension(profileId, request.getExtension());
         return ApiResponse.success(extensionJson);
+    }
+
+    /**
+     * 更新日志附加配置
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   更新日志附加信息请求实体 {@link UpdateDeviceProfileLogAdditionRequest}
+     * @return 更新后的日志附加信息
+     * @throws ApiException 更新过程中遇到的业务逻辑异常
+     */
+    @PutMapping(value = "/{profileId}/log-addition")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '设备配置文件日志附加配置更新成功' : '设备配置文件日志附加配置更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDeviceProfileLogAddition(@PathVariable("profileId") String profileId,
+                                                      @Valid @RequestBody UpdateDeviceProfileLogAdditionRequest request) throws ApiException {
+        DeviceProfileLogAddition logAddition = this.deviceProfileService.updateDeviceProfileLogAddition(profileId, request.getLogAddition());
+        return ApiResponse.success(logAddition);
     }
 
     /**
