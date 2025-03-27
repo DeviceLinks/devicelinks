@@ -4,8 +4,10 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddDeviceProfileRequest;
 import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
+import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
+import cn.devicelinks.framework.common.pojos.DeviceProfileProvisionRegistrationAddition;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
@@ -60,6 +62,15 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
      * @return 更新后的日志附加配置
      */
     DeviceProfileLogAddition updateDeviceProfileLogAddition(String profileId, DeviceProfileLogAddition logAddition);
+
+    /**
+     * 更新设备预注册附加配置
+     *
+     * @param profileId 设备配置文件 {@link DeviceProfile#getId()}
+     * @param strategy  预注册策略
+     * @param addition  预注册附加配置
+     */
+    void updateDeviceProfileProvisionRegistrationAddition(String profileId, ProvisionRegistrationStrategy strategy, DeviceProfileProvisionRegistrationAddition addition);
 
     /**
      * 删除设备配置文件

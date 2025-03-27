@@ -9,6 +9,7 @@ import cn.devicelinks.console.web.request.*;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
+import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
@@ -151,6 +152,28 @@ public class DeviceProfileController {
                                                       @Valid @RequestBody UpdateDeviceProfileLogAdditionRequest request) throws ApiException {
         DeviceProfileLogAddition logAddition = this.deviceProfileService.updateDeviceProfileLogAddition(profileId, request.getLogAddition());
         return ApiResponse.success(logAddition);
+    }
+
+    /**
+     * 更新预注册附加配置
+     *
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
+     * @param request   更新预注册附加信息请求实体 {@link UpdateDeviceProfileProvisionRegistrationAdditionRequest}
+     * @return 更新后的设备预注册附加信息
+     * @throws ApiException 更新过程中遇到的业务逻辑异常
+     */
+    @PutMapping(value = "/{profileId}/provision-registration-addition")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '设备配置文件预注册附加配置更新成功' : '设备配置文件预注册附加配置更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse updateDeviceProfileProvisionRegistrationAddition(@PathVariable("profileId") String profileId,
+                                                                        @Valid @RequestBody UpdateDeviceProfileProvisionRegistrationAdditionRequest request) throws ApiException {
+        ProvisionRegistrationStrategy strategy = ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy());
+        this.deviceProfileService.updateDeviceProfileProvisionRegistrationAddition(profileId, strategy, request.getProvisionRegistrationAddition());
+        return ApiResponse.success(request);
     }
 
     /**

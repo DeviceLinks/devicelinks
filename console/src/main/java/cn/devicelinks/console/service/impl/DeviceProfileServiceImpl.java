@@ -110,8 +110,32 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         if (deviceProfile == null || deviceProfile.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
         }
+
+        // check addition data
+        deviceProfile.setLogAddition(logAddition);
+        this.checkLogAdditionData(deviceProfile);
+
         this.repository.update(List.of(DEVICE_PROFILE.LOG_ADDITION.set(logAddition)), DEVICE_PROFILE.ID.eq(profileId));
         return logAddition;
+    }
+
+    @Override
+    public void updateDeviceProfileProvisionRegistrationAddition(String profileId, ProvisionRegistrationStrategy strategy, DeviceProfileProvisionRegistrationAddition addition) {
+        DeviceProfile deviceProfile = selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+
+        // check addition data
+        deviceProfile.setProvisionRegistrationStrategy(strategy)
+                .setProvisionRegistrationAddition(addition);
+        this.checkProvisionRegistrationAdditionData(deviceProfile);
+
+        this.repository.update(List.of(
+                        DEVICE_PROFILE.PROVISION_REGISTRATION_STRATEGY.set(strategy),
+                        DEVICE_PROFILE.PROVISION_REGISTRATION_ADDITION.set(addition)
+                ),
+                DEVICE_PROFILE.ID.eq(profileId));
     }
 
     @Override
@@ -176,6 +200,15 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
      * @param doUpdate      是否为更新操作
      */
     private void checkData(DeviceProfile deviceProfile, boolean doUpdate) {
+        // Check Basic info
+        this.checkBasicInfo(deviceProfile, doUpdate);
+        // Check Provision Registration
+        this.checkProvisionRegistrationAdditionData(deviceProfile);
+        // Check Log Level
+        this.checkLogAdditionData(deviceProfile);
+    }
+
+    private void checkBasicInfo(DeviceProfile deviceProfile, boolean doUpdate) {
         // Check Firmware Exists
         if (!ObjectUtils.isEmpty(deviceProfile.getFirmwareId())) {
             Ota ota = otaService.selectByFirmwareId(deviceProfile.getFirmwareId());
@@ -190,7 +223,37 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
                 throw new ApiException(StatusCodeConstants.OTA_SOFTWARE_NOT_EXISTS, deviceProfile.getSoftwareId());
             }
         }
-        // Check Provision Registration
+        // Check uniqueness
+        List<ConditionGroup> conditionGroups = new ArrayList<>();
+
+        // update
+        if (doUpdate) {
+            conditionGroups.add(
+                    ConditionGroup.withCondition(
+                            DEVICE_PROFILE.NAME.eq(deviceProfile.getName()),
+                            DEVICE_PROFILE.DELETED.eq(Boolean.FALSE)
+                    )
+            );
+            conditionGroups.add(ConditionGroup.withCondition(DEVICE.ID.neq(deviceProfile.getId())));
+        }
+        // insert
+        else {
+            conditionGroups.add(
+                    ConditionGroup.withCondition(
+                            DEVICE_PROFILE.NAME.eq(deviceProfile.getName()),
+                            DEVICE_PROFILE.DELETED.eq(Boolean.FALSE)
+                    )
+            );
+        }
+        // @formatter:off
+        DeviceProfile storedDeviceProfile = this.repository.selectOne(conditionGroups.toArray(ConditionGroup[]::new));
+        // @formatter:on
+        if (storedDeviceProfile != null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_ALREADY_EXISTS, deviceProfile.getName());
+        }
+    }
+
+    private void checkProvisionRegistrationAdditionData(DeviceProfile deviceProfile) {
         if (deviceProfile.getProvisionRegistrationStrategy() != null &&
                 ProvisionRegistrationStrategy.Disabled != deviceProfile.getProvisionRegistrationStrategy() &&
                 !ObjectUtils.isEmpty(deviceProfile.getProvisionRegistrationAddition())) {
@@ -209,7 +272,9 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
                 }
             }
         }
-        // Check Log Level
+    }
+
+    private void checkLogAdditionData(DeviceProfile deviceProfile) {
         if (!ObjectUtils.isEmpty(deviceProfile.getLogAddition()) && !ObjectUtils.isEmpty(deviceProfile.getLogAddition().getLogLevels())) {
 
             Map<String, DeviceProfileLogAddition.FunctionModuleLogLevel> functionModuleLogLevelMap = deviceProfile.getLogAddition().getLogLevels();
@@ -236,34 +301,6 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
                     throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_LOG_LEVELS_INVALID);
                 }
             }
-        }
-
-        // Check uniqueness
-        List<ConditionGroup> conditionGroups = new ArrayList<>();
-        // update
-        if (doUpdate) {
-            conditionGroups.add(
-                    ConditionGroup.withCondition(
-                            DEVICE_PROFILE.NAME.eq(deviceProfile.getName()),
-                            DEVICE_PROFILE.DELETED.eq(Boolean.FALSE)
-                    )
-            );
-            conditionGroups.add(ConditionGroup.withCondition(DEVICE.ID.neq(deviceProfile.getId())));
-        }
-        // insert
-        else {
-            conditionGroups.add(
-                    ConditionGroup.withCondition(
-                            DEVICE_PROFILE.NAME.eq(deviceProfile.getName()),
-                            DEVICE_PROFILE.DELETED.eq(Boolean.FALSE)
-                    )
-            );
-        }
-        // @formatter:off
-        DeviceProfile storedDeviceProfile = this.repository.selectOne(conditionGroups.toArray(ConditionGroup[]::new));
-        // @formatter:on
-        if (storedDeviceProfile != null) {
-            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_ALREADY_EXISTS, deviceProfile.getName());
         }
     }
 }
