@@ -1,7 +1,7 @@
 import UserInfo from '@/pages/system/user/profile/modules/UserInfo';
 import { getApiUserUserId, postApiUserUserId } from '@/services/device-links-console-ui/user';
 import { useSearchParams } from '@@/exports';
-import { PageContainer } from '@ant-design/pro-components';
+import { PageContainer, ProSkeleton } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { message, Tabs } from 'antd';
 import React from 'react';
@@ -49,6 +49,9 @@ const UserProfile = () => {
       children: 'Tab 2',
     },
   ];
+  if (loading) {
+    return <ProSkeleton type="descriptions" pageHeader={false} />;
+  }
   return (
     <PageContainer
       loading={loading}

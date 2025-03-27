@@ -40,7 +40,6 @@ export default ({
       }}
     >
       <ProFormText
-        width="md"
         name="id"
         label="用户ID"
         allowClear
@@ -59,7 +58,6 @@ export default ({
         }}
       />
       <ProFormText
-        width="md"
         name="username"
         label="用户名"
         allowClear
@@ -68,35 +66,20 @@ export default ({
         rules={[{ required: true, message: '请输入用户名' }]}
       />
 
-      <ProFormText
-        width="md"
-        allowClear
-        name="account"
-        label="账号"
-        placeholder="请输入账号"
-        disabled
-      />
-      <ProFormText width="md" allowClear disabled name="id" label="用户ID" placeholder="" />
-      <ProFormText width="md" allowClear name="phone" label="手机号" placeholder="请输入手机号" />
+      <ProFormText allowClear name="account" label="账号" placeholder="请输入账号" disabled />
+      <ProFormText allowClear disabled name="id" label="用户ID" placeholder="" />
+      <ProFormText allowClear name="phone" label="手机号" placeholder="请输入手机号" />
       <ProFormSelect
         options={UserActivateMethod}
-        width="md"
         allowClear
         name="activateMethod"
         label="激活方式"
         placeholder="请选择激活方式"
       />
 
+      <ProFormText allowClear name="email" label="邮箱地址" placeholder="请输入邮箱地址" />
       <ProFormText
         allowClear
-        width="md"
-        name="email"
-        label="邮箱地址"
-        placeholder="请输入邮箱地址"
-      />
-      <ProFormText
-        allowClear
-        width="md"
         name="departmentId"
         label="所属部门"
         placeholder="请选择所属部门"
@@ -105,7 +88,6 @@ export default ({
       <ProFormSwitch name="switch" label="强制用户在首次登陆时修改密码" />
       <ProFormText
         allowClear
-        width="md"
         disabled
         name="lastLoginTime"
         label="最后登录时间"
@@ -113,20 +95,12 @@ export default ({
       />
       <ProFormText
         allowClear
-        width="md"
         disabled
         name="lastChangePwdTime"
         label="最后修改密码时间"
         placeholder="暂未修改密码"
       />
-      <ProFormText
-        allowClear
-        width="md"
-        disabled
-        name="createTime"
-        label="新增时间"
-        placeholder="新增时间"
-      />
+      <ProFormText allowClear disabled name="createTime" label="新增时间" placeholder="新增时间" />
 
       <ProFormTextArea
         colProps={{
