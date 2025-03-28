@@ -29,8 +29,6 @@ import lombok.Getter;
 @Getter
 @ApiEnum
 public enum DeviceAuthenticationMethod {
-    ProductCredential("一型一密"),
-    DeviceCredential("一机一密"),
     AccessToken("AccessToken"),
     MqttBasic("MQTT Basic"),
     X509("X.509");

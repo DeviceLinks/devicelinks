@@ -47,9 +47,10 @@ public class TDevice extends TableImpl {
     public final Column DEPARTMENT_ID = Column.withName("department_id").build();
     public final Column PRODUCT_ID = Column.withName("product_id").build();
     public final Column PROFILE_ID = Column.withName("profile_id").build();
-    public final Column DEVICE_CODE = Column.withName("device_code").build();
     public final Column DEVICE_TYPE = Column.withName("device_type").typeMapper(ColumnValueMappers.DEVICE_TYPE).build();
-    public final Column NAME = Column.withName("name").build();
+    public final Column DEVICE_KEY = Column.withName("device_key").build();
+    public final Column DEVICE_SECRET = Column.withName("device_secret").build();
+    public final Column NOTE_NAME = Column.withName("note_name").build();
     public final Column STATUS = Column.withName("status").defaultValue(() -> DeviceStatus.NotActivate).typeMapper(ColumnValueMappers.DEVICE_STATUS).build();
     public final Column TAGS = Column.withName("tags").typeMapper(ColumnValueMappers.STRING_JOINER).build();
     public final Column IP_ADDRESS = Column.withName("ip_address").build();
@@ -65,6 +66,6 @@ public class TDevice extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEPARTMENT_ID, PRODUCT_ID, PROFILE_ID, DEVICE_CODE, DEVICE_TYPE, NAME, STATUS, IP_ADDRESS, TAGS, ACTIVATION_TIME, LAST_ONLINE_TIME, LAST_REPORT_TIME, ENABLED, DELETED, ADDITION, CREATE_BY, CREATE_TIME, MARK);
+        return List.of(ID, DEPARTMENT_ID, PRODUCT_ID, PROFILE_ID, DEVICE_TYPE, DEVICE_KEY, DEVICE_SECRET, NOTE_NAME, STATUS, IP_ADDRESS, TAGS, ACTIVATION_TIME, LAST_ONLINE_TIME, LAST_REPORT_TIME, ENABLED, DELETED, ADDITION, CREATE_BY, CREATE_TIME, MARK);
     }
 }

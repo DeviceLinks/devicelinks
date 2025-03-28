@@ -111,7 +111,7 @@ public class DeviceController {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
         }
         // @formatter:off
-        device.setName(request.getName())
+        device.setNoteName(request.getNoteName())
                 .setTags(request.getTags())
                 .setMark(request.getMark());
         // @formatter:on

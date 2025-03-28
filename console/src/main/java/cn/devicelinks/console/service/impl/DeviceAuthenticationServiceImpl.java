@@ -108,17 +108,6 @@ public class DeviceAuthenticationServiceImpl extends BaseServiceImpl<DeviceAuthe
                     throw new ApiException(StatusCodeConstants.DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS, mqttBasic.getClientId());
                 }
                 break;
-            case DeviceCredential:
-                DeviceAuthenticationAddition.DeviceCredential deviceCredential = authenticationAddition.getDeviceCredential();
-                if (deviceCredential == null || ObjectUtils.isEmpty(deviceCredential.getDeviceKey()) || ObjectUtils.isEmpty(deviceCredential.getDeviceSecret())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_CREDENTIAL, deviceCredential);
-                }
-                DeviceAuthentication deviceCredentialAuthentication = this.selectByDeviceKey(deviceCredential.getDeviceKey());
-                if ((isUpdate && deviceCredentialAuthentication != null && !deviceCredentialAuthentication.getDeviceId().equals(deviceId)) ||
-                        (!isUpdate && deviceCredentialAuthentication != null)) {
-                    throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS, deviceCredential);
-                }
-                break;
             case X509:
                 if (ObjectUtils.isEmpty(authenticationAddition.getX509Pem()) || !X509Utils.isValidX509Pem(authenticationAddition.getX509Pem())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_X509_PEM, authenticationAddition.getX509Pem());
