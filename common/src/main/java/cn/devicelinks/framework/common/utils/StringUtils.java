@@ -30,7 +30,7 @@ import java.util.StringJoiner;
  * @since 1.0
  */
 public class StringUtils {
-    private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+    private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     /**
      * 将字符串转换为驼峰格式首字母大写
