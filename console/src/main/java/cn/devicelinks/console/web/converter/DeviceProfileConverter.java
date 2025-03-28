@@ -5,9 +5,7 @@ import cn.devicelinks.console.web.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceProfileRequest;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -29,9 +27,6 @@ public interface DeviceProfileConverter {
      * @param request {@link AddDeviceProfileRequest}
      * @return {@link DeviceProfile}
      */
-    @Mappings({
-            @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))")
-    })
     DeviceProfile fromAddDeviceProfileRequest(AddDeviceProfileRequest request);
 
     /**
@@ -40,9 +35,6 @@ public interface DeviceProfileConverter {
      * @param request       {@link UpdateDeviceProfileRequest}
      * @param deviceProfile {@link DeviceProfile}
      */
-    @Mappings({
-            @Mapping(target = "provisionRegistrationStrategy", expression = "java(cn.devicelinks.framework.common.ProvisionRegistrationStrategy.valueOf(request.getProvisionRegistrationStrategy()))")
-    })
     void fromUpdateDeviceProfileRequest(UpdateDeviceProfileRequest request, @MappingTarget DeviceProfile deviceProfile);
 
     /**

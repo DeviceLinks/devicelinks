@@ -15,7 +15,6 @@ import cn.devicelinks.console.web.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DeviceProfileBatchSetAway;
 import cn.devicelinks.framework.common.DeviceType;
-import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
@@ -87,10 +86,6 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     @Override
     public DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile) {
         this.checkData(deviceProfile, true);
-        // From enabled to disabled, clear the pre-registration configuration
-        if (ProvisionRegistrationStrategy.Disabled == deviceProfile.getProvisionRegistrationStrategy() && !ObjectUtils.isEmpty(deviceProfile.getProvisionRegistrationAddition())) {
-            deviceProfile.setProvisionRegistrationAddition(null);
-        }
         this.repository.update(deviceProfile);
         return deviceProfile;
     }
@@ -134,25 +129,6 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
 
         this.repository.update(List.of(DEVICE_PROFILE.LOG_ADDITION.set(logAddition)), DEVICE_PROFILE.ID.eq(profileId));
         return logAddition;
-    }
-
-    @Override
-    public void updateDeviceProfileProvisionRegistrationAddition(String profileId, ProvisionRegistrationStrategy strategy, DeviceProfileProvisionRegistrationAddition addition) {
-        DeviceProfile deviceProfile = selectById(profileId);
-        if (deviceProfile == null || deviceProfile.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
-        }
-
-        // check addition data
-        deviceProfile.setProvisionRegistrationStrategy(strategy)
-                .setProvisionRegistrationAddition(addition);
-        this.checkProvisionRegistrationAdditionData(deviceProfile);
-
-        this.repository.update(List.of(
-                        DEVICE_PROFILE.PROVISION_REGISTRATION_STRATEGY.set(strategy),
-                        DEVICE_PROFILE.PROVISION_REGISTRATION_ADDITION.set(addition)
-                ),
-                DEVICE_PROFILE.ID.eq(profileId));
     }
 
     @Override
@@ -219,8 +195,6 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     private void checkData(DeviceProfile deviceProfile, boolean doUpdate) {
         // Check Basic info
         this.checkBasicInfo(deviceProfile, doUpdate);
-        // Check Provision Registration
-        this.checkProvisionRegistrationAdditionData(deviceProfile);
         // Check Log Level
         this.checkLogAdditionData(deviceProfile);
     }
@@ -267,27 +241,6 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         // @formatter:on
         if (storedDeviceProfile != null) {
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_ALREADY_EXISTS, deviceProfile.getName());
-        }
-    }
-
-    private void checkProvisionRegistrationAdditionData(DeviceProfile deviceProfile) {
-        if (deviceProfile.getProvisionRegistrationStrategy() != null &&
-                ProvisionRegistrationStrategy.Disabled != deviceProfile.getProvisionRegistrationStrategy() &&
-                !ObjectUtils.isEmpty(deviceProfile.getProvisionRegistrationAddition())) {
-            DeviceProfileProvisionRegistrationAddition provisionRegistrationAddition = deviceProfile.getProvisionRegistrationAddition();
-            switch (deviceProfile.getProvisionRegistrationStrategy()) {
-                case AllowCreateDevice, CheckDevice -> {
-                    if (ObjectUtils.isEmpty(provisionRegistrationAddition.getDeviceKey()) || ObjectUtils.isEmpty(provisionRegistrationAddition.getDeviceSecret())) {
-                        throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION_INVALID);
-                    }
-                }
-                case X509 -> {
-                    if (ObjectUtils.isEmpty(provisionRegistrationAddition.getX509Pem()) ||
-                            (provisionRegistrationAddition.isAllowCreateDeviceByX509Certificate() && ObjectUtils.isEmpty(provisionRegistrationAddition.getCertificateRegExPattern()))) {
-                        throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION_INVALID);
-                    }
-                }
-            }
         }
     }
 

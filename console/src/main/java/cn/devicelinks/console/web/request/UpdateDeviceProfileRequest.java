@@ -1,9 +1,6 @@
 package cn.devicelinks.console.web.request;
 
-import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
-import cn.devicelinks.framework.common.pojos.DeviceProfileProvisionRegistrationAddition;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -30,12 +27,6 @@ public class UpdateDeviceProfileRequest {
     private String firmwareId;
 
     private String softwareId;
-
-    @EnumValid(target = ProvisionRegistrationStrategy.class, message = "预注册策略参数非法.")
-    @NotBlank
-    private String provisionRegistrationStrategy;
-
-    private DeviceProfileProvisionRegistrationAddition provisionRegistrationAddition;
 
     private DeviceProfileLogAddition logAddition;
 

@@ -1,6 +1,5 @@
 package cn.devicelinks.console.web.search.module;
 
-import cn.devicelinks.framework.common.ProvisionRegistrationStrategy;
 import cn.devicelinks.framework.common.web.*;
 import org.springframework.stereotype.Component;
 
@@ -55,17 +54,6 @@ public class DeviceProfileSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.NotLike
             ));
 
-    SearchField PROFILE_PROVISION_REGISTRATION_STRATEGY = SearchField.of(SearchFieldVariable.DEVICE_PROFILE_PROVISION_REGISTRATION_STRATEGY)
-            .setValueType(SearchFieldValueType.ENUM)
-            .setComponentType(SearchFieldComponentType.SELECT)
-            .setEnumClass(ProvisionRegistrationStrategy.class)
-            .setOperators(List.of(
-                    SearchFieldOperator.EqualTo,
-                    SearchFieldOperator.NotEqualTo,
-                    SearchFieldOperator.In,
-                    SearchFieldOperator.NotIn
-            ));
-
     @Override
     public SearchFieldModuleIdentifier supportIdentifier() {
         return SearchFieldModuleIdentifier.DeviceProfile;
@@ -73,6 +61,6 @@ public class DeviceProfileSearchFieldModule implements SearchFieldModule {
 
     @Override
     public List<SearchField> getSearchFields() {
-        return List.of(PROFILE_ID, PROFILE_NAME, PROFILE_FIRMWARE_ID, PROFILE_SOFTWARE_ID, PROFILE_PROVISION_REGISTRATION_STRATEGY);
+        return List.of(PROFILE_ID, PROFILE_NAME, PROFILE_FIRMWARE_ID, PROFILE_SOFTWARE_ID);
     }
 }
