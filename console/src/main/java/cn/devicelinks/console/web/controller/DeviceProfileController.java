@@ -14,6 +14,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
+import cn.devicelinks.framework.common.pojos.DeviceProfileProvisionAddition;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
@@ -172,6 +173,31 @@ public class DeviceProfileController {
                                                       @Valid @RequestBody UpdateDeviceProfileLogAdditionRequest request) throws ApiException {
         DeviceProfileLogAddition logAddition = this.deviceProfileService.updateDeviceProfileLogAddition(profileId, request.getLogAddition());
         return ApiResponse.success(logAddition);
+    }
+
+    /**
+     * 更新设备配置文件的预配置附加信息。
+     * <p>
+     * 该函数通过HTTP PUT请求接收设备配置文件的ID和更新请求体，调用服务层方法更新设备配置文件的预配置附加信息，
+     * 并返回更新后的预配置附加信息。
+     *
+     * @param profileId 设备配置文件的唯一标识符，通过URL路径变量传递。
+     * @param request   包含预配置附加信息更新请求的请求体，通过请求体传递。
+     * @return 返回一个包含更新后的预配置附加信息的ApiResponse对象。
+     * @throws ApiException 如果更新过程中发生错误，则抛出ApiException异常。
+     */
+    @PutMapping(value = "/{profileId}/provision-addition")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceProfile,
+            objectId = "{#p0}",
+            object = "{@deviceProfileServiceImpl.selectById(#p0)}",
+            msg = "{#executionSucceed? '设备配置文件预配置更新成功' : '设备配置文件预配置更新失败'}",
+            activateData = "{#p1}"
+    )
+    public ApiResponse updateDeviceProfileProvisionAddition(@PathVariable("profileId") String profileId,
+                                                            @Valid @RequestBody UpdateDeviceProfileProvisionAdditionRequest request) throws ApiException {
+        DeviceProfileProvisionAddition provisionAddition = this.deviceProfileService.updateDeviceProfileProvisionAddition(profileId, request.getProvisionAddition());
+        return ApiResponse.success(provisionAddition);
     }
 
     /**

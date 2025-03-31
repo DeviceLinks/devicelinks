@@ -40,10 +40,10 @@ public interface DeviceAuthenticationRepository extends Repository<DeviceAuthent
     /**
      * 通过AccessToken查询鉴权信息
      *
-     * @param accessToken 请求令牌
+     * @param staticToken 静态令牌
      * @return 鉴权信息 {@link DeviceAuthentication}
      */
-    DeviceAuthentication selectByAccessToken(String accessToken);
+    DeviceAuthentication selectByStaticToken(String staticToken);
 
     /**
      * 通过clientId查询鉴权信息
@@ -54,10 +54,10 @@ public interface DeviceAuthenticationRepository extends Repository<DeviceAuthent
     DeviceAuthentication selectByClientId(String clientId);
 
     /**
-     * 通过deviceKey查询鉴权信息
+     * 通过deviceSecret查询鉴权信息
      *
-     * @param deviceKey 设备Key {@link DeviceAuthenticationAddition.DeviceCredential#getDeviceKey()}
+     * @param deviceSecret 设备Secret {@link DeviceAuthenticationAddition.DynamicToken#getDeviceSecret()}
      * @return 鉴权信息 {@link DeviceAuthentication}
      */
-    DeviceAuthentication selectByDeviceKey(String deviceKey);
+    DeviceAuthentication selectByDeviceSecret(String deviceSecret);
 }

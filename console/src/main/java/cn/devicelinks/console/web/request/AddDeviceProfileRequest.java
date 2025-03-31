@@ -1,6 +1,7 @@
 package cn.devicelinks.console.web.request;
 
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
+import cn.devicelinks.framework.common.pojos.DeviceProfileProvisionAddition;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class AddDeviceProfileRequest {
     private String softwareId;
 
     private DeviceProfileLogAddition logAddition;
+
+    private DeviceProfileProvisionAddition provisionAddition;
 
     private Map<String, Object> extension;
 

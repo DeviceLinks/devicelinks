@@ -75,14 +75,13 @@ public interface StatusCodeConstants {
 
     StatusCode DEVICE_ALREADY_EXISTS = StatusCode.build("DEVICE_ALREADY_EXISTS", "设备：%s，已经存在，请检查产品下设备唯一码是否重复.");
     StatusCode DEVICE_NOT_EXISTS = StatusCode.build("DEVICE_NOT_EXISTS", "设备：%s，不存在.");
-    StatusCode INVALID_DEVICE_ACCESS_TOKEN = StatusCode.build("INVALID_DEVICE_ACCESS_TOKEN", "无效的设备请求令牌：%s.");
-    StatusCode DEVICE_ACCESS_TOKEN_ALREADY_EXISTS = StatusCode.build("DEVICE_ACCESS_TOKEN_ALREADY_EXISTS", "设备请求令牌已经存在.");
+    StatusCode INVALID_DEVICE_STATIC_TOKEN = StatusCode.build("INVALID_DEVICE_STATIC_TOKEN", "无效的设备请求令牌.");
+    StatusCode INVALID_DEVICE_DYNAMIC_TOKEN_SECRET = StatusCode.build("INVALID_DEVICE_DYNAMIC_TOKEN_SECRET", "无效的动态令牌DeviceSecret.");
+    StatusCode DEVICE_STATIC_TOKEN_ALREADY_EXISTS = StatusCode.build("DEVICE_STATIC_TOKEN_ALREADY_EXISTS", "设备请求令牌已经存在.");
     StatusCode DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE = StatusCode.build("DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE", "设备：%s，目前处于启用状态，不允许删除.");
     StatusCode INVALID_DEVICE_MQTT_BASIC_AUTH = StatusCode.build("INVALID_DEVICE_MQTT_BASIC_AUTH", "无效的MQTT Basic Auth.");
     StatusCode DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS = StatusCode.build("DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS", "MQTT客户端ID已经存在.");
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");
-    StatusCode INVALID_DEVICE_CREDENTIAL = StatusCode.build("INVALID_DEVICE_CREDENTIAL", "无效的一机一密凭证");
-    StatusCode DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS = StatusCode.build("DEVICE_CREDENTIAL_KEY_ALREADY_EXISTS", "设备Key已经存在.");
     StatusCode DEVICE_AUTHENTICATION_NOT_EXISTS = StatusCode.build("DEVICE_AUTHENTICATION_NOT_EXISTS", "设备：%s，认证信息不存在.");
 
     StatusCode DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID", "无效的期望属性值，请检查与数据类型是否匹配.");
@@ -103,7 +102,8 @@ public interface StatusCodeConstants {
 
     StatusCode DEVICE_PROFILE_NOT_EXISTS = StatusCode.build("DEVICE_PROFILE_NOT_EXISTS", "设备配置文件：%s，不存在.");
     StatusCode DEVICE_PROFILE_ALREADY_EXISTS = StatusCode.build("DEVICE_PROFILE_ALREADY_EXISTS", "设备配置文件：%s，已经存在.");
-    StatusCode DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION_INVALID = StatusCode.build("DEVICE_PROFILE_PROVISION_REGISTRATION_ADDITION_INVALID", "设备配置文件预注册附加信息验证失败，请根据预注册策略传递参数.");
+    StatusCode DEVICE_PROFILE_PROVISION_ADDITION_INVALID = StatusCode.build("DEVICE_PROFILE_PROVISION_ADDITION_INVALID", "设备配置文件预配置附加参数验证失败.");
+    StatusCode DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR = StatusCode.build("DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR","设备配置文件预配置动态令牌有效时长验证失败，有效时长范围：%d（包含） ~ %d（包含）.");
     StatusCode DEVICE_PROFILE_LOG_LEVELS_INVALID = StatusCode.build("DEVICE_PROFILE_LOG_LEVELS_INVALID", "设备配置日志等级附加信息验证失败，如果选择了产品请检查功能模块是否所属该产品，如果并未选择产品仅允许传递[default]功能模块的日志配置.");
     StatusCode DEVICE_PROFILE_DEFAULT_CANNOT_DELETE = StatusCode.build("DEVICE_PROFILE_DEFAULT_CANNOT_DELETE", "默认的设备配置文件不允许删除.");
     StatusCode DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID = StatusCode.build("DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID", "将设备配置文件批量设置给设备时，设置方式与参数验证失败，设置方式：%s.");

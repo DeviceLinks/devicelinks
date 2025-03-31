@@ -14,8 +14,8 @@ import java.util.List;
  */
 @Data
 public class UpdateDeviceRequest {
-    @Length(max = 30, message = "设备名称不可以超过30个字符")
-    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "设备名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")
+    @Length(max = 30, message = "设备备注名称不可以超过30个字符")
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "设备备注名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")
     private String noteName;
 
     private List<String> tags;

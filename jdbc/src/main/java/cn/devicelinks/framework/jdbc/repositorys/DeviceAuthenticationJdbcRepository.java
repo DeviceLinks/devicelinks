@@ -46,14 +46,14 @@ public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceAut
     }
 
     @Override
-    public DeviceAuthentication selectByAccessToken(String accessToken) {
-        if (ObjectUtils.isEmpty(accessToken)) {
+    public DeviceAuthentication selectByStaticToken(String staticToken) {
+        if (ObjectUtils.isEmpty(staticToken)) {
             throw new IllegalArgumentException("accessToken can't be null");
         }
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
                 .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
-                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.accessToken') = ?", accessToken)
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.staticToken') = ?", staticToken)
                 .resultType(DeviceAuthentication.class)
                 .build();
         // @formatter:on
@@ -78,14 +78,14 @@ public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceAut
     }
 
     @Override
-    public DeviceAuthentication selectByDeviceKey(String deviceKey) {
-        if (ObjectUtils.isEmpty(deviceKey)) {
-            throw new IllegalArgumentException("deviceKey can't be null");
+    public DeviceAuthentication selectByDeviceSecret(String deviceSecret) {
+        if (ObjectUtils.isEmpty(deviceSecret)) {
+            throw new IllegalArgumentException("deviceSecret can't be null");
         }
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
                 .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
-                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.deviceCredential.deviceKey') = ?", deviceKey)
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.dynamicToken.deviceSecret') = ?", deviceSecret)
                 .resultType(DeviceAuthentication.class)
                 .build();
         // @formatter:on

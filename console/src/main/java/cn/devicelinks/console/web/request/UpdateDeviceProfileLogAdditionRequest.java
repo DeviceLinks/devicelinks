@@ -1,6 +1,7 @@
 package cn.devicelinks.console.web.request;
 
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -11,5 +12,6 @@ import lombok.Data;
  */
 @Data
 public class UpdateDeviceProfileLogAdditionRequest {
+    @NotNull
     DeviceProfileLogAddition logAddition;
 }

@@ -16,5 +16,5 @@ import lombok.experimental.Accessors;
 public class DeviceProfileProvisionAddition {
     private String provisionDeviceKey;
     private String provisionDeviceSecret;
-    private long validSeconds;
+    private long dynamicTokenValidSeconds;
 }

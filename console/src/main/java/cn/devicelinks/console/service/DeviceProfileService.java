@@ -7,6 +7,7 @@ import cn.devicelinks.console.web.request.BatchSetDeviceProfileRequest;
 import cn.devicelinks.console.web.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
+import cn.devicelinks.framework.common.pojos.DeviceProfileProvisionAddition;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 
@@ -55,7 +56,7 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
     /**
      * 更新扩展配置
      *
-     * @param profileId 设备配置文件 {@link DeviceProfile#getId()}
+     * @param profileId 设备配置文件ID {@link DeviceProfile#getId()}
      * @param extension 扩展配置
      * @return 更新后的扩展
      */
@@ -64,11 +65,20 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
     /**
      * 更新日志附加配置
      *
-     * @param profileId   设备配置文件 {@link DeviceProfile#getId()}
+     * @param profileId   设备配置文件ID {@link DeviceProfile#getId()}
      * @param logAddition 日志附加配置
      * @return 更新后的日志附加配置
      */
     DeviceProfileLogAddition updateDeviceProfileLogAddition(String profileId, DeviceProfileLogAddition logAddition);
+
+    /**
+     * 更新预配置附加信息
+     *
+     * @param profileId         设备配置文件ID {@link DeviceProfile#getId()}
+     * @param provisionAddition 预配置 {@link DeviceProfileProvisionAddition}
+     * @return 设备配置文件预配置
+     */
+    DeviceProfileProvisionAddition updateDeviceProfileProvisionAddition(String profileId, DeviceProfileProvisionAddition provisionAddition);
 
     /**
      * 删除设备配置文件

@@ -33,8 +33,8 @@ public class DeviceAuthenticationServiceImpl extends BaseServiceImpl<DeviceAuthe
     }
 
     @Override
-    public DeviceAuthentication selectByAccessToken(String accessToken) {
-        return this.repository.selectByAccessToken(accessToken);
+    public DeviceAuthentication selectByStaticToken(String staticToken) {
+        return this.repository.selectByStaticToken(staticToken);
     }
 
     @Override
@@ -43,16 +43,15 @@ public class DeviceAuthenticationServiceImpl extends BaseServiceImpl<DeviceAuthe
     }
 
     @Override
-    public DeviceAuthentication selectByDeviceKey(String deviceKey) {
-        return this.repository.selectByDeviceKey(deviceKey);
-    }
-
-    @Override
     public DeviceAuthentication addAuthentication(String deviceId,
                                                   DeviceAuthenticationMethod authenticationMethod,
                                                   DeviceAuthenticationAddition authenticationAddition) {
         // validate authentication
         this.validateAuthentication(deviceId, authenticationMethod, authenticationAddition, false);
+        // set generate time
+        if (DeviceAuthenticationMethod.DynamicToken == authenticationMethod) {
+            authenticationAddition.getDynamicToken().setSecretGenerateTime(LocalDateTime.now());
+        }
         // @formatter:off
         DeviceAuthentication authentication = new DeviceAuthentication()
                 .setDeviceId(deviceId)
@@ -75,6 +74,10 @@ public class DeviceAuthenticationServiceImpl extends BaseServiceImpl<DeviceAuthe
         if (deviceAuthentication == null || deviceAuthentication.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
         }
+        // set generate time
+        if (DeviceAuthenticationMethod.DynamicToken == authenticationMethod) {
+            authenticationAddition.getDynamicToken().setSecretGenerateTime(LocalDateTime.now());
+        }
         deviceAuthentication.setAuthenticationMethod(authenticationMethod).setAddition(authenticationAddition);
         this.repository.update(deviceAuthentication);
         return deviceAuthentication;
@@ -86,14 +89,19 @@ public class DeviceAuthenticationServiceImpl extends BaseServiceImpl<DeviceAuthe
                                         DeviceAuthenticationAddition authenticationAddition,
                                         boolean isUpdate) {
         switch (authenticationMethod) {
-            case AccessToken:
-                if (ObjectUtils.isEmpty(authenticationAddition.getAccessToken())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_ACCESS_TOKEN, authenticationAddition.getAccessToken());
+            case StaticToken:
+                if (ObjectUtils.isEmpty(authenticationAddition.getStaticToken())) {
+                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_STATIC_TOKEN);
                 }
-                DeviceAuthentication accessTokenAuthentication = this.selectByAccessToken(authenticationAddition.getAccessToken());
-                if ((isUpdate && accessTokenAuthentication != null && !accessTokenAuthentication.getDeviceId().equals(deviceId)) ||
-                        (!isUpdate && accessTokenAuthentication != null)) {
-                    throw new ApiException(StatusCodeConstants.DEVICE_ACCESS_TOKEN_ALREADY_EXISTS, authenticationAddition.getAccessToken());
+                DeviceAuthentication staticTokenAuthentication = this.selectByStaticToken(authenticationAddition.getStaticToken());
+                if ((isUpdate && staticTokenAuthentication != null && !staticTokenAuthentication.getDeviceId().equals(deviceId)) ||
+                        (!isUpdate && staticTokenAuthentication != null)) {
+                    throw new ApiException(StatusCodeConstants.DEVICE_STATIC_TOKEN_ALREADY_EXISTS, authenticationAddition.getStaticToken());
+                }
+                break;
+            case DynamicToken:
+                if (authenticationAddition.getDynamicToken() == null || ObjectUtils.isEmpty(authenticationAddition.getDynamicToken().getDeviceSecret())) {
+                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_DYNAMIC_TOKEN_SECRET);
                 }
                 break;
             case MqttBasic:

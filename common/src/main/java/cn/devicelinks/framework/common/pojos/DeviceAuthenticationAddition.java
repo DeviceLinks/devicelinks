@@ -59,6 +59,6 @@ public class DeviceAuthenticationAddition implements Serializable {
     @Accessors(chain = true)
     public static class DynamicToken {
         private String deviceSecret;
-        private LocalDateTime generateTime;
+        private LocalDateTime secretGenerateTime;
     }
 }

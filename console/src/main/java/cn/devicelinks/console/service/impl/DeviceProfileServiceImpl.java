@@ -47,6 +47,9 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceProfile.DEVICE_PROFILE
 @Slf4j
 public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, String, DeviceProfileRepository> implements DeviceProfileService {
 
+    private static final long MIN_DYNAMIC_VALID_SECONDS = 10 * 60;
+    private static final long MAX_DYNAMIC_VALID_SECONDS = 30 * 24 * 60 * 60;
+
     @Autowired
     private OtaService otaService;
 
@@ -132,6 +135,21 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     }
 
     @Override
+    public DeviceProfileProvisionAddition updateDeviceProfileProvisionAddition(String profileId, DeviceProfileProvisionAddition provisionAddition) {
+        DeviceProfile deviceProfile = selectById(profileId);
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
+        }
+
+        // check addition data
+        deviceProfile.setProvisionAddition(provisionAddition);
+        this.checkProvisionAddition(deviceProfile);
+
+        this.repository.update(List.of(DEVICE_PROFILE.PROVISION_ADDITION.set(provisionAddition)), DEVICE_PROFILE.ID.eq(profileId));
+        return provisionAddition;
+    }
+
+    @Override
     public DeviceProfile deleteDeviceProfile(String profileId) {
         DeviceProfile deviceProfile = selectById(profileId);
         if (deviceProfile == null) {
@@ -197,6 +215,8 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         this.checkBasicInfo(deviceProfile, doUpdate);
         // Check Log Level
         this.checkLogAdditionData(deviceProfile);
+        // Check Provision
+        this.checkProvisionAddition(deviceProfile);
     }
 
     private void checkBasicInfo(DeviceProfile deviceProfile, boolean doUpdate) {
@@ -270,6 +290,18 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
                 if (functionModuleLogLevelMap.size() != Constants.ONE || !functionModuleLogLevelMap.containsKey(DEFAULT_FUNCTION_MODULE_IDENTIFIER)) {
                     throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_LOG_LEVELS_INVALID);
                 }
+            }
+        }
+    }
+
+    private void checkProvisionAddition(DeviceProfile deviceProfile) {
+        if (!ObjectUtils.isEmpty(deviceProfile.getProvisionAddition())) {
+            DeviceProfileProvisionAddition provisionAddition = deviceProfile.getProvisionAddition();
+            if (ObjectUtils.isEmpty(provisionAddition.getProvisionDeviceKey()) || ObjectUtils.isEmpty(provisionAddition.getProvisionDeviceSecret())) {
+                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_PROVISION_ADDITION_INVALID);
+            }
+            if (provisionAddition.getDynamicTokenValidSeconds() < MIN_DYNAMIC_VALID_SECONDS || provisionAddition.getDynamicTokenValidSeconds() > MAX_DYNAMIC_VALID_SECONDS) {
+                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR, MIN_DYNAMIC_VALID_SECONDS, MAX_DYNAMIC_VALID_SECONDS);
             }
         }
     }
