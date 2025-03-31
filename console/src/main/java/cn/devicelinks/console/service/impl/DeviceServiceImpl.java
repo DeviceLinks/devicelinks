@@ -131,7 +131,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
         }
         if (device.isEnabled()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE, device.getDeviceKey());
+            throw new ApiException(StatusCodeConstants.DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE, device.getDeviceName());
         }
         this.repository.update(List.of(DEVICE.DELETED.set(Boolean.TRUE)), DEVICE.ID.eq(device.getId()));
         return device;
@@ -167,7 +167,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
             conditionGroups.add(
                     ConditionGroup.withCondition(
                             DEVICE.PRODUCT_ID.eq(device.getProductId()),
-                            DEVICE.DEVICE_KEY.eq(device.getDeviceKey()),
+                            DEVICE.DEVICE_NAME.eq(device.getDeviceName()),
                             DEVICE.DELETED.eq(Boolean.FALSE)
                     )
             );
@@ -178,7 +178,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
             conditionGroups.add(
                     ConditionGroup.withCondition(
                             DEVICE.PRODUCT_ID.eq(device.getProductId()),
-                            DEVICE.DEVICE_KEY.eq(device.getDeviceKey()),
+                            DEVICE.DEVICE_NAME.eq(device.getDeviceName()),
                             DEVICE.DELETED.eq(Boolean.FALSE)
                     )
             );
@@ -187,7 +187,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         Device storedDevice = this.repository.selectOne(conditionGroups.toArray(ConditionGroup[]::new));
         // @formatter:on
         if (storedDevice != null) {
-            throw new ApiException(StatusCodeConstants.DEVICE_ALREADY_EXISTS, device.getDeviceKey());
+            throw new ApiException(StatusCodeConstants.DEVICE_ALREADY_EXISTS, device.getDeviceName());
         }
     }
 }

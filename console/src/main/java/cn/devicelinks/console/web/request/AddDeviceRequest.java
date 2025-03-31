@@ -32,9 +32,9 @@ public class AddDeviceRequest {
     private String deviceType;
 
     @NotEmpty
-    @Length(max = 50, message = "设备唯一编码不可以超过50个字符")
-    @Pattern(regexp = "^[a-zA-Z0-9_\\-.:@]+$", message = "设备唯一编码只能包含英文字母、数字、下划线、中划线、点号、冒号和@符号")
-    private String deviceKey;
+    @Length(max = 50, message = "设备唯一名称不可以超过50个字符")
+    @Pattern(regexp = "^[a-zA-Z0-9_\\-.:@]+$", message = "设备唯一名称只能包含英文字母、数字、下划线、中划线、点号、冒号和@符号")
+    private String deviceName;
 
     @Length(max = 30, message = "设备名称不可以超过30个字符")
     @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9][\\u4e00-\\u9fa5a-zA-Z0-9_-]*$", message = "设备名称仅支持中文、大小写字母、数字、中横线、下划线，必须以中文、英文或数字开头。")
