@@ -44,8 +44,7 @@ public class Device implements Serializable {
     private String productId;
     private String profileId;
     private DeviceType deviceType;
-    private String deviceKey;
-    private String deviceSecret;
+    private String deviceName;
     private String noteName;
     private DeviceStatus status;
     private List<String> tags;

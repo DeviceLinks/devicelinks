@@ -29,8 +29,21 @@ import lombok.Getter;
 @Getter
 @ApiEnum
 public enum DeviceAuthenticationMethod {
-    AccessToken("AccessToken"),
+    /**
+     * 静态令牌
+     */
+    StaticToken("StaticToken"),
+    /**
+     * 动态令牌
+     */
+    DynamicToken("DynamicToken"),
+    /**
+     * MQTT基本认证
+     */
     MqttBasic("MQTT Basic"),
+    /**
+     * X509证书
+     */
     X509("X.509");
 
     private final String description;

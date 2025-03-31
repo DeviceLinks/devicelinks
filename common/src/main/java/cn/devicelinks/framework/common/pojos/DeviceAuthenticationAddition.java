@@ -24,6 +24,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 设备鉴权附加信息定义
@@ -38,13 +39,13 @@ public class DeviceAuthenticationAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
-    private String accessToken;
+    private String staticToken;
 
     private String x509Pem;
 
     private MqttBasic mqttBasic;
 
-    private DeviceCredential deviceCredential;
+    private DynamicToken dynamicToken;
 
     @Data
     @Accessors(chain = true)
@@ -56,8 +57,8 @@ public class DeviceAuthenticationAddition implements Serializable {
 
     @Data
     @Accessors(chain = true)
-    public static class DeviceCredential {
-        private String deviceKey;
+    public static class DynamicToken {
         private String deviceSecret;
+        private LocalDateTime generateTime;
     }
 }
