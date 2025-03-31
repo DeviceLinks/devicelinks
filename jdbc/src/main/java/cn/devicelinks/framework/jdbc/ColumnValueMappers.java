@@ -97,6 +97,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper DEVICE_SHADOW_DATA_ADDITION = new JSONObjectValueMapper(DeviceShadowDataAddition.class);
     JSONObjectValueMapper DEVICE_PROFILE_LOG_ADDITION = new JSONObjectValueMapper(DeviceProfileLogAddition.class);
     JSONObjectValueMapper DEVICE_PROFILE_ALARM_ADDITION = new JSONObjectValueMapper(DeviceProfileAlarmAddition.class);
+    JSONObjectValueMapper DEVICE_PROFILE_PROVISION_ADDITION = new JSONObjectValueMapper(DeviceProfileProvisionAddition.class);
 
 
     JSONListObjectValueMapper DEVICE_SHADOW_DATA_LIST = new JSONListObjectValueMapper(DeviceShadowDataAddition.class);

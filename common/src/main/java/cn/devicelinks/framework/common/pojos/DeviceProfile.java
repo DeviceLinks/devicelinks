@@ -29,6 +29,7 @@ public class DeviceProfile implements Serializable {
     private String softwareId;
     private DeviceProfileLogAddition logAddition;
     private DeviceProfileAlarmAddition alarmAddition;
+    private DeviceProfileProvisionAddition provisionAddition;
     private Map<String, Object> extension;
     private String createBy;
     private LocalDateTime createTime;
