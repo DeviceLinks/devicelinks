@@ -36,6 +36,7 @@
         <module>transport-http</module>
         <module>transport-coap</module>
         <module>transport-jt808</module>
+        <module>transport-api</module>
     </modules>
 
     <properties>

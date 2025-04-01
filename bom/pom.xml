@@ -55,6 +55,11 @@
                 <artifactId>devicelinks-jdbc</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-transport-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
