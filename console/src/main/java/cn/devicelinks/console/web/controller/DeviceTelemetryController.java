@@ -42,7 +42,7 @@ public class DeviceTelemetryController {
      */
     @PostMapping(value = "/telemetry/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceTelemetry)
-    public ApiResponse getTelemetryByPageable(@Valid PaginationQuery paginationQuery,
+    public ApiResponse<PageResult<DeviceTelemetry>> getTelemetryByPageable(@Valid PaginationQuery paginationQuery,
                                               @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<DeviceTelemetry> pageResult = this.telemetryService.getTelemetryByPage(paginationQuery, searchFieldQuery);
         return ApiResponse.success(pageResult);
@@ -62,7 +62,7 @@ public class DeviceTelemetryController {
             objectId = "{#executionSucceed ? #result.data.id : null}",
             msg = "{#executionSucceed ? '添加设备遥测数据成功' : '添加设备遥测数据失败'}",
             activateData = "{#p1}")
-    public ApiResponse addTelemetry(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<DeviceTelemetry> addTelemetry(@PathVariable("deviceId") String deviceId,
                                     @Valid @RequestBody AddDeviceTelemetryRequest request) throws ApiException {
         return ApiResponse.success(this.telemetryService.addTelemetry(deviceId, request));
     }
@@ -81,7 +81,7 @@ public class DeviceTelemetryController {
             objectId = "{#p1}",
             msg = "{#executionSucceed? '删除设备遥测数据成功' : '删除设备遥测数据失败'}",
             activateData = "{#executionSucceed? #result.data : #p1}")
-    public ApiResponse deleteTelemetry(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<DeviceTelemetry> deleteTelemetry(@PathVariable("deviceId") String deviceId,
                                        @PathVariable("telemetryId") String telemetryId) throws ApiException {
         return ApiResponse.success(this.telemetryService.deleteTelemetry(deviceId, telemetryId));
     }

@@ -7,6 +7,7 @@ import cn.devicelinks.console.web.query.PaginationQuery;
 import cn.devicelinks.console.web.query.SearchFieldQuery;
 import cn.devicelinks.console.web.request.AddProductRequest;
 import cn.devicelinks.console.web.request.UpdateProductRequest;
+import cn.devicelinks.console.web.response.RegenerateKeySecretResponse;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.*;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -14,6 +15,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Product;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,7 @@ public class ProductController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.Product)
-    public ApiResponse getProductByPageable(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) {
+    public ApiResponse<PageResult<Product>> getProductByPageable(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) {
         return ApiResponse.success(this.productService.getPageByPageable(paginationQuery, searchFieldQuery));
     }
 
@@ -59,7 +61,7 @@ public class ProductController {
      * @throws ApiException 如果请求参数无效或产品查询过程中发生错误，将抛出 {@link ApiException} 异常。
      */
     @GetMapping(value = "/{productId}")
-    public ApiResponse getProductInfo(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
+    public ApiResponse<Product> getProductInfo(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
         Product product = this.productService.selectById(productId);
         if (product == null || product.isDeleted()) {
             throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, productId);
@@ -82,7 +84,7 @@ public class ProductController {
             objectId = "{#executionSucceed ? #result.data.id : #p0.name}",
             msg = "{#executionSucceed? '添加产品成功' : '添加产品失败'}",
             activateData = "{#p0}")
-    public ApiResponse addProduct(@Valid @RequestBody AddProductRequest request) throws ApiException {
+    public ApiResponse<Product> addProduct(@Valid @RequestBody AddProductRequest request) throws ApiException {
         String currentUserId = UserDetailsContext.getUserId();
         // @formatter:off
         Product product = new Product()
@@ -116,7 +118,7 @@ public class ProductController {
             object = "{@productServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed ? '产品更新成功' : '产品更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateProduct(@PathVariable @NotEmpty @Length(max = 32) String productId,
+    public ApiResponse<Product> updateProduct(@PathVariable @NotEmpty @Length(max = 32) String productId,
                                      @Valid @RequestBody UpdateProductRequest request) throws ApiException {
         Product product = this.productService.selectById(productId);
         if (product == null) {
@@ -147,7 +149,7 @@ public class ProductController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '产品删除成功' : '产品删除失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
-    public ApiResponse deleteProduct(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
+    public ApiResponse<Product> deleteProduct(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
         return ApiResponse.success(this.productService.deleteProduct(productId));
     }
 
@@ -169,7 +171,7 @@ public class ProductController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '产品发布成功' : '产品发布失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
-    public ApiResponse publishProduct(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
+    public ApiResponse<Product> publishProduct(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
         return ApiResponse.success(this.productService.publishProduct(productId));
     }
 
@@ -190,7 +192,7 @@ public class ProductController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '重新生成Key-Secret成功' : '重新生成Key-Secret失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
-    public ApiResponse regenerateKeySecret(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
+    public ApiResponse<RegenerateKeySecretResponse> regenerateKeySecret(@PathVariable @NotEmpty @Length(max = 32) String productId) throws ApiException {
         return ApiResponse.success(this.productService.regenerateKeySecret(productId));
     }
 }

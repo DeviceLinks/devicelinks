@@ -6,7 +6,9 @@ import cn.devicelinks.console.service.SysLogService;
 import cn.devicelinks.console.web.search.SearchModule;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +42,8 @@ public class SysLogController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.Log)
-    public ApiResponse getLogByPageable(@Valid PaginationQuery paginationQuery,
-                                        @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<PageResult<SysLog>> getLogByPageable(@Valid PaginationQuery paginationQuery,
+                                                            @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.sysLogService.getByPageable(paginationQuery, searchFieldQuery));
     }
 }

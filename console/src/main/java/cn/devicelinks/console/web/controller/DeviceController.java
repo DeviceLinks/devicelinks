@@ -17,13 +17,17 @@ import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 设备接口控制器
@@ -50,8 +54,8 @@ public class DeviceController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.Device)
-    public ApiResponse getDeviceListByPageable(@Valid PaginationQuery paginationQuery,
-                                               @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<PageResult<Device>> getDeviceListByPageable(@Valid PaginationQuery paginationQuery,
+                                                                   @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.deviceService.selectByPageable(paginationQuery, searchFieldQuery));
     }
 
@@ -63,7 +67,7 @@ public class DeviceController {
      * @throws ApiException 抛出处理过程中遇到的异常
      */
     @GetMapping(value = "/{deviceId}")
-    public ApiResponse getDeviceInfo(@PathVariable("deviceId") String deviceId) throws ApiException {
+    public ApiResponse<DeviceDTO> getDeviceInfo(@PathVariable("deviceId") String deviceId) throws ApiException {
         return ApiResponse.success(this.deviceService.selectByDeviceId(deviceId));
     }
 
@@ -80,7 +84,7 @@ public class DeviceController {
             objectId = "{#executionSucceed ? #result.data.id : #p0.deviceCode}",
             msg = "{#executionSucceed ? '设备添加成功' : '设备添加失败'}",
             activateData = "{#p0}")
-    public ApiResponse addDevice(@Valid @RequestBody AddDeviceRequest request) throws ApiException {
+    public ApiResponse<Device> addDevice(@Valid @RequestBody AddDeviceRequest request) throws ApiException {
         Device device = DeviceConverter.INSTANCE.fromAddDeviceRequest(request);
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         device.setCreateBy(currentUser.getId());
@@ -104,7 +108,7 @@ public class DeviceController {
             object = "{@deviceServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed ? '设备更成功' : '设备更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDevice(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<Device> updateDevice(@PathVariable("deviceId") String deviceId,
                                     @Valid @RequestBody UpdateDeviceRequest request) throws ApiException {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {
@@ -134,7 +138,7 @@ public class DeviceController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '设备删除成功' : '设备删除失败'}",
             activateData = "{#executionSucceed ? #result.data : #p0}")
-    public ApiResponse deleteDevice(@PathVariable("deviceId") String deviceId) throws ApiException {
+    public ApiResponse<Device> deleteDevice(@PathVariable("deviceId") String deviceId) throws ApiException {
         Device deletedDevice = this.deviceService.deleteDevice(deviceId);
         return ApiResponse.success(deletedDevice);
     }
@@ -153,7 +157,7 @@ public class DeviceController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '设备启用状态更新成功' : '设备启用状态更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDeviceStatus(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<Object> updateDeviceStatus(@PathVariable("deviceId") String deviceId,
                                           @NotNull Boolean enabled) throws ApiException {
         this.deviceService.updateEnabled(deviceId, enabled);
         return ApiResponse.success();
@@ -167,7 +171,7 @@ public class DeviceController {
      * @throws ApiException 执行过程中遇到的业务逻辑异常
      */
     @GetMapping(value = "/{deviceId}/function/module")
-    public ApiResponse getDeviceFunctionModuleList(@PathVariable("deviceId") String deviceId) throws ApiException {
+    public ApiResponse<List<FunctionModule>> getDeviceFunctionModuleList(@PathVariable("deviceId") String deviceId) throws ApiException {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);

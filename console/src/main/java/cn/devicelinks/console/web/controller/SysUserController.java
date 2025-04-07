@@ -35,6 +35,7 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,7 @@ public class SysUserController {
     @PostMapping(value = "/filter")
     @PreAuthorize("hasAuthority('SystemAdmin')")
     @SearchModule(module = SearchFieldModuleIdentifier.User)
-    public ApiResponse getUsers(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<PageResult<UserDTO>> getUsers(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.userService.getUsers(searchFieldQuery, paginationQuery));
     }
 
@@ -77,7 +78,7 @@ public class SysUserController {
      * @return 用户实例 {@link SysUser}
      */
     @GetMapping(value = "/{userId}")
-    public ApiResponse getUserById(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
+    public ApiResponse<SysUser> getUserById(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         return ApiResponse.success(this.userService.selectById(userId));
     }
 
@@ -87,7 +88,7 @@ public class SysUserController {
      * @return 用户实例 {@link SysUser}
      */
     @GetMapping(value = "/me")
-    public ApiResponse getCurrentUser() throws ApiException {
+    public ApiResponse<AuthorizedUserAddition> getCurrentUser() throws ApiException {
         AuthorizedUserAddition userAddition = UserDetailsContext.getUserAddition();
         return ApiResponse.success(userAddition);
     }
@@ -105,7 +106,7 @@ public class SysUserController {
             msg = "{#executionSucceed ? '用户添加成功' : '用户添加失败'}",
             activateData = "{#p0}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
-    public ApiResponse addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
+    public ApiResponse<SysUser> addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
             throw new ApiException(StatusCodeConstants.USER_EMAIL_CANNOT_EMPTY);
         }
@@ -139,8 +140,8 @@ public class SysUserController {
             msg = "{#executionSucceed ? '用户更新成功' : '用户更新失败'}",
             activateData = "{#p1}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
-    public ApiResponse updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
-                                  @Valid @RequestBody UpdateUserRequest request) throws ApiException {
+    public ApiResponse<SysUser> updateUser(@Valid @PathVariable("userId") @Length(max = 32) String userId,
+                                           @Valid @RequestBody UpdateUserRequest request) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
         if (ObjectUtils.isEmpty(storedUser)) {
             throw new ApiException(StatusCodeConstants.USER_NOT_FOUND, userId);
@@ -168,7 +169,7 @@ public class SysUserController {
             activateData = "{#executionSucceed ? #result.data : null}")
     @DeleteMapping(value = "/{userId}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
-    public ApiResponse deleteUser(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
+    public ApiResponse<SysUser> deleteUser(@Valid @PathVariable("userId") @Length(max = 32) String userId) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
         if (ObjectUtils.isEmpty(storedUser)) {
             throw new ApiException(StatusCodeConstants.USER_NOT_FOUND, userId);
@@ -190,8 +191,8 @@ public class SysUserController {
             activateData = "{#p1}")
     @PostMapping(value = "/status/{userId}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
-    public ApiResponse updateStatus(@Valid @PathVariable("userId") @Length(max = 32) String userId,
-                                    @RequestParam boolean enabled) throws ApiException {
+    public ApiResponse<Object> updateStatus(@Valid @PathVariable("userId") @Length(max = 32) String userId,
+                                            @RequestParam boolean enabled) throws ApiException {
         SysUser storedUser = this.userService.selectById(userId);
         if (ObjectUtils.isEmpty(storedUser)) {
             throw new ApiException(StatusCodeConstants.USER_NOT_FOUND, userId);

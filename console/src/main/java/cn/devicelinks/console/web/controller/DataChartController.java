@@ -11,9 +11,12 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.DataChart;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.model.dto.DataChartDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 数据图表接口控制器
@@ -37,7 +40,7 @@ public class DataChartController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DataChart)
-    public ApiResponse getDataChartByPageable(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<List<DataChartDTO>> getDataChartByPageable(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.dataChartService.getDataChartList(searchFieldQuery.toSearchFieldConditionList()));
     }
 
@@ -54,7 +57,7 @@ public class DataChartController {
             objectId = "{#executionSucceed? #result.data.id : #p0.targetId}",
             msg = "{#executionSucceed? '新增数据图表成功' : '新增数据图表失败'}",
             activateData = "{#p0}")
-    public ApiResponse addDataChart(@Valid @RequestBody AddDataChartRequest request) throws ApiException {
+    public ApiResponse<DataChartDTO> addDataChart(@Valid @RequestBody AddDataChartRequest request) throws ApiException {
         return ApiResponse.success(this.dataChartService.addChart(request));
     }
 
@@ -71,7 +74,7 @@ public class DataChartController {
             objectId = "{#p0}",
             msg = "{#executionSucceed? '删除数据图表成功' : '删除数据图表失败'}",
             activateData = "{#executionSucceed? #result.data : #p0}")
-    public ApiResponse deleteDataChart(@PathVariable("chartId") String chartId) throws ApiException {
+    public ApiResponse<DataChart> deleteDataChart(@PathVariable("chartId") String chartId) throws ApiException {
         return ApiResponse.success(this.dataChartService.deleteChart(chartId));
     }
 }

@@ -16,6 +16,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 设备标签接口控制器
  *
@@ -38,7 +40,7 @@ public class DeviceTagController {
      */
     @PostMapping("/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceTag)
-    public ApiResponse getDeviceTagList(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<List<DeviceTag>> getDeviceTagList(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(this.deviceTagService.selectDeviceTagList(searchFieldQuery.toSearchFieldConditionList()));
     }
 
@@ -55,7 +57,7 @@ public class DeviceTagController {
             objectId = "{#executionSucceed? #result.data.id : #p0.name}",
             msg = "{#executionSucceed? '设备标签添加成功' : '设备标签添加失败'}",
             activateData = "{#p0}")
-    public ApiResponse addDeviceTag(@Valid @RequestBody AddDeviceTagRequest request) throws ApiException {
+    public ApiResponse<DeviceTag> addDeviceTag(@Valid @RequestBody AddDeviceTagRequest request) throws ApiException {
         // @formatter:off
         DeviceTag deviceTag = new DeviceTag()
                 .setName(request.getName())
@@ -79,7 +81,7 @@ public class DeviceTagController {
             object = "{@deviceTagServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed? '设备标签删除成功' : '设备标签删除失败'}",
             activateData = "{#p0}")
-    public ApiResponse deleteDeviceTag(@PathVariable("tagId") String tagId) throws ApiException {
+    public ApiResponse<DeviceTag> deleteDeviceTag(@PathVariable("tagId") String tagId) throws ApiException {
         return ApiResponse.success(this.deviceTagService.deleteDeviceTag(tagId));
     }
 }

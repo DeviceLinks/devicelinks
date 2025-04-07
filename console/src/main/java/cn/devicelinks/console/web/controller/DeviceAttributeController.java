@@ -14,9 +14,14 @@ import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDTO;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeLatestDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 设备属性接口控制器
@@ -42,10 +47,10 @@ public class DeviceAttributeController {
      * @throws ApiException 查询过程中遇到的业务逻辑异常
      */
     @GetMapping(value = "/{deviceId}/module/{moduleId}/attribute/latest")
-    public ApiResponse getDeviceLatestAttribute(@PathVariable("deviceId") String deviceId,
-                                                @PathVariable("moduleId") String moduleId,
-                                                @RequestParam(value = "attributeName", required = false) String attributeName,
-                                                @RequestParam(value = "attributeIdentifier", required = false) String attributeIdentifier) throws ApiException {
+    public ApiResponse<List<DeviceAttributeLatestDTO>> getDeviceLatestAttribute(@PathVariable("deviceId") String deviceId,
+                                                                                @PathVariable("moduleId") String moduleId,
+                                                                                @RequestParam(value = "attributeName", required = false) String attributeName,
+                                                                                @RequestParam(value = "attributeIdentifier", required = false) String attributeIdentifier) throws ApiException {
         return ApiResponse.success(this.deviceAttributeService.getLatestAttribute(deviceId, moduleId, attributeName, attributeIdentifier));
     }
 
@@ -59,8 +64,8 @@ public class DeviceAttributeController {
      */
     @PostMapping(value = "/attribute/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceAttribute)
-    public ApiResponse getReportedAttributeByPageable(@Valid PaginationQuery paginationQuery,
-                                                      @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<PageResult<DeviceAttributeDTO>> getReportedAttributeByPageable(@Valid PaginationQuery paginationQuery,
+                                                                                      @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(deviceAttributeService.getByPageable(searchFieldQuery, paginationQuery));
     }
 
@@ -78,7 +83,7 @@ public class DeviceAttributeController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '提取未知属性成功' : '提取未知属性失败'}",
             activateData = "{#p1}")
-    public ApiResponse extractUnknownReportedAttribute(@PathVariable("deviceAttributeId") String deviceAttributeId,
+    public ApiResponse<Attribute> extractUnknownReportedAttribute(@PathVariable("deviceAttributeId") String deviceAttributeId,
                                                        @Valid @RequestBody ExtractUnknownDeviceAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.deviceAttributeService.extractUnknownAttribute(deviceAttributeId, request));
     }

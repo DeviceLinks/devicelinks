@@ -31,7 +31,7 @@ public class DeviceShadowController {
      * @throws ApiException 查询时遇到的异常
      */
     @GetMapping(value = "/{deviceId}/shadow")
-    public ApiResponse getDeviceShadow(@PathVariable("deviceId") String deviceId) throws ApiException {
+    public ApiResponse<DeviceShadow> getDeviceShadow(@PathVariable("deviceId") String deviceId) throws ApiException {
         return ApiResponse.success(deviceShadowService.selectByDeviceId(deviceId));
     }
 }

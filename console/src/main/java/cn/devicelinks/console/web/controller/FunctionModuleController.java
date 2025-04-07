@@ -50,7 +50,7 @@ public class FunctionModuleController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.FunctionModule)
-    public ApiResponse getFunctionModuleByPageable(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<List<FunctionModule>> getFunctionModuleByPageable(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         List<FunctionModule> functionModuleList = this.functionModuleService.selectBySearchField(searchFieldQuery);
         return ApiResponse.success(functionModuleList);
     }
@@ -69,7 +69,7 @@ public class FunctionModuleController {
      *                      以及moduleId作为附加信息
      */
     @GetMapping(value = "/{moduleId}")
-    public ApiResponse getFunctionModuleById(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId) throws ApiException {
+    public ApiResponse<FunctionModule> getFunctionModuleById(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId) throws ApiException {
         FunctionModule module = this.functionModuleService.selectById(moduleId);
         if (ObjectUtils.isEmpty(module)) {
             throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, moduleId);
@@ -92,7 +92,7 @@ public class FunctionModuleController {
             objectId = "{#executionSucceed ? #result.data.id : #p0.name}",
             msg = "{#executionSucceed ? '添加功能模块成功' : '添加功能模块失败'}",
             activateData = "{#p0}")
-    public ApiResponse addFunctionModule(@Valid @RequestBody AddFunctionModuleRequest request) throws ApiException {
+    public ApiResponse<FunctionModule> addFunctionModule(@Valid @RequestBody AddFunctionModuleRequest request) throws ApiException {
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         // @formatter:off
         FunctionModule module = new FunctionModule()
@@ -122,7 +122,7 @@ public class FunctionModuleController {
             object = "{@functionModuleServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed ? '更新功能模块成功' : '更新功能模块失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId,
+    public ApiResponse<FunctionModule> updateFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId,
                                             @Valid @RequestBody UpdateFunctionModuleRequest request) throws ApiException {
         FunctionModule storedModule = this.functionModuleService.selectById(moduleId);
         if (ObjectUtils.isEmpty(storedModule)) {
@@ -153,7 +153,7 @@ public class FunctionModuleController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '删除功能模块成功' : '删除功能模块失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
-    public ApiResponse deleteFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId) throws ApiException {
+    public ApiResponse<FunctionModule> deleteFunctionModule(@Valid @PathVariable("moduleId") @Length(max = 32) String moduleId) throws ApiException {
         FunctionModule storedModule = this.functionModuleService.selectById(moduleId);
         if (ObjectUtils.isEmpty(storedModule)) {
             throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, moduleId);

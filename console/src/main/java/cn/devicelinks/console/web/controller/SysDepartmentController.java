@@ -55,7 +55,7 @@ public class SysDepartmentController {
      * @return {@link SysDepartment}
      */
     @GetMapping(value = "/{departmentId}")
-    public ApiResponse getDepartmentById(@PathVariable @Valid @Length(max = 32) String departmentId) throws ApiException {
+    public ApiResponse<SysDepartment> getDepartmentById(@PathVariable @Valid @Length(max = 32) String departmentId) throws ApiException {
         return ApiResponse.success(this.departmentService.selectById(departmentId));
     }
 
@@ -72,7 +72,7 @@ public class SysDepartmentController {
             objectId = "{#executionSucceed ? #result.data.id : #p0.name}",
             msg = "{#executionSucceed ? '新增部门成功' : '新增部门失败'}",
             activateData = "{#p0}")
-    public ApiResponse addDepartment(@RequestBody @Valid AddDepartmentRequest request) throws ApiException {
+    public ApiResponse<SysDepartment> addDepartment(@RequestBody @Valid AddDepartmentRequest request) throws ApiException {
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         // @formatter:off
         SysDepartment department = new SysDepartment()
@@ -103,7 +103,7 @@ public class SysDepartmentController {
             object = "{@sysDepartmentServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed ? '编辑部门成功' : '编辑部门失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDepartment(@PathVariable @Valid @Length(max = 32) String departmentId,
+    public ApiResponse<SysDepartment> updateDepartment(@PathVariable @Valid @Length(max = 32) String departmentId,
                                         @RequestBody @Valid UpdateDepartmentRequest request) throws ApiException {
         SysDepartment storedDepartment = this.departmentService.selectById(departmentId);
         if (storedDepartment == null) {
@@ -132,7 +132,7 @@ public class SysDepartmentController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '删除部门成功' : '删除部门失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
-    public ApiResponse deleteDepartment(@PathVariable String departmentId) throws ApiException {
+    public ApiResponse<SysDepartment> deleteDepartment(@PathVariable String departmentId) throws ApiException {
         SysDepartment storedDepartment = this.departmentService.selectById(departmentId);
         if (storedDepartment == null) {
             throw new ApiException(StatusCodeConstants.DEPARTMENT_NOT_FOUND);

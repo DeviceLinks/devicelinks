@@ -12,8 +12,11 @@ import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
+import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDesiredDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +44,8 @@ public class DeviceAttributeDesiredController {
      */
     @PostMapping(value = "/attribute/desired/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceDesiredAttribute)
-    public ApiResponse getDesiredAttributeByPageable(@Valid PaginationQuery paginationQuery,
-                                                     @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+    public ApiResponse<PageResult<DeviceAttributeDesiredDTO>> getDesiredAttributeByPageable(@Valid PaginationQuery paginationQuery,
+                                                                                            @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         return ApiResponse.success(desiredAttributeService.getByPageable(searchFieldQuery, paginationQuery));
     }
 
@@ -59,7 +62,7 @@ public class DeviceAttributeDesiredController {
             objectId = "{#executionSucceed ? #result.data.id : #p2.identifier}",
             msg = "{#executionSucceed ? '添加期望属性成功' : '添加期望属性失败'}",
             activateData = "{#p2}")
-    public ApiResponse addDesiredAttribute(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<DeviceAttributeDesired> addDesiredAttribute(@PathVariable("deviceId") String deviceId,
                                            @PathVariable("moduleId") String moduleId,
                                            @Valid @RequestBody AddDeviceDesiredAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.addDesiredAttribute(deviceId, moduleId, request));
@@ -80,7 +83,7 @@ public class DeviceAttributeDesiredController {
             object = "{@deviceAttributeDesiredServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed ? '更新期望属性值成功' : '更新期望属性值失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
+    public ApiResponse<DeviceAttributeDesired> updateDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
                                               @Valid @RequestBody UpdateDeviceDesiredAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.updateDesiredAttribute(desiredAttributeId, request));
     }
@@ -99,8 +102,8 @@ public class DeviceAttributeDesiredController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '提取未知期望属性成功' : '提取未知期望属性失败'}",
             activateData = "{#p1}")
-    public ApiResponse extractUnknownDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
-                                                      @Valid @RequestBody ExtractUnknownDesiredAttributeRequest request) throws ApiException {
+    public ApiResponse<Attribute> extractUnknownDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId,
+                                                                 @Valid @RequestBody ExtractUnknownDesiredAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.extractUnknownAttribute(desiredAttributeId, request));
     }
 
@@ -117,7 +120,7 @@ public class DeviceAttributeDesiredController {
             objectId = "{#p0}",
             msg = "{#executionSucceed ? '删除期望属性成功' : '删除期望属性失败'}",
             activateData = "{#p0}")
-    public ApiResponse deleteDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId) throws ApiException {
+    public ApiResponse<DeviceAttributeDesired> deleteDesiredAttribute(@PathVariable("desiredAttributeId") String desiredAttributeId) throws ApiException {
         return ApiResponse.success(this.desiredAttributeService.deleteDesiredAttribute(desiredAttributeId));
     }
 }

@@ -7,9 +7,12 @@ import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
+import cn.devicelinks.framework.common.pojos.SysSetting;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 系统参数设置接口控制器
@@ -31,7 +34,7 @@ public class SysSettingController {
      * @throws ApiException 如果在处理请求时发生错误，例如查询失败。
      */
     @GetMapping
-    public ApiResponse getGlobalSettings() throws ApiException {
+    public ApiResponse<List<SysSetting>> getGlobalSettings() throws ApiException {
         return ApiResponse.success(this.sysSettingService.selectEnabledList());
     }
 
@@ -50,7 +53,7 @@ public class SysSettingController {
             objectType = LogObjectType.GlobalSetting,
             msg = "{#executionSucceed? '系统参数设置更新成功' : '系统参数设置更新失败'}",
             activateData = "{#p0}")
-    public ApiResponse updateGlobalSetting(@Valid @RequestBody UpdateSysSettingRequest request) throws ApiException {
+    public ApiResponse<SysSetting> updateGlobalSetting(@Valid @RequestBody UpdateSysSettingRequest request) throws ApiException {
         return ApiResponse.success(this.sysSettingService.updateSettingValue(request.getSettingId(), request.getValue()));
     }
 }

@@ -46,7 +46,7 @@ public class DeviceProfileController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceProfile)
-    public ApiResponse getDeviceProfileListByPageable(@Valid PaginationQuery paginationQuery,
+    public ApiResponse<PageResult<DeviceProfile>> getDeviceProfileListByPageable(@Valid PaginationQuery paginationQuery,
                                                       @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<DeviceProfile> pageResult = this.deviceProfileService.getDeviceProfileListByPageable(paginationQuery, searchFieldQuery);
         return ApiResponse.success(pageResult);
@@ -60,7 +60,7 @@ public class DeviceProfileController {
      * @throws ApiException 查询过程中遇到的异常
      */
     @GetMapping(value = "/{profileId}")
-    public ApiResponse getDeviceProfile(@PathVariable("profileId") String profileId) throws ApiException {
+    public ApiResponse<DeviceProfile> getDeviceProfile(@PathVariable("profileId") String profileId) throws ApiException {
         DeviceProfile deviceProfile = this.deviceProfileService.selectById(profileId);
         if (deviceProfile == null || deviceProfile.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
@@ -81,7 +81,7 @@ public class DeviceProfileController {
             objectId = "{#executionSucceed? #result.data.id : #p0.name}",
             msg = "{#executionSucceed? '设备配置文件添加成功' : '设备配置文件添加失败'}",
             activateData = "{#p0}")
-    public ApiResponse addDeviceProfile(@Valid @RequestBody AddDeviceProfileRequest request) throws ApiException {
+    public ApiResponse<DeviceProfile> addDeviceProfile(@Valid @RequestBody AddDeviceProfileRequest request) throws ApiException {
         DeviceProfile addedDeviceProfile = this.deviceProfileService.addDeviceProfile(request);
         return ApiResponse.success(addedDeviceProfile);
     }
@@ -101,7 +101,7 @@ public class DeviceProfileController {
             object = "{@deviceProfileServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed? '设备配置文件更新成功' : '设备配置文件更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDeviceProfile(@PathVariable("profileId") String profileId,
+    public ApiResponse<DeviceProfile> updateDeviceProfile(@PathVariable("profileId") String profileId,
                                            @Valid @RequestBody UpdateDeviceProfileRequest request) throws ApiException {
         DeviceProfile deviceProfile = this.deviceProfileService.selectById(profileId);
         if (deviceProfile == null || deviceProfile.isDeleted()) {
@@ -127,7 +127,7 @@ public class DeviceProfileController {
             object = "{@deviceProfileServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed? '设备配置文件基础信息更新成功' : '设备配置文件基础信息更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDeviceProfileBasicInfo(@PathVariable("profileId") String profileId,
+    public ApiResponse<DeviceProfile> updateDeviceProfileBasicInfo(@PathVariable("profileId") String profileId,
                                                     @Valid @RequestBody UpdateDeviceProfileBasicInfoRequest request) throws ApiException {
         DeviceProfile deviceProfile = this.deviceProfileService.updateDeviceProfileBasicInfo(profileId, request);
         return ApiResponse.success(deviceProfile);
@@ -148,7 +148,7 @@ public class DeviceProfileController {
             object = "{@deviceProfileServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed? '设备配置文件扩展配置更新成功' : '设备配置文件扩展配置更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDeviceProfileExtension(@PathVariable("profileId") String profileId,
+    public ApiResponse<Map<String, Object>> updateDeviceProfileExtension(@PathVariable("profileId") String profileId,
                                                     @Valid @RequestBody UpdateDeviceProfileExtensionRequest request) throws ApiException {
         Map<String, Object> extensionJson = this.deviceProfileService.updateDeviceProfileExtension(profileId, request.getExtension());
         return ApiResponse.success(extensionJson);
@@ -169,7 +169,7 @@ public class DeviceProfileController {
             object = "{@deviceProfileServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed? '设备配置文件日志附加配置更新成功' : '设备配置文件日志附加配置更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateDeviceProfileLogAddition(@PathVariable("profileId") String profileId,
+    public ApiResponse<DeviceProfileLogAddition> updateDeviceProfileLogAddition(@PathVariable("profileId") String profileId,
                                                       @Valid @RequestBody UpdateDeviceProfileLogAdditionRequest request) throws ApiException {
         DeviceProfileLogAddition logAddition = this.deviceProfileService.updateDeviceProfileLogAddition(profileId, request.getLogAddition());
         return ApiResponse.success(logAddition);
@@ -194,7 +194,7 @@ public class DeviceProfileController {
             msg = "{#executionSucceed? '设备配置文件预配置更新成功' : '设备配置文件预配置更新失败'}",
             activateData = "{#p1}"
     )
-    public ApiResponse updateDeviceProfileProvisionAddition(@PathVariable("profileId") String profileId,
+    public ApiResponse<DeviceProfileProvisionAddition> updateDeviceProfileProvisionAddition(@PathVariable("profileId") String profileId,
                                                             @Valid @RequestBody UpdateDeviceProfileProvisionAdditionRequest request) throws ApiException {
         DeviceProfileProvisionAddition provisionAddition = this.deviceProfileService.updateDeviceProfileProvisionAddition(profileId, request.getProvisionAddition());
         return ApiResponse.success(provisionAddition);
@@ -214,7 +214,7 @@ public class DeviceProfileController {
             object = "{@deviceProfileServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed ? '设备配置文件删除成功' : '设备配置文件删除失败'}",
             activateData = "{#p0}")
-    public ApiResponse deleteDeviceProfile(@PathVariable("profileId") String profileId) throws ApiException {
+    public ApiResponse<DeviceProfile> deleteDeviceProfile(@PathVariable("profileId") String profileId) throws ApiException {
         DeviceProfile deletedDeviceProfile = this.deviceProfileService.deleteDeviceProfile(profileId);
         return ApiResponse.success(deletedDeviceProfile);
     }
@@ -233,7 +233,7 @@ public class DeviceProfileController {
             objectId = "{#p0}",
             msg = "{#executionSucceed? '批量绑定成功' : '批量绑定失败'}",
             activateData = "{#p1}")
-    public ApiResponse batchSetDeviceProfile(@PathVariable("profileId") String profileId,
+    public ApiResponse<Object> batchSetDeviceProfile(@PathVariable("profileId") String profileId,
                                              @Valid @RequestBody BatchSetDeviceProfileRequest request) throws ApiException {
         this.deviceProfileService.batchSet(profileId, request);
         return ApiResponse.success();

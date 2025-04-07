@@ -14,6 +14,7 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -45,7 +46,7 @@ public class AttributeController {
      */
     @PostMapping(value = "/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.Attribute)
-    public ApiResponse getAttributeByPageable(@Valid PaginationQuery paginationQuery,
+    public ApiResponse<PageResult<Attribute>> getAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                               @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         PageResult<Attribute> pageResult = this.attributeService.getAttributesByPage(paginationQuery, searchFieldQuery);
         return ApiResponse.success(pageResult);
@@ -62,7 +63,7 @@ public class AttributeController {
      * @throws ApiException 如果在处理请求时发生错误，例如查询失败或参数验证失败。
      */
     @GetMapping(value = "/{attributeId}")
-    public ApiResponse getAttribute(@PathVariable("attributeId") String attributeId) throws ApiException {
+    public ApiResponse<AttributeDTO> getAttribute(@PathVariable("attributeId") String attributeId) throws ApiException {
         return ApiResponse.success(this.attributeService.getAttributeById(attributeId));
     }
 
@@ -79,7 +80,7 @@ public class AttributeController {
             objectId = "{#executionSucceed? #result.data.id : #p0.name}",
             msg = "{#executionSucceed? '属性添加成功' : '属性添加失败'}",
             activateData = "{#p0}")
-    public ApiResponse addAttribute(@Valid @RequestBody AddAttributeRequest request) throws ApiException {
+    public ApiResponse<AttributeDTO> addAttribute(@Valid @RequestBody AddAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.attributeService.addAttribute(request));
     }
 
@@ -98,7 +99,7 @@ public class AttributeController {
             object = "{@attributeServiceImpl.selectById(#p0)}",
             msg = "{#executionSucceed? '属性更新成功' : '属性更新失败'}",
             activateData = "{#p1}")
-    public ApiResponse updateAttribute(@PathVariable("attributeId") @NotEmpty @Length(max = 32) String attributeId,
+    public ApiResponse<AttributeDTO> updateAttribute(@PathVariable("attributeId") @NotEmpty @Length(max = 32) String attributeId,
                                        @Valid @RequestBody UpdateAttributeRequest request) throws ApiException {
         return ApiResponse.success(this.attributeService.updateAttribute(attributeId, request));
     }
@@ -118,7 +119,7 @@ public class AttributeController {
             objectId = "{#p0}",
             msg = "{#executionSucceed? '属性删除成功' : '属性删除失败'}",
             activateData = "{#executionSucceed ? #result.data : null}")
-    public ApiResponse deleteAttribute(@Length(max = 32) @PathVariable String attributeId) throws ApiException {
+    public ApiResponse<Attribute> deleteAttribute(@Length(max = 32) @PathVariable String attributeId) throws ApiException {
         return ApiResponse.success(this.attributeService.deleteAttribute(attributeId));
     }
 }

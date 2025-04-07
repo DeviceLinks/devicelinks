@@ -36,7 +36,7 @@ public class DeviceAuthenticationController {
      * @throws ApiException 遇到的业务逻辑认证异常以及参数认证异常
      */
     @GetMapping(value = "/{deviceId}/authorization")
-    public ApiResponse getDeviceAuthorization(@PathVariable("deviceId") String deviceId) throws ApiException {
+    public ApiResponse<DeviceAuthentication> getDeviceAuthorization(@PathVariable("deviceId") String deviceId) throws ApiException {
         return ApiResponse.success(this.deviceAuthenticationService.selectByDeviceId(deviceId));
     }
 
@@ -49,7 +49,7 @@ public class DeviceAuthenticationController {
      * @throws ApiException 遇到的业务逻辑认证异常以及参数认证异常
      */
     @PostMapping(value = "/{deviceId}/authorization")
-    public ApiResponse updateDeviceAuthorization(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<DeviceAuthentication> updateDeviceAuthorization(@PathVariable("deviceId") String deviceId,
                                                  @Valid @RequestBody UpdateDeviceAuthorizationRequest request) throws ApiException {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {

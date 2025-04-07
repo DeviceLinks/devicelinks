@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 公共控制器
@@ -47,7 +48,7 @@ public class SysCommonController {
      * @return {@link SearchField}
      */
     @GetMapping(value = "/search/field")
-    public ApiResponse getSearchField(@Valid GetSearchFieldQuery query) throws ApiException {
+    public ApiResponse<List<SearchField>> getSearchField(@Valid GetSearchFieldQuery query) throws ApiException {
         SearchFieldModuleIdentifier identifier = SearchFieldModuleIdentifier.valueOf(query.getModule());
         List<SearchField> searchFieldTemplateList = SearchFieldModuleFactory.getSearchFields(identifier);
         return ApiResponse.success(searchFieldTemplateList);
@@ -62,7 +63,7 @@ public class SysCommonController {
      * @throws ApiException 如果查询过程中发生错误，例如参数无效或数据库查询失败，将抛出 {@link ApiException} 异常。
      */
     @GetMapping(value = "/enums")
-    public ApiResponse getEnums() throws ApiException {
+    public ApiResponse<Map<String, List<ApiEnumScanner.ApiEnumObject>>> getEnums() throws ApiException {
         return ApiResponse.success(ApiEnumScanner.getAllApiEnums());
     }
 }
