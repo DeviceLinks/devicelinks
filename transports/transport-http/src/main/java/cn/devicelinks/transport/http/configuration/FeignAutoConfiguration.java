@@ -3,6 +3,7 @@ package cn.devicelinks.transport.http.configuration;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
 import cn.devicelinks.framework.common.feign.FeignConstants;
+import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
 import cn.devicelinks.framework.common.utils.HmacSignature;
 import feign.Feign;
 import feign.RequestInterceptor;
@@ -37,8 +38,8 @@ public class FeignAutoConfiguration {
         TransportHttpProperties.DeviceCenterFeignAccessConfig coreServiceFeignConfig = httpTransportProperties.getDeviceCenterAccess();
         return Feign.builder()
                 .client(new OkHttpClient())
-                .encoder(new JacksonEncoder())
-                .decoder(new JacksonDecoder())
+                .encoder(new DeviceLinksJacksonFeignDecoder())
+                .decoder(new DeviceLinksJacksonFeignEncoder())
                 .requestInterceptor(signRequestInterceptor())
                 .target(DeviceCenterDeviceFeignApi.class, coreServiceFeignConfig.getUri());
     }
@@ -89,6 +90,18 @@ public class FeignAutoConfiguration {
         private String getBodyString(RequestTemplate template) {
             byte[] body = template.body();
             return body != null ? new String(body, StandardCharsets.UTF_8) : "";
+        }
+    }
+
+    private static class DeviceLinksJacksonFeignDecoder extends JacksonEncoder {
+        public DeviceLinksJacksonFeignDecoder() {
+            super(new DeviceLinksJsonMapper());
+        }
+    }
+
+    private static class DeviceLinksJacksonFeignEncoder extends JacksonDecoder {
+        public DeviceLinksJacksonFeignEncoder() {
+            super(new DeviceLinksJsonMapper());
         }
     }
 }
