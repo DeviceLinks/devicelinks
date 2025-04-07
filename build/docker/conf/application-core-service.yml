@@ -17,6 +17,16 @@ spring:
 devicelinks:
   core:
     version: ${DEVICELINKS_VERSION}
+    security:
+      # HTTP Transport Security
+      transport-http:
+        api-key: ${DEVICELINKS_HTTP_TRANSPORT_API_KEY}
+        api-secret: ${DEVICELINKS_HTTP_TRANSPORT_API_SECRET}
+      # Console Security
+      console:
+        api-key: ${DEVICELINKS_CONSOLE_API_KEY}
+        api-secret: ${DEVICELINKS_CONSOLE_API_SECRET}
+
 
 logging:
   config: ${HOME_DIR}/conf/logback.xml

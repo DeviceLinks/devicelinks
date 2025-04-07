@@ -13,9 +13,12 @@ volumes:
   - name: docker
     host:
       path: /var/run/docker.sock
-  - name: env-file
+  - name: common-run-env
     host:
       path: /usr/local/docker/devicelinks/run.env
+  - name: core-service-env
+    host:
+      path: /usr/local/docker/devicelinks/core-service.env
 
 steps:
   # Package SourceCode
@@ -116,7 +119,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-core-service
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
-        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
+        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env --env-file /usr/local/docker/devicelinks/core-service.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
 
   # Deploy Rule-Engine
   - name: deploy rule-engine
