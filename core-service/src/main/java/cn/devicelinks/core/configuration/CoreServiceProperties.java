@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Map;
+import java.util.List;
 
 import static cn.devicelinks.core.configuration.CoreServiceProperties.DEVICELINKS_CORE_SERVICE_PREFIX;
 
@@ -20,16 +20,23 @@ import static cn.devicelinks.core.configuration.CoreServiceProperties.DEVICELINK
 public class CoreServiceProperties {
     public static final String DEVICELINKS_CORE_SERVICE_PREFIX = "devicelinks.core";
 
-    private Map<InternalService, InternalServiceSecurity> security;
+    private List<InternalServiceApiKey> apiKeys;
 
     @Data
-    public static class InternalServiceSecurity {
+    public static class InternalServiceApiKey {
         private String apiKey;
         private String apiSecret;
+        private List<InternalServiceScope> scopes;
     }
 
-    public enum InternalService {
-        TransportHttp,
+    public enum InternalServiceScope {
+        /**
+         * ALL Protocol Transport
+         */
+        Transport,
+        /**
+         * Console
+         */
         Console
     }
 }
