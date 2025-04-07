@@ -33,7 +33,7 @@ import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.common.utils.SecureRandomUtils;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
@@ -54,7 +54,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/user")
 @RequiredArgsConstructor
 public class SysUserController {
-    private static final int ACTIVATE_TOKEN_LENGTH = 50;
+    private static final int ACTIVATE_TOKEN_LENGTH = 64;
     private final SysUserService userService;
 
     /**
@@ -116,7 +116,7 @@ public class SysUserController {
                 .setAccount(request.getAccount())
                 .setName(request.getUsername())
                 .setEmail(request.getEmail())
-                .setActivateToken(StringUtils.getRandomString(ACTIVATE_TOKEN_LENGTH))
+                .setActivateToken(SecureRandomUtils.generateRandomBase64(ACTIVATE_TOKEN_LENGTH))
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
                 .setCreateBy(currentUser.getId())
                 .setMark(request.getMark());

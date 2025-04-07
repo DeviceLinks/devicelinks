@@ -11,7 +11,7 @@ import cn.devicelinks.framework.common.ProductStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.common.utils.SecureRandomUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -34,8 +34,8 @@ import static cn.devicelinks.framework.jdbc.tables.TProduct.PRODUCT;
 @Service
 @Slf4j
 public class ProductServiceImpl extends BaseServiceImpl<Product, String, ProductRepository> implements ProductService {
-    private final int PRODUCT_KEY_LENGTH = 30;
-    private final int PRODUCT_SECRET_LENGTH = 50;
+    private final int PRODUCT_KEY_LENGTH = 32;
+    private final int PRODUCT_SECRET_LENGTH = 64;
     private final DeviceService deviceService;
     private final FunctionModuleService functionModuleService;
 
@@ -57,8 +57,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
             throw new ApiException(StatusCodeConstants.PRODUCT_ALREADY_EXISTS, product.getName());
         }
         // @formatter:off
-        product.setProductKey(StringUtils.getRandomString(PRODUCT_KEY_LENGTH))
-                .setProductSecret(StringUtils.getRandomString(PRODUCT_SECRET_LENGTH));
+        product.setProductKey(SecureRandomUtils.generateRandomHex(PRODUCT_KEY_LENGTH))
+                .setProductSecret(SecureRandomUtils.generateRandomHex(PRODUCT_SECRET_LENGTH));
         // @formatter:on
         this.repository.insert(product);
         // add default function module
@@ -123,8 +123,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
         if (product == null) {
             throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, productId);
         }
-        String productKey = StringUtils.getRandomString(PRODUCT_KEY_LENGTH);
-        String productSecret = StringUtils.getRandomString(PRODUCT_SECRET_LENGTH);
+        String productKey = SecureRandomUtils.generateRandomHex(PRODUCT_KEY_LENGTH);
+        String productSecret = SecureRandomUtils.generateRandomHex(PRODUCT_SECRET_LENGTH);
         product.setProductKey(productKey).setProductSecret(productSecret);
         this.repository.update(product);
         // @formatter:off
