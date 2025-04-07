@@ -84,10 +84,10 @@
             <scope>test</scope>
         </dependency>
         <!-- SpringSecurity Dependencies -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        </dependency>-->
         <!--Other Dependencies-->
         <dependency>
             <groupId>com.mysql</groupId>
