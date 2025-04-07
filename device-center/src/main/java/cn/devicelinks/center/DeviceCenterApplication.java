@@ -15,20 +15,20 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.core;
+package cn.devicelinks.center;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 核心服务启动类
+ * 设备中心启动类
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @SpringBootApplication
-public class CoreServiceApplication {
+public class DeviceCenterApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CoreServiceApplication.class, args);
+        SpringApplication.run(DeviceCenterApplication.class, args);
     }
 }

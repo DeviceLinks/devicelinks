@@ -16,9 +16,9 @@ volumes:
   - name: common-run-env
     host:
       path: /usr/local/docker/devicelinks/run.env
-  - name: core-service-env
+  - name: device-center-env
     host:
-      path: /usr/local/docker/devicelinks/core-service.env
+      path: /usr/local/docker/devicelinks/device-center.env
 
 steps:
   # Package SourceCode
@@ -47,8 +47,8 @@ steps:
       - name: docker
         path: /var/run/docker.sock
 
-  # Build Core-Service Docker Image
-  - name: build core-service
+  # Build Device-Center Docker Image
+  - name: build device-center
     image: plugins/docker
     network_mode: host
     settings:
@@ -57,9 +57,9 @@ steps:
       password:
         from_secret: docker_password
       tags: latest
-      dockerfile: build/docker/Dockerfile.develop.core-service
+      dockerfile: build/docker/Dockerfile.develop.device-center
       registry: registry.cn-hangzhou.aliyuncs.com
-      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service
+      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center
     volumes:
       - name: docker
         path: /var/run/docker.sock
@@ -101,8 +101,8 @@ steps:
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
         - /usr/local/bin/docker run -p 13650:13650 -d --restart=always --net=devicelinks --ip=172.10.1.10 --name devicelinks-console --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/console:latest
 
-  # Deploy Core-Service
-  - name: deploy core-service
+  # Deploy Device-Center
+  - name: deploy device-center
     image: appleboy/drone-ssh
     network_mode: host
     settings:
@@ -115,11 +115,11 @@ steps:
       port: 22
       command_timeout: 5m
       script:
-        - /usr/local/bin/docker stop devicelinks-core-service
-        - /usr/local/bin/docker rm devicelinks-core-service
-        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service | awk 'NR>1{print $3}')
-        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
-        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-core-service --env-file /usr/local/docker/devicelinks/run.env --env-file /usr/local/docker/devicelinks/core-service.env registry.cn-hangzhou.aliyuncs.com/devicelinks/core-service:latest
+        - /usr/local/bin/docker stop devicelinks-device-center
+        - /usr/local/bin/docker rm devicelinks-device-center
+        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center | awk 'NR>1{print $3}')
+        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center:latest
+        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-device-center --env-file /usr/local/docker/devicelinks/run.env --env-file /usr/local/docker/devicelinks/device-center.env registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center:latest
 
   # Deploy Rule-Engine
   - name: deploy rule-engine

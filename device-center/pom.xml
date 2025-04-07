@@ -27,7 +27,7 @@
         <relativePath>../parent</relativePath>
     </parent>
     <packaging>jar</packaging>
-    <artifactId>devicelinks-core-service</artifactId>
+    <artifactId>devicelinks-device-center</artifactId>
     <description>
         The core service.
     </description>
@@ -124,7 +124,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>devicelinks-core-service</finalName>
+        <finalName>devicelinks-device-center</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

@@ -1,2 +1,2 @@
 # 暂不实现
-# 发版时从github版本发布文件中下载devicelinks.tar.gz文件，解压后将devicelinks-console.jar、devicelinks-core-service.jar复制到容器内的/home/devicelinks/target目录下
+# 发版时从github版本发布文件中下载devicelinks.tar.gz文件，解压后将devicelinks-console.jar、devicelinks-device-center.jar复制到容器内的/home/devicelinks/target目录下

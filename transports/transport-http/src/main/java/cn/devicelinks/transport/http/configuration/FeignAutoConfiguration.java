@@ -1,7 +1,7 @@
 package cn.devicelinks.transport.http.configuration;
 
 import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.feign.CoreServiceDeviceApi;
+import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
 import cn.devicelinks.framework.common.feign.FeignConstants;
 import cn.devicelinks.framework.common.utils.HmacSignature;
 import feign.Feign;
@@ -33,28 +33,28 @@ public class FeignAutoConfiguration {
     }
 
     @Bean
-    public CoreServiceDeviceApi coreServiceDeviceApi() {
-        TransportHttpProperties.CoreServiceFeignConfig coreServiceFeignConfig = httpTransportProperties.getCoreServiceAccess();
+    public DeviceCenterDeviceFeignApi coreServiceDeviceApi() {
+        TransportHttpProperties.DeviceCenterFeignAccessConfig coreServiceFeignConfig = httpTransportProperties.getDeviceCenterAccess();
         return Feign.builder()
                 .client(new OkHttpClient())
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
                 .requestInterceptor(signRequestInterceptor())
-                .target(CoreServiceDeviceApi.class, coreServiceFeignConfig.getUri());
+                .target(DeviceCenterDeviceFeignApi.class, coreServiceFeignConfig.getUri());
     }
 
     @Bean
     public RequestInterceptor signRequestInterceptor() {
-        return new SignRequestInterceptor(httpTransportProperties.getCoreServiceAccess());
+        return new SignRequestInterceptor(httpTransportProperties.getDeviceCenterAccess());
     }
 
     /**
      * The Sign RequestInterceptor
      */
     private static class SignRequestInterceptor implements RequestInterceptor {
-        private final TransportHttpProperties.CoreServiceFeignConfig coreServiceFeignConfig;
+        private final TransportHttpProperties.DeviceCenterFeignAccessConfig coreServiceFeignConfig;
 
-        public SignRequestInterceptor(TransportHttpProperties.CoreServiceFeignConfig coreServiceFeignConfig) {
+        public SignRequestInterceptor(TransportHttpProperties.DeviceCenterFeignAccessConfig coreServiceFeignConfig) {
             this.coreServiceFeignConfig = coreServiceFeignConfig;
         }
 

@@ -36,7 +36,7 @@
         <module>jdbc</module>
         <module>console</module>
         <module>rule-engine</module>
-        <module>core-service</module>
+        <module>device-center</module>
         <module>transports</module>
     </modules>
     <properties>
@@ -209,7 +209,7 @@
                             <excludeArtifacts>
                                 <artifact>devicelinks-build</artifact>
                                 <artifact>devicelinks-console</artifact>
-                                <artifact>devicelinks-core-service</artifact>
+                                <artifact>devicelinks-device-center</artifact>
                             </excludeArtifacts>
                         </configuration>
                     </plugin>

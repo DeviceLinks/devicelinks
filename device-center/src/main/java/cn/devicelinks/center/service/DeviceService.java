@@ -1,4 +1,4 @@
-package cn.devicelinks.core.service;
+package cn.devicelinks.center.service;
 
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.BaseService;

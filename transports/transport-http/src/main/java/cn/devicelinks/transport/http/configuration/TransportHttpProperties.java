@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Configuration;
 public class TransportHttpProperties {
     public static final String DEVICELINKS_TRANSPORT_HTTP_PREFIX = "devicelinks.transport.http";
 
-    private CoreServiceFeignConfig coreServiceAccess;
+    private DeviceCenterFeignAccessConfig deviceCenterAccess;
 
     @Data
-    public static class CoreServiceFeignConfig {
+    public static class DeviceCenterFeignAccessConfig {
         private String uri;
         private String apiKey;
         private String apiSecret;

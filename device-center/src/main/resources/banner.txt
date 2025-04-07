@@ -1,0 +1,11 @@
+,------.                  ,--.               ,-----.                ,--.
+|  .-.  \  ,---.,--.  ,--.`--' ,---. ,---.  '  .--./,---. ,--,--, ,-'  '-. ,---. ,--.--.
+|  |  \  :| .-. :\  `'  / ,--.| .--'| .-. : |  |   | .-. :|      \'-.  .-'| .-. :|  .--'
+|  '--'  /\   --. \    /  |  |\ `--.\   --. '  '--'\   --.|  ||  |  |  |  \   --.|  |
+`-------'  `----'  `--'   `--' `---' `----'  `-----'`----'`--''--'  `--'   `----'`--'
+
+SpringBoot Version : ${spring-boot.formatted-version}
+
+Device-Center Version : ${devicelinks.center.version}
+
+HelpUri : https://github.com/DeviceLinks/devicelinks/issues

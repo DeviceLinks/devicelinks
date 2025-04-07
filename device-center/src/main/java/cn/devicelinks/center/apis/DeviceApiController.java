@@ -1,8 +1,8 @@
-package cn.devicelinks.core.apis;
+package cn.devicelinks.center.apis;
 
-import cn.devicelinks.core.service.DeviceService;
+import cn.devicelinks.center.service.DeviceService;
 import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.feign.CoreServiceDeviceApi;
+import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
 import cn.devicelinks.framework.common.pojos.Device;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/devices")
 @AllArgsConstructor
-public class DeviceApiController implements CoreServiceDeviceApi {
+public class DeviceApiController implements DeviceCenterDeviceFeignApi {
 
     private DeviceService deviceService;
 

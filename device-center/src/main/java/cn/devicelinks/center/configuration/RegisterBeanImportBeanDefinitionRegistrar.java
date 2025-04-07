@@ -15,7 +15,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.core.configuration;
+package cn.devicelinks.center.configuration;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
 import lombok.extern.slf4j.Slf4j;

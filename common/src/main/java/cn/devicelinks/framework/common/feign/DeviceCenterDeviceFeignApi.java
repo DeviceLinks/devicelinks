@@ -9,12 +9,12 @@ import feign.RequestLine;
 import static cn.devicelinks.framework.common.feign.FeignConstants.JSON_CONTENT_TYPE_HEADER;
 
 /**
- * 核心服务设备接口定义
+ * 设备中心设备相关接口定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public interface CoreServiceDeviceApi {
+public interface DeviceCenterDeviceFeignApi {
     /**
      * 获取指定名称的设备
      *

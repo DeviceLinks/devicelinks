@@ -15,7 +15,7 @@ spring:
       password: ${REDIS_SERVICE_PASSWORD}
 
 devicelinks:
-  core:
+  center:
     version: ${DEVICELINKS_VERSION}
     # Api Keys
     api-keys:

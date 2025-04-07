@@ -1,6 +1,6 @@
-package cn.devicelinks.core.service.impl;
+package cn.devicelinks.center.service.impl;
 
-import cn.devicelinks.core.service.DeviceService;
+import cn.devicelinks.center.service.DeviceService;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;

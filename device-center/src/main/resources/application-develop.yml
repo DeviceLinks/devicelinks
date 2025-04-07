@@ -12,7 +12,7 @@ spring:
       password: homeserver@2025
 
 devicelinks:
-  core:
+  center:
     # Api Keys
     api-keys:
       - api-key: 6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e

@@ -15,22 +15,29 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.core.configuration;
+package cn.devicelinks.center.configuration;
 
 import cn.devicelinks.framework.common.annotation.RegisterBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+
+import java.util.Set;
 
 /**
- * {@link RegisterBean}注解扫描自动化配置类
+ * {@link RegisterBean}注解扫描器
  *
  * @author 恒宇少年
  * @since 1.0
  */
-@ConditionalOnClass(RegisterBean.class)
-@Import(RegisterBeanImportBeanDefinitionRegistrar.class)
-@Configuration
-public class RegisterBeanAutoConfiguration {
-    //...
+public class RegisterBeanClassPathBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
+    public RegisterBeanClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry) {
+        super(registry);
+    }
+
+    public Set<BeanDefinitionHolder> doScan(String... basePackages) {
+        addIncludeFilter(new AnnotationTypeFilter(RegisterBean.class));
+        return super.doScan(basePackages);
+    }
 }
