@@ -20,11 +20,16 @@ import static cn.devicelinks.core.configuration.CoreServiceProperties.DEVICELINK
 public class CoreServiceProperties {
     public static final String DEVICELINKS_CORE_SERVICE_PREFIX = "devicelinks.core";
 
-    private Map<String, InternalServiceSecurity> security;
+    private Map<InternalService, InternalServiceSecurity> security;
 
     @Data
     public static class InternalServiceSecurity {
         private String apiKey;
         private String apiSecret;
+    }
+
+    public enum InternalService {
+        TransportHttp,
+        Console
     }
 }
