@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console.authorization;
 
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.service.system.SysDepartmentService;
 import cn.devicelinks.service.system.SysUserService;
 import cn.devicelinks.framework.common.api.StatusCode;

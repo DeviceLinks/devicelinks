@@ -15,7 +15,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.authorization;
+package cn.devicelinks.framework.common.authorization;
 
 import cn.devicelinks.framework.common.api.StatusCode;
 import lombok.Getter;

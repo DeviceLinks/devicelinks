@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.authorization.endpoint.access;
 
-import cn.devicelinks.console.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.api.StatusCode;
