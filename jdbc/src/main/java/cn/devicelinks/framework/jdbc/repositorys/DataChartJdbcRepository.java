@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DataChart;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
@@ -18,7 +18,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDataChart.DATA_CHART;
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DataChartJdbcRepository extends JdbcRepository<DataChart, String> implements DataChartRepository {
     public DataChartJdbcRepository(JdbcOperations jdbcOperations) {
         super(DATA_CHART, jdbcOperations);

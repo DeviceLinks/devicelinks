@@ -17,12 +17,12 @@
 
 package cn.devicelinks.framework.common.request;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.http.RequestWrapper;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ import java.io.IOException;
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@Component
 @WebFilter(urlPatterns = "/*", filterName = "requestContextWebFilter")
 @Slf4j
 public class RequestContextWebFilter implements Filter {

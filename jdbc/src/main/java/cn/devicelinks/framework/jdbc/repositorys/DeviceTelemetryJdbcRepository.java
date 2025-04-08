@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -38,7 +38,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceTelemetry.DEVICE_TELEM
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DeviceTelemetryJdbcRepository extends JdbcRepository<DeviceTelemetry, String> implements DeviceTelemetryRepository {
     public DeviceTelemetryJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_TELEMETRY, jdbcOperations);

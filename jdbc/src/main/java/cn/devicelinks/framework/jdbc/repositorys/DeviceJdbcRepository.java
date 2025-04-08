@@ -18,8 +18,8 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.DeviceType;
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
@@ -41,7 +41,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DeviceJdbcRepository extends JdbcRepository<Device, String> implements DeviceRepository {
 
     public DeviceJdbcRepository(JdbcOperations jdbcOperations) {

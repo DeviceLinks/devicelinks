@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAuthentication;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -34,7 +34,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAuthentication.DEVICE_
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceAuthentication, String> implements DeviceAuthenticationRepository {
     public DeviceAuthenticationJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_AUTHENTICATION, jdbcOperations);

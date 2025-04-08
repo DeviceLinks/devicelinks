@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
@@ -24,7 +24,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAttributeDesired.DEVIC
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DeviceAttributeDesiredJdbcRepository extends JdbcRepository<DeviceAttributeDesired, String> implements DeviceAttributeDesiredRepository {
     // @formatter:off
     private static final String SELECT_ATTRIBUTE_DESIRED_DTO_SQL = "select dad.*," +
