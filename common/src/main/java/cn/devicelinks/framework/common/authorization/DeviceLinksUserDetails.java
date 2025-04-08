@@ -44,13 +44,13 @@ public class DeviceLinksUserDetails implements UserDetails, CredentialsContainer
     @Setter
     private String sessionId;
 
-    private final AuthorizedUserAddition authorizedUserAddition;
+    private final UserAuthorizedAddition authorizedUserAddition;
 
-    private DeviceLinksUserDetails(AuthorizedUserAddition authorizedUserAddition) {
+    private DeviceLinksUserDetails(UserAuthorizedAddition authorizedUserAddition) {
         this.authorizedUserAddition = authorizedUserAddition;
     }
 
-    public static DeviceLinksUserDetails of(AuthorizedUserAddition authorizedUserAddition) {
+    public static DeviceLinksUserDetails of(UserAuthorizedAddition authorizedUserAddition) {
         Assert.notNull(authorizedUserAddition, "AuthorizedUserAddition cannot be null");
         return new DeviceLinksUserDetails(authorizedUserAddition);
     }

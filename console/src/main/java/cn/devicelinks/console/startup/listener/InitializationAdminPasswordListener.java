@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.startup.listener;
 
-import cn.devicelinks.console.service.SysUserService;
+import cn.devicelinks.service.system.SysUserService;
 import cn.devicelinks.framework.common.UserIdentity;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.startup.AbstractStartupEventListener;

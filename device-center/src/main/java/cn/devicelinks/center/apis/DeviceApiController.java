@@ -1,9 +1,9 @@
 package cn.devicelinks.center.apis;
 
-import cn.devicelinks.center.service.DeviceService;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
 import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.service.device.DeviceService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ public class DeviceApiController implements DeviceCenterDeviceFeignApi {
     @Override
     @GetMapping
     public ApiResponse<Device> getDeviceByName(String deviceName) {
-        Device device = deviceService.getDeviceByName(deviceName);
+        Device device = deviceService.selectByName(deviceName);
         return ApiResponse.success(device);
     }
 

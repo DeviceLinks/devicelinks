@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 恒宇少年
  * @since 1.0
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "cn.devicelinks")
 public class DeviceCenterApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeviceCenterApplication.class, args);

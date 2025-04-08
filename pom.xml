@@ -38,6 +38,8 @@
         <module>rule-engine</module>
         <module>device-center</module>
         <module>transports</module>
+        <module>services</module>
+        <module>api-support</module>
     </modules>
     <properties>
         <revision>1.0-SNAPSHOT</revision>

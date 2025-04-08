@@ -19,8 +19,8 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 
 import cn.devicelinks.console.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.console.service.SysLogService;
-import cn.devicelinks.console.service.SysUserSessionService;
+import cn.devicelinks.service.system.SysLogService;
+import cn.devicelinks.service.system.SysUserSessionService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.StatusCode;

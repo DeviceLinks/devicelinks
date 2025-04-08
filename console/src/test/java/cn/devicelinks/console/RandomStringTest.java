@@ -1,6 +1,8 @@
 package cn.devicelinks.console;
 
-import cn.devicelinks.framework.common.utils.StringUtils;
+import cn.devicelinks.framework.common.utils.SecureRandomUtils;
+
+import java.util.Arrays;
 
 /**
  * 随机字符串测试类
@@ -10,6 +12,8 @@ import cn.devicelinks.framework.common.utils.StringUtils;
  */
 public class RandomStringTest {
     public static void main(String[] args) {
-        System.out.println(StringUtils.getRandomString(50));
+        System.out.println(SecureRandomUtils.generateRandomHex(32));
+        System.out.println(SecureRandomUtils.generateRandomBase64(32));
+        System.out.println(Arrays.toString(SecureRandomUtils.generateRandomBytes(32)));
     }
 }

@@ -40,11 +40,11 @@
         <!--DeviceLinks Dependencies-->
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-common</artifactId>
+            <artifactId>devicelinks-api-support</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-jdbc</artifactId>
+            <artifactId>devicelinks-service-dependencies</artifactId>
         </dependency>
         <!--SpringBoot Dependencies-->
         <dependency>
@@ -84,10 +84,10 @@
             <scope>test</scope>
         </dependency>
         <!-- SpringSecurity Dependencies -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>-->
+        </dependency>
         <!--Other Dependencies-->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -102,16 +102,6 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>

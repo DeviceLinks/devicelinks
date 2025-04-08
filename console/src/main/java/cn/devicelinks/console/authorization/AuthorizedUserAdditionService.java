@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
+import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -31,7 +31,7 @@ public interface AuthorizedUserAdditionService {
      * 根据用户名称加载附加信息
      *
      * @param username 用户名{@link UserDetails#getUsername()}
-     * @return {@link AuthorizedUserAddition}
+     * @return {@link UserAuthorizedAddition}
      */
-    AuthorizedUserAddition selectByUsername(String username);
+    UserAuthorizedAddition selectByUsername(String username);
 }
