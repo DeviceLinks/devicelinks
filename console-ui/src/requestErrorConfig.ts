@@ -19,6 +19,7 @@ import { RequestOptions } from '@@/plugin-request/request';
 import { history, RequestConfig } from '@umijs/max';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
+const loginPath = '/user/login';
 // 错误处理方案： 错误类型
 enum ErrorShowType {
   SILENT = 0,
@@ -52,7 +53,10 @@ export const errorConfig: RequestConfig = {
       const { code, message, showType, data } = res as unknown as ResponseStructure;
       if (code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
         Cookies.remove('token');
-        history.replace('/user/login?redirect=' + history.location.pathname);
+        const hasRedirect = history.location.pathname !== loginPath;
+        history.replace(
+          `${loginPath}${hasRedirect ? `?redirect=${history.location.pathname}` : ''}`,
+        );
       } else if (code !== ResponseCodeType.SUCCESS) {
         const error: any = new Error(message);
         error.name = 'BizError';
@@ -71,7 +75,10 @@ export const errorConfig: RequestConfig = {
           message.error(errorMessage);
         }
       } else if (error.name === 'TokenError') {
-        history.replace('/user/login?redirect=' + history.location.pathname);
+        const hasRedirect = history.location.pathname !== loginPath;
+        history.replace(
+          `${loginPath}${hasRedirect ? `?redirect=${history.location.pathname}` : ''}`,
+        );
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围

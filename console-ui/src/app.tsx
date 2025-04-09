@@ -33,9 +33,9 @@ const loginPath = '/user/login';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser | null | undefined;
+  currentUser?: API.CurrentLoginUser | null | undefined;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | null | undefined>;
+  fetchUserInfo?: () => Promise<API.CurrentLoginUser | null | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -83,7 +83,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(`loginPath?redirect=${location.pathname}`);
+        history.push(`${loginPath}?redirect=${location.pathname}`);
       }
     },
     bgLayoutImgList: [
