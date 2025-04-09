@@ -2,8 +2,8 @@ import { Button, message } from 'antd';
 import { ModalForm, ProFormText } from '@ant-design/pro-components';
 import { useRequest } from '@@/exports';
 import {
-  getApiOpenApiFunctionModuleModuleId,
-  postApiOpenApiFunctionModuleModuleId,
+  getApiFunctionModuleModuleId,
+  postApiFunctionModuleModuleId,
 } from '@/services/device-links-console-ui/functionModule';
 import { EditOutlined } from '@ant-design/icons';
 import React from 'react';
@@ -16,7 +16,7 @@ const UpdateFunctionModuleForm: React.FC<UpdateFunctionModuleFormProps> = ({
   moduleId,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const { run, loading } = useRequest(postApiOpenApiFunctionModuleModuleId, {
+  const { run, loading } = useRequest(postApiFunctionModuleModuleId, {
     manual: true,
     onSuccess: () => {
       messageApi?.success('编辑功能模块成功');
@@ -24,7 +24,7 @@ const UpdateFunctionModuleForm: React.FC<UpdateFunctionModuleFormProps> = ({
     },
   });
   const fetchData = async () => {
-    const { data } = await getApiOpenApiFunctionModuleModuleId({
+    const { data } = await getApiFunctionModuleModuleId({
       moduleId,
     });
     return data!;

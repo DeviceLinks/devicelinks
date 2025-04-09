@@ -62,6 +62,25 @@ declare namespace API {
     desiredValue: string;
   };
 
+  type AddDeviceProfileRequest = {
+    /** 配置文件名称 */
+    name: string;
+    /** 产品ID */
+    productId?: string;
+    /** 固件ID */
+    firmwareId?: string;
+    /** 软件ID */
+    softwareId?: string;
+    /** 日志附加配置，选择产品后可以为产品下定义的功能模块定义日志等级以及上报间隔，如果不选择产品只允许设置"default"功能模块的日志等级以及上报间隔 */
+    logAddition?: DeviceProfileLogAddition | null;
+    /** 预配置附加信息 */
+    provisionAddition: DeviceProfileProvisionAddition;
+    /** 自定义扩展Json配置 */
+    extension?: string;
+    /** 描述 */
+    description?: string;
+  };
+
   type AddDeviceRequest = {
     /** 产品ID */
     productId: string;
@@ -69,10 +88,10 @@ declare namespace API {
     departmentId: string;
     /** 设备类型 */
     deviceType: string;
-    /** 设备唯一码 */
-    deviceCode: string;
+    /** 设备唯一名称 */
+    deviceName: string;
     /** 备注名称 */
-    name?: string;
+    noteName?: string;
     /** 标签列表 */
     tags?: string[];
     /** 备注 */
@@ -80,12 +99,12 @@ declare namespace API {
     /** 鉴权方式 */
     authenticationMethod: string;
     /** 鉴权附加信息 */
-    authenticationAddition: {
-      accessToken: string;
-      x509Pem: string;
-      mqttBasic: { clientId: string; username: string; password: string };
-      deviceCredential: { deviceKey: string; deviceSecret: string };
-    };
+    authenticationAddition: DeviceAuthenticationAddition;
+  };
+
+  type AddDeviceTagRequest = {
+    /** 设备标签名称 */
+    name: string;
   };
 
   type AddDeviceTelemetryRequest = {
@@ -200,7 +219,7 @@ declare namespace API {
     /** 数据值映射集合 */
     valueMap?: string;
     /** 数组、集合元素的数量 */
-    elementCount?: string;
+    elementCount?: number;
     /** 单个元素的数据类型 */
     elementDataType?: string;
   };
@@ -258,6 +277,17 @@ declare namespace API {
     description?: string;
   };
 
+  type BatchSetDeviceProfileRequest = {
+    /** 批量设置方式 */
+    batchSetAway: string;
+    /** 设备ID列表，仅适用SpecifyDevice方式 */
+    deviceIds?: string[];
+    /** 设备标签列表，仅适用于DeviceTag方式 */
+    deviceTags?: string[];
+    /** 设备类型，仅适用于DeviceType方式 */
+    deviceType?: string;
+  };
+
   type CurrentLoginUser = {
     user: User;
     department: Department;
@@ -281,7 +311,7 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark?: null;
+    mark?: string;
   };
 
   type DataChartDTO = {
@@ -302,7 +332,7 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark?: null;
+    mark?: string;
     fields: DataChartField[];
   };
 
@@ -324,11 +354,6 @@ declare namespace API {
   };
 
   type DataFormat = EnumItem[];
-
-  type deleteApi_openAPI_functionModuleModuleIdParams = {
-    /** 功能模块ID */
-    moduleId: string;
-  };
 
   type deleteApiAttributeAttributeIdParams = {
     /** 属性ID */
@@ -354,6 +379,21 @@ declare namespace API {
     deviceId: string;
     /** 遥测数据ID */
     telemetryId: string;
+  };
+
+  type deleteApiDeviceProfileProfileIdParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
+
+  type deleteApiDeviceTagTagIdParams = {
+    /** 设备标签ID */
+    tagId: string;
+  };
+
+  type deleteApiFunctionModuleModuleIdParams = {
+    /** 功能模块ID */
+    moduleId: string;
   };
 
   type deleteApiProductProductIdParams = {
@@ -386,7 +426,7 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 描述 */
-    description: string;
+    description?: string;
   };
 
   type Device = {
@@ -396,8 +436,8 @@ declare namespace API {
     departmentId: string;
     /** 产品ID */
     productId: string;
-    /** 设备号 */
-    deviceCode: string;
+    /** 设备唯一名称 */
+    deviceName: string;
     /** 设备类型 */
     deviceType: string;
     /** 设备名称 */
@@ -405,25 +445,27 @@ declare namespace API {
     /** 设备状态 */
     status: string;
     /** 设备标签 */
-    tags?: null;
+    tags?: string;
+    /** IP地址 */
+    ipAddress?: string;
     /** 激活时间 */
-    activationTime?: null;
+    activationTime?: string;
     /** 最后上线时间 */
-    lastOnlineTime?: null;
+    lastOnlineTime?: string;
     /** 最后上报时间 */
-    lastReportTime?: null;
+    lastReportTime?: string;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 附加信息 */
-    addition: null;
+    addition?: string;
     /** 创建人ID */
     createBy: string;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark?: null;
+    mark?: string;
   };
 
   type DeviceAttribute = {
@@ -434,7 +476,7 @@ declare namespace API {
     /** 模块ID */
     moduleId: string;
     /** 定义属性ID */
-    attributeId?: null;
+    attributeId?: string;
     /** 属性标识符 */
     identifier: string;
     /** 属性值，动态值，格式不固定 */
@@ -457,7 +499,7 @@ declare namespace API {
     /** 功能模块ID */
     moduleId: string;
     /** 定义属性ID */
-    attributeId?: null;
+    attributeId?: string;
     /** 属性标识符 */
     identifier: string;
     /** 属性数据类型 */
@@ -473,7 +515,7 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 过期时间 */
-    expiredTime?: null;
+    expiredTime?: string;
     /** 是否删除 */
     deleted: boolean;
   };
@@ -486,7 +528,7 @@ declare namespace API {
     /** 功能模块ID */
     moduleId: string;
     /** 定义属性ID */
-    attributeId?: null;
+    attributeId?: string;
     /** 属性标识符 */
     identifier: string;
     /** 属性数据类型 */
@@ -502,7 +544,7 @@ declare namespace API {
     /** 创建时间 */
     createTime: string;
     /** 过期时间 */
-    expiredTime?: null;
+    expiredTime?: string;
     /** 是否删除 */
     deleted: boolean;
     /** 属性名称 */
@@ -523,7 +565,7 @@ declare namespace API {
     /** 模块ID */
     moduleId: string;
     /** 定义属性ID */
-    attributeId?: null;
+    attributeId?: string;
     /** 属性标识符 */
     identifier: string;
     /** 属性值，动态值，格式不固定 */
@@ -553,10 +595,10 @@ declare namespace API {
     deviceId: string;
     /** 认证方式 */
     authenticationMethod: string;
-    /** 附加信息 */
+    /** 鉴权附加信息 */
     addition: DeviceAuthenticationAddition;
     /** 过期时间 */
-    expirationTime?: null;
+    expirationTime?: string;
     /** 是否删除 */
     deleted: boolean;
     /** 创建时间 */
@@ -565,13 +607,13 @@ declare namespace API {
 
   type DeviceAuthenticationAddition = {
     /** 请求令牌 */
-    accessToken: string;
+    staticToken: string;
     /** X.509 pem证书 */
     x509Pem: string;
     /** mqtt基础认证 */
     mqttBasic: { clientId: string; username: string; password: string };
     /** 设备凭证 */
-    deviceCredential: { deviceKey: string; deviceSecret: string };
+    dynamicToken: { deviceSecret: string; secretGenerateTime: string };
   };
 
   type DeviceAuthenticationMethod = EnumItem[];
@@ -583,8 +625,8 @@ declare namespace API {
     departmentId: string;
     /** 产品ID */
     productId: string;
-    /** 设备号 */
-    deviceCode: string;
+    /** 设备唯一名称 */
+    deviceName: string;
     /** 设备类型 */
     deviceType: string;
     /** 设备名称 */
@@ -592,25 +634,27 @@ declare namespace API {
     /** 设备状态 */
     status: string;
     /** 设备标签 */
-    tags?: null;
+    tags?: string;
+    /** IP地址 */
+    ipAddress?: string;
     /** 激活时间 */
-    activationTime?: null;
+    activationTime?: string;
     /** 最后上线时间 */
-    lastOnlineTime?: null;
+    lastOnlineTime?: string;
     /** 最后上报时间 */
-    lastReportTime?: null;
+    lastReportTime?: string;
     /** 是否启用 */
     enabled: boolean;
     /** 是否删除 */
     deleted: boolean;
     /** 附加信息 */
-    addition: null;
+    addition?: string;
     /** 创建人ID */
     createBy: string;
     /** 创建时间 */
     createTime: string;
     /** 备注 */
-    mark?: null;
+    mark?: string;
     /** 认证方式 */
     authenticationMethod: string;
     /** 各个功能模块的版本 */
@@ -618,6 +662,52 @@ declare namespace API {
   };
 
   type DeviceNetworkingAway = EnumItem[];
+
+  type DeviceProfile = {
+    /** 设备配置ID */
+    id: string;
+    /** 名称 */
+    name: string;
+    /** 是否为默认配置文件 */
+    defaultProfile: boolean;
+    /** 固件ID */
+    firmwareId?: string;
+    /** 软件ID */
+    softwareId?: string;
+    /** 日志附加信息 */
+    logAddition?: DeviceProfileLogAddition | null;
+    /** 预配置附加信息 */
+    provisionAddition: DeviceProfileProvisionAddition;
+    /** 报警附加信息 */
+    alarmAddition?: string;
+    /** 自定义扩展附加JSON配置 */
+    extension?: string;
+    /** 创建人 */
+    createBy?: string;
+    /** 创建时间 */
+    createTime: string;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 描述 */
+    description?: string;
+  };
+
+  type DeviceProfileLogAddition = {
+    /** 日志等级配置列表 */
+    logLevels: {
+      default: { level: string; reportIntervalSeconds: number };
+      xxx: { level: string; reportIntervalSeconds: number };
+    };
+  };
+
+  type DeviceProfileProvisionAddition = {
+    /** 预配置设备Key */
+    provisionDeviceKey: string;
+    /** 预配置设备Secret */
+    provisionDeviceSecret: string;
+    /** 动态令牌有效期时长，单位：秒 */
+    dynamicTokenValidSeconds: number;
+  };
 
   type DeviceShadow = {
     /** 影子ID */
@@ -635,12 +725,25 @@ declare namespace API {
     /** 最后更新时间 */
     lastUpdateTimestamp?: string;
     /** 最后同步时间 */
-    lastSyncTimestamp?: null;
+    lastSyncTimestamp?: string;
     /** 影子创建时间 */
     createTime: string;
   };
 
   type DeviceStatus = EnumItem[];
+
+  type DeviceTag = {
+    /** 标签ID */
+    id: string;
+    /** 标签名称 */
+    name: string;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 创建人 */
+    createBy: string;
+    /** 创建时间 */
+    createTime: string;
+  };
 
   type DeviceTelemetry = {
     /** ID */
@@ -759,10 +862,6 @@ declare namespace API {
     createTime: string;
   };
 
-  type getApi_openAPI_functionModuleModuleIdParams = {
-    moduleId: string;
-  };
-
   type getApiAttributeAttributeIdParams = {
     /** 属性ID */
     attributeId: string;
@@ -807,6 +906,15 @@ declare namespace API {
   type getApiDeviceDeviceIdShadowParams = {
     /** 设备ID */
     deviceId: string;
+  };
+
+  type getApiDeviceProfileProfileIdParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
+
+  type getApiFunctionModuleModuleIdParams = {
+    moduleId: string;
   };
 
   type getApiProductProductIdParams = {
@@ -963,10 +1071,6 @@ declare namespace API {
 
   type PlatformType = EnumItem[];
 
-  type postApi_openAPI_functionModuleModuleIdParams = {
-    moduleId: string;
-  };
-
   type postApiAttributeAttributeIdParams = {
     /** 属性ID */
     attributeId: string;
@@ -1064,6 +1168,27 @@ declare namespace API {
     sortDirection?: string;
   };
 
+  type postApiDeviceProfileFilterParams = {
+    /** 每页条数 */
+    pageSize?: number;
+    /** 当前页码 */
+    page?: number;
+    /** 排序属性，接口返回值"result"中的属性都可以作为排序字段 */
+    sortProperty?: string;
+    /** 排序顺序，ASC：正序；DESC：倒序 */
+    sortDirection?: string;
+  };
+
+  type postApiDeviceProfileProfileIdBatchSetParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
+
+  type postApiDeviceProfileProfileIdParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
+
   type postApiDeviceTelemetryFilterParams = {
     /** 每页条数 */
     pageSize?: number;
@@ -1073,6 +1198,10 @@ declare namespace API {
     sortProperty?: string;
     /** 排序顺序，ASC：正序；DESC：倒序 */
     sortDirection?: string;
+  };
+
+  type postApiFunctionModuleModuleIdParams = {
+    moduleId: string;
   };
 
   type postApiLogFilterParams = {
@@ -1176,6 +1305,26 @@ declare namespace API {
   };
 
   type ProductStatus = EnumItem[];
+
+  type putApiDeviceProfileProfileIdBasicInfoParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
+
+  type putApiDeviceProfileProfileIdExtensionParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
+
+  type putApiDeviceProfileProfileIdLogAdditionParams = {
+    /** 日志配置文件ID */
+    profileId: string;
+  };
+
+  type putApiDeviceProfileProfileIdProvisionAdditionParams = {
+    /** 设备配置文件ID */
+    profileId: string;
+  };
 
   type RegenerateKeySecretResponse = {
     /** 产品ID */
@@ -1302,7 +1451,7 @@ declare namespace API {
   type UpdateDeviceAuthorizationRequest = {
     /** 设备鉴权方式 */
     authenticationMethod: string;
-    /** 附加信息 */
+    /** 鉴权附加信息 */
     authenticationAddition: DeviceAuthenticationAddition;
   };
 
@@ -1313,9 +1462,56 @@ declare namespace API {
     desiredValue: string;
   };
 
+  type UpdateDeviceProfileBasicInfoRequest = {
+    /** 配置文件名称 */
+    name: string;
+    /** 产品ID */
+    productId?: string;
+    /** 固件OTA ID */
+    firmwareId?: string;
+    /** 软件OTA ID */
+    softwareId?: string;
+    /** 描述 */
+    description?: string;
+  };
+
+  type UpdateDeviceProfileExtensionRequest = {
+    /** 扩展配置，必须传递JSON格式字符串，不可以为空，可以传递"{}" */
+    extension: string;
+  };
+
+  type UpdateDeviceProfileLogAdditionRequest = {
+    /** 日志附加信息 */
+    logAddition: DeviceProfileLogAddition;
+  };
+
+  type UpdateDeviceProfileProvisionAdditionRequest = {
+    /** 预配置附加信息 */
+    provisionAddition: DeviceProfileProvisionAddition;
+  };
+
+  type UpdateDeviceProfileRequest = {
+    /** 配置文件名称 */
+    name: string;
+    /** 产品ID */
+    productId?: string;
+    /** 固件ID */
+    firmwareId?: string;
+    /** 软件ID */
+    softwareId?: string;
+    /** 日志附加配置，选择产品后可以为产品下定义的功能模块定义日志等级以及上报间隔，如果不选择产品只允许设置"default"功能模块的日志等级以及上报间隔 */
+    logAddition?: DeviceProfileLogAddition | null;
+    /** 预配置附加信息 */
+    provisionAddition: DeviceProfileProvisionAddition;
+    /** 自定义扩展Json配置 */
+    extension?: string;
+    /** 描述 */
+    description?: string;
+  };
+
   type UpdateDeviceRequest = {
     /** 设备备注名称 */
-    name?: string;
+    noteName?: string;
     /** 设备标签列表 */
     tags?: string[];
     /** 备注信息 */
@@ -1380,7 +1576,9 @@ declare namespace API {
     departmentId?: string;
     /** 身份，User：普通用户；SystemAdmin：系统管理员；TenantAdmin：租户管理员 */
     identity: 'User' | 'SystemAdmin' | 'TenantAdmin';
+    /** 最后登录时间 */
     lastLoginTime?: string;
+    /** 最后修改密码时间 */
     lastChangePwdTime?: string;
     /** 是否启用 */
     enabled: boolean;

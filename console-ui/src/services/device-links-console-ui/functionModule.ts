@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 添加功能模块 POST /api/function/module */
-export async function postApiOpenApiFunctionModule(
+/** 添加功能模块 POST /api/function-module */
+export async function postApiFunctionModule(
   body: API.AddFunctionModuleRequest,
   options?: { [key: string]: any },
 ) {
@@ -13,7 +13,7 @@ export async function postApiOpenApiFunctionModule(
     data: API.FunctionModule | null;
     additional: Record<string, any>;
     success?: boolean;
-  }>('/api/function/module', {
+  }>('/api/function-module', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,10 +23,10 @@ export async function postApiOpenApiFunctionModule(
   });
 }
 
-/** 查询功能模块详情 GET /api/function/module/${param0} */
-export async function getApiOpenApiFunctionModuleModuleId(
+/** 查询功能模块详情 GET /api/function-module/${param0} */
+export async function getApiFunctionModuleModuleId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getApi_openAPI_functionModuleModuleIdParams,
+  params: API.getApiFunctionModuleModuleIdParams,
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
@@ -36,17 +36,17 @@ export async function getApiOpenApiFunctionModuleModuleId(
     data: API.FunctionModule | null;
     additional: Record<string, any>;
     success?: boolean;
-  }>(`/api/function/module/${param0}`, {
+  }>(`/api/function-module/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 更新功能模块 POST /api/function/module/${param0} */
-export async function postApiOpenApiFunctionModuleModuleId(
+/** 更新功能模块 POST /api/function-module/${param0} */
+export async function postApiFunctionModuleModuleId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postApi_openAPI_functionModuleModuleIdParams,
+  params: API.postApiFunctionModuleModuleIdParams,
   body: API.UpdateFunctionModuleRequest,
   options?: { [key: string]: any },
 ) {
@@ -57,7 +57,7 @@ export async function postApiOpenApiFunctionModuleModuleId(
     data: API.FunctionModule | null;
     additional: Record<string, any>;
     success?: boolean;
-  }>(`/api/function/module/${param0}`, {
+  }>(`/api/function-module/${param0}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -68,22 +68,22 @@ export async function postApiOpenApiFunctionModuleModuleId(
   });
 }
 
-/** 删除功能模块 DELETE /api/function/module/${param0} */
-export async function deleteApiOpenApiFunctionModuleModuleId(
+/** 删除功能模块 DELETE /api/function-module/${param0} */
+export async function deleteApiFunctionModuleModuleId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteApi_openAPI_functionModuleModuleIdParams,
+  params: API.deleteApiFunctionModuleModuleIdParams,
   options?: { [key: string]: any },
 ) {
   const { moduleId: param0, ...queryParams } = params;
-  return request<API.ApiResponse>(`/api/function/module/${param0}`, {
+  return request<API.ApiResponse>(`/api/function-module/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 查询功能模块列表 POST /api/function/module/filter */
-export async function postApiOpenApiFunctionModuleFilter(
+/** 查询功能模块列表 POST /api/function-module/filter */
+export async function postApiFunctionModuleFilter(
   body: API.SearchFieldQuery,
   options?: { [key: string]: any },
 ) {
@@ -92,7 +92,7 @@ export async function postApiOpenApiFunctionModuleFilter(
     message: string;
     data: API.FunctionModule[];
     additional: Record<string, any>;
-  }>('/api/function/module/filter', {
+  }>('/api/function-module/filter', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

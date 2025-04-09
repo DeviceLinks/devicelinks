@@ -1,7 +1,7 @@
 import { Button, message } from 'antd';
 import { ModalForm, ProFormText } from '@ant-design/pro-components';
 import { useRequest } from '@@/exports';
-import { postApiOpenApiFunctionModule } from '@/services/device-links-console-ui/functionModule';
+import { postApiFunctionModule } from '@/services/device-links-console-ui/functionModule';
 import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
 type CreateFunctionModuleFormProps = {
@@ -13,7 +13,7 @@ const CreateFunctionModuleForm: React.FC<CreateFunctionModuleFormProps> = ({
   productId,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const { run, loading } = useRequest(postApiOpenApiFunctionModule, {
+  const { run, loading } = useRequest(postApiFunctionModule, {
     manual: true,
     onSuccess: () => {
       messageApi?.success('新增功能模块成功');

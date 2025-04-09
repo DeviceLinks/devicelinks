@@ -13,6 +13,8 @@ import * as attribute from './attribute';
 import * as log from './log';
 import * as telemetry from './telemetry';
 import * as chart from './chart';
+import * as deviceProfile from './deviceProfile';
+import * as deviceTag from './deviceTag';
 export default {
   login,
   user,
@@ -25,4 +27,6 @@ export default {
   log,
   telemetry,
   chart,
+  deviceProfile,
+  deviceTag,
 };

@@ -24,8 +24,8 @@ import { DeleteOutlined, DownOutlined, UploadOutlined } from '@ant-design/icons'
 import { Button, Dropdown, MenuProps, message, Modal, Space, Tag } from 'antd';
 import { Typography } from 'antd';
 import {
-  deleteApiOpenApiFunctionModuleModuleId,
-  postApiOpenApiFunctionModuleFilter,
+  deleteApiFunctionModuleModuleId,
+  postApiFunctionModuleFilter,
 } from '@/services/device-links-console-ui/functionModule';
 import CreateFunctionModuleForm from '@/pages/device/product/modules/CreateFunctionModuleForm';
 import { MessageInstance } from 'antd/lib/message/interface';
@@ -172,7 +172,7 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
    * 获取功能模块列表
    */
   const fetchFunctionModuleData = async () => {
-    const res = await postApiOpenApiFunctionModuleFilter({
+    const res = await postApiFunctionModuleFilter({
       searchFieldModule: 'FunctionModule',
       searchMatch: 'ALL',
       searchFields: [
@@ -191,7 +191,7 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
   /**
    * 删除功能模块API
    */
-  const { run: deleteFunctionModule } = useRequest(deleteApiOpenApiFunctionModuleModuleId, {
+  const { run: deleteFunctionModule } = useRequest(deleteApiFunctionModuleModuleId, {
     manual: true,
     onSuccess: () => {
       messageApi?.success('删除功能模块成功');
