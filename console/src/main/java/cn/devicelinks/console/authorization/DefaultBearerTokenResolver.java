@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console.authorization;
 
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import org.springframework.http.HttpHeaders;

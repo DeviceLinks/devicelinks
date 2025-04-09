@@ -19,7 +19,7 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 
 import cn.devicelinks.console.authorization.BearerTokenResolver;
 import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
-import cn.devicelinks.console.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.endpoint.access.ResourceAccessHttpMessageConverter;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;

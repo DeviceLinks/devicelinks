@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
@@ -41,7 +41,7 @@ import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> implements SysUserRepository {
     // @formatter:off
     private static final String SELECT_USER_DTO_SQL = "select su.*, sd.name department_name" +

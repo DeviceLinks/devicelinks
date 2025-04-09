@@ -43,11 +43,7 @@
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-transport-api</artifactId>
+            <artifactId>devicelinks-transport-support</artifactId>
         </dependency>
         <!--SpringBoot Dependencies-->
         <dependency>
@@ -119,6 +115,14 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-jackson</artifactId>
         </dependency>
     </dependencies>
     <build>

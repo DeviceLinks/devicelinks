@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.adaptation;
 
-import cn.devicelinks.console.service.SysLogService;
+import cn.devicelinks.service.system.SysLogService;
 import cn.devicelinks.framework.common.operate.log.OperationLogObject;
 import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
 import cn.devicelinks.framework.common.pojos.SysLog;

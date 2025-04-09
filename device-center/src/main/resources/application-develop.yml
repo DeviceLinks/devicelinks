@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:mysql://10.147.17.17:3306/devicelinks
+    username: root
+    password: AZGv2RQCXRYyJWgo4bjb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  data:
+    redis:
+      host: 10.147.17.17
+      database: 2
+      password: homeserver@2025
+
+devicelinks:
+  center:
+    # Api Keys
+    api-keys:
+      - api-key: 6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e
+        api-secret: 2de3b8966f139ded0b34ad80210e296f1d35c378d79a5780f654e03f684d5b53f0c1b0672bc54c68fe4ea3931bbca195827f2dfb45e571eb51043006e204dee0
+        scopes:
+          - Transport
+      - api-key: ef3e3105ccf84f8e3e78cab26f4134e33cda9dc957b46d295dd28a3ea5c62d10
+        api-secret: 653eff3aea8f4e3bc10e807c144e2cf49073df5a9103d7b02c14f657ae1f4430ff46b42a37d91a3f3c7f6c2f47a0c3024f8fe8bdf4221dcabc6bbb56f24595fc
+        scopes:
+          - Console
+logging:
+  level:
+    cn.devicelinks.framework.jdbc: debug

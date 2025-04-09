@@ -36,7 +36,7 @@ import java.util.function.Consumer;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ApiResponse implements Serializable {
+public class ApiResponse<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
@@ -51,44 +51,44 @@ public class ApiResponse implements Serializable {
     /**
      * 接口响应的数据
      */
-    private Object data;
+    private T data;
     /**
      * 附加信息
      */
     private final Map<String, Object> additional = new HashMap<>();
 
-    private ApiResponse(String code, String message, Object data) {
+    private ApiResponse(String code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public static ApiResponse success() {
+    public static <T> ApiResponse<T> success() {
         return success(null);
     }
 
-    public static <T> ApiResponse success(T data) {
+    public static <T> ApiResponse<T> success(T data) {
         return success(StatusCode.SUCCESS, data);
     }
 
-    public static <T> ApiResponse success(StatusCode statusCode, T data, Object... messageVariables) {
-        return new ApiResponse(statusCode.getCode(), statusCode.formatMessage(messageVariables), data);
+    public static <T> ApiResponse<T> success(StatusCode statusCode, T data, Object... messageVariables) {
+        return new ApiResponse<>(statusCode.getCode(), statusCode.formatMessage(messageVariables), data);
     }
 
-    public static ApiResponse error(StatusCode statusCode) {
-        return new ApiResponse(statusCode.getCode(), statusCode.getMessage(), null);
+    public static ApiResponse<Object> error(StatusCode statusCode) {
+        return new ApiResponse<>(statusCode.getCode(), statusCode.getMessage(), null);
     }
 
-    public static ApiResponse error(StatusCode statusCode, Object... messageVariables) {
-        return new ApiResponse(statusCode.getCode(), statusCode.formatMessage(messageVariables), null);
+    public static ApiResponse<Object> error(StatusCode statusCode, Object... messageVariables) {
+        return new ApiResponse<>(statusCode.getCode(), statusCode.formatMessage(messageVariables), null);
     }
 
-    public ApiResponse putAdditional(String key, Object value) {
+    public ApiResponse<T> putAdditional(String key, Object value) {
         this.additional.put(key, value);
         return this;
     }
 
-    public ApiResponse putAdditional(Consumer<Map<String, Object>> consumer) {
+    public ApiResponse<T> putAdditional(Consumer<Map<String, Object>> consumer) {
         consumer.accept(this.additional);
         return this;
     }

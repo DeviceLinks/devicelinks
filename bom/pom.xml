@@ -57,7 +57,47 @@
             </dependency>
             <dependency>
                 <groupId>cn.devicelinks</groupId>
-                <artifactId>devicelinks-transport-api</artifactId>
+                <artifactId>devicelinks-transport-support</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-api-support</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-service-dependencies</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-attribute-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-device-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-notification-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-ota-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-product-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-system-service</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

@@ -17,10 +17,11 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.console.service.SysDepartmentService;
-import cn.devicelinks.console.service.SysUserService;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.service.system.SysDepartmentService;
+import cn.devicelinks.service.system.SysUserService;
 import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
+import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class JdbcAuthorizedUserAdditionService implements AuthorizedUserAddition
     private SysDepartmentService departmentService;
 
     @Override
-    public AuthorizedUserAddition selectByUsername(String username) {
+    public UserAuthorizedAddition selectByUsername(String username) {
         SysUser user = userService.selectByAccount(username);
         if (user == null) {
             throw new DeviceLinksAuthorizationException(ACCOUNT_NOT_FOUND);
@@ -50,6 +51,6 @@ public class JdbcAuthorizedUserAdditionService implements AuthorizedUserAddition
         if (!ObjectUtils.isEmpty(user.getDepartmentId())) {
             department = departmentService.selectById(user.getDepartmentId());
         }
-        return new AuthorizedUserAddition(user, department);
+        return new UserAuthorizedAddition(user, department);
     }
 }

@@ -17,12 +17,15 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.Product;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.*;
+import cn.devicelinks.framework.jdbc.core.sql.Condition;
+import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.Assert;
 
@@ -36,7 +39,7 @@ import static cn.devicelinks.framework.jdbc.tables.TProduct.PRODUCT;
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class ProductJdbcRepository extends JdbcRepository<Product, String> implements ProductRepository {
 
     public ProductJdbcRepository(JdbcOperations jdbcOperations) {

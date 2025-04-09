@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-jdbc</artifactId>
+            <artifactId>devicelinks-transport-support</artifactId>
         </dependency>
         <!--SpringBoot Dependencies-->
         <dependency>

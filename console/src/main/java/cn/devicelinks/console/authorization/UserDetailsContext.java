@@ -18,7 +18,8 @@
 package cn.devicelinks.console.authorization;
 
 import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import cn.devicelinks.framework.common.pojos.SysDepartment;
 import cn.devicelinks.framework.common.pojos.SysUser;
@@ -55,7 +56,7 @@ public final class UserDetailsContext {
         return getUserAddition().getDepartment();
     }
 
-    public static AuthorizedUserAddition getUserAddition() {
+    public static UserAuthorizedAddition getUserAddition() {
         return getUserDetails().getAuthorizedUserAddition();
     }
 

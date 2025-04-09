@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceOta;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.definition.DynamicColumn;
 import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
@@ -37,7 +37,7 @@ import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODU
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DeviceOtaJdbcRepository extends JdbcRepository<DeviceOta, String> implements DeviceOtaRepository {
     // @formatter:off
 	private static final String SELECT_DEVICE_OTA_DTO_SQL =

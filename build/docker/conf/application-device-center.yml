@@ -1,0 +1,32 @@
+server:
+  port: ${DEVICELINKS_CORE_SERVICE_PORT:13651}
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_SERVICE_HOST}:${MYSQL_SERVICE_PORT:3306}/${MYSQL_SERVICE_DB_NAME:devicelinks}?${MYSQL_SERVICE_DB_PARAM:characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false}
+    username: ${MYSQL_SERVICE_USERNAME}
+    password: ${MYSQL_SERVICE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  data:
+    redis:
+      host: ${REDIS_SERVICE_HOST}
+      database: ${REDIS_SERVICE_DATABASE:1}
+      password: ${REDIS_SERVICE_PASSWORD}
+
+devicelinks:
+  center:
+    version: ${DEVICELINKS_VERSION}
+    # Api Keys
+    api-keys:
+      - api-key: ${DEVICELINKS_HTTP_TRANSPORT_API_KEY}
+        api-secret: ${DEVICELINKS_HTTP_TRANSPORT_API_SECRET}
+        scopes:
+          - Transport
+      - api-key: ${DEVICELINKS_CONSOLE_API_KEY}
+        api-secret: ${DEVICELINKS_CONSOLE_API_SECRET}
+        scopes:
+          - Console
+
+logging:
+  config: ${HOME_DIR}/conf/logback.xml

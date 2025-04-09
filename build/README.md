@@ -5,10 +5,10 @@
 > 生成客户端证书：./generate-CA.sh client {用户名}
 
 ## Docker
-### 核心服务
+### 设备中心
 ```bash
 cd ..
-docker build -f build/docker/Dockerfile.develop.core-service -t devicelinks/core-service:latest . --load
+docker build -f build/docker/Dockerfile.develop.device-center -t devicelinks/device-center:latest . --load
 ```
 ### 控制台
 ```bash

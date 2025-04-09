@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
+import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +36,7 @@ public class DeviceLinksUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AuthorizedUserAddition authorizedUserAddition = authorizedUserAdditionService.selectByUsername(username);
+        UserAuthorizedAddition authorizedUserAddition = authorizedUserAdditionService.selectByUsername(username);
         return DeviceLinksUserDetails.of(authorizedUserAddition);
     }
 }

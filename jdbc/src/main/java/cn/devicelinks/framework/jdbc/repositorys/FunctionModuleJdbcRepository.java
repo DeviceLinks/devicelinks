@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
@@ -36,7 +36,7 @@ import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODU
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class FunctionModuleJdbcRepository extends JdbcRepository<FunctionModule, String> implements FunctionModuleRepository {
     public FunctionModuleJdbcRepository(JdbcOperations jdbcOperations) {
         super(FUNCTION_MODULE, jdbcOperations);

@@ -38,11 +38,11 @@
         <!--DeviceLinks Dependencies-->
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-common</artifactId>
+            <artifactId>devicelinks-api-support</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-jdbc</artifactId>
+            <artifactId>devicelinks-service-dependencies</artifactId>
         </dependency>
         <!--SpringBoot Dependencies-->
         <dependency>
@@ -126,16 +126,6 @@
         <dependency>
             <groupId>org.minbox.framework</groupId>
             <artifactId>ssh-agent</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <scope>provided</scope>
         </dependency>
         <!--Jose-->
         <dependency>

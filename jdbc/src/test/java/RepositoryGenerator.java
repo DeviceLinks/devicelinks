@@ -121,7 +121,7 @@ public class RepositoryGenerator {
                 " * @since 1.0" + lineSeparator +
                 " */");
         buffer.append(lineSeparator);
-        buffer.append("@RegisterBean").append(lineSeparator);
+        buffer.append("@DeviceLinksRepository").append(lineSeparator);
         buffer.append("public class " + className + "JdbcRepository extends JdbcRepository<" + className + ", String> implements " + className + "Repository {").append(lineSeparator);
         buffer.append("\tpublic " + className + "JdbcRepository(JdbcOperations jdbcOperations) {").append(lineSeparator);
         buffer.append("\t\tsuper(" + tableNameUpper + ", jdbcOperations);").append(lineSeparator);

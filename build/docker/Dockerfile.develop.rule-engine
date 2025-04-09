@@ -15,7 +15,7 @@ WORKDIR $HOME_DIR
 # 复制启动脚本
 ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
-# 复制“核心服务”配置文件以及可执行Jar
+# 复制“设备中心”配置文件以及可执行Jar
 ADD /build/docker/conf/application-rule-engine.yml conf/application.yml
 ADD /build/docker/conf/logback.xml conf/logback.xml
 ADD /rule-engine/target/devicelinks-rule-engine.jar target/$JAR

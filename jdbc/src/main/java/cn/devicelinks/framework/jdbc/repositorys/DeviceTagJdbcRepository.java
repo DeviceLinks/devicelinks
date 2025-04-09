@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.DeviceTag;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
 import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
@@ -18,7 +18,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceTag.DEVICE_TAG;
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class DeviceTagJdbcRepository extends JdbcRepository<DeviceTag, String> implements DeviceTagRepository {
     public DeviceTagJdbcRepository(JdbcOperations jdbcOperations) {
         super(DEVICE_TAG, jdbcOperations);

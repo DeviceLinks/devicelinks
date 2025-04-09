@@ -17,7 +17,7 @@
 
 package cn.devicelinks.framework.common.jackson2.security.deserializer;
 
-import cn.devicelinks.framework.common.authorization.AuthorizedUserAddition;
+import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -40,7 +40,7 @@ public class UserDetailsDeserializer extends JsonDeserializer<DeviceLinksUserDet
     public DeviceLinksUserDetails deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         JsonNode jsonNode = mapper.readTree(jsonParser);
-        AuthorizedUserAddition authorizedUserAddition = mapper.convertValue(readJsonNode(jsonNode, "authorizedUserAddition"), AuthorizedUserAddition.class);
+        UserAuthorizedAddition authorizedUserAddition = mapper.convertValue(readJsonNode(jsonNode, "authorizedUserAddition"), UserAuthorizedAddition.class);
         return DeviceLinksUserDetails.of(authorizedUserAddition);
     }
 

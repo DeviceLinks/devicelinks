@@ -36,8 +36,10 @@
         <module>jdbc</module>
         <module>console</module>
         <module>rule-engine</module>
-        <module>core-service</module>
+        <module>device-center</module>
         <module>transports</module>
+        <module>services</module>
+        <module>api-support</module>
     </modules>
     <properties>
         <revision>1.0-SNAPSHOT</revision>
@@ -209,7 +211,7 @@
                             <excludeArtifacts>
                                 <artifact>devicelinks-build</artifact>
                                 <artifact>devicelinks-console</artifact>
-                                <artifact>devicelinks-core-service</artifact>
+                                <artifact>devicelinks-device-center</artifact>
                             </excludeArtifacts>
                         </configuration>
                     </plugin>

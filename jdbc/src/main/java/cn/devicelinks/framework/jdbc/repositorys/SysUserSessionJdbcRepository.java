@@ -18,8 +18,8 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.annotation.RegisterBean;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
+import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
 import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
 import cn.devicelinks.framework.jdbc.core.sql.LimitCondition;
@@ -38,7 +38,7 @@ import static cn.devicelinks.framework.jdbc.tables.TSysUserSession.SYS_USER_SESS
  * @author 恒宇少年
  * @since 1.0
  */
-@RegisterBean
+@DeviceLinksRepository
 public class SysUserSessionJdbcRepository extends JdbcRepository<SysUserSession, String> implements SysUserSessionRepository {
     public SysUserSessionJdbcRepository(JdbcOperations jdbcOperations) {
         super(TSysUserSession.SYS_USER_SESSION, jdbcOperations);

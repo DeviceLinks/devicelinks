@@ -17,6 +17,12 @@
 
 package cn.devicelinks.transport.http;
 
+import cn.devicelinks.framework.common.api.ApiResponse;
+import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
+import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.common.utils.JacksonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -27,9 +33,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0
  */
 @SpringBootApplication
-public class TransportHttpApplication {
+public class TransportHttpApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(TransportHttpApplication.class, args);
+    }
+
+    @Autowired
+    DeviceCenterDeviceFeignApi centerDeviceFeignApi;
+
+    @Override
+    public void run(String... args) throws Exception {
+        ApiResponse<Device> response = centerDeviceFeignApi.getDeviceByName("test0001");
+        System.out.println(JacksonUtils.objectToJson(response.getData()));
     }
 }
