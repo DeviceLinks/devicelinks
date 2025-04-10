@@ -81,6 +81,23 @@ steps:
       - name: docker
         path: /var/run/docker.sock
 
+  # Build Transport-Http Docker Image
+  - name: build transport-http
+    image: plugins/docker
+    network_mode: host
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: latest
+      dockerfile: build/docker/Dockerfile.develop.transport-http
+      registry: registry.cn-hangzhou.aliyuncs.com
+      repo: registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
   # Deploy Console
   - name: deploy console
     image: appleboy/drone-ssh
