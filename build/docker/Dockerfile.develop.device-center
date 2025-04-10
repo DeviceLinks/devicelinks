@@ -15,6 +15,9 @@ WORKDIR $HOME_DIR
 # 复制启动脚本
 ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
+# 复制服务端JKS证书库
+ADD /build/docker/conf/ssl/server.jks conf/ssl/server.jks
+
 # 复制“设备中心”配置文件以及可执行Jar
 ADD /build/docker/conf/application-device-center.yml conf/application.yml
 ADD /build/docker/conf/logback.xml conf/logback.xml
