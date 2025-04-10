@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Long EFFECTIVE_TIMESTAMP = 60L;
+    private static final Long EFFECTIVE_TIMESTAMP = 120L;
 
     private static final StatusCode API_KEY_NOT_FOUND = StatusCode.build("API_KEY_NOT_FOUND", "ApiKey不存在，禁止访问Api.");
 

@@ -1,5 +1,15 @@
 server:
   port: 13651
+  ssl:
+    enabled: true
+    key-store: classpath:ssl/server.jks
+    key-store-password: fZjLaxFgt5Txs7qSF5od
+    key-alias: server
+    # 服务端证书信任库
+    trust-store: classpath:ssl/server.jks
+    trust-store-password: fZjLaxFgt5Txs7qSF5od
+    # 开启双向认证
+    client-auth: need
 spring:
   profiles:
     active: develop
