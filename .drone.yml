@@ -141,6 +141,26 @@ steps:
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/rule-engine:latest
         - /usr/local/bin/docker run -p 13652:13652 -d --restart=always --net=devicelinks --ip=172.10.1.12 --name devicelinks-rule-engine --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/rule-engine:latest
 
+  # Deploy Transport-Http
+  - name: deploy transport-http
+    image: appleboy/drone-ssh
+    network_mode: host
+    settings:
+      host:
+        - 10.147.17.17
+      username:
+        from_secret: ssh_username
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 5m
+      script:
+        - /usr/local/bin/docker stop devicelinks-transport-http
+        - /usr/local/bin/docker rm devicelinks-transport-http
+        - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http | awk 'NR>1{print $3}')
+        - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http:latest
+        - /usr/local/bin/docker run -p 15001:15001 -d --restart=always --net=devicelinks --ip=172.10.1.13 --name devicelinks-transport-http --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http:latest
+
 trigger:
   branch:
     - master
