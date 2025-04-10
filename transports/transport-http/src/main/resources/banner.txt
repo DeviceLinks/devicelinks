@@ -6,6 +6,6 @@
                                       `--'
 SpringBoot Version : ${spring-boot.formatted-version}
 
-Console Version : ${devicelinks.transport-http.version}
+Console Version : ${devicelinks.transport.http.version}
 
 HelpUri : https://github.com/DeviceLinks/devicelinks/issues

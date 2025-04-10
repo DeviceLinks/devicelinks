@@ -15,8 +15,19 @@ spring:
       password: ${REDIS_SERVICE_PASSWORD}
 
 devicelinks:
-  transport-http:
-    version: ${DEVICELINKS_VERSION}
+  transport:
+    http:
+      version: ${DEVICELINKS_VERSION}
+      device-center-access:
+        api:
+          uri: ${DEVICELINKS_DEVICE_CENTER_URI:https://localhost:13651}
+          api-key: ${DEVICELINKS_DEVICE_CENTER_API_KEY:6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e}
+          api-secret: ${DEVICELINKS_DEVICE_CENTER_API_SECRET:2de3b8966f139ded0b34ad80210e296f1d35c378d79a5780f654e03f684d5b53f0c1b0672bc54c68fe4ea3931bbca195827f2dfb45e571eb51043006e204dee0}
+        ssl:
+          key-store: ${HOME_DIR}/conf/ssl/transport.jks
+          key-store-password: ${DEVICELINKS_DEVICE_CENTER_KEY_STORE_PASSWORD:fZjLaxFgt5Txs7qSF5od}
+          trust-store: ${HOME_DIR}/conf/ssl/server.jks
+          trust-store-password: ${DEVICELINKS_DEVICE_CENTER_TRUST_STORE_PASSWORD:fZjLaxFgt5Txs7qSF5od}
 
 logging:
   config: ${HOME_DIR}/conf/logback.xml

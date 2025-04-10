@@ -5,8 +5,9 @@ spring:
     active: develop
 
 devicelinks:
-  transport-http:
-    version: @project.version@
+  transport:
+    http:
+      version: @project.version@
 
 logging:
   # 多环境下的日志配置
