@@ -277,6 +277,21 @@ declare namespace API {
     description?: string;
   };
 
+  type AttributeUnit = {
+    /** 单位ID */
+    id: string;
+    /** 属性单位名称 */
+    name: string;
+    /** 属性单位 */
+    symbol: string;
+    /** 是否启用 */
+    enabled: boolean;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 创建时间 */
+    createTime: string;
+  };
+
   type BatchSetDeviceProfileRequest = {
     /** 批量设置方式 */
     batchSetAway: string;

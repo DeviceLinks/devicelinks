@@ -11,6 +11,7 @@ import UpdateFunctionModuleForm from '@/pages/device/product/modules/UpdateFunct
 import { DeleteOutlined } from '@ant-design/icons';
 import CreateFunctionModuleForm from '@/pages/device/product/modules/CreateFunctionModuleForm';
 import CreateAttributeForm from '@/pages/device/product/modules/CreateAttributeForm';
+import { useModel } from '@umijs/max';
 type ProductFunctionModuleInfoProps = {
   productId: string | undefined;
   responsive: boolean;
@@ -25,6 +26,8 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
   productId,
   responsive,
 }) => {
+  const { enums } = useModel('enumModel');
+  const { AttributeDataType } = enums;
   const [currentModel, setCurrentModel] = useState<API.FunctionModule>();
   const functionModuleActionRef = React.useRef<ActionType>();
   const [messageApi, contextHolder] = message.useMessage();
@@ -88,6 +91,9 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
       title: '数据类型',
       dataIndex: 'dataType',
       key: 'dataType',
+      fieldProps: {
+        options: AttributeDataType,
+      },
     },
     {
       title: '附加信息',

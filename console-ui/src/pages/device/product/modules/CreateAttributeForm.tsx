@@ -1,15 +1,20 @@
 import { Button, Flex, message } from 'antd';
 import {
   ModalForm,
+  ProFormDependency,
   ProFormDigit,
   ProFormGroup,
+  ProFormRadio,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { useModel, useRequest } from '@umijs/max';
-import { postApiAttribute } from '@/services/device-links-console-ui/attribute';
-import React, { useState } from 'react';
+import {
+  getApiAttributeUnit,
+  postApiAttribute,
+} from '@/services/device-links-console-ui/attribute';
+import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 type CreateAttributeFormProps = {
   reload?: () => void;
@@ -22,14 +27,14 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
   const { enums } = useModel('enumModel');
   const { AttributeDataType } = enums;
   const [messageApi, contextHolder] = message.useMessage();
-  const { run, loading } = useRequest(postApiAttribute, {
+  const { run: addAttribute, loading } = useRequest(postApiAttribute, {
     manual: true,
     onSuccess: () => {
       messageApi?.success('新增属性成功');
       reload?.();
     },
   });
-  const [dataType, setDataType] = useState<string | undefined>();
+  const { data: attributeUnit } = useRequest(getApiAttributeUnit);
   return (
     <>
       {contextHolder}
@@ -44,8 +49,7 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
           </Button>
         }
         onFinish={async (values) => {
-          console.log(values);
-          // await run(values);
+          await addAttribute(values);
         }}
       >
         <ProFormText name="productId" hidden />
@@ -88,53 +92,83 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
           name={['info', 'dataType']}
           options={AttributeDataType}
           required
-          onChange={(value: string | undefined) => {
-            console.log(value);
-            setDataType(value);
-          }}
         ></ProFormSelect>
-        {(dataType === 'INTEGER' || dataType === 'DOUBLE') && (
-          <>
-            <ProFormGroup
-              titleStyle={{ marginBottom: 8, fontWeight: 'normal' }}
-              label={'取值范围'}
-              align={'center'}
-            >
-              <Flex gap={'middle'}>
-                <ProFormDigit
-                  name={['info', 'addition', 'valueRange', 'min']}
-                  placeholder={'最小值'}
-                ></ProFormDigit>
-                <div>~</div>
-                <ProFormDigit
-                  name={['info', 'addition', 'valueRange', 'max']}
-                  placeholder={'最大值'}
-                ></ProFormDigit>
-              </Flex>
-            </ProFormGroup>
-            <ProFormDigit label={'步长'} name={['info', 'addition', 'step']}></ProFormDigit>
-          </>
-        )}
-        {dataType === 'STRING' && (
-          <ProFormDigit
-            label={'数据长度'}
-            name={['info', 'addition', 'dataLength']}
-            required
-            placeholder={'请输入数据长度'}
-            fieldProps={{
-              suffix: '字节',
-              defaultValue: 10240,
-            }}
-          ></ProFormDigit>
-        )}
-        {dataType === 'ARRAY' && (
-          <ProFormSelect
-            name={['info', 'addition', 'elementDataType']}
-            options={AttributeDataType}
-            label={'元素类型'}
-          ></ProFormSelect>
-        )}
-        <ProFormSelect name={['info', 'addition', 'unitId']} label={'单位'}></ProFormSelect>
+        <ProFormDependency name={[['info', 'dataType']]}>
+          {({ info }) => {
+            const dataType = info?.dataType;
+            const renderFields = () => {
+              switch (dataType) {
+                case 'INTEGER':
+                case 'DOUBLE':
+                  return (
+                    <>
+                      <ProFormGroup
+                        titleStyle={{ marginBottom: 8, fontWeight: 'normal' }}
+                        label={'取值范围'}
+                        align={'center'}
+                      >
+                        <Flex gap={'middle'}>
+                          <ProFormDigit
+                            name={['info', 'addition', 'valueRange', 'min']}
+                            placeholder={'最小值'}
+                          ></ProFormDigit>
+                          <div>~</div>
+                          <ProFormDigit
+                            name={['info', 'addition', 'valueRange', 'max']}
+                            placeholder={'最大值'}
+                          ></ProFormDigit>
+                        </Flex>
+                      </ProFormGroup>
+                      <ProFormDigit
+                        label={'步长'}
+                        name={['info', 'addition', 'step']}
+                      ></ProFormDigit>
+                    </>
+                  );
+                case 'STRING':
+                  return (
+                    <ProFormDigit
+                      label={'数据长度'}
+                      name={['info', 'addition', 'dataLength']}
+                      required
+                      placeholder={'请输入数据长度'}
+                      fieldProps={{
+                        suffix: '字节',
+                        defaultValue: 10240,
+                      }}
+                    ></ProFormDigit>
+                  );
+                case 'ARRAY':
+                  return (
+                    <>
+                      <ProFormRadio.Group
+                        name={['info', 'addition', 'elementDataType']}
+                        options={AttributeDataType}
+                        label={'元素类型'}
+                        required
+                      ></ProFormRadio.Group>
+                      <ProFormDigit
+                        label={'元素个数'}
+                        required
+                        name={['info', 'addition', 'elementCount']}
+                      ></ProFormDigit>
+                    </>
+                  );
+                default:
+                  return null;
+              }
+            };
+            return <>{renderFields()}</>;
+          }}
+        </ProFormDependency>
+        <ProFormSelect
+          name={['info', 'addition', 'unitId']}
+          label={'单位'}
+          allowClear={true}
+          showSearch={true}
+          placeholder={'请选择单位'}
+          options={attributeUnit?.map((item) => ({ label: item.name, value: item.id }))}
+        ></ProFormSelect>
         <ProFormTextArea label={'描述'} name={['info', 'description']}></ProFormTextArea>
       </ModalForm>
     </>

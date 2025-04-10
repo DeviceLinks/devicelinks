@@ -330,6 +330,20 @@ export async function postApiAttributeFilter(
   });
 }
 
+/** 查询属性单位列表 GET /api/attribute/unit */
+export async function getApiAttributeUnit(options?: { [key: string]: any }) {
+  return request<{
+    code: string;
+    message: string;
+    data: API.AttributeUnit[];
+    additional: Record<string, any>;
+    success?: boolean;
+  }>('/api/attribute/unit', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 查询设备功能下全部属性最新值 GET /api/device/${param0}/module/${param1}/attribute/latest */
 export async function getApiDeviceDeviceIdModuleModuleIdAttributeLatest(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

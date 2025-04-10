@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "devicelinks",
+    "title": "Console Apis",
     "description": "",
     "version": "1.0.0"
   },
@@ -930,8 +930,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {}
+                "$ref": "#/components/schemas/SearchFieldQuery"
               },
               "example": {
                 "searchFieldModule": "Device",
@@ -2771,7 +2770,7 @@
             "in": "query",
             "description": "功能模块，取值：Device、User、Log、Notification、FunctionModule、Attribute、Product、Telemetry、DataChart",
             "required": false,
-            "example": "Product",
+            "example": "Device",
             "schema": {
               "type": "string"
             }
@@ -5934,6 +5933,1129 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/attribute/unit": {
+      "get": {
+        "summary": "查询属性单位列表",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "attribute"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AttributeUnit"
+                      },
+                      "description": "响应数据"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "是否成功，前端使用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
+                  "type": "object"
+                },
+                "example": {
+                  "code": "SUCCESS",
+                  "message": "success",
+                  "data": [
+                    {
+                      "id": "67e201e900018370004cb752",
+                      "name": "相对湿度",
+                      "symbol": "%RH",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:53"
+                    },
+                    {
+                      "id": "67e201e900018370008f7784",
+                      "name": "纳克每升",
+                      "symbol": "ppt",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:49"
+                    },
+                    {
+                      "id": "67e201e90001837001367dbc",
+                      "name": "千字节",
+                      "symbol": "KB",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:56"
+                    },
+                    {
+                      "id": "67e201e90001837002667982",
+                      "name": "秒",
+                      "symbol": "″",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:03"
+                    },
+                    {
+                      "id": "67e201e900018370034e0932",
+                      "name": "立方毫米",
+                      "symbol": "mm³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:09"
+                    },
+                    {
+                      "id": "67e201e90001837003e2a672",
+                      "name": "兆字节",
+                      "symbol": "MB",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:56"
+                    },
+                    {
+                      "id": "67e201e90001837003f8c860",
+                      "name": "血糖",
+                      "symbol": "mmol/L",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:51"
+                    },
+                    {
+                      "id": "67e201e90001837004b199a6",
+                      "name": "毫克每千克",
+                      "symbol": "mg/kg",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:47"
+                    },
+                    {
+                      "id": "67e201e90001837005f72eca",
+                      "name": "滴速",
+                      "symbol": "ml/min",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:50"
+                    },
+                    {
+                      "id": "67e201e900018370081295ba",
+                      "name": "分钟",
+                      "symbol": "min",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:02"
+                    },
+                    {
+                      "id": "67e201e90001837008811d18",
+                      "name": "无",
+                      "symbol": null,
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:56"
+                    },
+                    {
+                      "id": "67e201e900018370091ff750",
+                      "name": "度",
+                      "symbol": "°",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:04"
+                    },
+                    {
+                      "id": "67e201e9000183700a74a40e",
+                      "name": "公斤每秒",
+                      "symbol": "kg/s",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:53"
+                    },
+                    {
+                      "id": "67e201e9000183700ba3b3fe",
+                      "name": "微克每立方米",
+                      "symbol": "μg/m³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:58"
+                    },
+                    {
+                      "id": "67e201e9000183700d767aae",
+                      "name": "秒",
+                      "symbol": "s",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:02"
+                    },
+                    {
+                      "id": "67e201e9000183700dbe2af0",
+                      "name": "华氏度",
+                      "symbol": "℉",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:06"
+                    },
+                    {
+                      "id": "67e201e9000183700eb20944",
+                      "name": "厘斯",
+                      "symbol": "cst",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:49"
+                    },
+                    {
+                      "id": "67e201e9000183700ec68d0e",
+                      "name": "只",
+                      "symbol": "只",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:53"
+                    },
+                    {
+                      "id": "67e201e9000183700f8c1c20",
+                      "name": "吨每小时",
+                      "symbol": "t/h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:54"
+                    },
+                    {
+                      "id": "67e201e900018370100aa724",
+                      "name": "纳法",
+                      "symbol": "nF",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:59"
+                    },
+                    {
+                      "id": "67e201e9000183701192912a",
+                      "name": "厘米",
+                      "symbol": "cm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:11"
+                    },
+                    {
+                      "id": "67e201e90001837013e5817e",
+                      "name": "太阳总辐射",
+                      "symbol": "W/㎡",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:48"
+                    },
+                    {
+                      "id": "67e201e90001837014a9a360",
+                      "name": "平方米",
+                      "symbol": "㎡",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:11"
+                    },
+                    {
+                      "id": "67e201e90001837016eec450",
+                      "name": "月",
+                      "symbol": "month",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:03"
+                    },
+                    {
+                      "id": "67e201e900018370170b607e",
+                      "name": "法拉",
+                      "symbol": "F",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:00"
+                    },
+                    {
+                      "id": "67e201e90001837017326cae",
+                      "name": "公顷",
+                      "symbol": "h㎡",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:10"
+                    },
+                    {
+                      "id": "67e201e90001837017f97b1a",
+                      "name": "米",
+                      "symbol": "m",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:12"
+                    },
+                    {
+                      "id": "67e201e900018370185119a0",
+                      "name": "吨",
+                      "symbol": "t",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:07"
+                    },
+                    {
+                      "id": "67e201e90001837018ad8bc4",
+                      "name": "标准立方米每小时",
+                      "symbol": "Nm3/h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:52"
+                    },
+                    {
+                      "id": "67e201e900018370192be370",
+                      "name": "千克",
+                      "symbol": "kg",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:08"
+                    },
+                    {
+                      "id": "67e201e90001837019f665c2",
+                      "name": "千伏安",
+                      "symbol": "kVA",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:52"
+                    },
+                    {
+                      "id": "67e201e9000183701a09312c",
+                      "name": "兆帕",
+                      "symbol": "Mpa",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:54"
+                    },
+                    {
+                      "id": "67e201e9000183701abe1400",
+                      "name": "皮法",
+                      "symbol": "pF",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:59"
+                    },
+                    {
+                      "id": "67e201e9000183701b28f480",
+                      "name": "微克每升",
+                      "symbol": "μg/L",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:55"
+                    },
+                    {
+                      "id": "67e201e9000183701b2be5d4",
+                      "name": "微瓦每平方厘米",
+                      "symbol": "uw/cm2",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:53"
+                    },
+                    {
+                      "id": "67e201e9000183701c3fd9d8",
+                      "name": "转每分钟",
+                      "symbol": "r/min",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:54"
+                    },
+                    {
+                      "id": "67e201e9000183701d525d16",
+                      "name": "分",
+                      "symbol": "′",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:04"
+                    },
+                    {
+                      "id": "67e201e9000183701de441ae",
+                      "name": "土壤EC值",
+                      "symbol": "dS/m",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:48"
+                    },
+                    {
+                      "id": "67e201e900018370211c2758",
+                      "name": "毫升",
+                      "symbol": "mL",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:09"
+                    },
+                    {
+                      "id": "67e201e90001837023459dee",
+                      "name": "升每秒",
+                      "symbol": "L/s",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:54"
+                    },
+                    {
+                      "id": "67e201e90001837023e286ae",
+                      "name": "重力加速度",
+                      "symbol": "grav",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:57"
+                    },
+                    {
+                      "id": "67e201e90001837024407036",
+                      "name": "立方厘米",
+                      "symbol": "cm³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:09"
+                    },
+                    {
+                      "id": "67e201e90001837024d22804",
+                      "name": "微米",
+                      "symbol": "μm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:11"
+                    },
+                    {
+                      "id": "67e201e90001837025e9407e",
+                      "name": "赫兹",
+                      "symbol": "Hz",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:04"
+                    },
+                    {
+                      "id": "67e201e9000183702821f57c",
+                      "name": "平方千米",
+                      "symbol": "k㎡",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:10"
+                    },
+                    {
+                      "id": "67e201e9000183702b148966",
+                      "name": "千焦",
+                      "symbol": "kJ",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:06"
+                    },
+                    {
+                      "id": "67e201e9000183702bab424c",
+                      "name": "千安",
+                      "symbol": "kA",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:00"
+                    },
+                    {
+                      "id": "67e201e9000183702bff9d06",
+                      "name": "伏特",
+                      "symbol": "V",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:01"
+                    },
+                    {
+                      "id": "67e201e9000183702c0fa36a",
+                      "name": "微克每升",
+                      "symbol": "ppb",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:50"
+                    },
+                    {
+                      "id": "67e201e9000183702c6f27da",
+                      "name": "照度",
+                      "symbol": "Lux",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:57"
+                    },
+                    {
+                      "id": "67e201e9000183702cb89cb6",
+                      "name": "毫帕",
+                      "symbol": "mPa",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:07"
+                    },
+                    {
+                      "id": "67e201e9000183702e38621e",
+                      "name": "千米",
+                      "symbol": "km",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:12"
+                    },
+                    {
+                      "id": "67e201e9000183702e71ad06",
+                      "name": "米每秒",
+                      "symbol": "m/s",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:03"
+                    },
+                    {
+                      "id": "67e201e9000183702f012a98",
+                      "name": "弧度",
+                      "symbol": "rad",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:04"
+                    },
+                    {
+                      "id": "67e201e900018370301c485e",
+                      "name": "小时",
+                      "symbol": "h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:02"
+                    },
+                    {
+                      "id": "67e201e9000183703180e9c8",
+                      "name": "千帕",
+                      "symbol": "kPa",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:08"
+                    },
+                    {
+                      "id": "67e201e900018370318c0d94",
+                      "name": "分贝",
+                      "symbol": "dB",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:57"
+                    },
+                    {
+                      "id": "67e201e90001837032349aae",
+                      "name": "档",
+                      "symbol": "gear",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:52"
+                    },
+                    {
+                      "id": "67e201e90001837032cd50c8",
+                      "name": "千乏",
+                      "symbol": "kVar",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:52"
+                    },
+                    {
+                      "id": "67e201e90001837033261cd0",
+                      "name": "毫瓦",
+                      "symbol": "mW",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:05"
+                    },
+                    {
+                      "id": "67e201e900018370333835b2",
+                      "name": "微法",
+                      "symbol": "μF",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:00"
+                    },
+                    {
+                      "id": "67e201e90001837035549a88",
+                      "name": "毫伏",
+                      "symbol": "mV",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:01"
+                    },
+                    {
+                      "id": "67e201e900018370369f68bc",
+                      "name": "个",
+                      "symbol": "pcs",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:49"
+                    },
+                    {
+                      "id": "67e201e90001837039f554c0",
+                      "name": "瓦特",
+                      "symbol": "W",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:05"
+                    },
+                    {
+                      "id": "67e201e90001837039fcfbf0",
+                      "name": "毫克",
+                      "symbol": "mg",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:08"
+                    },
+                    {
+                      "id": "67e201e9000183703b4c60a4",
+                      "name": "平方毫米",
+                      "symbol": "m㎡",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:10"
+                    },
+                    {
+                      "id": "67e201e9000183703caddb92",
+                      "name": "次",
+                      "symbol": "count",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:51"
+                    },
+                    {
+                      "id": "67e201e9000183703e854522",
+                      "name": "微西每厘米",
+                      "symbol": "uS/cm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:50"
+                    },
+                    {
+                      "id": "67e201e9000183703fdf1e22",
+                      "name": "转每分钟",
+                      "symbol": "turn/m",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:51"
+                    },
+                    {
+                      "id": "67e201e9000183704020da96",
+                      "name": "立方米",
+                      "symbol": "m³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:10"
+                    },
+                    {
+                      "id": "67e201e900018370411c3caa",
+                      "name": "百分比",
+                      "symbol": "%",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:57"
+                    },
+                    {
+                      "id": "67e201e900018370427aba1a",
+                      "name": "焦耳",
+                      "symbol": "J",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:06"
+                    },
+                    {
+                      "id": "67e201e90001837044d85f24",
+                      "name": "厘泊",
+                      "symbol": "cP",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:48"
+                    },
+                    {
+                      "id": "67e201e9000183704518fe0e",
+                      "name": "立方米每秒",
+                      "symbol": "m³/s",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:53"
+                    },
+                    {
+                      "id": "67e201e90001837046c93844",
+                      "name": "周",
+                      "symbol": "week",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:02"
+                    },
+                    {
+                      "id": "67e201e90001837048461fae",
+                      "name": "百帕",
+                      "symbol": "hPa",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:08"
+                    },
+                    {
+                      "id": "67e201e9000183704866cbb4",
+                      "name": "克每升",
+                      "symbol": "g/L",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:58"
+                    },
+                    {
+                      "id": "67e201e9000183704899bcec",
+                      "name": "安培",
+                      "symbol": "A",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:01"
+                    },
+                    {
+                      "id": "67e201e90001837049ed548e",
+                      "name": "平方厘米",
+                      "symbol": "c㎡",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:10"
+                    },
+                    {
+                      "id": "67e201e9000183704a85aa1e",
+                      "name": "字节",
+                      "symbol": "B",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:56"
+                    },
+                    {
+                      "id": "67e201e9000183704c068ec2",
+                      "name": "千乏时",
+                      "symbol": "kvarh",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:55"
+                    },
+                    {
+                      "id": "67e201e9000183704d41c6de",
+                      "name": "牛顿每库仑",
+                      "symbol": "N/C",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:50"
+                    },
+                    {
+                      "id": "67e201e9000183704de010bc",
+                      "name": "分米",
+                      "symbol": "dm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:12"
+                    },
+                    {
+                      "id": "67e201e9000183704f4598c4",
+                      "name": "克",
+                      "symbol": "g",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:08"
+                    },
+                    {
+                      "id": "67e201e9000183704fbeb9d8",
+                      "name": "千卡每小时",
+                      "symbol": "KCL/h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:54"
+                    },
+                    {
+                      "id": "67e201e9000183705080f8e2",
+                      "name": "流明",
+                      "symbol": "lm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:58"
+                    },
+                    {
+                      "id": "67e201e9000183705185ca30",
+                      "name": "牛",
+                      "symbol": "N",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:09"
+                    },
+                    {
+                      "id": "67e201e90001837052bff886",
+                      "name": "帕斯卡",
+                      "symbol": "Pa",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:08"
+                    },
+                    {
+                      "id": "67e201e90001837052fe46a0",
+                      "name": "节",
+                      "symbol": "kn",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:03"
+                    },
+                    {
+                      "id": "67e201e9000183705367ce86",
+                      "name": "纳米",
+                      "symbol": "nm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:11"
+                    },
+                    {
+                      "id": "67e201e90001837053de09f2",
+                      "name": "毫秒",
+                      "symbol": "ms",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:01"
+                    },
+                    {
+                      "id": "67e201e90001837054d2e6ce",
+                      "name": "日",
+                      "symbol": "day",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:02"
+                    },
+                    {
+                      "id": "67e201e90001837054d75190",
+                      "name": "开尔文",
+                      "symbol": "K",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:07"
+                    },
+                    {
+                      "id": "67e201e90001837057dd7112",
+                      "name": "PH值",
+                      "symbol": "pH",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:48"
+                    },
+                    {
+                      "id": "67e201e900018370594a3826",
+                      "name": "立方千米",
+                      "symbol": "km³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:10"
+                    },
+                    {
+                      "id": "67e201e90001837059c4c42e",
+                      "name": "乏",
+                      "symbol": "var",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:48"
+                    },
+                    {
+                      "id": "67e201e9000183705c02b08c",
+                      "name": "升",
+                      "symbol": "L",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:09"
+                    },
+                    {
+                      "id": "67e201e9000183705dc7dafa",
+                      "name": "吉字节",
+                      "symbol": "GB",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:55"
+                    },
+                    {
+                      "id": "67e201e9000183705eee2d00",
+                      "name": "比特",
+                      "symbol": "bit",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:58"
+                    },
+                    {
+                      "id": "67e201e9000183705f69a002",
+                      "name": "毫克每立方米",
+                      "symbol": "mg/m³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:59"
+                    },
+                    {
+                      "id": "67e201e9000183705fe67e54",
+                      "name": "立方米每小时",
+                      "symbol": "m³/h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:55"
+                    },
+                    {
+                      "id": "67e201e90001837060a32aa8",
+                      "name": "千克每立方米",
+                      "symbol": "kg/m³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:59"
+                    },
+                    {
+                      "id": "67e201e9000183706116954c",
+                      "name": "毫安",
+                      "symbol": "mA",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:00"
+                    },
+                    {
+                      "id": "67e201e900018370618218d8",
+                      "name": "摄氏度",
+                      "symbol": "°C",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:07"
+                    },
+                    {
+                      "id": "67e201e90001837061f1c428",
+                      "name": "年",
+                      "symbol": "year",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:03"
+                    },
+                    {
+                      "id": "67e201e90001837063be7fd4",
+                      "name": "千瓦时",
+                      "symbol": "kW·h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:06"
+                    },
+                    {
+                      "id": "67e201e900018370652fb46c",
+                      "name": "千伏",
+                      "symbol": "kV",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:52"
+                    },
+                    {
+                      "id": "67e201e9000183706689fad6",
+                      "name": "升每分钟",
+                      "symbol": "L/min",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:47"
+                    },
+                    {
+                      "id": "67e201e900018370672b1022",
+                      "name": "克每毫升",
+                      "symbol": "g/mL",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:58"
+                    },
+                    {
+                      "id": "67e201e90001837067580b12",
+                      "name": "巴",
+                      "symbol": "bar",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:49"
+                    },
+                    {
+                      "id": "67e201e9000183706a9fd0ba",
+                      "name": "降雨量",
+                      "symbol": "mm/hour",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:48"
+                    },
+                    {
+                      "id": "67e201e9000183706b0ee1fa",
+                      "name": "毫米汞柱",
+                      "symbol": "mmHg",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:51"
+                    },
+                    {
+                      "id": "67e201e9000183706ca9bf4c",
+                      "name": "毫米",
+                      "symbol": "mm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:11"
+                    },
+                    {
+                      "id": "67e201e900018370715381f6",
+                      "name": "千卡路里",
+                      "symbol": "kcal",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:55"
+                    },
+                    {
+                      "id": "67e201e90001837072986ab2",
+                      "name": "千米每小时",
+                      "symbol": "km/h",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:03"
+                    },
+                    {
+                      "id": "67e201e900018370729ff4c6",
+                      "name": "饱和度",
+                      "symbol": "aw",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:49"
+                    },
+                    {
+                      "id": "67e201e90001837073101512",
+                      "name": "千瓦特",
+                      "symbol": "kW",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:05"
+                    },
+                    {
+                      "id": "67e201e900018370731629a6",
+                      "name": "步",
+                      "symbol": "stepCount",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:52"
+                    },
+                    {
+                      "id": "67e201e900018370752133fe",
+                      "name": "浊度",
+                      "symbol": "NTU",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:47"
+                    },
+                    {
+                      "id": "67e201e900018370755cdf62",
+                      "name": "毫米每秒",
+                      "symbol": "mm/s",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:51"
+                    },
+                    {
+                      "id": "67e201e90001837075ca3606",
+                      "name": "克每立方米",
+                      "symbol": "g/m³",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:59"
+                    },
+                    {
+                      "id": "67e201e90001837075fda7b2",
+                      "name": "像素",
+                      "symbol": "pixel",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:57"
+                    },
+                    {
+                      "id": "67e201e90001837076439cfe",
+                      "name": "伏特每米",
+                      "symbol": "V/m",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:50"
+                    },
+                    {
+                      "id": "67e201e90001837076890464",
+                      "name": "卡路里",
+                      "symbol": "cal",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:05"
+                    },
+                    {
+                      "id": "67e201e90001837076a36ab0",
+                      "name": "微瓦",
+                      "symbol": "μW",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:05"
+                    },
+                    {
+                      "id": "67e201e9000183707a20dfb4",
+                      "name": "电子伏",
+                      "symbol": "eV",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:06"
+                    },
+                    {
+                      "id": "67e201e9000183707bbab2e2",
+                      "name": "百万分率",
+                      "symbol": "ppm",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:56"
+                    },
+                    {
+                      "id": "67e201e9000183707cd58fd4",
+                      "name": "微安",
+                      "symbol": "μA",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:00"
+                    },
+                    {
+                      "id": "67e201e9000183707df0e850",
+                      "name": "瓦时",
+                      "symbol": "Wh",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:06"
+                    },
+                    {
+                      "id": "67e201e9000183707e114104",
+                      "name": "微克每平方分米每天",
+                      "symbol": "μg/(d㎡·d)",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:56"
+                    },
+                    {
+                      "id": "67e201e9000183707f9d6f26",
+                      "name": "欧姆",
+                      "symbol": "Ω",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:41:00"
+                    },
+                    {
+                      "id": "67e201e9000183707fe12808",
+                      "name": "毫克每升",
+                      "symbol": "mg/L",
+                      "enabled": true,
+                      "deleted": false,
+                      "createTime": "2024-12-23T15:40:58"
+                    }
+                  ],
+                  "additional": {}
                 }
               }
             },
@@ -10129,6 +11251,44 @@
         "required": [
           "info",
           "childAttributes"
+        ]
+      },
+      "AttributeUnit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "单位ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "属性单位名称"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "属性单位"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          }
+        },
+        "required": [
+          "id",
+          "deleted",
+          "enabled",
+          "symbol",
+          "name",
+          "createTime"
         ]
       },
       "AddProductRequest": {

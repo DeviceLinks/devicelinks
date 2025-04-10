@@ -13,6 +13,7 @@ import { Button, Dropdown, MenuProps, message, Modal, Space, Tag } from 'antd';
 import { Typography } from 'antd';
 import ProductBasicInfoForm from '@/pages/device/product/modules/ProductBasicInfoForm';
 import ProductFunctionModuleInfo from '@/pages/device/product/modules/ProductFunctionModuleInfo';
+import ProductDeviceInfo from '@/pages/device/product/modules/ProductDeviceInfo';
 const { Paragraph } = Typography;
 const ProductProfile: React.FC = () => {
   const { productId } = useParams();
@@ -166,6 +167,7 @@ const ProductProfile: React.FC = () => {
           {
             key: 'device',
             tab: '设备列表',
+            children: <ProductDeviceInfo productId={productId}></ProductDeviceInfo>,
           },
         ]}
         title={`产品名称：${productInfo?.name || '-'}`}
