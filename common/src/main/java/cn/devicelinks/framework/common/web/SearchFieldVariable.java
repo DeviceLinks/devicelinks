@@ -41,7 +41,8 @@ public enum SearchFieldVariable {
 
     DEVICE_ID("deviceId", "设备ID"),
     DEVICE_CODE("deviceCode", "设备号"),
-    DEVICE_NAME("name", "设备名称"),
+    DEVICE_NAME("deviceName", "设备名称"),
+    DEVICE_NOTE_NAME("noteName","备注名称"),
     DEVICE_TYPE("deviceType", "设备类型"),
     DEVICE_STATUS("status", "设备状态"),
     DEVICE_ACTIVATION_TIME("activationTime", "激活时间"),

@@ -63,6 +63,16 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.NotLike
             ));
 
+    SearchField DEVICE_NOTE_NAME = SearchField.of(SearchFieldVariable.DEVICE_NOTE_NAME)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
+            ));
+
     SearchField DEVICE_TYPE = SearchField.of(SearchFieldVariable.DEVICE_TYPE)
             .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
@@ -151,6 +161,7 @@ public class DeviceSearchFieldModule implements SearchFieldModule {
                 DEVICE_PRODUCT_ID,
                 DEVICE_CODE,
                 DEVICE_NAME,
+                DEVICE_NOTE_NAME,
                 DEVICE_TYPE,
                 DEVICE_STATUS,
                 DEVICE_ACTIVATION_TIME,
