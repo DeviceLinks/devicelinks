@@ -12,6 +12,9 @@ import java.util.Base64;
  * @since 1.0
  */
 public final class SecureRandomUtils {
+
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private SecureRandomUtils() {
@@ -25,6 +28,20 @@ public final class SecureRandomUtils {
         byte[] bytes = new byte[length];
         SECURE_RANDOM.nextBytes(bytes);
         return bytes;
+    }
+
+    public static String generateRandomString(int length) {
+        if (length < 0) {
+            throw new IllegalArgumentException("Length cannot be negative");
+        }
+        byte[] bytes = generateRandomBytes(length);
+        StringBuilder sb = new StringBuilder(length);
+        for (byte b : bytes) {
+            // 将字节映射到字符集范围内
+            int index = (b & 0xFF) % CHARACTERS.length();
+            sb.append(CHARACTERS.charAt(index));
+        }
+        return sb.toString();
     }
 
     public static String generateRandomHex(int length) {
