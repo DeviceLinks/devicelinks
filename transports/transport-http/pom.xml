@@ -116,14 +116,6 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-jackson</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <finalName>devicelinks-transport-http</finalName>
