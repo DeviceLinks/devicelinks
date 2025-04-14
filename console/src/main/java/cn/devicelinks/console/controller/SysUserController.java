@@ -54,7 +54,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/user")
 @RequiredArgsConstructor
 public class SysUserController {
-    private static final int ACTIVATE_TOKEN_LENGTH = 64;
+    private static final int ACTIVATE_TOKEN_LENGTH = 50;
     private final SysUserService userService;
 
     /**
@@ -119,7 +119,7 @@ public class SysUserController {
                 .setAccount(request.getAccount())
                 .setName(request.getName())
                 .setEmail(request.getEmail())
-                .setActivateToken(SecureRandomUtils.generateRandomBase64(ACTIVATE_TOKEN_LENGTH))
+                .setActivateToken(SecureRandomUtils.generateRandomString(ACTIVATE_TOKEN_LENGTH))
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
                 .setCreateBy(currentUser.getId())
                 .setMark(request.getMark());
