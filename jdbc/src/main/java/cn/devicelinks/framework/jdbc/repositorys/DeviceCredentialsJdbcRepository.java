@@ -26,7 +26,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceAuthentication.DEVICE_AUTHENTICATION;
+import static cn.devicelinks.framework.jdbc.tables.TDeviceCredentials.DEVICE_CREDENTIALS;
 
 /**
  * The {@link DeviceCredentials} JDBC Repository
@@ -35,14 +35,14 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceAuthentication.DEVICE_
  * @since 1.0
  */
 @DeviceLinksRepository
-public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceCredentials, String> implements DeviceCredentialsRepository {
-    public DeviceAuthenticationJdbcRepository(JdbcOperations jdbcOperations) {
-        super(DEVICE_AUTHENTICATION, jdbcOperations);
+public class DeviceCredentialsJdbcRepository extends JdbcRepository<DeviceCredentials, String> implements DeviceCredentialsRepository {
+    public DeviceCredentialsJdbcRepository(JdbcOperations jdbcOperations) {
+        super(DEVICE_CREDENTIALS, jdbcOperations);
     }
 
     @Override
     public DeviceCredentials selectByDeviceId(String deviceId) {
-        return this.selectOne(DEVICE_AUTHENTICATION.DEVICE_ID.eq(deviceId), DEVICE_AUTHENTICATION.DELETED.eq(Boolean.FALSE));
+        return this.selectOne(DEVICE_CREDENTIALS.DEVICE_ID.eq(deviceId), DEVICE_CREDENTIALS.DELETED.eq(Boolean.FALSE));
     }
 
     @Override
@@ -51,8 +51,8 @@ public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceCre
             throw new IllegalArgumentException("accessToken can't be null");
         }
         // @formatter:off
-        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
-                .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_CREDENTIALS.getQuerySql())
+                .resultColumns(columns -> columns.addAll(DEVICE_CREDENTIALS.getColumns()))
                 .appendCondition(Boolean.TRUE, "json_extract(addition, '$.staticToken') = ?", staticToken)
                 .resultType(DeviceCredentials.class)
                 .build();
@@ -67,8 +67,8 @@ public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceCre
             throw new IllegalArgumentException("clientId can't be null");
         }
         // @formatter:off
-        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
-                .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_CREDENTIALS.getQuerySql())
+                .resultColumns(columns -> columns.addAll(DEVICE_CREDENTIALS.getColumns()))
                 .appendCondition(Boolean.TRUE, "json_extract(addition, '$.mqttBasic.clientId') = ?", clientId)
                 .resultType(DeviceCredentials.class)
                 .build();
@@ -83,8 +83,8 @@ public class DeviceAuthenticationJdbcRepository extends JdbcRepository<DeviceCre
             throw new IllegalArgumentException("deviceSecret can't be null");
         }
         // @formatter:off
-        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_AUTHENTICATION.getQuerySql())
-                .resultColumns(columns -> columns.addAll(DEVICE_AUTHENTICATION.getColumns()))
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_CREDENTIALS.getQuerySql())
+                .resultColumns(columns -> columns.addAll(DEVICE_CREDENTIALS.getColumns()))
                 .appendCondition(Boolean.TRUE, "json_extract(addition, '$.dynamicToken.deviceSecret') = ?", deviceSecret)
                 .resultType(DeviceCredentials.class)
                 .build();

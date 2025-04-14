@@ -46,7 +46,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper LOG_OBJECT_TYPE = new EnumColumnValueMapper(LogObjectType.class);
     EnumColumnValueMapper DEVICE_STATUS = new EnumColumnValueMapper(DeviceStatus.class);
     EnumColumnValueMapper DATA_FORMAT = new EnumColumnValueMapper(DataFormat.class);
-    EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceCredentialsType.class);
+    EnumColumnValueMapper DEVICE_CREDENTIALS_TYPE = new EnumColumnValueMapper(DeviceCredentialsType.class);
     EnumColumnValueMapper DEVICE_NETWORKING_AWAY = new EnumColumnValueMapper(DeviceNetworkingAway.class);
     EnumColumnValueMapper PRODUCT_STATUS = new EnumColumnValueMapper(ProductStatus.class);
     EnumColumnValueMapper SESSION_STATUS = new EnumColumnValueMapper(SessionStatus.class);
@@ -81,6 +81,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper DATA_CHART_TARGET_LOCATION = new EnumColumnValueMapper(DataChartTargetLocation.class);
     EnumColumnValueMapper DATA_CHART_TYPE = new EnumColumnValueMapper(DataChartType.class);
     EnumColumnValueMapper DATA_CHART_FIELD_TYPE = new EnumColumnValueMapper(DataChartFieldType.class);
+    EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceAuthenticationMethod.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);

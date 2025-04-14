@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/device")
 @AllArgsConstructor
-public class DeviceAuthenticationController {
+public class DeviceCredentialsController {
 
     private DeviceCredentialsService deviceAuthenticationService;
 
