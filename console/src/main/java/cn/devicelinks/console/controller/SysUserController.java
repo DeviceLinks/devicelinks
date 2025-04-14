@@ -117,7 +117,7 @@ public class SysUserController {
         // @formatter:off
         SysUser user = new SysUser()
                 .setAccount(request.getAccount())
-                .setName(request.getUsername())
+                .setName(request.getName())
                 .setEmail(request.getEmail())
                 .setActivateToken(SecureRandomUtils.generateRandomBase64(ACTIVATE_TOKEN_LENGTH))
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
@@ -150,7 +150,7 @@ public class SysUserController {
             throw new ApiException(StatusCodeConstants.USER_NOT_FOUND, userId);
         }
         // @formatter:off
-        storedUser.setName(request.getUsername())
+        storedUser.setName(request.getName())
                 .setEmail(request.getEmail())
                 .setPhone(request.getPhone())
                 .setDepartmentId(request.getDepartmentId())
