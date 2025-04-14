@@ -83,6 +83,13 @@ public class EntityStructure {
         }
         return columnName;
     }
+    
+    public static String removeEscapedCharacters(String columnName) {
+        if (columnName.startsWith("`") && columnName.endsWith("`")) {
+            return columnName.substring(1, columnName.length() - 1);
+        }
+        return columnName;
+    }
 
     public String getPrimaryKeyFieldName() {
         Column primaryKey = this.getPrimaryKey();

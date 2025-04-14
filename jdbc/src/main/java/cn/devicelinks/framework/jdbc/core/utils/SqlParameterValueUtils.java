@@ -20,6 +20,7 @@ package cn.devicelinks.framework.jdbc.core.utils;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.jdbc.core.annotation.IdGenerationStrategy;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
+import cn.devicelinks.framework.jdbc.core.definition.EntityStructure;
 import cn.devicelinks.framework.jdbc.core.definition.Table;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 import cn.devicelinks.framework.jdbc.core.sql.Condition;
@@ -131,7 +132,8 @@ public class SqlParameterValueUtils {
                     return true;
                 })
                 .map(tableColumn -> {
-                    String fieldName = StringUtils.lowerUnderToLowerCamel(tableColumn.getName());
+                    String adjustedColumnName = EntityStructure.removeEscapedCharacters(tableColumn.getName());
+                    String fieldName = StringUtils.lowerUnderToLowerCamel(adjustedColumnName);
                     Object fieldValue = fieldValueMap.get(fieldName);
                     Object convertedValue = tableColumn.toColumnValue(fieldValue);
                     return new SqlParameterValue(tableColumn.getSqlType(), convertedValue);
