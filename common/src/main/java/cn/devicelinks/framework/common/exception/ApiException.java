@@ -47,6 +47,12 @@ public class ApiException extends RuntimeException {
         this.statusCode = statusCode;
     }
 
+    public ApiException(Throwable cause, StatusCode statusCode, Object... messageVariables) {
+        super(cause);
+        this.statusCode = statusCode;
+        this.messageVariables = messageVariables;
+    }
+
     public ApiException(StatusCode statusCode, Object... messageVariables) {
         super(statusCode.formatMessage(messageVariables));
         this.statusCode = statusCode;

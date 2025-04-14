@@ -64,7 +64,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(StatusCode.QUERY_ERROR);
+            throw new ApiException(e, StatusCode.QUERY_ERROR);
         } finally {
             // @formatter:off
             this.sqlPrinter.print(RepositoryMethod.Query,
@@ -89,7 +89,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(StatusCode.QUERY_ERROR);
+            throw new ApiException(e, StatusCode.QUERY_ERROR);
         } finally {
             // @formatter:off
             this.sqlPrinter.print(RepositoryMethod.Query,
@@ -110,7 +110,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             return resultObject;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(StatusCode.QUERY_ERROR);
+            throw new ApiException(e, StatusCode.QUERY_ERROR);
         } finally {
             boolean printRow = resultObject != null;
             if (printRow && resultObject instanceof Number) {
@@ -134,7 +134,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             affectedRows = this.jdbcOperations.update(sql, parameters);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(StatusCode.MODIFY_ERROR);
+            throw new ApiException(e, StatusCode.MODIFY_ERROR);
         } finally {
             this.sqlPrinter.print(RepositoryMethod.Update, sql, parameters, null, affectedRows);
         }
@@ -158,7 +158,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             affectedRows = this.jdbcOperations.update(sql, preparedStatementSetter);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(StatusCode.MODIFY_ERROR);
+            throw new ApiException(e, StatusCode.MODIFY_ERROR);
         } finally {
             Object[] parameterValues = sqlParameterValues.stream().map(SqlParameterValue::getValue).toArray(Object[]::new);
             this.sqlPrinter.print(method, sql, parameterValues, null, affectedRows);
