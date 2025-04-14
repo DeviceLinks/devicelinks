@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 新增数据图表（设备属性） POST /api/chart */
+/** 新增数据图表（遥测数据） POST /api/chart */
 export async function postApiChart(
   body: API.AddDataChartRequest,
   options?: { [key: string]: any },

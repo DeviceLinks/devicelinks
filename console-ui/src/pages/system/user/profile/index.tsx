@@ -39,6 +39,7 @@ const UserProfile = () => {
               ...value,
             } as API.UpdateUserRequest);
             message.success('保存成员信息成功');
+            getUserInfo();
           }}
         />
       ),

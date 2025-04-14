@@ -58,23 +58,41 @@ export default ({
         }}
       />
       <ProFormText
-        name="username"
+        name="name"
         label="用户名"
         allowClear
         tooltip="最长为 30 位"
         placeholder="请输入名称"
-        rules={[{ required: true, message: '请输入用户名' }]}
+        rules={[
+          {
+            required: true,
+            pattern: /^[\u4e00-\u9fa5a-zA-Z0-9][\u4e00-\u9fa5a-zA-Z0-9_-]*$/,
+            message: '首字符需为中文/英文/数字，后续可包含下划线或短横线',
+          },
+        ]}
       />
 
       <ProFormText allowClear name="account" label="账号" placeholder="请输入账号" disabled />
       <ProFormText allowClear disabled name="id" label="用户ID" placeholder="" />
-      <ProFormText allowClear name="phone" label="手机号" placeholder="请输入手机号" />
+      <ProFormText
+        allowClear
+        name="phone"
+        label="手机号"
+        placeholder="请输入手机号"
+        rules={[
+          {
+            pattern: /^1[3-9]\d{9}$|^$/,
+            message: '手机号格式不正确',
+          },
+        ]}
+      />
       <ProFormSelect
         options={UserActivateMethod}
         allowClear
         name="activateMethod"
         label="激活方式"
         placeholder="请选择激活方式"
+        rules={[{ required: true, message: '请选择激活方式' }]}
       />
 
       <ProFormText allowClear name="email" label="邮箱地址" placeholder="请输入邮箱地址" />

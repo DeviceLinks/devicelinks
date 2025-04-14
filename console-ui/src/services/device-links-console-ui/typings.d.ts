@@ -98,7 +98,7 @@ declare namespace API {
     mark?: string;
     /** 鉴权方式 */
     authenticationMethod: string;
-    /** 鉴权附加信息 */
+    /** 附加信息 */
     authenticationAddition: DeviceAuthenticationAddition;
   };
 
@@ -144,7 +144,7 @@ declare namespace API {
 
   type AddUserRequest = {
     /** 用户名称 */
-    username: string;
+    name: string;
     /** 用户账号 */
     account: string;
     /** 激活方式 */
@@ -272,7 +272,7 @@ declare namespace API {
     /** 附加信息 */
     addition: AttributeAddition;
     /** 是否可写（可写的属性可用于设置期望值） */
-    writable?: string;
+    writable?: boolean;
     /** 属性描述 */
     description?: string;
   };
@@ -610,7 +610,7 @@ declare namespace API {
     deviceId: string;
     /** 认证方式 */
     authenticationMethod: string;
-    /** 鉴权附加信息 */
+    /** 附加信息 */
     addition: DeviceAuthenticationAddition;
     /** 过期时间 */
     expirationTime?: string;
@@ -793,7 +793,7 @@ declare namespace API {
     NotificationPushAway: NotificationPushAway;
     NotificationType: NotificationType;
     AlarmType: AlarmType;
-    SearchFieldOperator: SearchFieldOperator2;
+    SearchFieldOperator: SearchFieldOperator;
     OtaUpgradeBatchMethod: OtaUpgradeBatchMethod;
     UserActivateMethod: UserActivateMethod;
     DeviceType: DeviceType;
@@ -1368,7 +1368,7 @@ declare namespace API {
     optionStaticData?: SearchFieldOptionData[];
     enumClass?: string;
     /** 运算符列表 */
-    operators: SearchFieldOperator[];
+    operators: SearchFieldOperator1[];
     /** 是否必须传递 */
     required?: boolean;
   };
@@ -1398,7 +1398,9 @@ declare namespace API {
 
   type SearchFieldModuleIdentifier = EnumItem[];
 
-  type SearchFieldOperator = {
+  type SearchFieldOperator = EnumItem[];
+
+  type SearchFieldOperator1 = {
     /** 描述 */
     description: string;
     /** 运算符标识符ß */
@@ -1414,8 +1416,6 @@ declare namespace API {
       | 'Like'
       | 'NotLike';
   };
-
-  type SearchFieldOperator2 = EnumItem[];
 
   type SearchFieldOptionData = {
     /** 字段选项描述 */
@@ -1466,7 +1466,7 @@ declare namespace API {
   type UpdateDeviceAuthorizationRequest = {
     /** 设备鉴权方式 */
     authenticationMethod: string;
-    /** 鉴权附加信息 */
+    /** 附加信息 */
     authenticationAddition: DeviceAuthenticationAddition;
   };
 
@@ -1559,7 +1559,7 @@ declare namespace API {
 
   type UpdateUserRequest = {
     /** 用户名称 */
-    username: string;
+    name: string;
     /** 邮箱地址 */
     email?: string;
     /** 部门ID */
@@ -1573,7 +1573,7 @@ declare namespace API {
   type User = {
     /** ID */
     id: string;
-    /** 名称 */
+    /** 用户名称 */
     name: string;
     /** 账号 */
     account: string;
