@@ -17,14 +17,13 @@
 
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.service.system.SysUserService;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.query.PaginationQuery;
 import cn.devicelinks.api.support.query.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddUserRequest;
 import cn.devicelinks.api.support.request.UpdateUserRequest;
 import cn.devicelinks.api.support.search.SearchModule;
+import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.UserActivateMethod;
@@ -37,6 +36,7 @@ import cn.devicelinks.framework.common.utils.SecureRandomUtils;
 import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+import cn.devicelinks.service.system.SysUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -107,6 +107,9 @@ public class SysUserController {
             activateData = "{#p0}")
     @PreAuthorize("hasAuthority('SystemAdmin')")
     public ApiResponse<SysUser> addUser(@Valid @RequestBody AddUserRequest request) throws ApiException {
+        if (ObjectUtils.isEmpty(request.getActivateMethod())) {
+            throw new ApiException(StatusCodeConstants.USER_ACTIVE_METHOD_CANNOT_EMPTY);
+        }
         if (UserActivateMethod.SendUrlToEmail.toString().equals(request.getActivateMethod()) && ObjectUtils.isEmpty(request.getEmail())) {
             throw new ApiException(StatusCodeConstants.USER_EMAIL_CANNOT_EMPTY);
         }

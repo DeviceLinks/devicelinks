@@ -40,6 +40,7 @@ public interface StatusCodeConstants {
     StatusCode USER_NOT_FOUND = StatusCode.build("USER_NOT_FOUND", "用户：%s，不存在.");
     StatusCode USER_ALREADY_EXISTS = StatusCode.build("USER_ALREADY_EXISTS", "用户已经存在，请检查账号、邮箱、手机号是否重复.");
     StatusCode USER_EMAIL_CANNOT_EMPTY = StatusCode.build("USER_EMAIL_CANNOT_EMPTY", "用户邮箱地址不允许为空.");
+    StatusCode USER_ACTIVE_METHOD_CANNOT_EMPTY = StatusCode.build("USER_ACTIVE_METHOD_CANNOT_EMPTY", "用户激活方式不可以为空.");
 
     /**
      * Department
@@ -103,7 +104,7 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_PROFILE_NOT_EXISTS = StatusCode.build("DEVICE_PROFILE_NOT_EXISTS", "设备配置文件：%s，不存在.");
     StatusCode DEVICE_PROFILE_ALREADY_EXISTS = StatusCode.build("DEVICE_PROFILE_ALREADY_EXISTS", "设备配置文件：%s，已经存在.");
     StatusCode DEVICE_PROFILE_PROVISION_ADDITION_INVALID = StatusCode.build("DEVICE_PROFILE_PROVISION_ADDITION_INVALID", "设备配置文件预配置附加参数验证失败.");
-    StatusCode DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR = StatusCode.build("DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR","设备配置文件预配置动态令牌有效时长验证失败，有效时长范围：%d（包含） ~ %d（包含）.");
+    StatusCode DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR = StatusCode.build("DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR", "设备配置文件预配置动态令牌有效时长验证失败，有效时长范围：%d（包含） ~ %d（包含）.");
     StatusCode DEVICE_PROFILE_LOG_LEVELS_INVALID = StatusCode.build("DEVICE_PROFILE_LOG_LEVELS_INVALID", "设备配置日志等级附加信息验证失败，如果选择了产品请检查功能模块是否所属该产品，如果并未选择产品仅允许传递[default]功能模块的日志配置.");
     StatusCode DEVICE_PROFILE_DEFAULT_CANNOT_DELETE = StatusCode.build("DEVICE_PROFILE_DEFAULT_CANNOT_DELETE", "默认的设备配置文件不允许删除.");
     StatusCode DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID = StatusCode.build("DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID", "将设备配置文件批量设置给设备时，设置方式与参数验证失败，设置方式：%s.");

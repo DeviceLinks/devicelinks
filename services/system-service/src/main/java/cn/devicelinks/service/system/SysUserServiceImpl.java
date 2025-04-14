@@ -58,6 +58,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
         if (storedUser != null) {
             throw new ApiException(StatusCodeConstants.USER_ALREADY_EXISTS);
         }
+        sysUser.setActivateMethod(userActivateMethod);
         this.insert(sysUser);
         if (UserActivateMethod.SendUrlToEmail == userActivateMethod) {
             // TODO 通过发送邮件方式激活时，需要向邮箱发送账号激活邮件
