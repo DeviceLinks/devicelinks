@@ -1,8 +1,8 @@
 package cn.devicelinks.api.support.request;
 
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.DeviceType;
-import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
+import cn.devicelinks.framework.common.pojos.DeviceCredentialsAddition;
 import cn.devicelinks.framework.common.web.validator.EnumValid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -47,8 +47,8 @@ public class AddDeviceRequest {
 
     // 鉴权
     @NotEmpty(message = "设备鉴权方式不可以为空")
-    @EnumValid(target = DeviceAuthenticationMethod.class, message = "设备鉴权方式参数非法")
-    private String authenticationMethod;
+    @EnumValid(target = DeviceCredentialsType.class, message = "设备鉴权方式参数非法")
+    private String credentialsType;
 
-    private DeviceAuthenticationAddition authenticationAddition;
+    private DeviceCredentialsAddition authenticationAddition;
 }

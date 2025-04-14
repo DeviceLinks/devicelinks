@@ -1,6 +1,6 @@
 package cn.devicelinks.framework.jdbc.model.dto;
 
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.pojos.Device;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Data
 public class DeviceDTO extends Device {
 
-    private DeviceAuthenticationMethod authenticationMethod;
+    private DeviceCredentialsType credentialsType;
 
     private Map<String, String> moduleVersion;
 }

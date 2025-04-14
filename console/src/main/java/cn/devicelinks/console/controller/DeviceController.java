@@ -10,7 +10,7 @@ import cn.devicelinks.api.support.query.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddDeviceRequest;
 import cn.devicelinks.api.support.request.UpdateDeviceRequest;
 import cn.devicelinks.api.support.search.SearchModule;
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -88,8 +88,8 @@ public class DeviceController {
         Device device = DeviceConverter.INSTANCE.fromAddDeviceRequest(request);
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         device.setCreateBy(currentUser.getId());
-        DeviceAuthenticationMethod authenticationMethod = DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod());
-        device = this.deviceService.addDevice(device, authenticationMethod, request.getAuthenticationAddition());
+        DeviceCredentialsType credentialsType = DeviceCredentialsType.valueOf(request.getCredentialsType());
+        device = this.deviceService.addDevice(device, credentialsType, request.getAuthenticationAddition());
         return ApiResponse.success(device);
     }
 

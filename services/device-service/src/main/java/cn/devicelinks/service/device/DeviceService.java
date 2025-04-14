@@ -19,9 +19,9 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.query.PaginationQuery;
 import cn.devicelinks.api.support.query.SearchFieldQuery;
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
+import cn.devicelinks.framework.common.pojos.DeviceCredentialsAddition;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
@@ -72,11 +72,11 @@ public interface DeviceService extends BaseService<Device, String> {
      * 添加一个新的设备
      *
      * @param device                 要添加的设备 {@link Device}
-     * @param authenticationMethod   认证方法 {@link DeviceAuthenticationMethod}
-     * @param authenticationAddition 认证附加信息 {@link DeviceAuthenticationAddition}
+     * @param credentialsType   认证方法 {@link DeviceCredentialsType}
+     * @param authenticationAddition 认证附加信息 {@link DeviceCredentialsAddition}
      * @return 返回添加的设备 {@link Device}
      */
-    Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition);
+    Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition authenticationAddition);
 
     /**
      * 更新设备信息

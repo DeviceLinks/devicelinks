@@ -46,7 +46,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper LOG_OBJECT_TYPE = new EnumColumnValueMapper(LogObjectType.class);
     EnumColumnValueMapper DEVICE_STATUS = new EnumColumnValueMapper(DeviceStatus.class);
     EnumColumnValueMapper DATA_FORMAT = new EnumColumnValueMapper(DataFormat.class);
-    EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceAuthenticationMethod.class);
+    EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceCredentialsType.class);
     EnumColumnValueMapper DEVICE_NETWORKING_AWAY = new EnumColumnValueMapper(DeviceNetworkingAway.class);
     EnumColumnValueMapper PRODUCT_STATUS = new EnumColumnValueMapper(ProductStatus.class);
     EnumColumnValueMapper SESSION_STATUS = new EnumColumnValueMapper(SessionStatus.class);
@@ -85,7 +85,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);
     JSONObjectValueMapper DEVICE_ADDITION = new JSONObjectValueMapper(DeviceAddition.class);
-    JSONObjectValueMapper DEVICE_AUTHENTICATION_ADDITION = new JSONObjectValueMapper(DeviceAuthenticationAddition.class);
+    JSONObjectValueMapper DEVICE_AUTHENTICATION_ADDITION = new JSONObjectValueMapper(DeviceCredentialsAddition.class);
     JSONObjectValueMapper NOTIFICATION_ADDITION = new JSONObjectValueMapper(NotificationAddition.class);
     JSONObjectValueMapper NOTIFICATION_RULE_ADDITION = new JSONObjectValueMapper(NotificationRuleAddition.class);
     JSONObjectValueMapper NOTIFICATION_TEMPLATE_ADDITION = new JSONObjectValueMapper(NotificationTemplateAddition.class);

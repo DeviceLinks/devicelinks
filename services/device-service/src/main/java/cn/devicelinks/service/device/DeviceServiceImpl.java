@@ -21,7 +21,7 @@ import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.DeviceConverter;
 import cn.devicelinks.api.support.query.PaginationQuery;
 import cn.devicelinks.api.support.query.SearchFieldQuery;
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
@@ -59,7 +59,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     @Autowired
     private SysDepartmentService departmentService;
     @Autowired
-    private DeviceAuthenticationService deviceAuthenticationService;
+    private DeviceCredentialsService deviceAuthenticationService;
     @Autowired
     private DeviceShadowService deviceShadowService;
     @Autowired
@@ -94,11 +94,11 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
         DeviceDTO deviceDTO = DeviceConverter.INSTANCE.from(device);
 
-        DeviceAuthentication deviceAuthentication = this.deviceAuthenticationService.selectByDeviceId(deviceId);
-        if (deviceAuthentication == null) {
+        DeviceCredentials deviceCredentials = this.deviceAuthenticationService.selectByDeviceId(deviceId);
+        if (deviceCredentials == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
         }
-        deviceDTO.setAuthenticationMethod(deviceAuthentication.getAuthenticationMethod());
+        deviceDTO.setCredentialsType(deviceCredentials.getCredentialsType());
         List<DeviceFunctionModuleOtaDTO> deviceOtaList = this.deviceOtaService.selectByDeviceId(deviceId);
         if (!ObjectUtils.isEmpty(deviceOtaList)) {
             deviceDTO.setModuleVersion(deviceOtaList.stream()
@@ -108,7 +108,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
-    public Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
+    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition authenticationAddition) {
         // check request data
         this.checkData(device, false);
 
@@ -116,7 +116,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         this.repository.insert(device);
 
         // Save authentication data
-        this.deviceAuthenticationService.addAuthentication(device.getId(), authenticationMethod, authenticationAddition);
+        this.deviceAuthenticationService.addCredentials(device.getId(), credentialsType, authenticationAddition);
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());

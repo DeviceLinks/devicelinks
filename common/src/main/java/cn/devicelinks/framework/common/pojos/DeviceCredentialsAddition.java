@@ -17,8 +17,8 @@
 
 package cn.devicelinks.framework.common.pojos;
 
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -27,22 +27,38 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 设备鉴权信息
+ * 设备鉴权附加信息定义
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
 @Accessors(chain = true)
-public class DeviceAuthentication implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class DeviceCredentialsAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
-    private String id;
-    private String deviceId;
-    private DeviceAuthenticationMethod authenticationMethod;
-    private DeviceAuthenticationAddition addition;
-    private LocalDateTime expirationTime;
-    private boolean deleted;
-    private LocalDateTime createTime;
+    private String staticToken;
+
+    private String x509Pem;
+
+    private MqttBasic mqttBasic;
+
+    private DynamicToken dynamicToken;
+
+    @Data
+    @Accessors(chain = true)
+    public static class MqttBasic {
+        private String clientId;
+        private String username;
+        private String password;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class DynamicToken {
+        private String deviceSecret;
+        private LocalDateTime secretGenerateTime;
+    }
 }

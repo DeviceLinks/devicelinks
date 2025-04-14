@@ -21,13 +21,13 @@ import cn.devicelinks.framework.common.DeviceLinksVersion;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
 import cn.devicelinks.framework.jdbc.core.definition.TableImpl;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
-import cn.devicelinks.framework.common.pojos.DeviceAuthentication;
+import cn.devicelinks.framework.common.pojos.DeviceCredentials;
 
 import java.io.Serial;
 import java.util.List;
 
 /**
- * The {@link DeviceAuthentication} TableImpl
+ * The {@link DeviceCredentials} TableImpl
  *
  * @author 恒宇少年
  * @since 1.0
