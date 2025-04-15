@@ -21,6 +21,14 @@ devicelinks:
     version: ${DEVICELINKS_VERSION}
     token:
       expires-seconds: ${TOKEN_EXPIRES_SECONDS:7200}
+    # DeviceSecret加密Key列表
+    device-secret-keys:
+      # Version: SecretKey
+      v1: ${DEVICELINKS_DEVICE_SECRET_KEY_V1:HYmRnapKknjS5kxvFEcM5EZQovfmMAtiJfzUarLaU3I=}
+      v2: ${DEVICELINKS_DEVICE_SECRET_KEY_V2:mM8HVUaiUvtPCmlNV3DZ96PlJj26STg6KQtohRBVT1A=}
+      v3: ${DEVICELINKS_DEVICE_SECRET_KEY_V3:bbFdYaX2I+M4XH1E+OmE2qqwqcirZxu/W103r8zI4eE=}
+      v4: ${DEVICELINKS_DEVICE_SECRET_KEY_V4:RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=}
+      v5: ${DEVICELINKS_DEVICE_SECRET_KEY_V5:NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=}
   initializer:
     database:
       initializer-away: check
