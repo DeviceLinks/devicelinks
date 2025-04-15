@@ -18,14 +18,17 @@ import java.util.List;
  */
 @Data
 public class AddDeviceRequest {
-    // 设备信息
-    @NotEmpty(message = "产品ID不可以为空")
-    @Length(max = 32, message = "产品ID不可以超过32个字符")
+    @NotEmpty(message = "请选择设备所属产品")
+    @Length(max = 24, message = "产品ID不可以超过24个字符")
     private String productId;
 
-    @NotEmpty(message = "所属部门ID不可以为空")
-    @Length(max = 32, message = "所属部门ID不可以超过32个字符")
+    @NotEmpty(message = "请选择部门")
+    @Length(max = 24, message = "所属部门ID不可以超过24个字符")
     private String departmentId;
+
+    @NotEmpty(message = "请选择设备配置文件")
+    @Length(max = 24, message = "设备配置文件ID不可以超过24个字符")
+    private String profileId;
 
     @NotEmpty(message = "设备类型不可以为空")
     @EnumValid(target = DeviceType.class, message = "设备类型参数非法")
@@ -45,7 +48,6 @@ public class AddDeviceRequest {
     @Length(max = 100, message = "备注不可以超过100个字符")
     private String mark;
 
-    // 鉴权
     @NotEmpty(message = "设备凭证类型不可以为空")
     @EnumValid(target = DeviceCredentialsType.class, message = "设备凭证类型参数非法")
     private String credentialsType;

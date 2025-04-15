@@ -85,7 +85,7 @@ public class DeviceController {
     @PostMapping
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.Device,
-            objectId = "{#executionSucceed ? #result.data.id : #p0.deviceCode}",
+            objectId = "{#executionSucceed ? #result.data.id : #p0.deviceName}",
             msg = "{#executionSucceed ? '设备添加成功' : '设备添加失败'}",
             activateData = "{#p0}")
     public ApiResponse<Device> addDevice(@Valid @RequestBody AddDeviceRequest request) throws ApiException {

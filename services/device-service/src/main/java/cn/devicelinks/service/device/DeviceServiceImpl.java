@@ -67,6 +67,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     private DeviceShadowService deviceShadowService;
     @Autowired
     private DeviceOtaService deviceOtaService;
+    @Autowired
+    private DeviceProfileService deviceProfileService;
 
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
@@ -170,6 +172,12 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         SysDepartment department = this.departmentService.selectById(device.getDepartmentId());
         if (department == null || department.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEPARTMENT_NOT_FOUND, device.getDepartmentId());
+        }
+
+        // check device profile exists
+        DeviceProfile deviceProfile = this.deviceProfileService.selectById(device.getProfileId());
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, device.getProfileId());
         }
 
         // check already exists
