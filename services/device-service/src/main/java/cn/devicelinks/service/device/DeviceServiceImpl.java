@@ -115,7 +115,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         // Save device data
         this.repository.insert(device);
 
-        // Save authentication data
+        // Save device credentials
         this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, credentialsAddition);
 
         // init device shadow data

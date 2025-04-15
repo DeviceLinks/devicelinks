@@ -17,13 +17,18 @@ devicelinks:
     token:
       expires-seconds: 7200
     # DeviceSecret加密Key列表
-    device-secret-keys:
-      # Version: SecretKey
-      v1: HYmRnapKknjS5kxvFEcM5EZQovfmMAtiJfzUarLaU3I=
-      v2: mM8HVUaiUvtPCmlNV3DZ96PlJj26STg6KQtohRBVT1A=
-      v3: bbFdYaX2I+M4XH1E+OmE2qqwqcirZxu/W103r8zI4eE=
-      v4: RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=
-      v5: NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=
+    device-secret-key-set:
+      keys:
+        - version: v1
+          key: HYmRnapKknjS5kxvFEcM5EZQovfmMAtiJfzUarLaU3I=
+        - version: v2
+          key: mM8HVUaiUvtPCmlNV3DZ96PlJj26STg6KQtohRBVT1A=
+        - version: v3
+          key: bbFdYaX2I+M4XH1E+OmE2qqwqcirZxu/W103r8zI4eE=
+        - version: v4
+          key: RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=
+        - version: v5
+          key: NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=
   # 服务初始化配置
   initializer:
     # 初始化数据库

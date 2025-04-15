@@ -1,6 +1,7 @@
 package cn.devicelinks.framework.jdbc.tables;
 
 import cn.devicelinks.framework.common.DeviceLinksVersion;
+import cn.devicelinks.framework.common.DeviceSecretStatus;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
 import cn.devicelinks.framework.jdbc.ColumnValueMappers;
 import cn.devicelinks.framework.jdbc.core.definition.Column;
@@ -32,7 +33,7 @@ public class TDeviceSecret extends TableImpl {
     public final Column IV = Column.withName("iv").build();
     public final Column SECRET_VERSION = Column.withName("secret_version").build();
     public final Column SECRET_KEY_VERSION = Column.withName("secret_key_version").build();
-    public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SECRET_STATUS).build();
+    public final Column STATUS = Column.withName("status").typeMapper(ColumnValueMappers.DEVICE_SECRET_STATUS).defaultValue(() -> DeviceSecretStatus.Active).build();
     public final Column EXPIRES_TIME = Column.withName("expires_time").localDateTimeValue().build();
     public final Column LAST_USE_TIME = Column.withName("last_use_time").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();

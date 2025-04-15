@@ -37,7 +37,7 @@ public class GlobalTransactionConfiguration {
      * 匹配{@link TransactionDefinition#PROPAGATION_REQUIRED}隔离规则事务的方法名称
      */
     private static final List<String> DEFAULT_REQUIRED_TRANSACTION_METHOD_PATTERNS = List.of(
-            "save*", "add*", "insert*", "update*", "delete*", "remove*", "extract*", "batch*"
+            "save*", "add*", "insert*", "update*", "delete*", "remove*", "extract*", "batch*", "regenerate*"
     );
     /**
      * 匹配{@link TransactionDefinition#PROPAGATION_NOT_SUPPORTED}隔离规则事务的方法名称
