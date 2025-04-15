@@ -19,5 +19,5 @@ public class UpdateDeviceCredentialsRequest {
     @EnumValid(target = DeviceCredentialsType.class, message = "设备鉴权方式参数非法")
     private String credentialsType;
 
-    private DeviceCredentialsAddition authenticationAddition;
+    private DeviceCredentialsAddition credentialsAddition;
 }

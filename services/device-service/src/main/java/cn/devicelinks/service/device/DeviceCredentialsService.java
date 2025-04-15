@@ -42,18 +42,18 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
      *
      * @param deviceId               设备ID {@link DeviceCredentials#getDeviceId()}
      * @param credentialsType   鉴权方式 {@link DeviceCredentialsType}
-     * @param authenticationAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
+     * @param credentialsAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
      * @return 返回保存的鉴权信息 {@link DeviceCredentials}
      */
-    DeviceCredentials addCredentials(String deviceId, DeviceCredentialsType credentialsType, DeviceCredentialsAddition authenticationAddition);
+    DeviceCredentials addCredentials(String deviceId, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition);
 
     /**
      * 更新设备鉴权信息
      *
      * @param deviceId               设备ID {@link Device#getId()}
      * @param credentialsType   鉴权方式 {@link DeviceCredentialsType}
-     * @param authenticationAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
+     * @param credentialsAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
      * @return 返回保存的鉴权信息 {@link DeviceCredentials}
      */
-    DeviceCredentials updateCredentials(String deviceId, DeviceCredentialsType credentialsType, DeviceCredentialsAddition authenticationAddition);
+    DeviceCredentials updateCredentials(String deviceId, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition);
 }

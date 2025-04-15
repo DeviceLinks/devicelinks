@@ -44,18 +44,14 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     @Override
     public DeviceCredentials addCredentials(String deviceId,
                                             DeviceCredentialsType deviceCredentialsType,
-                                            DeviceCredentialsAddition authenticationAddition) {
+                                            DeviceCredentialsAddition credentialsAddition) {
         // validate authentication
-        this.validateAuthentication(deviceId, deviceCredentialsType, authenticationAddition, false);
-        // set generate time
-        if (DeviceCredentialsType.DynamicToken == deviceCredentialsType) {
-            authenticationAddition.getDynamicToken().setSecretGenerateTime(LocalDateTime.now());
-        }
+        this.validateAuthentication(deviceId, deviceCredentialsType, credentialsAddition, false);
         // @formatter:off
         DeviceCredentials authentication = new DeviceCredentials()
                 .setDeviceId(deviceId)
                 .setCredentialsType(deviceCredentialsType)
-                .setAddition(authenticationAddition)
+                .setAddition(credentialsAddition)
                 .setCreateTime(LocalDateTime.now());
         // @formatter:on
         this.repository.insert(authentication);
@@ -65,19 +61,15 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     @Override
     public DeviceCredentials updateCredentials(String deviceId,
                                                DeviceCredentialsType deviceCredentialsType,
-                                               DeviceCredentialsAddition authenticationAddition) {
+                                               DeviceCredentialsAddition credentialsAddition) {
         // validate authentication
-        this.validateAuthentication(deviceId, deviceCredentialsType, authenticationAddition, true);
+        this.validateAuthentication(deviceId, deviceCredentialsType, credentialsAddition, true);
 
         DeviceCredentials deviceAuthentication = selectByDeviceId(deviceId);
         if (deviceAuthentication == null || deviceAuthentication.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
         }
-        // set generate time
-        if (DeviceCredentialsType.DynamicToken == deviceCredentialsType) {
-            authenticationAddition.getDynamicToken().setSecretGenerateTime(LocalDateTime.now());
-        }
-        deviceAuthentication.setCredentialsType(deviceCredentialsType).setAddition(authenticationAddition);
+        deviceAuthentication.setCredentialsType(deviceCredentialsType).setAddition(credentialsAddition);
         this.repository.update(deviceAuthentication);
         return deviceAuthentication;
     }
@@ -85,27 +77,27 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
 
     private void validateAuthentication(String deviceId,
                                         DeviceCredentialsType deviceCredentialsType,
-                                        DeviceCredentialsAddition authenticationAddition,
+                                        DeviceCredentialsAddition credentialsAddition,
                                         boolean isUpdate) {
         switch (deviceCredentialsType) {
             case StaticToken:
-                if (ObjectUtils.isEmpty(authenticationAddition.getStaticToken())) {
+                if (ObjectUtils.isEmpty(credentialsAddition.getToken())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_STATIC_TOKEN);
                 }
-                DeviceCredentials staticTokenAuthentication = this.selectByStaticToken(authenticationAddition.getStaticToken());
+                DeviceCredentials staticTokenAuthentication = this.selectByStaticToken(credentialsAddition.getToken());
                 if ((isUpdate && staticTokenAuthentication != null && !staticTokenAuthentication.getDeviceId().equals(deviceId)) ||
                         (!isUpdate && staticTokenAuthentication != null)) {
-                    throw new ApiException(StatusCodeConstants.DEVICE_STATIC_TOKEN_ALREADY_EXISTS, authenticationAddition.getStaticToken());
+                    throw new ApiException(StatusCodeConstants.DEVICE_STATIC_TOKEN_ALREADY_EXISTS, credentialsAddition.getToken());
                 }
                 break;
             case DynamicToken:
-                if (authenticationAddition.getDynamicToken() == null || ObjectUtils.isEmpty(authenticationAddition.getDynamicToken().getDeviceSecret())) {
+                if (ObjectUtils.isEmpty(credentialsAddition.getToken())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_DYNAMIC_TOKEN_SECRET);
                 }
                 break;
             case MqttBasic:
                 // Validate MQTT Basic authentication
-                DeviceCredentialsAddition.MqttBasic mqttBasic = authenticationAddition.getMqttBasic();
+                DeviceCredentialsAddition.MqttBasic mqttBasic = credentialsAddition.getMqttBasic();
                 if (mqttBasic == null || ObjectUtils.isEmpty(mqttBasic.getUsername()) || ObjectUtils.isEmpty(mqttBasic.getPassword())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_MQTT_BASIC_AUTH, mqttBasic);
                 }
@@ -116,8 +108,8 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                 }
                 break;
             case X509:
-                if (ObjectUtils.isEmpty(authenticationAddition.getX509Pem()) || !X509Utils.isValidX509Pem(authenticationAddition.getX509Pem())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_X509_PEM, authenticationAddition.getX509Pem());
+                if (ObjectUtils.isEmpty(credentialsAddition.getX509Pem()) || !X509Utils.isValidX509Pem(credentialsAddition.getX509Pem())) {
+                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_X509_PEM, credentialsAddition.getX509Pem());
                 }
                 break;
             default:

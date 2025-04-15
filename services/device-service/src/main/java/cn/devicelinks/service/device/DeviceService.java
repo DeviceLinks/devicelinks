@@ -73,10 +73,10 @@ public interface DeviceService extends BaseService<Device, String> {
      *
      * @param device                 要添加的设备 {@link Device}
      * @param credentialsType   认证方法 {@link DeviceCredentialsType}
-     * @param authenticationAddition 认证附加信息 {@link DeviceCredentialsAddition}
+     * @param credentialsAddition 认证附加信息 {@link DeviceCredentialsAddition}
      * @return 返回添加的设备 {@link Device}
      */
-    Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition authenticationAddition);
+    Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition);
 
     /**
      * 更新设备信息

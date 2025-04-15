@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.common.pojos;
 
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.DeviceLinksVersion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -24,7 +25,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 设备鉴权附加信息定义
@@ -39,13 +39,21 @@ public class DeviceCredentialsAddition implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
-    private String staticToken;
+    /**
+     * @see DeviceCredentialsType#StaticToken
+     * @see DeviceCredentialsType#DynamicToken
+     */
+    private String token;
 
+    /**
+     * @see DeviceCredentialsType#X509
+     */
     private String x509Pem;
 
+    /**
+     * @see DeviceCredentialsType#MqttBasic
+     */
     private MqttBasic mqttBasic;
-
-    private DynamicToken dynamicToken;
 
     @Data
     @Accessors(chain = true)
@@ -53,12 +61,5 @@ public class DeviceCredentialsAddition implements Serializable {
         private String clientId;
         private String username;
         private String password;
-    }
-
-    @Data
-    @Accessors(chain = true)
-    public static class DynamicToken {
-        private String deviceSecret;
-        private LocalDateTime secretGenerateTime;
     }
 }

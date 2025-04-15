@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class DeviceCredentialsController {
 
-    private DeviceCredentialsService deviceAuthenticationService;
+    private DeviceCredentialsService deviceCredentialsService;
 
     private DeviceService deviceService;
 
@@ -36,8 +36,8 @@ public class DeviceCredentialsController {
      * @throws ApiException 遇到的业务逻辑认证异常以及参数认证异常
      */
     @GetMapping(value = "/{deviceId}/credentials")
-    public ApiResponse<DeviceCredentials> getDeviceAuthorization(@PathVariable("deviceId") String deviceId) throws ApiException {
-        return ApiResponse.success(this.deviceAuthenticationService.selectByDeviceId(deviceId));
+    public ApiResponse<DeviceCredentials> getDeviceCredentials(@PathVariable("deviceId") String deviceId) throws ApiException {
+        return ApiResponse.success(this.deviceCredentialsService.selectByDeviceId(deviceId));
     }
 
     /**
@@ -49,7 +49,7 @@ public class DeviceCredentialsController {
      * @throws ApiException 遇到的业务逻辑认证异常以及参数认证异常
      */
     @PostMapping(value = "/{deviceId}/credentials")
-    public ApiResponse<DeviceCredentials> updateDeviceAuthorization(@PathVariable("deviceId") String deviceId,
+    public ApiResponse<DeviceCredentials> updateDeviceCredentials(@PathVariable("deviceId") String deviceId,
                                                                     @Valid @RequestBody UpdateDeviceCredentialsRequest request) throws ApiException {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {
@@ -57,7 +57,7 @@ public class DeviceCredentialsController {
         }
         DeviceCredentialsType credentialsType = DeviceCredentialsType.valueOf(request.getCredentialsType());
         DeviceCredentials deviceAuthentication =
-                this.deviceAuthenticationService.updateCredentials(deviceId, credentialsType, request.getAuthenticationAddition());
+                this.deviceCredentialsService.updateCredentials(deviceId, credentialsType, request.getCredentialsAddition());
         return ApiResponse.success(deviceAuthentication);
     }
 }

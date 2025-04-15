@@ -59,7 +59,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     @Autowired
     private SysDepartmentService departmentService;
     @Autowired
-    private DeviceCredentialsService deviceAuthenticationService;
+    private DeviceCredentialsService deviceCredentialsService;
     @Autowired
     private DeviceShadowService deviceShadowService;
     @Autowired
@@ -94,7 +94,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
         DeviceDTO deviceDTO = DeviceConverter.INSTANCE.from(device);
 
-        DeviceCredentials deviceCredentials = this.deviceAuthenticationService.selectByDeviceId(deviceId);
+        DeviceCredentials deviceCredentials = this.deviceCredentialsService.selectByDeviceId(deviceId);
         if (deviceCredentials == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
         }
@@ -108,7 +108,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
-    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition authenticationAddition) {
+    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition) {
         // check request data
         this.checkData(device, false);
 
@@ -116,7 +116,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         this.repository.insert(device);
 
         // Save authentication data
-        this.deviceAuthenticationService.addCredentials(device.getId(), credentialsType, authenticationAddition);
+        this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, credentialsAddition);
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());

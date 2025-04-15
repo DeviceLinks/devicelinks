@@ -89,7 +89,7 @@ public class DeviceController {
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         device.setCreateBy(currentUser.getId());
         DeviceCredentialsType credentialsType = DeviceCredentialsType.valueOf(request.getCredentialsType());
-        device = this.deviceService.addDevice(device, credentialsType, request.getAuthenticationAddition());
+        device = this.deviceService.addDevice(device, credentialsType, request.getCredentialsAddition());
         return ApiResponse.success(device);
     }
 

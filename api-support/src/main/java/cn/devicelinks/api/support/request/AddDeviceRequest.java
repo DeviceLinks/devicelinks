@@ -46,9 +46,9 @@ public class AddDeviceRequest {
     private String mark;
 
     // 鉴权
-    @NotEmpty(message = "设备鉴权方式不可以为空")
-    @EnumValid(target = DeviceCredentialsType.class, message = "设备鉴权方式参数非法")
+    @NotEmpty(message = "设备凭证类型不可以为空")
+    @EnumValid(target = DeviceCredentialsType.class, message = "设备凭证类型参数非法")
     private String credentialsType;
 
-    private DeviceCredentialsAddition authenticationAddition;
+    private DeviceCredentialsAddition credentialsAddition;
 }
