@@ -40,4 +40,12 @@ public interface DeviceSecretService extends BaseService<DeviceSecret, String> {
      * @return 设备密钥传输实体 {@link DeviceSecretDTO}
      */
     DeviceSecretDTO regenerate(String deviceId, DeviceSecretKeySet deviceSecretKeySet);
+
+    /**
+     * 初始化设备密钥
+     *
+     * @param deviceId           设备ID {@link DeviceSecret#getDeviceId()}
+     * @param deviceSecretKeySet 设备密钥Key列表
+     */
+    void initializeSecret(String deviceId, DeviceSecretKeySet deviceSecretKeySet);
 }

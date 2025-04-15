@@ -24,6 +24,7 @@ import cn.devicelinks.api.support.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
+import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -60,6 +61,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     private SysDepartmentService departmentService;
     @Autowired
     private DeviceCredentialsService deviceCredentialsService;
+    @Autowired
+    private DeviceSecretService deviceSecretService;
     @Autowired
     private DeviceShadowService deviceShadowService;
     @Autowired
@@ -108,12 +111,15 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
-    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition) {
+    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition, DeviceSecretKeySet deviceSecretKeySet) {
         // check request data
         this.checkData(device, false);
 
         // Save device data
         this.repository.insert(device);
+
+        // Save Device Secret
+        this.deviceSecretService.initializeSecret(device.getId(), deviceSecretKeySet);
 
         // Save device credentials
         this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, credentialsAddition);

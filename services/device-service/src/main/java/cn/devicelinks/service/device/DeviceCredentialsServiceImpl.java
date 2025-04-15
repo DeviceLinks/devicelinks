@@ -90,11 +90,6 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                     throw new ApiException(StatusCodeConstants.DEVICE_STATIC_TOKEN_ALREADY_EXISTS, credentialsAddition.getToken());
                 }
                 break;
-            case DynamicToken:
-                if (ObjectUtils.isEmpty(credentialsAddition.getToken())) {
-                    throw new ApiException(StatusCodeConstants.INVALID_DEVICE_DYNAMIC_TOKEN_SECRET);
-                }
-                break;
             case MqttBasic:
                 // Validate MQTT Basic authentication
                 DeviceCredentialsAddition.MqttBasic mqttBasic = credentialsAddition.getMqttBasic();

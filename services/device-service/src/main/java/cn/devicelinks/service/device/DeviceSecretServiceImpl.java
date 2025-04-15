@@ -64,7 +64,15 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
         this.repository.update(List.of(DEVICE_SECRET.STATUS.set(DeviceSecretStatus.Expired)),
                 DEVICE_SECRET.DEVICE_ID.eq(deviceId),
                 DEVICE_SECRET.STATUS.eq(DeviceSecretStatus.Active));
+        return this.saveDeviceSecret(deviceId, deviceSecretKeySet);
+    }
 
+    @Override
+    public void initializeSecret(String deviceId, DeviceSecretKeySet deviceSecretKeySet) {
+        this.saveDeviceSecret(deviceId, deviceSecretKeySet);
+    }
+
+    private DeviceSecretDTO saveDeviceSecret(String deviceId, DeviceSecretKeySet deviceSecretKeySet) {
         String iv = AesUtils.generateBase64IV();
         DeviceSecretKeySet.DeviceSecretKey deviceSecretKey = deviceSecretKeySet.getRandomDeviceSecretKey();
         if (deviceSecretKey == null) {
