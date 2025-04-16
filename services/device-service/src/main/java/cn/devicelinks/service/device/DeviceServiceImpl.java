@@ -69,6 +69,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     private DeviceOtaService deviceOtaService;
     @Autowired
     private DeviceProfileService deviceProfileService;
+    @Autowired
+    private DeviceTagService deviceTagService;
 
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
@@ -119,6 +121,15 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
         // Save device data
         this.repository.insert(device);
+
+        // Added non-existent tags
+        if (!ObjectUtils.isEmpty(device.getTags())) {
+            for (String tag : device.getTags()) {
+                if (!ObjectUtils.isEmpty(tag)) {
+                    this.deviceTagService.addDeviceTag(new DeviceTag().setName(tag).setCreateBy(device.getCreateBy()));
+                }
+            }
+        }
 
         // Save Device Secret
         this.deviceSecretService.initializeSecret(device.getId(), deviceSecretKeySet);

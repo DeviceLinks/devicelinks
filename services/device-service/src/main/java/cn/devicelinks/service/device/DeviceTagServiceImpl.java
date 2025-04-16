@@ -31,7 +31,7 @@ public class DeviceTagServiceImpl extends BaseServiceImpl<DeviceTag, String, Dev
 
     @Override
     public DeviceTag addDeviceTag(DeviceTag deviceTag) {
-        DeviceTag storedDeviceTag = this.repository.selectOne(DEVICE_TAG.NAME.eq(deviceTag.getName()));
+        DeviceTag storedDeviceTag = this.repository.selectOne(DEVICE_TAG.NAME.eq(deviceTag.getName()), DEVICE_TAG.DELETED.eq(Boolean.FALSE));
         if (storedDeviceTag != null) {
             return storedDeviceTag;
         }
