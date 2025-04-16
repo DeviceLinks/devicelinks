@@ -34,10 +34,6 @@ public class UpdateProductRequest {
     @EnumValid(target = DataFormat.class, message = "数据格式参数非法")
     private String dataFormat;
 
-    @NotEmpty(message = "鉴权方式不能为空")
-    @EnumValid(target = DeviceCredentialsType.class, message = "鉴权方式参数非法")
-    private String authenticationMethod;
-
     @Length(max = 100, message = "产品描述不可以超过100个字符")
     private String description;
 }

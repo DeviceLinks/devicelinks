@@ -29,7 +29,7 @@ import static cn.devicelinks.framework.jdbc.tables.TDeviceSecret.DEVICE_SECRET;
 @Service
 public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, String, DeviceSecretRepository> implements DeviceSecretService {
 
-    private static final int DEVICE_SECRET_LENGTH = 50;
+    private static final int DEVICE_SECRET_LENGTH = 64;
 
     private static final String DEVICE_SECRET_DEFAULT_VERSION = "v1";
 

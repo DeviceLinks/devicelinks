@@ -74,7 +74,6 @@ public enum SearchFieldVariable {
     PRODUCT_NETWORKING_AWAY("networkingAway", "联网方式"),
     PRODUCT_ACCESS_GATEWAY_PROTOCOL("accessGatewayProtocol", "接入网关协议"),
     PRODUCT_DATA_FORMAT("dataFormat", "数据格式"),
-    PRODUCT_AUTHENTICATION_METHOD("authenticationMethod", "鉴权方式"),
     PRODUCT_DYNAMIC_REGISTRATION("dynamicRegistration", "是否动态注册"),
     PRODUCT_STATUS("status", "状态"),
 

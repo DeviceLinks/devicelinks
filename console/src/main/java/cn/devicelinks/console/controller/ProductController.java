@@ -95,7 +95,6 @@ public class ProductController {
                 .setNetworkingAway(DeviceNetworkingAway.valueOf(request.getNetworkingAway()))
                 .setAccessGatewayProtocol(AccessGatewayProtocol.valueOf(request.getAccessGatewayProtocol()))
                 .setDataFormat(DataFormat.valueOf(request.getDataFormat()))
-                .setAuthenticationMethod(DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod()))
                 .setStatus(ProductStatus.Development)
                 .setCreateBy(currentUserId)
                 .setDescription(request.getDescription());
@@ -132,7 +131,6 @@ public class ProductController {
                 .setNetworkingAway(DeviceNetworkingAway.valueOf(request.getNetworkingAway()))
                 .setAccessGatewayProtocol(AccessGatewayProtocol.valueOf(request.getAccessGatewayProtocol()))
                 .setDataFormat(DataFormat.valueOf(request.getDataFormat()))
-                .setAuthenticationMethod(DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod()))
                 .setDescription(request.getDescription());
         // @formatter:on
         return ApiResponse.success(this.productService.updateProduct(product));
