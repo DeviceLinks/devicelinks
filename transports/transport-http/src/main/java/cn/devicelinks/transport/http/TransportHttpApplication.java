@@ -17,8 +17,10 @@
 
 package cn.devicelinks.transport.http;
 
+import cn.devicelinks.framework.common.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
 /**
  * HTTP协议传输服务启动类
@@ -26,7 +28,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 恒宇少年
  * @since 1.0
  */
-@SpringBootApplication(scanBasePackages = "cn.devicelinks.transport")
+@SpringBootApplication(exclude = UserDetailsServiceAutoConfiguration.class)
+@DeviceLinksBeanScan
 public class TransportHttpApplication {
 
     public static void main(String[] args) {
