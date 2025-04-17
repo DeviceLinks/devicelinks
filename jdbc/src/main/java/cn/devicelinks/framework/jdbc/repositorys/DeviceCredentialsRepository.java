@@ -40,10 +40,10 @@ public interface DeviceCredentialsRepository extends Repository<DeviceCredential
     /**
      * 通过AccessToken查询鉴权信息
      *
-     * @param staticToken 静态令牌
+     * @param token 令牌（静态令牌、动态令牌）
      * @return 鉴权信息 {@link DeviceCredentials}
      */
-    DeviceCredentials selectByStaticToken(String staticToken);
+    DeviceCredentials selectByToken(String token);
 
     /**
      * 通过clientId查询鉴权信息
@@ -56,7 +56,7 @@ public interface DeviceCredentialsRepository extends Repository<DeviceCredential
     /**
      * 通过deviceSecret查询鉴权信息
      *
-     * @param deviceSecret 设备Secret {@link DeviceCredentialsAddition.DynamicToken#getDeviceSecret()}
+     * @param deviceSecret 设备Secret
      * @return 鉴权信息 {@link DeviceCredentials}
      */
     DeviceCredentials selectByDeviceSecret(String deviceSecret);

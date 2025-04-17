@@ -32,8 +32,8 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     }
 
     @Override
-    public DeviceCredentials selectByStaticToken(String staticToken) {
-        return this.repository.selectByStaticToken(staticToken);
+    public DeviceCredentials selectByToken(String staticToken) {
+        return this.repository.selectByToken(staticToken);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                 if (ObjectUtils.isEmpty(credentialsAddition.getToken())) {
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_STATIC_TOKEN);
                 }
-                DeviceCredentials staticTokenAuthentication = this.selectByStaticToken(credentialsAddition.getToken());
+                DeviceCredentials staticTokenAuthentication = this.selectByToken(credentialsAddition.getToken());
                 if ((isUpdate && staticTokenAuthentication != null && !staticTokenAuthentication.getDeviceId().equals(deviceId)) ||
                         (!isUpdate && staticTokenAuthentication != null)) {
                     throw new ApiException(StatusCodeConstants.DEVICE_STATIC_TOKEN_ALREADY_EXISTS, credentialsAddition.getToken());

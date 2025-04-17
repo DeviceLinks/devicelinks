@@ -46,14 +46,14 @@ public class DeviceCredentialsJdbcRepository extends JdbcRepository<DeviceCreden
     }
 
     @Override
-    public DeviceCredentials selectByStaticToken(String staticToken) {
-        if (ObjectUtils.isEmpty(staticToken)) {
+    public DeviceCredentials selectByToken(String token) {
+        if (ObjectUtils.isEmpty(token)) {
             throw new IllegalArgumentException("accessToken can't be null");
         }
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_CREDENTIALS.getQuerySql())
                 .resultColumns(columns -> columns.addAll(DEVICE_CREDENTIALS.getColumns()))
-                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.staticToken') = ?", staticToken)
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.token') = ?", token)
                 .resultType(DeviceCredentials.class)
                 .build();
         // @formatter:on

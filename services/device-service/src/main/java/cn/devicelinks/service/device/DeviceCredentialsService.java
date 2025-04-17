@@ -24,10 +24,10 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
     /**
      * 通过AccessToken查询鉴权信息
      *
-     * @param staticToken 静态令牌
+     * @param token 请求令牌（静态令牌、动态令牌）
      * @return 鉴权信息 {@link DeviceCredentials}
      */
-    DeviceCredentials selectByStaticToken(String staticToken);
+    DeviceCredentials selectByToken(String token);
 
     /**
      * 通过clientId查询鉴权信息
@@ -40,8 +40,8 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
     /**
      * 保存设备鉴权信息
      *
-     * @param deviceId               设备ID {@link DeviceCredentials#getDeviceId()}
-     * @param credentialsType   鉴权方式 {@link DeviceCredentialsType}
+     * @param deviceId            设备ID {@link DeviceCredentials#getDeviceId()}
+     * @param credentialsType     鉴权方式 {@link DeviceCredentialsType}
      * @param credentialsAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
      * @return 返回保存的鉴权信息 {@link DeviceCredentials}
      */
@@ -50,8 +50,8 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
     /**
      * 更新设备鉴权信息
      *
-     * @param deviceId               设备ID {@link Device#getId()}
-     * @param credentialsType   鉴权方式 {@link DeviceCredentialsType}
+     * @param deviceId            设备ID {@link Device#getId()}
+     * @param credentialsType     鉴权方式 {@link DeviceCredentialsType}
      * @param credentialsAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
      * @return 返回保存的鉴权信息 {@link DeviceCredentials}
      */

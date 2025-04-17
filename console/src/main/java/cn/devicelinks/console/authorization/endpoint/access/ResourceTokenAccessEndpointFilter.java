@@ -22,6 +22,7 @@ import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.http.ApiResponseHttpMessageConverter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,7 +54,7 @@ public class ResourceTokenAccessEndpointFilter extends OncePerRequestFilter {
 
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
-    private final HttpMessageConverter<ApiResponse> resourceAccessHttpMessageConverter = new ResourceAccessHttpMessageConverter();
+    private final HttpMessageConverter<ApiResponse> resourceAccessHttpMessageConverter = new ApiResponseHttpMessageConverter();
 
     private final AuthenticationFailureHandler authenticationFailureHandler = this::sendErrorResponse;
 

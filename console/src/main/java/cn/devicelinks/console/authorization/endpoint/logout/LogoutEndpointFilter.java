@@ -20,9 +20,9 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 import cn.devicelinks.console.authorization.BearerTokenResolver;
 import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.console.authorization.endpoint.access.ResourceAccessHttpMessageConverter;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.http.ApiResponseHttpMessageConverter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +56,7 @@ public class LogoutEndpointFilter extends OncePerRequestFilter {
 
     private final BearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
 
-    private final HttpMessageConverter<ApiResponse> httpMessageConverter = new ResourceAccessHttpMessageConverter();
+    private final HttpMessageConverter<ApiResponse> httpMessageConverter = new ApiResponseHttpMessageConverter();
 
     private final AuthenticationConverter authenticationConverter = this::createAuthentication;
 
