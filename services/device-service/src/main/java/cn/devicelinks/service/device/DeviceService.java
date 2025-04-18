@@ -103,4 +103,11 @@ public interface DeviceService extends BaseService<Device, String> {
      * @param enabled  启用状态 {@link Device#isEnabled()}
      */
     void updateEnabled(String deviceId, boolean enabled);
+
+    /**
+     * 激活设备
+     *
+     * @param deviceId 设备ID {@link Device#getId()}
+     */
+    void activateDevice(String deviceId);
 }

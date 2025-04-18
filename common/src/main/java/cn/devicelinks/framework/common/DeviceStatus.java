@@ -34,6 +34,10 @@ public enum DeviceStatus {
      */
     NotActivate("未激活", EnumShowStyle.Warning),
     /**
+     * 已激活
+     */
+    Activated("已激活", EnumShowStyle.Processing),
+    /**
      * 已激活，在线
      */
     Online("在线", EnumShowStyle.Success),

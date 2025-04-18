@@ -11,6 +11,7 @@ import cn.devicelinks.service.device.DeviceService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +29,7 @@ public class DeviceTokenAccessAuthenticationProvider implements AuthenticationPr
     private static final StatusCode TOKEN_INVALID = StatusCode.build("TOKEN_INVALID", "无效的令牌.");
     private static final StatusCode TOKEN_EXPIRED = StatusCode.build("TOKEN_EXPIRED", "令牌已过期，请重新获取令牌后再次请求.");
     private static final StatusCode UNKNOWN_DEVICE = StatusCode.build("UNKNOWN_DEVICE", "未知的设备.");
-    private static final StatusCode DEVICE_DISABLED_OR_NOT_ACTIVATED = StatusCode.build("DEVICE_DISABLED_OR_NOT_ACTIVATED", "设备已禁用或未激活.");
+    private static final StatusCode DEVICE_DISABLED = StatusCode.build("DEVICE_DISABLED", "设备已被禁用.");
 
     private final DeviceService deviceService;
     private final DeviceCredentialsService deviceCredentialsService;
@@ -41,21 +42,28 @@ public class DeviceTokenAccessAuthenticationProvider implements AuthenticationPr
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         DeviceTokenAccessAuthenticationToken authenticationToken = (DeviceTokenAccessAuthenticationToken) authentication;
+        // Checking token credential validity
         DeviceCredentials deviceCredentials = this.deviceCredentialsService.selectByToken(authenticationToken.getAccessToken());
         if (deviceCredentials == null || deviceCredentials.isDeleted()) {
             throw new DeviceLinksAuthorizationException(TOKEN_INVALID);
         }
+        // If it is a dynamic token, verify the validity period
         if (DeviceCredentialsType.DynamicToken == deviceCredentials.getCredentialsType() && deviceCredentials.getExpirationTime() != null) {
             if (LocalDateTime.now().isAfter(deviceCredentials.getExpirationTime())) {
                 throw new DeviceLinksAuthorizationException(TOKEN_EXPIRED);
             }
         }
-        Device device = this.deviceService.selectByDeviceId(deviceCredentials.getDeviceId());
+        // Checking device validity
+        Device device = this.deviceService.selectById(deviceCredentials.getDeviceId());
         if (device == null || device.isDeleted()) {
             throw new DeviceLinksAuthorizationException(UNKNOWN_DEVICE);
         }
-        if (!device.isEnabled() || DeviceStatus.NotActivate == device.getStatus()) {
-            throw new DeviceLinksAuthorizationException(DEVICE_DISABLED_OR_NOT_ACTIVATED);
+        if (!device.isEnabled()) {
+            throw new DeviceLinksAuthorizationException(DEVICE_DISABLED);
+        }
+        // Activate the device
+        if (DeviceStatus.NotActivate == device.getStatus() && ObjectUtils.isEmpty(device.getActivationTime())) {
+            this.deviceService.activateDevice(device.getId());
         }
         return DeviceTokenAccessAuthenticationToken.authenticated(authenticationToken.getAccessToken(), device);
     }

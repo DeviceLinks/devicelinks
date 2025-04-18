@@ -22,6 +22,7 @@ import cn.devicelinks.api.support.converter.DeviceConverter;
 import cn.devicelinks.api.support.query.PaginationQuery;
 import cn.devicelinks.api.support.query.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
+import cn.devicelinks.framework.common.DeviceStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
 import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
@@ -40,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -170,6 +172,13 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
         }
         this.repository.update(List.of(DEVICE.ENABLED.set(enabled)), DEVICE.ID.eq(device.getId()));
+    }
+
+    @Override
+    public void activateDevice(String deviceId) {
+        this.repository.update(List.of(DEVICE.STATUS.set(DeviceStatus.Activated),
+                        DEVICE.ACTIVATION_TIME.set(LocalDateTime.now())),
+                DEVICE.ID.eq(deviceId));
     }
 
     private void checkData(Device device, boolean doUpdate) {
