@@ -18,6 +18,10 @@ devicelinks:
   transport:
     http:
       version: ${DEVICELINKS_VERSION}
+      # Token Settings
+      token-setting:
+        issued-dynamic-token-length: 64
+        validity-seconds: 7200
     device-center-api:
       # Use Docker Container Name
       uri: ${DEVICELINKS_DEVICE_CENTER_URI:https://devicelinks-device-center:13651}

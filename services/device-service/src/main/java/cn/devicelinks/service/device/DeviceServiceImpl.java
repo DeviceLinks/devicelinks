@@ -137,7 +137,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         this.deviceSecretService.initializeSecret(device.getId(), deviceSecretKeySet);
 
         // Save device credentials
-        this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, credentialsAddition);
+        this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, null, credentialsAddition);
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());

@@ -37,6 +37,18 @@ devicelinks:
         api-secret: ${DEVICELINKS_CONSOLE_API_SECRET}
         scopes:
           - Console
-
+    # DeviceSecret加密Key列表
+    device-secret-key-set:
+      keys:
+        - version: v1
+          key: ${DEVICELINKS_DEVICE_SECRET_KEY_V1:HYmRnapKknjS5kxvFEcM5EZQovfmMAtiJfzUarLaU3I=}
+        - version: v2
+          key: ${DEVICELINKS_DEVICE_SECRET_KEY_V2:mM8HVUaiUvtPCmlNV3DZ96PlJj26STg6KQtohRBVT1A=}
+        - version: v3
+          key: ${DEVICELINKS_DEVICE_SECRET_KEY_V3:bbFdYaX2I+M4XH1E+OmE2qqwqcirZxu/W103r8zI4eE=}
+        - version: v4
+          key: ${DEVICELINKS_DEVICE_SECRET_KEY_V4:RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=}
+        - version: v5
+          key: ${DEVICELINKS_DEVICE_SECRET_KEY_V5:NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=}
 logging:
   config: ${HOME_DIR}/conf/logback.xml

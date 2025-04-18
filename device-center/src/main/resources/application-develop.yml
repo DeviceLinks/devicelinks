@@ -13,6 +13,20 @@ spring:
 
 devicelinks:
   center:
+    # DeviceSecret Secrets
+    # Consistent with console service，Used to decrypt device secret
+    device-secret-key-set:
+      keys:
+        - version: v1
+          key: HYmRnapKknjS5kxvFEcM5EZQovfmMAtiJfzUarLaU3I=
+        - version: v2
+          key: mM8HVUaiUvtPCmlNV3DZ96PlJj26STg6KQtohRBVT1A=
+        - version: v3
+          key: bbFdYaX2I+M4XH1E+OmE2qqwqcirZxu/W103r8zI4eE=
+        - version: v4
+          key: RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=
+        - version: v5
+          key: NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=
     # Api Keys
     api-keys:
       - api-key: 6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static cn.devicelinks.framework.jdbc.tables.TDeviceCredentials.DEVICE_CREDENTIALS;
 
 /**
  * 设备鉴权业务逻辑实现类
@@ -44,18 +47,32 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     @Override
     public DeviceCredentials addCredentials(String deviceId,
                                             DeviceCredentialsType deviceCredentialsType,
+                                            LocalDateTime expirationTime,
                                             DeviceCredentialsAddition credentialsAddition) {
         // validate authentication
         this.validateAuthentication(deviceId, deviceCredentialsType, credentialsAddition, false);
         // @formatter:off
-        DeviceCredentials authentication = new DeviceCredentials()
+        DeviceCredentials credentials = new DeviceCredentials()
                 .setDeviceId(deviceId)
                 .setCredentialsType(deviceCredentialsType)
                 .setAddition(credentialsAddition)
+                .setExpirationTime(expirationTime)
                 .setCreateTime(LocalDateTime.now());
         // @formatter:on
-        this.repository.insert(authentication);
-        return authentication;
+        this.repository.insert(credentials);
+        return credentials;
+    }
+
+    @Override
+    public DeviceCredentials addDynamicToken(String deviceId, String dynamicToken, LocalDateTime expirationTime) {
+        // @formatter:off
+        LocalDateTime currentTime = LocalDateTime.now();
+        this.repository.update(List.of(DEVICE_CREDENTIALS.EXPIRATION_TIME.set(currentTime)),
+                DEVICE_CREDENTIALS.DEVICE_ID.eq(deviceId),
+                DEVICE_CREDENTIALS.DELETED.eq(Boolean.FALSE),
+                DEVICE_CREDENTIALS.EXPIRATION_TIME.gt(currentTime));
+        // @formatter:off
+        return this.addCredentials(deviceId, DeviceCredentialsType.DynamicToken, expirationTime, new DeviceCredentialsAddition().setToken(dynamicToken));
     }
 
     @Override
@@ -107,8 +124,6 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_X509_PEM, credentialsAddition.getX509Pem());
                 }
                 break;
-            default:
-                throw new IllegalArgumentException("Unsupported authentication method");
         }
     }
 }
