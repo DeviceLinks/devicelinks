@@ -1,20 +1,16 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.http.ApiResponseHttpMessageConverter;
 import cn.devicelinks.framework.common.security.access.resolver.BearerTokenResolver;
 import cn.devicelinks.framework.common.security.access.resolver.DefaultBearerTokenResolver;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -36,9 +32,7 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
 
     private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
-    private final HttpMessageConverter<ApiResponse> resourceAccessHttpMessageConverter = new ApiResponseHttpMessageConverter();
-
-    private final AuthenticationFailureHandler authenticationFailureHandler = this::sendErrorResponse;
+    private final AuthenticationFailureHandler authenticationFailureHandler = new DeviceLinksAuthorizationExceptionFailureHandler();
 
     public DeviceTokenAccessFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -67,13 +61,5 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
                     new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
         }
-    }
-
-    private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response,
-                                   AuthenticationException authenticationException) throws IOException {
-        DeviceLinksAuthorizationException deviceLinksAuthorizationException = (DeviceLinksAuthorizationException) authenticationException;
-        ApiResponse errorResponse = ApiResponse.error(deviceLinksAuthorizationException.getStatusCode());
-        ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
-        this.resourceAccessHttpMessageConverter.write(errorResponse, null, httpResponse);
     }
 }

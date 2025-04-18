@@ -34,7 +34,7 @@ import java.io.IOException;
  * @author 恒宇少年
  * @since 1.0
  */
-public class ApiResponseHttpMessageConverter extends AbstractHttpMessageConverter<ApiResponse> {
+public class ApiResponseHttpMessageConverter extends AbstractHttpMessageConverter<ApiResponse<?>> {
     private final DeviceLinksJsonMapper jsonMapper;
 
     public ApiResponseHttpMessageConverter() {
@@ -48,12 +48,12 @@ public class ApiResponseHttpMessageConverter extends AbstractHttpMessageConverte
     }
 
     @Override
-    protected ApiResponse readInternal(Class<? extends ApiResponse> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    protected ApiResponse<?> readInternal(Class<? extends ApiResponse<?>> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         return jsonMapper.readValue(inputMessage.getBody(), ApiResponse.class);
     }
 
     @Override
-    protected void writeInternal(ApiResponse apiResponse, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+    protected void writeInternal(ApiResponse<?> apiResponse, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         try {
             jsonMapper.writeValue(outputMessage.getBody(), apiResponse);
         } catch (Exception ex) {
