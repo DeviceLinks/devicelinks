@@ -1,9 +1,9 @@
 package cn.devicelinks.center.authorization.endpoint.api;
 
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
-public class ApiAccessAuthenticationConfigurer extends AbstractHttpConfigurer<ApiAccessAuthenticationConfigurer, HttpSecurity> {
+public class ApiAccessAuthenticationConfigurer extends DeviceLinksAuthorizationEndpointConfigurer {
     private final List<DeviceCenterProperties.InternalServiceApiKey> apiKeys;
 
     public ApiAccessAuthenticationConfigurer(List<DeviceCenterProperties.InternalServiceApiKey> apiKeys) {

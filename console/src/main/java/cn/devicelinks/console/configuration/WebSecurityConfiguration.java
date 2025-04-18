@@ -18,7 +18,7 @@
 package cn.devicelinks.console.configuration;
 
 import cn.devicelinks.console.authorization.AuthorizedUserAdditionService;
-import cn.devicelinks.console.authorization.DeviceLinksAuthorizationSecurityConfigurer;
+import cn.devicelinks.console.authorization.ConsoleAuthorizationSecurityConfigurer;
 import cn.devicelinks.console.authorization.DeviceLinksUserDetailsService;
 import cn.devicelinks.console.authorization.JdbcAuthorizedUserAdditionService;
 import cn.devicelinks.console.authorization.endpoint.access.ResourceTokenAccessAuthenticationConfigurer;
@@ -75,7 +75,7 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        DeviceLinksAuthorizationSecurityConfigurer authorizationSecurityConfigurer = new DeviceLinksAuthorizationSecurityConfigurer();
+        ConsoleAuthorizationSecurityConfigurer authorizationSecurityConfigurer = new ConsoleAuthorizationSecurityConfigurer();
         RequestMatcher authorizationSecurityEndpointMatcher = authorizationSecurityConfigurer.getEndpointsMatcher();
         // @formatter:off
         http.securityMatcher(authorizationSecurityEndpointMatcher)
