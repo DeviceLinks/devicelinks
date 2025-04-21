@@ -24,9 +24,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * 接口统一响应实体
@@ -52,10 +49,6 @@ public class ApiResponse<T> implements Serializable {
      * 接口响应的数据
      */
     private T data;
-    /**
-     * 附加信息
-     */
-    private final Map<String, Object> additional = new HashMap<>();
 
     private ApiResponse(String code, String message, T data) {
         this.code = code;
@@ -81,15 +74,5 @@ public class ApiResponse<T> implements Serializable {
 
     public static ApiResponse<Object> error(StatusCode statusCode, Object... messageVariables) {
         return new ApiResponse<>(statusCode.getCode(), statusCode.formatMessage(messageVariables), null);
-    }
-
-    public ApiResponse<T> putAdditional(String key, Object value) {
-        this.additional.put(key, value);
-        return this;
-    }
-
-    public ApiResponse<T> putAdditional(Consumer<Map<String, Object>> consumer) {
-        consumer.accept(this.additional);
-        return this;
     }
 }
