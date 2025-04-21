@@ -34,4 +34,14 @@ public interface DeviceCenterDeviceFeignApi {
     @RequestLine("GET /api/devices/{deviceId}")
     @Headers(JSON_CONTENT_TYPE_HEADER)
     ApiResponse<Device> getDeviceById(@Param("deviceId") String deviceId);
+
+    /**
+     * 解密设备密钥
+     *
+     * @param deviceId 设备ID
+     * @return 解密后的DeviceSecret
+     */
+    @RequestLine("GET /api/devices/{deviceId}/decrypt-secret")
+    @Headers(JSON_CONTENT_TYPE_HEADER)
+    ApiResponse<String> decryptDeviceSecret(@Param("deviceId") String deviceId);
 }

@@ -19,11 +19,11 @@ package cn.devicelinks.console.authorization.endpoint.access;
 
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.framework.jdbc.repositorys.SysUserSessionRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,7 +33,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author 恒宇少年
  * @since 1.0
  */
-public class ResourceTokenAccessAuthenticationConfigurer extends AbstractHttpConfigurer<ResourceTokenAccessAuthenticationConfigurer, HttpSecurity> {
+public class ResourceTokenAccessAuthenticationConfigurer extends DeviceLinksAuthorizationEndpointConfigurer {
     @Override
     public void init(HttpSecurity httpSecurity) {
         ApplicationContext applicationContext = HttpSecuritySharedObjectUtils.getApplicationContext(httpSecurity);

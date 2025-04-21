@@ -1,6 +1,8 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.console.authorization.UserDetailsContext;
+import cn.devicelinks.console.configuration.ConsoleProperties;
+import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
 import cn.devicelinks.service.device.DeviceService;
 import cn.devicelinks.service.product.FunctionModuleService;
 import cn.devicelinks.api.support.StatusCodeConstants;
@@ -10,7 +12,7 @@ import cn.devicelinks.api.support.query.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddDeviceRequest;
 import cn.devicelinks.api.support.request.UpdateDeviceRequest;
 import cn.devicelinks.api.support.search.SearchModule;
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
@@ -43,6 +45,8 @@ public class DeviceController {
     private DeviceService deviceService;
 
     private FunctionModuleService functionModuleService;
+
+    private ConsoleProperties consoleProperties;
 
     /**
      * 获取设备列表，支持分页和搜索功能
@@ -81,15 +85,16 @@ public class DeviceController {
     @PostMapping
     @OperationLog(action = LogAction.Add,
             objectType = LogObjectType.Device,
-            objectId = "{#executionSucceed ? #result.data.id : #p0.deviceCode}",
+            objectId = "{#executionSucceed ? #result.data.id : #p0.deviceName}",
             msg = "{#executionSucceed ? '设备添加成功' : '设备添加失败'}",
             activateData = "{#p0}")
     public ApiResponse<Device> addDevice(@Valid @RequestBody AddDeviceRequest request) throws ApiException {
         Device device = DeviceConverter.INSTANCE.fromAddDeviceRequest(request);
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         device.setCreateBy(currentUser.getId());
-        DeviceAuthenticationMethod authenticationMethod = DeviceAuthenticationMethod.valueOf(request.getAuthenticationMethod());
-        device = this.deviceService.addDevice(device, authenticationMethod, request.getAuthenticationAddition());
+        DeviceCredentialsType credentialsType = DeviceCredentialsType.valueOf(request.getCredentialsType());
+        DeviceSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
+        device = this.deviceService.addDevice(device, credentialsType, request.getCredentialsAddition(), deviceSecretKeySet);
         return ApiResponse.success(device);
     }
 
@@ -109,7 +114,7 @@ public class DeviceController {
             msg = "{#executionSucceed ? '设备更成功' : '设备更新失败'}",
             activateData = "{#p1}")
     public ApiResponse<Device> updateDevice(@PathVariable("deviceId") String deviceId,
-                                    @Valid @RequestBody UpdateDeviceRequest request) throws ApiException {
+                                            @Valid @RequestBody UpdateDeviceRequest request) throws ApiException {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
@@ -158,7 +163,7 @@ public class DeviceController {
             msg = "{#executionSucceed ? '设备启用状态更新成功' : '设备启用状态更新失败'}",
             activateData = "{#p1}")
     public ApiResponse<Object> updateDeviceStatus(@PathVariable("deviceId") String deviceId,
-                                          @NotNull Boolean enabled) throws ApiException {
+                                                  @NotNull Boolean enabled) throws ApiException {
         this.deviceService.updateEnabled(deviceId, enabled);
         return ApiResponse.success();
     }

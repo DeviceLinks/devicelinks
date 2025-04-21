@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console;
 
+import cn.devicelinks.framework.common.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -26,7 +27,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 恒宇少年
  * @since 1.0
  */
-@SpringBootApplication(scanBasePackages = "cn.devicelinks")
+@SpringBootApplication
+@DeviceLinksBeanScan
 public class ConsoleApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConsoleApplication.class, args);

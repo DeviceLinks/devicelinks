@@ -17,6 +17,7 @@
 
 package cn.devicelinks.rule.engine;
 
+import cn.devicelinks.framework.common.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -27,6 +28,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0
  */
 @SpringBootApplication
+@DeviceLinksBeanScan
 public class RuleEngineApplication {
 
     public static void main(String[] args) {

@@ -1,7 +1,9 @@
 package cn.devicelinks.center.configuration;
 
+import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -21,6 +23,12 @@ public class DeviceCenterProperties {
     public static final String DEVICELINKS_CORE_SERVICE_PREFIX = "devicelinks.center";
 
     private List<InternalServiceApiKey> apiKeys;
+
+    /**
+     * DeviceSecret存储时AES加密算法的Keys
+     */
+    @NestedConfigurationProperty
+    private DeviceSecretKeySet deviceSecretKeySet;
 
     @Data
     public static class InternalServiceApiKey {

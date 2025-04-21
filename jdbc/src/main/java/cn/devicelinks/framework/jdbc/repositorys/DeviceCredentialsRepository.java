@@ -18,46 +18,46 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
 import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceAuthentication;
-import cn.devicelinks.framework.common.pojos.DeviceAuthenticationAddition;
+import cn.devicelinks.framework.common.pojos.DeviceCredentials;
+import cn.devicelinks.framework.common.pojos.DeviceCredentialsAddition;
 import cn.devicelinks.framework.jdbc.core.Repository;
 
 /**
- * The {@link DeviceAuthentication} Repository
+ * The {@link DeviceCredentials} Repository
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public interface DeviceAuthenticationRepository extends Repository<DeviceAuthentication, String> {
+public interface DeviceCredentialsRepository extends Repository<DeviceCredentials, String> {
     /**
      * 通过设备ID查询设备鉴权信息
      *
      * @param deviceId 设备ID {@link Device#getId()}
-     * @return {@link DeviceAuthentication}
+     * @return {@link DeviceCredentials}
      */
-    DeviceAuthentication selectByDeviceId(String deviceId);
+    DeviceCredentials selectByDeviceId(String deviceId);
 
     /**
      * 通过AccessToken查询鉴权信息
      *
-     * @param staticToken 静态令牌
-     * @return 鉴权信息 {@link DeviceAuthentication}
+     * @param token 令牌（静态令牌、动态令牌）
+     * @return 鉴权信息 {@link DeviceCredentials}
      */
-    DeviceAuthentication selectByStaticToken(String staticToken);
+    DeviceCredentials selectByToken(String token);
 
     /**
      * 通过clientId查询鉴权信息
      *
-     * @param clientId 客户端ID {@link DeviceAuthenticationAddition.MqttBasic#getClientId()}
-     * @return 鉴权信息 {@link DeviceAuthentication}
+     * @param clientId 客户端ID {@link DeviceCredentialsAddition.MqttBasic#getClientId()}
+     * @return 鉴权信息 {@link DeviceCredentials}
      */
-    DeviceAuthentication selectByClientId(String clientId);
+    DeviceCredentials selectByClientId(String clientId);
 
     /**
      * 通过deviceSecret查询鉴权信息
      *
-     * @param deviceSecret 设备Secret {@link DeviceAuthenticationAddition.DynamicToken#getDeviceSecret()}
-     * @return 鉴权信息 {@link DeviceAuthentication}
+     * @param deviceSecret 设备Secret
+     * @return 鉴权信息 {@link DeviceCredentials}
      */
-    DeviceAuthentication selectByDeviceSecret(String deviceSecret);
+    DeviceCredentials selectByDeviceSecret(String deviceSecret);
 }

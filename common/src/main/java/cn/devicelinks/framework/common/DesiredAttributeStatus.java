@@ -14,7 +14,8 @@ import lombok.Getter;
 public enum DesiredAttributeStatus {
     Pending("等待", EnumShowStyle.Warning),
     Confirmed("已确认", EnumShowStyle.Success),
-    Timeout("超时", EnumShowStyle.Error);
+    Timeout("超时", EnumShowStyle.Error),
+    Exception("异常", EnumShowStyle.Error);
 
     private final String description;
     private final EnumShowStyle showStyle;

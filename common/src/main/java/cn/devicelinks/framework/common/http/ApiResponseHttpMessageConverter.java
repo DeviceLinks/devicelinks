@@ -15,9 +15,8 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.authorization.endpoint.access;
+package cn.devicelinks.framework.common.http;
 
-import cn.devicelinks.console.authorization.endpoint.login.LoginResponse;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
 import org.springframework.http.HttpInputMessage;
@@ -30,15 +29,15 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import java.io.IOException;
 
 /**
- * The {@link LoginResponse} Message Converter
+ * The {@link ApiResponse} Message Converter
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public class ResourceAccessHttpMessageConverter extends AbstractHttpMessageConverter<ApiResponse> {
+public class ApiResponseHttpMessageConverter extends AbstractHttpMessageConverter<ApiResponse<?>> {
     private final DeviceLinksJsonMapper jsonMapper;
 
-    public ResourceAccessHttpMessageConverter() {
+    public ApiResponseHttpMessageConverter() {
         super(MediaType.APPLICATION_JSON, new MediaType("application", "*+json"));
         this.jsonMapper = new DeviceLinksJsonMapper();
     }
@@ -49,12 +48,12 @@ public class ResourceAccessHttpMessageConverter extends AbstractHttpMessageConve
     }
 
     @Override
-    protected ApiResponse readInternal(Class<? extends ApiResponse> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    protected ApiResponse<?> readInternal(Class<? extends ApiResponse<?>> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         return jsonMapper.readValue(inputMessage.getBody(), ApiResponse.class);
     }
 
     @Override
-    protected void writeInternal(ApiResponse apiResponse, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+    protected void writeInternal(ApiResponse<?> apiResponse, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         try {
             jsonMapper.writeValue(outputMessage.getBody(), apiResponse);
         } catch (Exception ex) {

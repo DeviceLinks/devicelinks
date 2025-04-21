@@ -82,17 +82,6 @@ public class ProductSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.NotIn
             ));
 
-    SearchField PRODUCT_AUTHENTICATION_METHOD = SearchField.of(SearchFieldVariable.PRODUCT_AUTHENTICATION_METHOD)
-            .setValueType(SearchFieldValueType.ENUM)
-            .setComponentType(SearchFieldComponentType.SELECT)
-            .setEnumClass(DeviceAuthenticationMethod.class)
-            .setOperators(List.of(
-                    SearchFieldOperator.EqualTo,
-                    SearchFieldOperator.NotEqualTo,
-                    SearchFieldOperator.In,
-                    SearchFieldOperator.NotIn
-            ));
-
     SearchField PRODUCT_DYNAMIC_REGISTRATION = SearchField.of(SearchFieldVariable.PRODUCT_DYNAMIC_REGISTRATION)
             .setValueType(SearchFieldValueType.BOOLEAN)
             .setComponentType(SearchFieldComponentType.SELECT)
@@ -131,7 +120,6 @@ public class ProductSearchFieldModule implements SearchFieldModule {
                 PRODUCT_NETWORKING_AWAY,
                 PRODUCT_ACCESS_GATEWAY_PROTOCOL,
                 PRODUCT_DATA_FORMAT,
-                PRODUCT_AUTHENTICATION_METHOD,
                 PRODUCT_DYNAMIC_REGISTRATION,
                 PRODUCT_STATUS
         );

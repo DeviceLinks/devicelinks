@@ -45,8 +45,8 @@ public class Product implements Serializable {
     private DeviceNetworkingAway networkingAway;
     private AccessGatewayProtocol accessGatewayProtocol;
     private DataFormat dataFormat;
-    private DeviceAuthenticationMethod authenticationMethod;
     private boolean dynamicRegistration;
+    private DynamicRegistrationAddition dynamicRegistrationAddition;
     private ProductStatus status;
     private boolean deleted;
     private String description;

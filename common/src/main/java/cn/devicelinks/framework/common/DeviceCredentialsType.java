@@ -15,28 +15,40 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cn.devicelinks.console.authorization.endpoint;
+package cn.devicelinks.framework.common;
 
-import org.springframework.security.config.annotation.ObjectPostProcessor;
+import cn.devicelinks.framework.common.annotation.ApiEnum;
+import lombok.Getter;
 
 /**
- * 端点认证配置抽象实现类
+ * 设备凭证类型
  *
  * @author 恒宇少年
  * @since 1.0
  */
-public abstract class AbstractAuthorizationEndpointConfigurer implements AuthorizationEndpointConfigurer {
-    private final ObjectPostProcessor<Object> objectPostProcessor;
+@Getter
+@ApiEnum
+public enum DeviceCredentialsType {
+    /**
+     * 静态令牌
+     */
+    StaticToken("StaticToken"),
+    /**
+     * 动态令牌
+     */
+    DynamicToken("DynamicToken"),
+    /**
+     * MQTT基本认证
+     */
+    MqttBasic("MQTT Basic"),
+    /**
+     * X509证书
+     */
+    X509("X.509");
 
-    protected AbstractAuthorizationEndpointConfigurer(ObjectPostProcessor<Object> objectPostProcessor) {
-        this.objectPostProcessor = objectPostProcessor;
-    }
+    private final String description;
 
-    protected final <T> T postProcess(T object) {
-        return (T) this.objectPostProcessor.postProcess(object);
-    }
-
-    protected final ObjectPostProcessor<Object> getObjectPostProcessor() {
-        return this.objectPostProcessor;
+    DeviceCredentialsType(String description) {
+        this.description = description;
     }
 }

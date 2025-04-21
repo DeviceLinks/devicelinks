@@ -19,13 +19,12 @@ package cn.devicelinks.console.authorization.endpoint.login;
 
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.console.authorization.endpoint.AbstractAuthorizationEndpointConfigurer;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.service.system.SysLogService;
 import cn.devicelinks.service.system.SysUserSessionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +39,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * @author 恒宇少年
  * @since 1.0
  */
-public class UsernamePasswordLoginAuthenticationConfigurer extends AbstractAuthorizationEndpointConfigurer {
+public class UsernamePasswordLoginAuthenticationConfigurer extends DeviceLinksAuthorizationEndpointConfigurer {
     /**
      * The Login Endpoint URI
      */
@@ -48,8 +47,7 @@ public class UsernamePasswordLoginAuthenticationConfigurer extends AbstractAutho
 
     private final RequestMatcher loginRequestMatcher;
 
-    public UsernamePasswordLoginAuthenticationConfigurer(ObjectPostProcessor<Object> objectPostProcessor) {
-        super(objectPostProcessor);
+    public UsernamePasswordLoginAuthenticationConfigurer() {
         this.loginRequestMatcher = new AntPathRequestMatcher(LOGIN_ENDPOINT_URI, HttpMethod.POST.name());
     }
 

@@ -53,7 +53,7 @@ public class TAttribute extends TableImpl {
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.ATTRIBUTE_ADDITION).build();
     public final Column WRITABLE = Column.withName("writable").booleanValue().defaultValue(() -> Boolean.TRUE).build();
     public final Column SYSTEM = Column.withName("`system`").booleanValue().defaultValue(() -> Boolean.FALSE).build();
-    public final Column SCOPE = Column.withName("scope").booleanValue().typeMapper(ColumnValueMappers.ATTRIBUTE_SCOPE).defaultValue(() -> AttributeScope.Common).build();
+    public final Column SCOPE = Column.withName("scope").typeMapper(ColumnValueMappers.ATTRIBUTE_SCOPE).defaultValue(() -> AttributeScope.Common).build();
     public final Column ENABLED = Column.withName("enabled").booleanValue().defaultValue(() -> Boolean.TRUE).build();
     public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();

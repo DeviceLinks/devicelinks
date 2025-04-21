@@ -112,4 +112,9 @@ public interface StatusCodeConstants {
 
     StatusCode OTA_FIRMWARE_NOT_EXISTS = StatusCode.build("OTA_FIRMWARE_NOT_EXISTS", "固件OTA：%s，不存在.");
     StatusCode OTA_SOFTWARE_NOT_EXISTS = StatusCode.build("OTA_SOFTWARE_NOT_EXISTS", "软件OTA：%s，不存在.");
+
+    StatusCode DEVICE_NOT_HAVE_SECRET = StatusCode.build("DEVICE_NOT_HAVE_SECRET", "设备不存在密钥.");
+    StatusCode DEVICE_SECRET_DECRYPTION_ERROR = StatusCode.build("DEVICE_SECRET_DECRYPTION_ERROR", "设备密钥解密失败.");
+    StatusCode DEVICE_SECRET_KEY_INVALID = StatusCode.build("DEVICE_SECRET_KEY_INVALID", "设备密钥Key无效.");
+    StatusCode DEVICE_SECRET_NOT_HAVE_VERSION_kEY = StatusCode.build("DEVICE_SECRET_NOT_HAVE_VERSION_kEY", "不存在设备密钥Key版本对应的设备密钥.");
 }

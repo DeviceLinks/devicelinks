@@ -21,9 +21,11 @@ import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.DeviceConverter;
 import cn.devicelinks.api.support.query.PaginationQuery;
 import cn.devicelinks.api.support.query.SearchFieldQuery;
-import cn.devicelinks.framework.common.DeviceAuthenticationMethod;
+import cn.devicelinks.framework.common.DeviceCredentialsType;
+import cn.devicelinks.framework.common.DeviceStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.*;
+import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
@@ -39,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,11 +62,17 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     @Autowired
     private SysDepartmentService departmentService;
     @Autowired
-    private DeviceAuthenticationService deviceAuthenticationService;
+    private DeviceCredentialsService deviceCredentialsService;
+    @Autowired
+    private DeviceSecretService deviceSecretService;
     @Autowired
     private DeviceShadowService deviceShadowService;
     @Autowired
     private DeviceOtaService deviceOtaService;
+    @Autowired
+    private DeviceProfileService deviceProfileService;
+    @Autowired
+    private DeviceTagService deviceTagService;
 
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
@@ -94,11 +103,11 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
         DeviceDTO deviceDTO = DeviceConverter.INSTANCE.from(device);
 
-        DeviceAuthentication deviceAuthentication = this.deviceAuthenticationService.selectByDeviceId(deviceId);
-        if (deviceAuthentication == null) {
+        DeviceCredentials deviceCredentials = this.deviceCredentialsService.selectByDeviceId(deviceId);
+        if (deviceCredentials == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
         }
-        deviceDTO.setAuthenticationMethod(deviceAuthentication.getAuthenticationMethod());
+        deviceDTO.setCredentialsType(deviceCredentials.getCredentialsType());
         List<DeviceFunctionModuleOtaDTO> deviceOtaList = this.deviceOtaService.selectByDeviceId(deviceId);
         if (!ObjectUtils.isEmpty(deviceOtaList)) {
             deviceDTO.setModuleVersion(deviceOtaList.stream()
@@ -108,15 +117,27 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
-    public Device addDevice(Device device, DeviceAuthenticationMethod authenticationMethod, DeviceAuthenticationAddition authenticationAddition) {
+    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition, DeviceSecretKeySet deviceSecretKeySet) {
         // check request data
         this.checkData(device, false);
 
         // Save device data
         this.repository.insert(device);
 
-        // Save authentication data
-        this.deviceAuthenticationService.addAuthentication(device.getId(), authenticationMethod, authenticationAddition);
+        // Added non-existent tags
+        if (!ObjectUtils.isEmpty(device.getTags())) {
+            for (String tag : device.getTags()) {
+                if (!ObjectUtils.isEmpty(tag)) {
+                    this.deviceTagService.addDeviceTag(new DeviceTag().setName(tag).setCreateBy(device.getCreateBy()));
+                }
+            }
+        }
+
+        // Save Device Secret
+        this.deviceSecretService.initializeSecret(device.getId(), deviceSecretKeySet);
+
+        // Save device credentials
+        this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, null, credentialsAddition);
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());
@@ -153,6 +174,13 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         this.repository.update(List.of(DEVICE.ENABLED.set(enabled)), DEVICE.ID.eq(device.getId()));
     }
 
+    @Override
+    public void activateDevice(String deviceId) {
+        this.repository.update(List.of(DEVICE.STATUS.set(DeviceStatus.Activated),
+                        DEVICE.ACTIVATION_TIME.set(LocalDateTime.now())),
+                DEVICE.ID.eq(deviceId));
+    }
+
     private void checkData(Device device, boolean doUpdate) {
         // check product exists
         Product product = this.productService.selectById(device.getProductId());
@@ -164,6 +192,12 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         SysDepartment department = this.departmentService.selectById(device.getDepartmentId());
         if (department == null || department.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEPARTMENT_NOT_FOUND, device.getDepartmentId());
+        }
+
+        // check device profile exists
+        DeviceProfile deviceProfile = this.deviceProfileService.selectById(device.getProfileId());
+        if (deviceProfile == null || deviceProfile.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, device.getProfileId());
         }
 
         // check already exists

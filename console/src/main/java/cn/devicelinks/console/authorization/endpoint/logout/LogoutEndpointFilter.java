@@ -19,10 +19,11 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 
 import cn.devicelinks.console.authorization.BearerTokenResolver;
 import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.console.authorization.endpoint.access.ResourceAccessHttpMessageConverter;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.http.ApiResponseHttpMessageConverter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,13 +57,14 @@ public class LogoutEndpointFilter extends OncePerRequestFilter {
 
     private final BearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
 
-    private final HttpMessageConverter<ApiResponse> httpMessageConverter = new ResourceAccessHttpMessageConverter();
+    private final HttpMessageConverter<ApiResponse<?>> httpMessageConverter = new ApiResponseHttpMessageConverter();
 
     private final AuthenticationConverter authenticationConverter = this::createAuthentication;
 
     private final AuthenticationSuccessHandler authenticationSuccessHandler = this::sendSuccessResponse;
 
-    private final AuthenticationFailureHandler authenticationFailureHandler = this::sendErrorResponse;
+    private final AuthenticationFailureHandler authenticationFailureHandler = new DeviceLinksAuthorizationExceptionFailureHandler();
+
 
     public LogoutEndpointFilter(AuthenticationManager authenticationManager, RequestMatcher loginRequestMatcher) {
         this.authenticationManager = authenticationManager;
@@ -97,13 +99,5 @@ public class LogoutEndpointFilter extends OncePerRequestFilter {
                                      Authentication authentication) throws IOException {
         ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
         this.httpMessageConverter.write(ApiResponse.success(null), null, httpResponse);
-    }
-
-    private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response,
-                                   AuthenticationException authenticationException) throws IOException {
-        DeviceLinksAuthorizationException deviceLinksAuthorizationException = (DeviceLinksAuthorizationException) authenticationException;
-        ApiResponse errorResponse = ApiResponse.error(deviceLinksAuthorizationException.getStatusCode());
-        ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
-        this.httpMessageConverter.write(errorResponse, null, httpResponse);
     }
 }

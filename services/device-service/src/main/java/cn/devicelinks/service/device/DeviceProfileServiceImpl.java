@@ -46,9 +46,6 @@ import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODU
 @Slf4j
 public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, String, DeviceProfileRepository> implements DeviceProfileService {
 
-    private static final long MIN_DYNAMIC_VALID_SECONDS = 10 * 60;
-    private static final long MAX_DYNAMIC_VALID_SECONDS = 30 * 24 * 60 * 60;
-
     @Autowired
     private OtaService otaService;
 
@@ -298,9 +295,6 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
             DeviceProfileProvisionAddition provisionAddition = deviceProfile.getProvisionAddition();
             if (ObjectUtils.isEmpty(provisionAddition.getProvisionDeviceKey()) || ObjectUtils.isEmpty(provisionAddition.getProvisionDeviceSecret())) {
                 throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_PROVISION_ADDITION_INVALID);
-            }
-            if (provisionAddition.getDynamicTokenValidSeconds() < MIN_DYNAMIC_VALID_SECONDS || provisionAddition.getDynamicTokenValidSeconds() > MAX_DYNAMIC_VALID_SECONDS) {
-                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_PROVISION_VALID_SECOND_ERROR, MIN_DYNAMIC_VALID_SECONDS, MAX_DYNAMIC_VALID_SECONDS);
             }
         }
     }
