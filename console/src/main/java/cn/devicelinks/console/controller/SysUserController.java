@@ -119,6 +119,7 @@ public class SysUserController {
                 .setAccount(request.getAccount())
                 .setName(request.getName())
                 .setEmail(request.getEmail())
+                .setPhone(request.getPhone())
                 .setActivateToken(SecureRandomUtils.generateRandomString(ACTIVATE_TOKEN_LENGTH))
                 .setDepartmentId(ObjectUtils.isEmpty(request.getDepartmentId()) ? currentUser.getDepartmentId() : request.getDepartmentId())
                 .setCreateBy(currentUser.getId())

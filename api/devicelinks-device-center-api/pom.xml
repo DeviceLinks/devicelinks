@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.devicelinks</groupId>
-        <artifactId>devicelinks-transports</artifactId>
+        <artifactId>devicelinks-apis</artifactId>
         <version>${revision}</version>
     </parent>
-    <packaging>jar</packaging>
-    <artifactId>devicelinks-transport-support</artifactId>
     <description>
-        Public support for all protocol transport services.
+        Device center API interface definition.
     </description>
+    <artifactId>devicelinks-device-center-api</artifactId>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -20,25 +20,12 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-device-center-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-jackson</artifactId>
+            <artifactId>feign-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -47,15 +34,4 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

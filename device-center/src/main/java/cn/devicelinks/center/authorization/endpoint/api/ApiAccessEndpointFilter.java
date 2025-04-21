@@ -6,6 +6,7 @@ import cn.devicelinks.center.authorization.DefaultApiKeyResolver;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.request.RepeatableRequestWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import java.io.IOException;
  * Api访问认证端点过滤器
  *
  * @author 恒宇少年
+ * @see RepeatableRequestWrapper
  * @since 1.0
  */
 public class ApiAccessEndpointFilter extends OncePerRequestFilter {
@@ -47,6 +49,10 @@ public class ApiAccessEndpointFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            if (!(request instanceof RepeatableRequestWrapper)) {
+                request = new RepeatableRequestWrapper(request);
+            }
+
             ApiKeyAuthenticationRequest apiKeyAuthenticationRequest = this.apiKeyResolver.resolve(request);
             // @formatter:off
             ApiAccessAuthenticationToken apiAccessAuthenticationToken =

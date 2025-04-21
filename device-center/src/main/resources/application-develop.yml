@@ -37,6 +37,10 @@ devicelinks:
         api-secret: 653eff3aea8f4e3bc10e807c144e2cf49073df5a9103d7b02c14f657ae1f4430ff46b42a37d91a3f3c7f6c2f47a0c3024f8fe8bdf4221dcabc6bbb56f24595fc
         scopes:
           - Console
+    # Device Dynamic Token Settings
+    token-setting:
+      issued-dynamic-token-length: 64
+      validity-seconds: 7200
 logging:
   level:
     cn.devicelinks.framework.jdbc: debug

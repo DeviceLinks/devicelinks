@@ -1,10 +1,8 @@
 package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
+import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
+import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
-import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
-import cn.devicelinks.service.device.DeviceCredentialsService;
-import cn.devicelinks.service.device.DeviceService;
-import cn.devicelinks.transport.http.configuration.TransportHttpProperties;
 import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
@@ -36,12 +34,10 @@ public class DeviceDynamicTokenIssuedAuthenticationConfigurer extends DeviceLink
     @Override
     public void init(HttpSecurity httpSecurity) throws Exception {
         ApplicationContext applicationContext = httpSecurity.getSharedObject(ApplicationContext.class);
-        DeviceService deviceService = applicationContext.getBean(DeviceService.class);
-        DeviceCredentialsService deviceCredentialsService = applicationContext.getBean(DeviceCredentialsService.class);
-        DeviceCenterDeviceFeignApi deviceCenterDeviceFeignApi = applicationContext.getBean(DeviceCenterDeviceFeignApi.class);
-        TransportHttpProperties properties = applicationContext.getBean(TransportHttpProperties.class);
+        DeviceFeignClient deviceFeignClient = applicationContext.getBean(DeviceFeignClient.class);
+        DeviceCredentialsFeignClient deviceCredentialsFeignClient = applicationContext.getBean(DeviceCredentialsFeignClient.class);
         DeviceDynamicTokenIssuedAuthenticationProvider dynamicTokenIssuedAuthenticationProvider =
-                new DeviceDynamicTokenIssuedAuthenticationProvider(deviceService, deviceCredentialsService, deviceCenterDeviceFeignApi, properties.getTokenSetting());
+                new DeviceDynamicTokenIssuedAuthenticationProvider(deviceFeignClient, deviceCredentialsFeignClient);
         httpSecurity.authenticationProvider(dynamicTokenIssuedAuthenticationProvider);
     }
 

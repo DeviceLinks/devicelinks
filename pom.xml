@@ -40,6 +40,7 @@
         <module>transports</module>
         <module>services</module>
         <module>api-support</module>
+        <module>api</module>
     </modules>
     <properties>
         <revision>1.0-SNAPSHOT</revision>

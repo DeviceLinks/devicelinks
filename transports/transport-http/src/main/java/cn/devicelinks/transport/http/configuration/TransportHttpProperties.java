@@ -17,19 +17,4 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class TransportHttpProperties {
     public static final String DEVICELINKS_TRANSPORT_HTTP_PREFIX = "devicelinks.transport.http";
-
-    private TokenSetting tokenSetting;
-
-    @Data
-    public static class TokenSetting {
-        private long validitySeconds = 7200;
-        private int issuedDynamicTokenLength = 64;
-
-        public void setIssuedDynamicTokenLength(int issuedDynamicTokenLength) {
-            if (issuedDynamicTokenLength < 64) {
-                log.warn("The length of the issued dynamic token is not recommended to be less than 64 bits.");
-            }
-            this.issuedDynamicTokenLength = issuedDynamicTokenLength;
-        }
-    }
 }

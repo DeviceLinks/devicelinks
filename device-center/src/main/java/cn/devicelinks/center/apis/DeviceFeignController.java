@@ -4,16 +4,13 @@ import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
+import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
 import cn.devicelinks.service.device.DeviceSecretService;
 import cn.devicelinks.service.device.DeviceService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +23,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping(value = "/api/devices")
 @AllArgsConstructor
-public class DeviceApiController implements DeviceCenterDeviceFeignApi {
+public class DeviceFeignController implements DeviceFeignClient {
 
     private static final StatusCode DEVICE_SECRET_INVALID = StatusCode.build("DEVICE_SECRET_INVALID", "无效的设备密钥.");
 
@@ -60,5 +57,16 @@ public class DeviceApiController implements DeviceCenterDeviceFeignApi {
         String decryptedSecret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), deviceSecret.getIv(),
                 deviceSecret.getSecretKeyVersion(), deviceCenterProperties.getDeviceSecretKeySet());
         return ApiResponse.success(decryptedSecret);
+    }
+
+    @Override
+    @PostMapping("/{deviceId}/activate")
+    public ApiResponse<Boolean> activateDevice(@PathVariable("deviceId") String deviceId) {
+        try {
+            this.deviceService.activateDevice(deviceId);
+        } catch (Exception e) {
+            return ApiResponse.success(Boolean.FALSE);
+        }
+        return ApiResponse.success(Boolean.TRUE);
     }
 }

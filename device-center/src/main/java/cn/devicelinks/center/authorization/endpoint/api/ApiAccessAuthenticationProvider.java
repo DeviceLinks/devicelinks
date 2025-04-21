@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Long EFFECTIVE_TIMESTAMP = 120L;
+    private static final Long EFFECTIVE_SECONDS = 20L;
 
     private static final StatusCode API_KEY_NOT_FOUND = StatusCode.build("API_KEY_NOT_FOUND", "ApiKey不存在，禁止访问Api.");
 
@@ -52,7 +52,8 @@ public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
         }
         DeviceCenterProperties.InternalServiceApiKey internalServiceApiKey = this.apiKeyMap.get(apiAccessAuthenticationToken.getApiKey());
         try {
-            String sign = ApiRequestSignUtils.sign(internalServiceApiKey.getApiSecret(), String.valueOf(apiAccessAuthenticationToken.getTimestamp()), apiAccessAuthenticationToken.getRequest());
+            String sign = ApiRequestSignUtils.sign(internalServiceApiKey.getApiSecret(), String.valueOf(apiAccessAuthenticationToken.getTimestamp()),
+                    apiAccessAuthenticationToken.getRequest());
             if (ObjectUtils.isEmpty(apiAccessAuthenticationToken.getSign()) || !sign.equals(apiAccessAuthenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(API_KEY_SIGN_ERROR);
             }
@@ -60,7 +61,7 @@ public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
             throw new DeviceLinksAuthorizationException(API_KEY_SIGN_ERROR);
         }
         Long currentTimestamp = System.currentTimeMillis();
-        if (apiAccessAuthenticationToken.getTimestamp() <= Constants.ZERO || currentTimestamp - apiAccessAuthenticationToken.getTimestamp() > EFFECTIVE_TIMESTAMP) {
+        if (apiAccessAuthenticationToken.getTimestamp() <= Constants.ZERO || currentTimestamp - apiAccessAuthenticationToken.getTimestamp() > EFFECTIVE_SECONDS * 1000) {
             throw new DeviceLinksAuthorizationException(API_REQUEST_IS_EXPIRED);
         }
         // Verification passed

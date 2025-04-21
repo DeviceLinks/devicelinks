@@ -2,12 +2,13 @@ package cn.devicelinks.transport.http.authorization.endpoint.access;
 
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.DeviceStatus;
+import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
+import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceCredentials;
-import cn.devicelinks.service.device.DeviceCredentialsService;
-import cn.devicelinks.service.device.DeviceService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -30,20 +31,21 @@ public class DeviceTokenAccessAuthenticationProvider implements AuthenticationPr
     private static final StatusCode TOKEN_EXPIRED = StatusCode.build("TOKEN_EXPIRED", "令牌已过期，请重新获取令牌后再次请求.");
     private static final StatusCode UNKNOWN_DEVICE = StatusCode.build("UNKNOWN_DEVICE", "未知的设备.");
     private static final StatusCode DEVICE_DISABLED = StatusCode.build("DEVICE_DISABLED", "设备已被禁用.");
+    private static final StatusCode DEVICE_ACTIVATE_FAIL = StatusCode.build("DEVICE_ACTIVATE_FAIL", "设备激活失败.");
 
-    private final DeviceService deviceService;
-    private final DeviceCredentialsService deviceCredentialsService;
+    private final DeviceFeignClient deviceFeignClient;
+    private final DeviceCredentialsFeignClient deviceCredentialsFeignClient;
 
-    public DeviceTokenAccessAuthenticationProvider(DeviceService deviceService, DeviceCredentialsService deviceCredentialsService) {
-        this.deviceService = deviceService;
-        this.deviceCredentialsService = deviceCredentialsService;
+    public DeviceTokenAccessAuthenticationProvider(DeviceFeignClient deviceFeignClient, DeviceCredentialsFeignClient deviceCredentialsFeignClient) {
+        this.deviceFeignClient = deviceFeignClient;
+        this.deviceCredentialsFeignClient = deviceCredentialsFeignClient;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         DeviceTokenAccessAuthenticationToken authenticationToken = (DeviceTokenAccessAuthenticationToken) authentication;
         // Checking token credential validity
-        DeviceCredentials deviceCredentials = this.deviceCredentialsService.selectByToken(authenticationToken.getAccessToken());
+        DeviceCredentials deviceCredentials = ApiResponseUnwrapper.unwrap(this.deviceCredentialsFeignClient.selectByToken(authenticationToken.getAccessToken()));
         if (deviceCredentials == null || deviceCredentials.isDeleted()) {
             throw new DeviceLinksAuthorizationException(TOKEN_INVALID);
         }
@@ -54,7 +56,7 @@ public class DeviceTokenAccessAuthenticationProvider implements AuthenticationPr
             }
         }
         // Checking device validity
-        Device device = this.deviceService.selectById(deviceCredentials.getDeviceId());
+        Device device = ApiResponseUnwrapper.unwrap(this.deviceFeignClient.getDeviceById(deviceCredentials.getDeviceId()));
         if (device == null || device.isDeleted()) {
             throw new DeviceLinksAuthorizationException(UNKNOWN_DEVICE);
         }
@@ -63,7 +65,10 @@ public class DeviceTokenAccessAuthenticationProvider implements AuthenticationPr
         }
         // Activate the device
         if (DeviceStatus.NotActivate == device.getStatus() && ObjectUtils.isEmpty(device.getActivationTime())) {
-            this.deviceService.activateDevice(device.getId());
+            Boolean activateSuccess = ApiResponseUnwrapper.unwrap(this.deviceFeignClient.activateDevice(device.getId()));
+            if (!activateSuccess) {
+                throw new DeviceLinksAuthorizationException(DEVICE_ACTIVATE_FAIL);
+            }
         }
         return DeviceTokenAccessAuthenticationToken.authenticated(authenticationToken.getAccessToken(), device);
     }

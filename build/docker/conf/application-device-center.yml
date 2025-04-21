@@ -50,5 +50,9 @@ devicelinks:
           key: ${DEVICELINKS_DEVICE_SECRET_KEY_V4:RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=}
         - version: v5
           key: ${DEVICELINKS_DEVICE_SECRET_KEY_V5:NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=}
+    # Device Dynamic Token Settings
+    token-setting:
+      issued-dynamic-token-length: 64
+      validity-seconds: 7200
 logging:
   config: ${HOME_DIR}/conf/logback.xml

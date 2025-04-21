@@ -22,11 +22,6 @@ devicelinks:
         key-store-password: fZjLaxFgt5Txs7qSF5od
         trust-store: /ssl/server.jks
         trust-store-password: fZjLaxFgt5Txs7qSF5od
-    http:
-      # Token Settings
-      token-setting:
-        issued-dynamic-token-length: 64
-        validity-seconds: 7200
 logging:
   level:
     cn.devicelinks.framework.jdbc: debug

@@ -1,16 +1,14 @@
 package cn.devicelinks.transport.support.configuration;
 
-import cn.devicelinks.framework.common.feign.ApiRequestSignUtils;
-import cn.devicelinks.framework.common.feign.DeviceCenterDeviceFeignApi;
-import cn.devicelinks.framework.common.feign.FeignConstants;
-import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
+import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
+import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.framework.common.feign.FeignClientRequestEncoder;
+import cn.devicelinks.framework.common.feign.FeignClientResponseDecoder;
+import cn.devicelinks.transport.support.feign.DeviceCenterSignFeignRequestInterceptor;
 import cn.devicelinks.transport.support.ssl.SSLContextFactory;
 import feign.Client;
 import feign.Feign;
 import feign.RequestInterceptor;
-import feign.RequestTemplate;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,52 +43,29 @@ public class DeviceCenterFeignAutoConfiguration {
     }
 
     @Bean
-    public DeviceCenterDeviceFeignApi coreServiceDeviceApi() throws Exception {
+    public DeviceFeignClient deviceFeignClient() throws Exception {
+        return buildFeignClient(DeviceFeignClient.class);
+    }
+
+    @Bean
+    public DeviceCredentialsFeignClient deviceCredentialsFeignClient() throws Exception {
+        return buildFeignClient(DeviceCredentialsFeignClient.class);
+    }
+
+    @Bean
+    public RequestInterceptor deviceCenterSignFeignRequestInterceptor() {
+        return new DeviceCenterSignFeignRequestInterceptor(transportProperties.getDeviceCenterApi());
+    }
+
+    private <T> T buildFeignClient(Class<T> feignClientClass) throws Exception {
         TransportProperties.DeviceCenterApi deviceCenterApi = transportProperties.getDeviceCenterApi();
         // @formatter:off
         return Feign.builder()
                 .client(feignClient())
-                .encoder(new DeviceLinksJacksonFeignDecoder())
-                .decoder(new DeviceLinksJacksonFeignEncoder())
-                .requestInterceptor(signRequestInterceptor())
-                .target(DeviceCenterDeviceFeignApi.class, deviceCenterApi.getUri());
+                .encoder(new FeignClientRequestEncoder())
+                .decoder(new FeignClientResponseDecoder())
+                .requestInterceptor(deviceCenterSignFeignRequestInterceptor())
+                .target(feignClientClass, deviceCenterApi.getUri());
         // @formatter:on
-    }
-
-    @Bean
-    public RequestInterceptor signRequestInterceptor() {
-        return new SignRequestInterceptor(transportProperties.getDeviceCenterApi());
-    }
-
-    /**
-     * The Sign RequestInterceptor
-     */
-    private static class SignRequestInterceptor implements RequestInterceptor {
-        private final TransportProperties.DeviceCenterApi deviceCenterApi;
-
-        public SignRequestInterceptor(TransportProperties.DeviceCenterApi deviceCenterApi) {
-            this.deviceCenterApi = deviceCenterApi;
-        }
-
-        @Override
-        public void apply(RequestTemplate requestTemplate) {
-            String timestamp = String.valueOf(System.currentTimeMillis());
-            requestTemplate.header(FeignConstants.API_KEY_HEADER_NAME, deviceCenterApi.getApiKey());
-            requestTemplate.header(FeignConstants.API_TIMESTAMP_HEADER_NAME, timestamp);
-            requestTemplate.header(FeignConstants.API_SIGN_HEADER_NAME,
-                    ApiRequestSignUtils.sign(deviceCenterApi.getApiSecret(), timestamp, requestTemplate));
-        }
-    }
-
-    private static class DeviceLinksJacksonFeignDecoder extends JacksonEncoder {
-        public DeviceLinksJacksonFeignDecoder() {
-            super(new DeviceLinksJsonMapper());
-        }
-    }
-
-    private static class DeviceLinksJacksonFeignEncoder extends JacksonDecoder {
-        public DeviceLinksJacksonFeignEncoder() {
-            super(new DeviceLinksJsonMapper());
-        }
     }
 }

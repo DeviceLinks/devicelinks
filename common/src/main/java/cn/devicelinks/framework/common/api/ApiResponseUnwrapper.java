@@ -15,12 +15,13 @@ import java.util.Optional;
 public class ApiResponseUnwrapper {
     public static <T> T unwrap(ApiResponse<T> response) {
         return tryUnwrap(response)
-                .orElseThrow(() -> new DeviceLinksException("Api接口请求失败，错误信息: " + response.getMessage()));
+                .orElseThrow(() -> new DeviceLinksException("请求失败，状态码：[" + response.getCode() + "]，状态描述：[" + response.getMessage() + "]."));
     }
 
     public static <T> T unwrap(ApiResponse<T> response, String errorMsg) {
         return tryUnwrap(response)
-                .orElseThrow(() -> new DeviceLinksException("Api接口请求失败，错误信息: " + (!ObjectUtils.isEmpty(errorMsg) ? errorMsg : response.getMessage())));
+                .orElseThrow(() -> new DeviceLinksException("请求失败，状态码：[" + response.getCode() + "]，状态描述：[" +
+                        (!ObjectUtils.isEmpty(errorMsg) ? errorMsg : response.getMessage()) + "]."));
     }
 
     public static <T> Optional<T> tryUnwrap(ApiResponse<T> response) {

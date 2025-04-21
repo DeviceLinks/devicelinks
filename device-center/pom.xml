@@ -44,6 +44,10 @@
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-device-center-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-service-dependencies</artifactId>
         </dependency>
         <!--SpringBoot Dependencies-->
