@@ -2,7 +2,8 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddAttributeRequest;
 import cn.devicelinks.api.support.request.AttributeInfoRequest;
 import cn.devicelinks.api.support.request.ExtractUnknownDeviceAttributeRequest;
@@ -14,6 +15,7 @@ import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeLatestDTO;
@@ -52,7 +54,8 @@ public class DeviceAttributeServiceImpl extends BaseServiceImpl<DeviceAttribute,
 
     @Override
     public PageResult<DeviceAttributeDTO> getByPageable(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
-        return this.repository.getByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        return this.repository.getByPageable(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 
     @Override

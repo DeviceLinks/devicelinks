@@ -1,6 +1,6 @@
 package cn.devicelinks.center.configuration;
 
-import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,7 +30,7 @@ public class DeviceCenterProperties {
      * DeviceSecret存储时AES加密算法的Keys
      */
     @NestedConfigurationProperty
-    private DeviceSecretKeySet deviceSecretKeySet;
+    private AesSecretKeySet deviceSecretKeySet;
 
     private TokenSetting tokenSetting;
 

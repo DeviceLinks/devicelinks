@@ -1,7 +1,7 @@
 package cn.devicelinks.transport.support.feign;
 
-import cn.devicelinks.framework.common.feign.ApiRequestSignUtils;
-import cn.devicelinks.framework.common.feign.FeignConstants;
+import cn.devicelinks.api.support.feign.FeignClientSignUtils;
+import cn.devicelinks.api.support.feign.FeignConstants;
 import cn.devicelinks.transport.support.configuration.TransportProperties;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -26,6 +26,6 @@ public class DeviceCenterSignFeignRequestInterceptor implements RequestIntercept
         requestTemplate.header(FeignConstants.API_KEY_HEADER_NAME, deviceCenterApi.getApiKey());
         requestTemplate.header(FeignConstants.API_TIMESTAMP_HEADER_NAME, timestamp);
         requestTemplate.header(FeignConstants.API_SIGN_HEADER_NAME,
-                ApiRequestSignUtils.sign(deviceCenterApi.getApiSecret(), timestamp, requestTemplate));
+                FeignClientSignUtils.sign(deviceCenterApi.getApiSecret(), timestamp, requestTemplate));
     }
 }

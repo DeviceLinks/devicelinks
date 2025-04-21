@@ -2,8 +2,8 @@ package cn.devicelinks.transport.support.configuration;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
-import cn.devicelinks.framework.common.feign.FeignClientRequestEncoder;
-import cn.devicelinks.framework.common.feign.FeignClientResponseDecoder;
+import cn.devicelinks.api.support.feign.FeignClientRequestEncoder;
+import cn.devicelinks.api.support.feign.FeignClientResponseDecoder;
 import cn.devicelinks.transport.support.feign.DeviceCenterSignFeignRequestInterceptor;
 import cn.devicelinks.transport.support.ssl.SSLContextFactory;
 import feign.Client;

@@ -1,7 +1,7 @@
 package cn.devicelinks.framework.common.authorization;
 
 import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.http.ApiResponseHttpMessageConverter;
+import cn.devicelinks.framework.common.web.ApiResponseHttpMessageConverter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

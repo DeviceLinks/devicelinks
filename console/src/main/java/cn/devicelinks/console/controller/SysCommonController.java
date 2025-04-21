@@ -19,11 +19,11 @@ package cn.devicelinks.console.controller;
 
 import cn.devicelinks.console.utils.ApiEnumScanner;
 import cn.devicelinks.api.support.query.GetSearchFieldQuery;
-import cn.devicelinks.api.support.search.SearchFieldModuleFactory;
+import cn.devicelinks.framework.common.web.search.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.web.SearchField;
-import cn.devicelinks.framework.common.web.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.common.web.search.SearchField;
+import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

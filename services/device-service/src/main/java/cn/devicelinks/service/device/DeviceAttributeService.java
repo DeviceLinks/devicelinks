@@ -1,7 +1,7 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.request.ExtractUnknownDeviceAttributeRequest;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.exception.ApiException;

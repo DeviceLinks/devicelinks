@@ -5,7 +5,7 @@ import cn.devicelinks.api.support.converter.DeviceSecretConverter;
 import cn.devicelinks.framework.common.DeviceSecretStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
-import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.common.utils.AesEncryptor;
 import cn.devicelinks.framework.common.utils.AesUtils;
 import cn.devicelinks.framework.common.utils.SecureRandomUtils;
@@ -48,11 +48,11 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
     }
 
     @Override
-    public String decryptSecret(String encryptedSecret, String iv, String secretKeyVersion, DeviceSecretKeySet deviceSecretKeySet) {
+    public String decryptSecret(String encryptedSecret, String iv, String secretKeyVersion, AesSecretKeySet deviceSecretKeySet) {
         Assert.hasText(encryptedSecret, "The EncryptedSecret must not be null or empty.");
         Assert.hasText(iv, "The IV must not be null or empty.");
         Assert.hasText(iv, "The SecretKeyVersion must not be null or empty.");
-        DeviceSecretKeySet.DeviceSecretKey deviceSecretKey = deviceSecretKeySet.getDeviceSecretKey(secretKeyVersion);
+        AesSecretKeySet.AesSecretKey deviceSecretKey = deviceSecretKeySet.getAesSecretKey(secretKeyVersion);
         if (ObjectUtils.isEmpty(deviceSecretKeySet) || ObjectUtils.isEmpty(deviceSecretKey)) {
             throw new ApiException(StatusCodeConstants.DEVICE_SECRET_KEY_INVALID);
         }
@@ -60,7 +60,7 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
     }
 
     @Override
-    public DeviceSecretDTO regenerate(String deviceId, DeviceSecretKeySet deviceSecretKeySet) {
+    public DeviceSecretDTO regenerate(String deviceId, AesSecretKeySet deviceSecretKeySet) {
         this.repository.update(List.of(DEVICE_SECRET.STATUS.set(DeviceSecretStatus.Expired)),
                 DEVICE_SECRET.DEVICE_ID.eq(deviceId),
                 DEVICE_SECRET.STATUS.eq(DeviceSecretStatus.Active));
@@ -68,13 +68,13 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
     }
 
     @Override
-    public void initializeSecret(String deviceId, DeviceSecretKeySet deviceSecretKeySet) {
+    public void initializeSecret(String deviceId, AesSecretKeySet deviceSecretKeySet) {
         this.saveDeviceSecret(deviceId, deviceSecretKeySet);
     }
 
-    private DeviceSecretDTO saveDeviceSecret(String deviceId, DeviceSecretKeySet deviceSecretKeySet) {
+    private DeviceSecretDTO saveDeviceSecret(String deviceId, AesSecretKeySet deviceSecretKeySet) {
         String iv = AesUtils.generateBase64IV();
-        DeviceSecretKeySet.DeviceSecretKey deviceSecretKey = deviceSecretKeySet.getRandomDeviceSecretKey();
+        AesSecretKeySet.AesSecretKey deviceSecretKey = deviceSecretKeySet.getRandomAesSecretKey();
         if (deviceSecretKey == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_SECRET_NOT_HAVE_VERSION_kEY);
         }

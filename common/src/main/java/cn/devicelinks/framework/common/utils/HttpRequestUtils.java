@@ -17,8 +17,7 @@
 
 package cn.devicelinks.framework.common.utils;
 
-import cn.devicelinks.framework.common.http.RequestWrapper;
-import cn.devicelinks.framework.common.http.ResponseWrapper;
+import cn.devicelinks.framework.common.web.RepeatableRequestWrapper;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,9 +26,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * {@link HttpServletRequest} 工具类
@@ -55,37 +54,40 @@ public class HttpRequestUtils {
 
     public static String getIp(HttpServletRequest request) {
         Assert.notNull(request, "request instance is null.");
-        String Xip = request.getHeader("X-Real-IP");
-        String XFor = request.getHeader("X-Forwarded-For");
-        if (!StringUtils.isEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
-            int index = XFor.indexOf(",");
-            if (index != -1) {
-                return XFor.substring(0, index);
-            } else {
-                return XFor;
+
+        String ip = getIpFromHeader(request, "X-Forwarded-For");
+        if (isValidIp(ip)) {
+            return ip;
+        }
+
+        ip = getIpFromHeader(request, "X-Real-IP");
+        if (isValidIp(ip)) {
+            return ip;
+        }
+
+        String[] headers = {"Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"};
+        for (String header : headers) {
+            ip = getIpFromHeader(request, header);
+            if (isValidIp(ip)) {
+                return ip;
             }
         }
-        XFor = Xip;
-        if (!StringUtils.isEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
-            return XFor;
-        }
-        if (StringUtils.isEmpty(XFor) || "unknown".equalsIgnoreCase(XFor)) {
-            XFor = request.getHeader("Proxy-Client-IP");
-        }
-        if (StringUtils.isEmpty(XFor) || "unknown".equalsIgnoreCase(XFor)) {
-            XFor = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (StringUtils.isEmpty(XFor) || "unknown".equalsIgnoreCase(XFor)) {
-            XFor = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (StringUtils.isEmpty(XFor) || "unknown".equalsIgnoreCase(XFor)) {
-            XFor = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (StringUtils.isEmpty(XFor) || "unknown".equalsIgnoreCase(XFor)) {
-            XFor = request.getRemoteAddr();
-        }
-        return XFor;
+
+        return request.getRemoteAddr();
     }
+
+    private static String getIpFromHeader(HttpServletRequest request, String header) {
+        String ip = request.getHeader(header);
+        if (ip != null && ip.contains(",")) {
+            return ip.substring(0, ip.indexOf(","));
+        }
+        return ip;
+    }
+
+    private static boolean isValidIp(String ip) {
+        return !StringUtils.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip);
+    }
+
 
     public static Map<String, String> getRequestHeaders(HttpServletRequest request) {
         Assert.notNull(request, "request instance is null.");
@@ -117,30 +119,10 @@ public class HttpRequestUtils {
         return request.getHeader(headerName);
     }
 
-    public static String getRequestBody(HttpServletRequest request) {
-        Assert.notNull(request, "request instance is null.");
-        RequestWrapper requestWrapper;
-        if (request instanceof RequestWrapper) {
-            requestWrapper = (RequestWrapper) request;
-        } else {
-            requestWrapper = new RequestWrapper(request);
-        }
-        return requestWrapper.getBody();
-    }
-
     public static Map getRequestBodyParams(HttpServletRequest request) {
-        String requestBody = !HttpRequestUtils.isMultipart(request) ? HttpRequestUtils.getRequestBody(request) : null;
+        String requestBody = !HttpRequestUtils.isMultipart(request) ? HttpRequestUtils.getBodyString(request) : null;
         if (!ObjectUtils.isEmpty(requestBody)) {
             return JsonUtils.fromJsonString(requestBody, Map.class);
-        }
-        return null;
-    }
-
-    public static String getResponseBody(HttpServletResponse response) throws IOException {
-        if (response instanceof ResponseWrapper) {
-            ResponseWrapper responseWrapper = (ResponseWrapper) response;
-            byte[] copy = responseWrapper.getCopy();
-            return new String(copy, ResponseWrapper.DEFAULT_CHARACTER_ENCODING);
         }
         return null;
     }
@@ -217,6 +199,39 @@ public class HttpRequestUtils {
             return "Unknown";
         } catch (Exception e) {
             return "UnKnown";
+        }
+    }
+
+
+    /**
+     * 从HttpServletRequest中获取RequestParameter字符串
+     *
+     * @param request HttpServletRequest对象
+     * @return 查询字符串，格式为"key1=value1&key2=value2"
+     */
+    public static String getQueryString(HttpServletRequest request) {
+        return new TreeMap<>(request.getParameterMap()).entrySet().stream()
+                .flatMap(e -> Arrays.stream(e.getValue()).map(v -> e.getKey() + "=" + v))
+                .collect(Collectors.joining("&"));
+    }
+
+
+    /**
+     * 从HttpServletRequest中获取RequestBody字符串
+     *
+     * @param request HttpServletRequest对象
+     * @return 请求体字符串
+     */
+    public static String getBodyString(HttpServletRequest request) {
+        try {
+            // @formatter:off
+            RepeatableRequestWrapper requestWrapper =
+                    (request instanceof RepeatableRequestWrapper wrapper) ? wrapper :
+                            new RepeatableRequestWrapper(request);
+            // @formatter:on
+            return requestWrapper.getBodyString();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get RequestBody string.");
         }
     }
 }

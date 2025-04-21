@@ -1,7 +1,7 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
-import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceSecretDTO;
 
@@ -30,7 +30,7 @@ public interface DeviceSecretService extends BaseService<DeviceSecret, String> {
      * @param deviceSecretKeySet DeviceSecret加密Key列表
      * @return 解密后的明文DeviceSecret
      */
-    String decryptSecret(String encryptedSecret, String iv, String secretKeyVersion, DeviceSecretKeySet deviceSecretKeySet);
+    String decryptSecret(String encryptedSecret, String iv, String secretKeyVersion, AesSecretKeySet deviceSecretKeySet);
 
     /**
      * 重新生成设备密钥
@@ -39,7 +39,7 @@ public interface DeviceSecretService extends BaseService<DeviceSecret, String> {
      * @param deviceSecretKeySet 设备密钥Key列表
      * @return 设备密钥传输实体 {@link DeviceSecretDTO}
      */
-    DeviceSecretDTO regenerate(String deviceId, DeviceSecretKeySet deviceSecretKeySet);
+    DeviceSecretDTO regenerate(String deviceId, AesSecretKeySet deviceSecretKeySet);
 
     /**
      * 初始化设备密钥
@@ -47,5 +47,5 @@ public interface DeviceSecretService extends BaseService<DeviceSecret, String> {
      * @param deviceId           设备ID {@link DeviceSecret#getDeviceId()}
      * @param deviceSecretKeySet 设备密钥Key列表
      */
-    void initializeSecret(String deviceId, DeviceSecretKeySet deviceSecretKeySet);
+    void initializeSecret(String deviceId, AesSecretKeySet deviceSecretKeySet);
 }

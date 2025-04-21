@@ -22,7 +22,7 @@ import cn.devicelinks.framework.common.operate.log.expression.ExpressionEvaluati
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionVariables;
 import cn.devicelinks.framework.common.operate.log.expression.OperationLogCachedExpressionEvaluator;
 import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.security.SecurityUserDetailsProvider;
+import cn.devicelinks.framework.common.authorization.SecurityUserDetailsProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;

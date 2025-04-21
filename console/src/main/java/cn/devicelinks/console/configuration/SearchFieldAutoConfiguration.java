@@ -17,9 +17,9 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.api.support.search.SearchModule;
-import cn.devicelinks.api.support.search.SearchModuleAnnotationMethodInterceptor;
-import cn.devicelinks.api.support.search.SearchModuleAnnotationPointcutAdvisor;
+import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
+import cn.devicelinks.framework.common.web.search.SearchModuleAnnotationMethodInterceptor;
+import cn.devicelinks.framework.common.web.search.SearchModuleAnnotationPointcutAdvisor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

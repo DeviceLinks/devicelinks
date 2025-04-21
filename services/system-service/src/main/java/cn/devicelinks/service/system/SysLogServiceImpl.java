@@ -18,13 +18,17 @@
 package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.repositorys.SysLogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 操作日志业务逻辑实现类
@@ -42,6 +46,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String, SysLogRep
 
     @Override
     public PageResult<SysLog> getByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
-        return this.repository.getByPageable(searchFieldQuery.toSearchFieldConditionList(), paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        return this.repository.getByPageable(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 }

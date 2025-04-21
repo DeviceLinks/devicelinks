@@ -4,7 +4,7 @@ import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.feign.ApiRequestSignUtils;
+import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -52,7 +52,7 @@ public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
         }
         DeviceCenterProperties.InternalServiceApiKey internalServiceApiKey = this.apiKeyMap.get(apiAccessAuthenticationToken.getApiKey());
         try {
-            String sign = ApiRequestSignUtils.sign(internalServiceApiKey.getApiSecret(), String.valueOf(apiAccessAuthenticationToken.getTimestamp()),
+            String sign = FeignClientSignUtils.sign(internalServiceApiKey.getApiSecret(), String.valueOf(apiAccessAuthenticationToken.getTimestamp()),
                     apiAccessAuthenticationToken.getRequest());
             if (ObjectUtils.isEmpty(apiAccessAuthenticationToken.getSign()) || !sign.equals(apiAccessAuthenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(API_KEY_SIGN_ERROR);

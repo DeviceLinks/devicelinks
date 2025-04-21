@@ -3,7 +3,8 @@ package cn.devicelinks.service.attribute;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.AttributeConverter;
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddAttributeRequest;
 import cn.devicelinks.api.support.request.AttributeInfoRequest;
 import cn.devicelinks.api.support.request.UpdateAttributeRequest;
@@ -103,7 +104,7 @@ public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, Att
 
     @Override
     public PageResult<Attribute> getAttributesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
-        List<SearchFieldCondition> searchFieldConditionList = searchFieldQuery.toSearchFieldConditionList();
+        List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
         return this.repository.getAttributesByPage(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 

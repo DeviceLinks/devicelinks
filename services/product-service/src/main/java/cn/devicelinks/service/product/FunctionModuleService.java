@@ -1,6 +1,6 @@
 package cn.devicelinks.service.product;
 
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.jdbc.BaseService;

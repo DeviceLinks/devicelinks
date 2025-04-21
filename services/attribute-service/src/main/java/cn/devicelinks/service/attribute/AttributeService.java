@@ -1,7 +1,7 @@
 package cn.devicelinks.service.attribute;
 
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddAttributeRequest;
 import cn.devicelinks.api.support.request.UpdateAttributeRequest;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;

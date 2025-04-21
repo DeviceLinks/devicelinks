@@ -17,7 +17,7 @@
 
 package cn.devicelinks.center.authorization;
 
-import cn.devicelinks.framework.common.feign.FeignConstants;
+import cn.devicelinks.api.support.feign.FeignConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import org.springframework.util.ObjectUtils;

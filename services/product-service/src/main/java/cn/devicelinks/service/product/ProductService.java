@@ -2,7 +2,7 @@ package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.support.query.PaginationQuery;
 import cn.devicelinks.api.support.response.RegenerateKeySecretResponse;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.pojos.Product;
 import cn.devicelinks.framework.jdbc.BaseService;

@@ -3,7 +3,7 @@ package cn.devicelinks.console.controller;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.DeviceSecretConverter;
 import cn.devicelinks.console.configuration.ConsoleProperties;
-import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
@@ -37,7 +37,7 @@ public class DeviceSecretController {
      */
     @GetMapping(value = "/{deviceId}/secret")
     public ApiResponse<DeviceSecretDTO> getDeviceSecret(@PathVariable("deviceId") String deviceId) throws ApiException {
-        DeviceSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
+        AesSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
         DeviceSecret deviceSecret = deviceSecretService.getDeviceSecret(deviceId);
         if (deviceSecret == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_HAVE_SECRET);
@@ -62,7 +62,7 @@ public class DeviceSecretController {
      */
     @PostMapping(value = "/{deviceId}/secret-regenerate")
     public ApiResponse<DeviceSecretDTO> regenerateDeviceSecret(@PathVariable("deviceId") String deviceId) throws ApiException {
-        DeviceSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
+        AesSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
         DeviceSecretDTO deviceSecretDTO = deviceSecretService.regenerate(deviceId, deviceSecretKeySet);
         return ApiResponse.success(deviceSecretDTO);
     }

@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.framework.common.secret.DeviceSecretKeySet;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -40,7 +40,7 @@ public class ConsoleProperties {
      * DeviceSecret存储时AES加密算法的Keys
      */
     @NestedConfigurationProperty
-    private DeviceSecretKeySet deviceSecretKeySet;
+    private AesSecretKeySet deviceSecretKeySet;
 
     /**
      * The token setting

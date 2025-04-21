@@ -2,7 +2,8 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddDeviceTelemetryRequest;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.TelemetryMetricType;
@@ -12,9 +13,12 @@ import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.common.pojos.TelemetryAddition;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceTelemetryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static cn.devicelinks.framework.jdbc.tables.TDeviceTelemetry.DEVICE_TELEMETRY;
 
@@ -35,7 +39,8 @@ public class DeviceTelemetryServiceImpl extends BaseServiceImpl<DeviceTelemetry,
 
     @Override
     public PageResult<DeviceTelemetry> getTelemetryByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
-        return this.repository.getTelemetryByPage(searchFieldQuery.toSearchFieldConditionList(),
+        List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        return this.repository.getTelemetryByPage(searchFieldConditionList,
                 paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
     }
 

@@ -2,16 +2,17 @@ package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.feign.ApiRequestSignUtils;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceCredentials;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.util.ObjectUtils;
 
 /**
  * 设备动态令牌颁发认证器
@@ -63,10 +64,10 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         }
         try {
             String decryptedSecret = ApiResponseUnwrapper.unwrap(deviceFeignClient.decryptDeviceSecret(device.getId()));
-            String sign = ApiRequestSignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
-            /*if (ObjectUtils.isEmpty(authenticationToken.getSign()) || !sign.equals(authenticationToken.getSign())) {
+            String sign = FeignClientSignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
+            if (ObjectUtils.isEmpty(authenticationToken.getSign()) || !sign.equals(authenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
-            }*/
+            }
         } catch (Exception e) {
             throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
         }

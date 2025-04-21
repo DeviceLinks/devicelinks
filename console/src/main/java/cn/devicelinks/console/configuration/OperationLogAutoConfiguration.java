@@ -21,7 +21,7 @@ import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.operate.log.OperationLogAnnotationMethodInterceptor;
 import cn.devicelinks.framework.common.operate.log.OperationLogAnnotationPointcutAdvisor;
 import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
-import cn.devicelinks.framework.common.security.SecurityUserDetailsProvider;
+import cn.devicelinks.framework.common.authorization.SecurityUserDetailsProvider;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;

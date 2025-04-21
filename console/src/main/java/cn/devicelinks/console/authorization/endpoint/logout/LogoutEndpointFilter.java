@@ -23,7 +23,7 @@ import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExc
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.http.ApiResponseHttpMessageConverter;
+import cn.devicelinks.framework.common.web.ApiResponseHttpMessageConverter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

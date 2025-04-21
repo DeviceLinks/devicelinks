@@ -6,7 +6,7 @@ import cn.devicelinks.center.authorization.DefaultApiKeyResolver;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.request.RepeatableRequestWrapper;
+import cn.devicelinks.framework.common.web.RepeatableRequestWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

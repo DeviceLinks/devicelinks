@@ -1,13 +1,15 @@
 package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.query.SearchFieldQuery;
+import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.Product;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.framework.jdbc.repositorys.FunctionModuleRepository;
 import cn.devicelinks.framework.jdbc.repositorys.ProductRepository;
@@ -42,7 +44,8 @@ public class FunctionModuleServiceImpl extends BaseServiceImpl<FunctionModule, S
 
     @Override
     public List<FunctionModule> selectBySearchField(SearchFieldQuery searchFieldQuery) {
-        return this.repository.selectBySearchField(searchFieldQuery.toSearchFieldConditionList());
+        List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        return this.repository.selectBySearchField(searchFieldConditionList);
     }
 
     @Override

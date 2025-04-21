@@ -19,8 +19,8 @@ package cn.devicelinks.framework.common.operate.log;
 
 import cn.devicelinks.framework.common.operate.log.expression.ExpressionEvaluationContext;
 import cn.devicelinks.framework.common.operate.log.expression.OperationLogCachedExpressionEvaluator;
-import cn.devicelinks.framework.common.request.RequestContext;
-import cn.devicelinks.framework.common.request.RequestContextHolder;
+import cn.devicelinks.framework.common.web.RequestContext;
+import cn.devicelinks.framework.common.web.RequestContextHolder;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import lombok.AccessLevel;
