@@ -37,6 +37,7 @@ public class ApiResponse<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
+    public static final StatusCode SUCCESS = StatusCode.build("SUCCESS", "success");
     /**
      * 接口响应状态码
      */
@@ -61,7 +62,7 @@ public class ApiResponse<T> implements Serializable {
     }
 
     public static <T> ApiResponse<T> success(T data) {
-        return success(StatusCode.SUCCESS, data);
+        return success(SUCCESS, data);
     }
 
     public static <T> ApiResponse<T> success(StatusCode statusCode, T data, Object... messageVariables) {

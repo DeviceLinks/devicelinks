@@ -20,7 +20,6 @@ package cn.devicelinks.console.authorization.endpoint.access;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import cn.devicelinks.framework.jdbc.repositorys.SysUserSessionRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -33,6 +32,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.*;
 
 /**
  * The resource access authentication provider
@@ -63,18 +64,18 @@ public class ResourceTokenAccessAuthenticationProvider implements Authentication
         try {
             Jwt jwt = jwtDecoder.decode(resourceTokenAccessAuthenticationToken.getToken());
             if (jwt.getExpiresAt() != null && Instant.now().isAfter(jwt.getExpiresAt())) {
-                throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_EXPIRED);
+                throw new DeviceLinksAuthorizationException(TOKEN_EXPIRED);
             }
         } catch (BadJwtException e) {
             if (e.getMessage().indexOf(TOKEN_EXPIRED_EXCEPTION_MSG) > Constants.ZERO) {
-                throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_EXPIRED);
+                throw new DeviceLinksAuthorizationException(TOKEN_EXPIRED);
             }
-            throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_JWT_PARSING_FAILED);
+            throw new DeviceLinksAuthorizationException(TOKEN_JWT_PARSING_FAILED);
         }
         // Load DeviceLinksUserDetails from TokenRepository
         DeviceLinksUserDetails deviceLinksUserDetails = tokenRepository.get(resourceTokenAccessAuthenticationToken.getToken());
         if (deviceLinksUserDetails == null) {
-            throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_EXPIRED);
+            throw new DeviceLinksAuthorizationException(TOKEN_EXPIRED);
         }
         // Update session last active time
         this.updateSessionLastActiveTime(deviceLinksUserDetails.getSessionId());
@@ -87,7 +88,7 @@ public class ResourceTokenAccessAuthenticationProvider implements Authentication
             try {
                 userSessionRepository.updateLastActiveTime(sessionId, LocalDateTime.now());
             } catch (Exception e) {
-                throw new DeviceLinksAuthorizationException(StatusCode.UPDATE_LAST_ACTIVE_TIME_FAILED);
+                throw new DeviceLinksAuthorizationException(UPDATE_SESSION_LAST_ACTIVE_TIME_FAILED);
             }
         }
     }

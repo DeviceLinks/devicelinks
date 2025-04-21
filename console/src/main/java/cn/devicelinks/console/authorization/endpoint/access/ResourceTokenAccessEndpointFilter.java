@@ -19,9 +19,8 @@ package cn.devicelinks.console.authorization.endpoint.access;
 
 import cn.devicelinks.console.authorization.BearerTokenResolver;
 import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
-import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +34,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.INVALID_TOKEN;
+import static cn.devicelinks.api.support.StatusCodeConstants.SYSTEM_EXCEPTION;
 
 /**
  * The resource access authentication endpoint filter
@@ -62,7 +64,7 @@ public class ResourceTokenAccessEndpointFilter extends OncePerRequestFilter {
         try {
             String token = this.bearerTokenResolver.resolve(request);
             if (ObjectUtils.isEmpty(token)) {
-                throw new DeviceLinksAuthorizationException(StatusCode.INVALID_TOKEN);
+                throw new DeviceLinksAuthorizationException(INVALID_TOKEN);
             }
 
             // Create unauthenticated ResourceTokenAccessAuthenticationToken
@@ -78,7 +80,7 @@ public class ResourceTokenAccessEndpointFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
         } catch (Exception e) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
+                    new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION));
         }
     }
 }

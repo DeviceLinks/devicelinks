@@ -19,10 +19,9 @@ package cn.devicelinks.console.authorization.endpoint.logout;
 
 import cn.devicelinks.console.authorization.BearerTokenResolver;
 import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.framework.common.web.ApiResponseHttpMessageConverter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,6 +41,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.INVALID_TOKEN;
+import static cn.devicelinks.api.support.StatusCodeConstants.SYSTEM_EXCEPTION;
 
 /**
  * The logout endpoint filter
@@ -83,14 +85,14 @@ public class LogoutEndpointFilter extends OncePerRequestFilter {
             this.authenticationSuccessHandler.onAuthenticationSuccess(request, response, logoutAuthenticationToken);
         } catch (Exception e) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    e instanceof DeviceLinksAuthorizationException ? (AuthenticationException) e : new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
+                    e instanceof DeviceLinksAuthorizationException ? (AuthenticationException) e : new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION));
         }
     }
 
     private Authentication createAuthentication(HttpServletRequest request) throws OAuth2AuthenticationException {
         String token = this.bearerTokenResolver.resolve(request);
         if (ObjectUtils.isEmpty(token)) {
-            throw new DeviceLinksAuthorizationException(StatusCode.INVALID_TOKEN);
+            throw new DeviceLinksAuthorizationException(INVALID_TOKEN);
         }
         return new LogoutAuthenticationToken(token, request);
     }

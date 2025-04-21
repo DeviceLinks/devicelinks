@@ -17,18 +17,17 @@
 
 package cn.devicelinks.console.authorization.endpoint.logout;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.service.system.SysLogService;
-import cn.devicelinks.service.system.SysUserSessionService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
-import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.pojos.SysLogAddition;
 import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.ObjectIdUtils;
+import cn.devicelinks.service.system.SysLogService;
+import cn.devicelinks.service.system.SysUserSessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -39,6 +38,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.TOKEN_EXPIRED;
+import static cn.devicelinks.api.support.StatusCodeConstants.TOKEN_JWT_PARSING_FAILED;
 
 /**
  * The logout authentication provider
@@ -67,11 +69,11 @@ public class LogoutAuthenticationProvider implements AuthenticationProvider {
         try {
             Jwt jwt = jwtDecoder.decode(logoutAuthenticationToken.getToken());
             if (jwt.getExpiresAt() != null && Instant.now().isAfter(jwt.getExpiresAt())) {
-                throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_EXPIRED);
+                throw new DeviceLinksAuthorizationException(TOKEN_EXPIRED);
             }
         } catch (BadJwtException e) {
             e.printStackTrace();
-            throw new DeviceLinksAuthorizationException(StatusCode.TOKEN_JWT_PARSING_FAILED);
+            throw new DeviceLinksAuthorizationException(TOKEN_JWT_PARSING_FAILED);
         }
 
         tokenRepository.remove(logoutAuthenticationToken.getToken());

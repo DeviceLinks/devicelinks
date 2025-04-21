@@ -1,7 +1,6 @@
 package cn.devicelinks.api.support.search;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.utils.StringUtils;
 import cn.devicelinks.framework.common.web.search.*;
@@ -18,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.SEARCH_FIELD_NOT_IN_MODULE;
+import static cn.devicelinks.api.support.StatusCodeConstants.SEARCH_FIELD_OPERATOR_NOT_SUPPORT;
 
 /**
  * 检索字段查询条件{@link SearchFieldCondition}构建器
@@ -66,14 +68,14 @@ public class SearchFieldConditionBuilder {
                     .map(filter -> {
                         // check field is in module
                         if (!moduleSearchFieldMap.containsKey(filter.getField())) {
-                            throw new ApiException(StatusCode.SEARCH_FIELD_NOT_IN_MODULE, filter.getField(), this.searchFieldModule);
+                            throw new ApiException(SEARCH_FIELD_NOT_IN_MODULE, filter.getField(), this.searchFieldModule);
                         }
                         // check operator is support
                         moduleSearchFieldMap.get(filter.getField()).getOperators()
                                 .stream()
                                 .filter(operator -> operator.toString().equals(filter.getOperator()))
                                 .findAny()
-                                .orElseThrow(() -> new ApiException(StatusCode.SEARCH_FIELD_OPERATOR_NOT_SUPPORT, filter.getField(), filter.getOperator()));
+                                .orElseThrow(() -> new ApiException(SEARCH_FIELD_OPERATOR_NOT_SUPPORT, filter.getField(), filter.getOperator()));
 
                         // if value type is enum, convert value to enum object
                         SearchField searchField = moduleSearchFieldMap.get(filter.getField());

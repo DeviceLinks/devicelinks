@@ -17,15 +17,12 @@
 
 package cn.devicelinks.console.authorization.endpoint.login;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.service.system.SysLogService;
-import cn.devicelinks.service.system.SysUserSessionService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.PlatformType;
 import cn.devicelinks.framework.common.SessionStatus;
-import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.common.pojos.SysLogAddition;
@@ -34,6 +31,8 @@ import cn.devicelinks.framework.common.pojos.SysUserSession;
 import cn.devicelinks.framework.common.utils.HttpRequestUtils;
 import cn.devicelinks.framework.common.utils.JacksonUtils;
 import cn.devicelinks.framework.common.utils.ObjectIdUtils;
+import cn.devicelinks.service.system.SysLogService;
+import cn.devicelinks.service.system.SysUserSessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -52,6 +51,9 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static cn.devicelinks.api.support.StatusCodeConstants.PASSWORD_VERIFICATION_FAILED;
+import static cn.devicelinks.api.support.StatusCodeConstants.USER_NOT_FOUND;
+
 /**
  * The login authentication provider
  *
@@ -61,8 +63,6 @@ import java.util.Objects;
 public class UsernamePasswordLoginAuthenticationProvider implements AuthenticationProvider {
     private static final String PLATFORM_HEADER_NAME = "X-Platform-Type";
     private static final String TOKEN_ISSUER = "https://devicelinks.cn";
-    private static final StatusCode USER_NOT_FOUND = StatusCode.build("USER_NOT_FOUND", "用户不存在.");
-    private static final StatusCode PASSWORD_VERIFICATION_FAILED = StatusCode.build("PASSWORD_VERIFICATION_FAILED", "密码校验失败.");
     private static final String LOGIN_SUCCESS_MSG = "登录成功";
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;

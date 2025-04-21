@@ -1,10 +1,9 @@
 package cn.devicelinks.center.authorization.endpoint.api;
 
+import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -15,6 +14,8 @@ import org.springframework.util.ObjectUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.*;
 
 /**
  * Api访问认证处理逻辑提供者
@@ -30,12 +31,6 @@ import java.util.stream.Collectors;
 public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
 
     private static final Long EFFECTIVE_SECONDS = 20L;
-
-    private static final StatusCode API_KEY_NOT_FOUND = StatusCode.build("API_KEY_NOT_FOUND", "ApiKey不存在，禁止访问Api.");
-
-    private static final StatusCode API_KEY_SIGN_ERROR = StatusCode.build("API_KEY_SIGN_ERROR", "ApiKey签名验证失败，禁止访问Api.");
-
-    private static final StatusCode API_REQUEST_IS_EXPIRED = StatusCode.build("API_REQUEST_IS_EXPIRED", "Api请求已过期.");
 
     private final Map<String, DeviceCenterProperties.InternalServiceApiKey> apiKeyMap;
 

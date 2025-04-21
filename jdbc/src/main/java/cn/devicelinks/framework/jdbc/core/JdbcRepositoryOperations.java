@@ -44,6 +44,11 @@ import java.util.Map;
 @Getter
 @Slf4j
 public class JdbcRepositoryOperations implements RepositoryOperations {
+
+    private final StatusCode QUERY_ERROR = StatusCode.build("QUERY_ERROR", "执行数据查询时遇到异常.");
+
+    private final StatusCode MODIFY_ERROR = StatusCode.build("MODIFY_ERROR", "执行数据更新或删除时遇到异常.");
+
     public static final String RESULT_OBJECT_KEY = "ResultObject";
     private final JdbcOperations jdbcOperations;
     private final SqlPrinter sqlPrinter;
@@ -64,7 +69,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(e, StatusCode.QUERY_ERROR);
+            throw new ApiException(e, QUERY_ERROR);
         } finally {
             // @formatter:off
             this.sqlPrinter.print(RepositoryMethod.Query,
@@ -89,7 +94,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(e, StatusCode.QUERY_ERROR);
+            throw new ApiException(e, QUERY_ERROR);
         } finally {
             // @formatter:off
             this.sqlPrinter.print(RepositoryMethod.Query,
@@ -110,7 +115,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             return resultObject;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(e, StatusCode.QUERY_ERROR);
+            throw new ApiException(e, QUERY_ERROR);
         } finally {
             boolean printRow = resultObject != null;
             if (printRow && resultObject instanceof Number) {
@@ -134,7 +139,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             affectedRows = this.jdbcOperations.update(sql, parameters);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(e, StatusCode.MODIFY_ERROR);
+            throw new ApiException(e, MODIFY_ERROR);
         } finally {
             this.sqlPrinter.print(RepositoryMethod.Update, sql, parameters, null, affectedRows);
         }
@@ -158,7 +163,7 @@ public class JdbcRepositoryOperations implements RepositoryOperations {
             affectedRows = this.jdbcOperations.update(sql, preparedStatementSetter);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new ApiException(e, StatusCode.MODIFY_ERROR);
+            throw new ApiException(e, MODIFY_ERROR);
         } finally {
             Object[] parameterValues = sqlParameterValues.stream().map(SqlParameterValue::getValue).toArray(Object[]::new);
             this.sqlPrinter.print(method, sql, parameterValues, null, affectedRows);

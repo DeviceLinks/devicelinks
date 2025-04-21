@@ -26,7 +26,7 @@ public class ApiResponseUnwrapper {
 
     public static <T> Optional<T> tryUnwrap(ApiResponse<T> response) {
         Assert.notNull(response, "ApiResponse实例为空，无法解析.");
-        if (StatusCode.SUCCESS.getCode().equals(response.getCode())) {
+        if (ApiResponse.SUCCESS.getCode().equals(response.getCode())) {
             return Optional.ofNullable(response.getData());
         }
         return Optional.empty();

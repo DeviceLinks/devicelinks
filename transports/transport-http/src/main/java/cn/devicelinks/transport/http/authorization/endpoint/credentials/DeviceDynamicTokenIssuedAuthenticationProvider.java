@@ -5,7 +5,6 @@ import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
-import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceCredentials;
@@ -13,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.util.ObjectUtils;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.*;
 
 /**
  * 设备动态令牌颁发认证器
@@ -23,16 +24,6 @@ import org.springframework.util.ObjectUtils;
 public class DeviceDynamicTokenIssuedAuthenticationProvider implements AuthenticationProvider {
 
     private static final Long EFFECTIVE_SECONDS = 20L;
-
-    private static final StatusCode UNKNOWN_DEVICE = StatusCode.build("UNKNOWN_DEVICE", "未知的设备.");
-
-    private static final StatusCode DEVICE_DISABLED = StatusCode.build("DEVICE_DISABLED", "设备已被禁用.");
-
-    private static final StatusCode DEVICE_NAME_NOT_MATCH = StatusCode.build("DEVICE_NAME_NOT_MATCH", "设备名称不匹配.");
-
-    private static final StatusCode TIMESTAMP_EXPIRED = StatusCode.build("TIMESTAMP_EXPIRED", "请求时间戳已过期，请求时间戳与当前时间有效最大间隔为：" + EFFECTIVE_SECONDS + " 秒.");
-
-    private static final StatusCode SIGN_VERIFICATION_FAILED = StatusCode.build("SIGN_VERIFICATION_FAILED", "签名校验失败.");
 
     private final DeviceFeignClient deviceFeignClient;
 
@@ -60,7 +51,7 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         long requestTimestamp = Long.parseLong(authenticationToken.getTimestamp());
         long currentTimestamp = System.currentTimeMillis();
         if (requestTimestamp <= Constants.ZERO || currentTimestamp - requestTimestamp > EFFECTIVE_SECONDS * 1000) {
-            throw new DeviceLinksAuthorizationException(TIMESTAMP_EXPIRED);
+            throw new DeviceLinksAuthorizationException(REQUEST_EXPIRED);
         }
         try {
             String decryptedSecret = ApiResponseUnwrapper.unwrap(deviceFeignClient.decryptDeviceSecret(device.getId()));

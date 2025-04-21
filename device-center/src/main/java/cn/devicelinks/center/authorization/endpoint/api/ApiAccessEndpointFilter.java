@@ -4,7 +4,6 @@ import cn.devicelinks.center.authorization.ApiKeyAuthenticationRequest;
 import cn.devicelinks.center.authorization.ApiKeyResolver;
 import cn.devicelinks.center.authorization.DefaultApiKeyResolver;
 import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.framework.common.web.RepeatableRequestWrapper;
 import jakarta.servlet.FilterChain;
@@ -22,6 +21,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.SYSTEM_EXCEPTION;
 
 /**
  * Api访问认证端点过滤器
@@ -70,7 +71,7 @@ public class ApiAccessEndpointFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
         } catch (Exception e) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
+                    new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION));
         }
     }
 

@@ -23,6 +23,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static cn.devicelinks.api.support.StatusCodeConstants.UNKNOWN_ERROR;
+
 /**
  * 设备动态令牌颁发过滤器
  *
@@ -84,7 +86,7 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(StatusCode.UNKNOWN_ERROR));
+                    new DeviceLinksAuthorizationException(UNKNOWN_ERROR));
         }
     }
 

@@ -1,8 +1,7 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.framework.common.web.access.BearerTokenResolver;
 import cn.devicelinks.framework.common.web.access.DefaultBearerTokenResolver;
 import jakarta.servlet.FilterChain;
@@ -18,6 +17,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.INVALID_TOKEN;
+import static cn.devicelinks.api.support.StatusCodeConstants.SYSTEM_EXCEPTION;
 
 /**
  * 设备携带令牌访问的过滤器
@@ -43,7 +45,7 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
         try {
             String token = this.bearerTokenResolver.resolve(request);
             if (ObjectUtils.isEmpty(token)) {
-                throw new DeviceLinksAuthorizationException(StatusCode.INVALID_TOKEN);
+                throw new DeviceLinksAuthorizationException(INVALID_TOKEN);
             }
 
             // Create unauthenticated DeviceTokenAccessAuthenticationToken
@@ -59,7 +61,7 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
         } catch (Exception e) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(StatusCode.SYSTEM_EXCEPTION));
+                    new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION));
         }
     }
 }

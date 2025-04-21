@@ -1,12 +1,11 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
+import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
+import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.DeviceStatus;
 import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
-import cn.devicelinks.framework.common.api.StatusCode;
 import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
-import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.DeviceCredentials;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,6 +14,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+
+import static cn.devicelinks.api.support.StatusCodeConstants.*;
 
 /**
  * 设备携令牌访问资源认证提供器
@@ -26,12 +27,6 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 public class DeviceTokenAccessAuthenticationProvider implements AuthenticationProvider {
-
-    private static final StatusCode TOKEN_INVALID = StatusCode.build("TOKEN_INVALID", "无效的令牌.");
-    private static final StatusCode TOKEN_EXPIRED = StatusCode.build("TOKEN_EXPIRED", "令牌已过期，请重新获取令牌后再次请求.");
-    private static final StatusCode UNKNOWN_DEVICE = StatusCode.build("UNKNOWN_DEVICE", "未知的设备.");
-    private static final StatusCode DEVICE_DISABLED = StatusCode.build("DEVICE_DISABLED", "设备已被禁用.");
-    private static final StatusCode DEVICE_ACTIVATE_FAIL = StatusCode.build("DEVICE_ACTIVATE_FAIL", "设备激活失败.");
 
     private final DeviceFeignClient deviceFeignClient;
     private final DeviceCredentialsFeignClient deviceCredentialsFeignClient;
