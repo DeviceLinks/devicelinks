@@ -21,23 +21,8 @@
     <dependencies>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-jdbc</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

@@ -17,9 +17,11 @@
 
 package cn.devicelinks.console;
 
+import cn.devicelinks.api.device.center.configuration.DeviceCenterFeignClientConfiguration;
 import cn.devicelinks.framework.common.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 
 /**
  * 控制台启动类
@@ -29,6 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @DeviceLinksBeanScan
+@Import(DeviceCenterFeignClientConfiguration.class)
 public class ConsoleApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConsoleApplication.class, args);

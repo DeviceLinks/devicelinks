@@ -1,8 +1,7 @@
-package cn.devicelinks.transport.support.feign;
+package cn.devicelinks.api.device.center.configuration;
 
 import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import cn.devicelinks.api.support.feign.FeignConstants;
-import cn.devicelinks.transport.support.configuration.TransportProperties;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
@@ -12,11 +11,11 @@ import feign.RequestTemplate;
  * @author 恒宇少年
  * @since 1.0
  */
-public class DeviceCenterSignFeignRequestInterceptor implements RequestInterceptor {
+public class DeviceCenterFeignClientSignRequestInterceptor implements RequestInterceptor {
 
-    private final TransportProperties.DeviceCenterApi deviceCenterApi;
+    private final DeviceCenterApiProperties deviceCenterApi;
 
-    public DeviceCenterSignFeignRequestInterceptor(TransportProperties.DeviceCenterApi deviceCenterApi) {
+    public DeviceCenterFeignClientSignRequestInterceptor(DeviceCenterApiProperties deviceCenterApi) {
         this.deviceCenterApi = deviceCenterApi;
     }
 

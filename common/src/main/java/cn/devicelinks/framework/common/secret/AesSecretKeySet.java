@@ -1,8 +1,9 @@
 package cn.devicelinks.framework.common.secret;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import org.springframework.util.Assert;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Random;
@@ -13,15 +14,13 @@ import java.util.Random;
  * @author 恒宇少年
  * @since 1.0
  */
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AesSecretKeySet {
 
-    private final List<AesSecretKey> keys;
-
-    public AesSecretKeySet(List<AesSecretKey> keys) {
-        Assert.notEmpty(keys, "The AesSecretKeySet List cannot be empty.");
-        this.keys = keys;
-    }
+    private List<AesSecretKey> keys;
 
     public AesSecretKey getRandomAesSecretKey() {
         Random random = new Random();
@@ -39,13 +38,10 @@ public class AesSecretKeySet {
     }
 
     @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AesSecretKey {
         private String version;
         private String key;
-
-        public AesSecretKey(String version, String key) {
-            this.version = version;
-            this.key = key;
-        }
     }
 }

@@ -57,7 +57,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.devicelinks</groupId>
-                <artifactId>devicelinks-transport-support</artifactId>
+                <artifactId>devicelinks-api-dependencies</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

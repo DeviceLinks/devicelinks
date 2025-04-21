@@ -17,10 +17,8 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -35,18 +33,13 @@ import org.springframework.context.annotation.Configuration;
 public class ConsoleProperties {
     public static final String DEVICELINKS_CONSOLE_PREFIX = "devicelinks.console";
 
-    private TokenSettingProperties token = new TokenSettingProperties();
-    /**
-     * DeviceSecret存储时AES加密算法的Keys
-     */
-    @NestedConfigurationProperty
-    private AesSecretKeySet deviceSecretKeySet;
+    private TokenSetting tokenSetting = new TokenSetting();
 
     /**
      * The token setting
      */
     @Data
-    public static class TokenSettingProperties {
+    public static class TokenSetting {
         /**
          * 令牌有效时长，单位：秒
          */

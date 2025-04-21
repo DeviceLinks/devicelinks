@@ -1,13 +1,14 @@
 package cn.devicelinks.console.controller;
 
+import cn.devicelinks.api.device.center.CommonFeignClient;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.DeviceSecretConverter;
-import cn.devicelinks.console.configuration.ConsoleProperties;
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.common.api.ApiResponse;
+import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceSecretDTO;
 import cn.devicelinks.service.device.DeviceSecretService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class DeviceSecretController {
 
     private DeviceSecretService deviceSecretService;
 
-    private ConsoleProperties consoleProperties;
+    private CommonFeignClient commonFeignClient;
 
     /**
      * 查询设备密钥
@@ -37,7 +38,7 @@ public class DeviceSecretController {
      */
     @GetMapping(value = "/{deviceId}/secret")
     public ApiResponse<DeviceSecretDTO> getDeviceSecret(@PathVariable("deviceId") String deviceId) throws ApiException {
-        AesSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
+        AesSecretKeySet deviceSecretKeySet = ApiResponseUnwrapper.unwrap(commonFeignClient.getAesSecretKeys());
         DeviceSecret deviceSecret = deviceSecretService.getDeviceSecret(deviceId);
         if (deviceSecret == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_HAVE_SECRET);
@@ -62,7 +63,7 @@ public class DeviceSecretController {
      */
     @PostMapping(value = "/{deviceId}/secret-regenerate")
     public ApiResponse<DeviceSecretDTO> regenerateDeviceSecret(@PathVariable("deviceId") String deviceId) throws ApiException {
-        AesSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
+        AesSecretKeySet deviceSecretKeySet = ApiResponseUnwrapper.unwrap(commonFeignClient.getAesSecretKeys());
         DeviceSecretDTO deviceSecretDTO = deviceSecretService.regenerate(deviceId, deviceSecretKeySet);
         return ApiResponse.success(deviceSecretDTO);
     }

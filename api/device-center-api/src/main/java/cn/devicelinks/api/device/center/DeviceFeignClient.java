@@ -1,8 +1,10 @@
 package cn.devicelinks.api.device.center;
 
-import cn.devicelinks.framework.common.api.ApiResponse;
+import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.api.support.feign.FeignConstants;
+import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.framework.common.pojos.DeviceSecret;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -43,6 +45,17 @@ public interface DeviceFeignClient {
     @RequestLine("GET /api/devices/{deviceId}/decrypt-secret")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
     ApiResponse<String> decryptDeviceSecret(@Param("deviceId") String deviceId);
+
+    /**
+     * 加密指定设备的明文密钥
+     *
+     * @param deviceId 设备ID {@link DeviceSecret#getDeviceId()}
+     * @param secret   未加密的设备密钥
+     * @return 加密后的设备密钥 {@link DeviceSecret#getEncryptedSecret()}
+     */
+    @RequestLine("POST /api/devices/{deviceId}/encrypt-secret?secret={secret}")
+    @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    ApiResponse<EncryptDeviceSecretResponse> encryptDeviceSecret(@Param("deviceId") String deviceId, @Param("secret") String secret);
 
     /**
      * 激活设备

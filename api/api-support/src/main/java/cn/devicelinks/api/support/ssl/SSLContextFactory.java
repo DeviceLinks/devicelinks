@@ -1,4 +1,4 @@
-package cn.devicelinks.transport.support.ssl;
+package cn.devicelinks.api.support.ssl;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;

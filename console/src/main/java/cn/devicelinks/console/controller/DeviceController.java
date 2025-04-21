@@ -1,29 +1,30 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.console.configuration.ConsoleProperties;
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
-import cn.devicelinks.service.device.DeviceService;
-import cn.devicelinks.service.product.FunctionModuleService;
+import cn.devicelinks.api.device.center.CommonFeignClient;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.DeviceConverter;
 import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.request.AddDeviceRequest;
 import cn.devicelinks.api.support.request.UpdateDeviceRequest;
-import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
+import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
 import cn.devicelinks.framework.common.api.ApiResponse;
+import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.Device;
 import cn.devicelinks.framework.common.pojos.FunctionModule;
 import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
+import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
+import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
+import cn.devicelinks.service.device.DeviceService;
+import cn.devicelinks.service.product.FunctionModuleService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -46,7 +47,7 @@ public class DeviceController {
 
     private FunctionModuleService functionModuleService;
 
-    private ConsoleProperties consoleProperties;
+    private CommonFeignClient commonFeignClient;
 
     /**
      * 获取设备列表，支持分页和搜索功能
@@ -93,7 +94,7 @@ public class DeviceController {
         SysUser currentUser = UserDetailsContext.getCurrentUser();
         device.setCreateBy(currentUser.getId());
         DeviceCredentialsType credentialsType = DeviceCredentialsType.valueOf(request.getCredentialsType());
-        AesSecretKeySet deviceSecretKeySet = consoleProperties.getDeviceSecretKeySet();
+        AesSecretKeySet deviceSecretKeySet = ApiResponseUnwrapper.unwrap(commonFeignClient.getAesSecretKeys());
         device = this.deviceService.addDevice(device, credentialsType, request.getCredentialsAddition(), deviceSecretKeySet);
         return ApiResponse.success(device);
     }

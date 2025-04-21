@@ -41,10 +41,6 @@
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-transport-support</artifactId>
-        </dependency>
         <!--SpringBoot Dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -101,16 +97,6 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>

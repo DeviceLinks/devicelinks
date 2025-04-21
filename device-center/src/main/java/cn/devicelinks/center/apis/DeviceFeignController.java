@@ -1,5 +1,6 @@
 package cn.devicelinks.center.apis;
 
+import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.StatusCode;
@@ -57,6 +58,13 @@ public class DeviceFeignController implements DeviceFeignClient {
         String decryptedSecret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), deviceSecret.getIv(),
                 deviceSecret.getSecretKeyVersion(), deviceCenterProperties.getDeviceSecretKeySet());
         return ApiResponse.success(decryptedSecret);
+    }
+
+    @Override
+    @PostMapping("/{deviceId}/encrypt-secret")
+    public ApiResponse<EncryptDeviceSecretResponse> encryptDeviceSecret(@PathVariable("deviceId") String deviceId, @RequestParam("secret") String secret) {
+        EncryptDeviceSecretResponse response = deviceSecretService.encryptSecret(secret, deviceCenterProperties.getDeviceSecretKeySet());
+        return ApiResponse.success(response);
     }
 
     @Override

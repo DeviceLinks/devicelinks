@@ -1,38 +1,36 @@
-package cn.devicelinks.transport.support.configuration;
+package cn.devicelinks.api.device.center.configuration;
 
+import cn.devicelinks.api.device.center.CommonFeignClient;
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.api.support.feign.FeignClientRequestEncoder;
 import cn.devicelinks.api.support.feign.FeignClientResponseDecoder;
-import cn.devicelinks.transport.support.feign.DeviceCenterSignFeignRequestInterceptor;
-import cn.devicelinks.transport.support.ssl.SSLContextFactory;
+import cn.devicelinks.api.support.ssl.SSLContextFactory;
 import feign.Client;
 import feign.Feign;
-import feign.RequestInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.net.ssl.SSLContext;
 
 /**
- * 与设备中心通信的Feign配置
+ * 设备中心FeignClient配置
  *
  * @author 恒宇少年
- * @see TransportProperties.DeviceCenterApi
  * @since 1.0
  */
-@Configuration
-public class DeviceCenterFeignAutoConfiguration {
+@Slf4j
+public class DeviceCenterFeignClientConfiguration {
 
-    private final TransportProperties transportProperties;
+    private final DeviceCenterApiProperties deviceCenterApiProperties;
 
-    public DeviceCenterFeignAutoConfiguration(TransportProperties transportProperties) {
-        this.transportProperties = transportProperties;
+    public DeviceCenterFeignClientConfiguration(DeviceCenterApiProperties deviceCenterApiProperties) {
+        this.deviceCenterApiProperties = deviceCenterApiProperties;
     }
 
     @Bean
     public Client feignClient() throws Exception {
-        TransportProperties.DeviceCenterApi.Ssl ssl = transportProperties.getDeviceCenterApi().getSsl();
+        DeviceCenterApiProperties.Ssl ssl = deviceCenterApiProperties.getSsl();
         // @formatter:off
         SSLContext sslContext = SSLContextFactory.createSSLContext(
                 ssl.getKeyStore(), ssl.getKeyStorePassword(),
@@ -53,19 +51,18 @@ public class DeviceCenterFeignAutoConfiguration {
     }
 
     @Bean
-    public RequestInterceptor deviceCenterSignFeignRequestInterceptor() {
-        return new DeviceCenterSignFeignRequestInterceptor(transportProperties.getDeviceCenterApi());
+    public CommonFeignClient commonFeignClient() throws Exception {
+        return buildFeignClient(CommonFeignClient.class);
     }
 
     private <T> T buildFeignClient(Class<T> feignClientClass) throws Exception {
-        TransportProperties.DeviceCenterApi deviceCenterApi = transportProperties.getDeviceCenterApi();
         // @formatter:off
         return Feign.builder()
                 .client(feignClient())
                 .encoder(new FeignClientRequestEncoder())
                 .decoder(new FeignClientResponseDecoder())
-                .requestInterceptor(deviceCenterSignFeignRequestInterceptor())
-                .target(feignClientClass, deviceCenterApi.getUri());
+                .requestInterceptor(new DeviceCenterFeignClientSignRequestInterceptor(deviceCenterApiProperties))
+                .target(feignClientClass, deviceCenterApiProperties.getUri());
         // @formatter:on
     }
 }

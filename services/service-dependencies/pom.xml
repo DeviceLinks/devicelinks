@@ -5,54 +5,43 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.devicelinks</groupId>
-        <artifactId>devicelinks-parent</artifactId>
+        <artifactId>devicelinks-services</artifactId>
         <version>${revision}</version>
-        <relativePath>../parent</relativePath>
     </parent>
     <description>
-        Define the business service implementation for all types of data.
+        All service dependencies.
     </description>
-    <artifactId>devicelinks-services</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>device-service</module>
-        <module>attribute-service</module>
-        <module>product-service</module>
-        <module>ota-service</module>
-        <module>system-service</module>
-        <module>notification-service</module>
-        <module>service-dependencies</module>
-    </modules>
-
+    <artifactId>devicelinks-service-dependencies</artifactId>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-common</artifactId>
+            <artifactId>devicelinks-attribute-service</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-api-dependencies</artifactId>
+            <artifactId>devicelinks-device-service</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-jdbc</artifactId>
+            <artifactId>devicelinks-notification-service</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <optional>true</optional>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-ota-service</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-            <scope>compile</scope>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-product-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-system-service</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.devicelinks</groupId>
-        <artifactId>devicelinks-services</artifactId>
+        <artifactId>devicelinks-apis</artifactId>
         <version>${revision}</version>
     </parent>
+    <packaging>jar</packaging>
+    <artifactId>devicelinks-api-dependencies</artifactId>
     <description>
-        All service dependencies.
+        All api dependencies.
     </description>
-    <artifactId>devicelinks-service-dependencies</artifactId>
-
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -21,27 +21,11 @@
     <dependencies>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-attribute-service</artifactId>
+            <artifactId>devicelinks-api-support</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-device-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-notification-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-ota-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-product-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-system-service</artifactId>
+            <artifactId>devicelinks-device-center-api</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -36,7 +36,6 @@
         <module>transport-http</module>
         <module>transport-coap</module>
         <module>transport-jt808</module>
-        <module>transport-support</module>
     </modules>
 
     <properties>
@@ -44,6 +43,12 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-api-dependencies</artifactId>
+        </dependency>
+    </dependencies>
     <build>
         <resources>
             <resource>

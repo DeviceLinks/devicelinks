@@ -1,5 +1,6 @@
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.converter.DeviceSecretConverter;
 import cn.devicelinks.framework.common.DeviceSecretStatus;
@@ -60,21 +61,32 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
     }
 
     @Override
-    public DeviceSecretDTO regenerate(String deviceId, AesSecretKeySet deviceSecretKeySet) {
-        this.repository.update(List.of(DEVICE_SECRET.STATUS.set(DeviceSecretStatus.Expired)),
-                DEVICE_SECRET.DEVICE_ID.eq(deviceId),
-                DEVICE_SECRET.STATUS.eq(DeviceSecretStatus.Active));
-        return this.saveDeviceSecret(deviceId, deviceSecretKeySet);
+    public EncryptDeviceSecretResponse encryptSecret(String secret, AesSecretKeySet aesSecretKeySet) {
+        String iv = AesUtils.generateBase64IV();
+        AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getRandomAesSecretKey();
+        if (aesSecretKey == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_SECRET_NOT_HAVE_VERSION_kEY);
+        }
+        String encryptedSecret = AesEncryptor.init(aesSecretKey.getKey(), iv).encrypt(secret);
+        return new EncryptDeviceSecretResponse().setIv(iv).setAesKeyVersion(aesSecretKey.getVersion()).setEncryptedSecret(encryptedSecret);
     }
 
     @Override
-    public void initializeSecret(String deviceId, AesSecretKeySet deviceSecretKeySet) {
-        this.saveDeviceSecret(deviceId, deviceSecretKeySet);
+    public DeviceSecretDTO regenerate(String deviceId, AesSecretKeySet aesSecretKeySet) {
+        this.repository.update(List.of(DEVICE_SECRET.STATUS.set(DeviceSecretStatus.Expired)),
+                DEVICE_SECRET.DEVICE_ID.eq(deviceId),
+                DEVICE_SECRET.STATUS.eq(DeviceSecretStatus.Active));
+        return this.saveDeviceSecret(deviceId, aesSecretKeySet);
     }
 
-    private DeviceSecretDTO saveDeviceSecret(String deviceId, AesSecretKeySet deviceSecretKeySet) {
+    @Override
+    public void initializeSecret(String deviceId, AesSecretKeySet aesSecretKeySet) {
+        this.saveDeviceSecret(deviceId, aesSecretKeySet);
+    }
+
+    private DeviceSecretDTO saveDeviceSecret(String deviceId, AesSecretKeySet aesSecretKeySet) {
         String iv = AesUtils.generateBase64IV();
-        AesSecretKeySet.AesSecretKey deviceSecretKey = deviceSecretKeySet.getRandomAesSecretKey();
+        AesSecretKeySet.AesSecretKey deviceSecretKey = aesSecretKeySet.getRandomAesSecretKey();
         if (deviceSecretKey == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_SECRET_NOT_HAVE_VERSION_kEY);
         }

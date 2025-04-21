@@ -38,19 +38,19 @@ public class RedisTokenRepository implements TokenRepository {
 
     private static final long DEFAULT_EXPIRES_SECONDS = 43200;
 
-    private final ConsoleProperties.TokenSettingProperties tokenSettingProperties;
+    private final ConsoleProperties.TokenSetting tokenSetting;
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
     public RedisTokenRepository(ConsoleProperties consoleProperties, RedisTemplate<Object, Object> redisTemplate) {
-        this.tokenSettingProperties = consoleProperties.getToken();
+        this.tokenSetting = consoleProperties.getTokenSetting();
         this.redisTemplate = redisTemplate;
         this.redisTemplate.setKeySerializer(new StringRedisSerializer());
     }
 
     @Override
     public long getExpiresSeconds() {
-        return tokenSettingProperties.getExpiresSeconds();
+        return tokenSetting.getExpiresSeconds();
     }
 
     @Override
