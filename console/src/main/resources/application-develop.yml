@@ -34,7 +34,7 @@ devicelinks:
       ssl:
         key-store: /ssl/console.jks
         key-store-password: fZjLaxFgt5Txs7qSF5od
-        trust-store: /ssl/server.jks
+        trust-store: /ssl/truststore.jks
         trust-store-password: fZjLaxFgt5Txs7qSF5od
 
 logging:
