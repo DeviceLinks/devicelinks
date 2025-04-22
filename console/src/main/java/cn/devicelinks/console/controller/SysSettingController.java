@@ -1,6 +1,6 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.api.support.request.UpdateSysSettingRequest;
+import cn.devicelinks.api.model.request.UpdateSysSettingRequest;
 import cn.devicelinks.service.system.SysSettingService;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;

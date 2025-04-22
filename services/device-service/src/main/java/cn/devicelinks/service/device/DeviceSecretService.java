@@ -4,7 +4,7 @@ import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
 import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceSecretDTO;
+import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 
 /**
  * 设备密钥业务逻辑接口

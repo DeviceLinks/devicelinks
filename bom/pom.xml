@@ -62,12 +62,17 @@
             </dependency>
             <dependency>
                 <groupId>cn.devicelinks</groupId>
-                <artifactId>devicelinks-device-center-api</artifactId>
+                <artifactId>devicelinks-api-model</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.devicelinks</groupId>
                 <artifactId>devicelinks-api-support</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-device-center-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

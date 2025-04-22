@@ -1,6 +1,6 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.service.system.SysLogService;
 import cn.devicelinks.framework.common.web.search.annotation.SearchModule;

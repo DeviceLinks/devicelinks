@@ -1,13 +1,14 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.DeviceProfileConverter;
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.converter.DeviceProfileConverter;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDeviceProfileRequest;
-import cn.devicelinks.api.support.request.BatchSetDeviceProfileRequest;
-import cn.devicelinks.api.support.request.UpdateDeviceProfileBasicInfoRequest;
+import cn.devicelinks.api.model.request.AddDeviceProfileRequest;
+import cn.devicelinks.api.model.request.BatchSetDeviceProfileRequest;
+import cn.devicelinks.api.model.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.framework.common.Constants;
 import cn.devicelinks.framework.common.DeviceProfileBatchSetAway;
 import cn.devicelinks.framework.common.DeviceType;
@@ -67,8 +68,9 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     @Override
     public PageResult<DeviceProfile> getDeviceProfileListByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
         return this.repository.getDeviceProfileListByPageable(searchFieldConditionList,
-                paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+                converter.toPageQuery(), converter.toSortCondition());
     }
 
     @Override

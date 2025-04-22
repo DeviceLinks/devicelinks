@@ -1,14 +1,14 @@
 package cn.devicelinks.service.attribute;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddAttributeRequest;
-import cn.devicelinks.api.support.request.UpdateAttributeRequest;
+import cn.devicelinks.api.model.request.AddAttributeRequest;
+import cn.devicelinks.api.model.request.UpdateAttributeRequest;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
+import cn.devicelinks.api.model.dto.AttributeDTO;
 
 /**
  * 属性业务逻辑接口

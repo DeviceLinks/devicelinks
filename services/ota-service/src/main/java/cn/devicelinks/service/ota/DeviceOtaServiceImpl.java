@@ -2,7 +2,7 @@ package cn.devicelinks.service.ota;
 
 import cn.devicelinks.framework.common.pojos.DeviceOta;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
+import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceOtaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

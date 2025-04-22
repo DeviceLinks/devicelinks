@@ -2,7 +2,7 @@ package cn.devicelinks.service.ota;
 
 import cn.devicelinks.framework.common.pojos.DeviceOta;
 import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
+import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
 
 import java.util.List;
 

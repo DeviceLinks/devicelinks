@@ -2,7 +2,7 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.DeviceSecretConverter;
+import cn.devicelinks.api.model.converter.DeviceSecretConverter;
 import cn.devicelinks.framework.common.DeviceSecretStatus;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
@@ -11,7 +11,7 @@ import cn.devicelinks.framework.common.utils.AesEncryptor;
 import cn.devicelinks.framework.common.utils.AesUtils;
 import cn.devicelinks.framework.common.utils.SecureRandomUtils;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceSecretDTO;
+import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceSecretRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

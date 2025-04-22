@@ -1,12 +1,12 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.service.device.DataChartService;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDataChartRequest;
+import cn.devicelinks.api.model.request.AddDataChartRequest;
 import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
@@ -15,7 +15,7 @@ import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.operate.log.OperationLog;
 import cn.devicelinks.framework.common.pojos.DataChart;
 import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
-import cn.devicelinks.framework.jdbc.model.dto.DataChartDTO;
+import cn.devicelinks.api.model.dto.DataChartDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +39,7 @@ public class DataChartController {
      * 分页查询数据图表
      *
      * @param searchFieldQuery 检索字段参数实体 {@link SearchFieldQuery}
-     * @return 数据图表列表 {@link cn.devicelinks.framework.jdbc.model.dto.DataChartDTO}
+     * @return 数据图表列表 {@link DataChartDTO}
      * @throws ApiException 查询过程中遇到的业务逻辑异常
      */
     @PostMapping(value = "/filter")

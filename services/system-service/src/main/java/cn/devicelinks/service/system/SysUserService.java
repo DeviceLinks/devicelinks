@@ -17,13 +17,13 @@
 
 package cn.devicelinks.service.system;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+import cn.devicelinks.api.model.dto.UserDTO;
 
 import java.time.LocalDateTime;
 

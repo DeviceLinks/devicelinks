@@ -18,8 +18,9 @@
 package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.UserActivateMethod;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -29,7 +30,7 @@ import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
-import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+import cn.devicelinks.api.model.dto.UserDTO;
 import cn.devicelinks.framework.jdbc.repositorys.SysUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -95,7 +96,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
     @Override
     public PageResult<UserDTO> getUsers(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
-        return this.repository.selectByPage(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
+        return this.repository.selectByPage(searchFieldConditionList, converter.toPageQuery(), converter.toSortCondition());
     }
 
     @Override

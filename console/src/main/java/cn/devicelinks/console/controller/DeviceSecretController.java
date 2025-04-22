@@ -2,14 +2,14 @@ package cn.devicelinks.console.controller;
 
 import cn.devicelinks.api.device.center.CommonFeignClient;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.DeviceSecretConverter;
+import cn.devicelinks.api.model.converter.DeviceSecretConverter;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.exception.DeviceLinksException;
 import cn.devicelinks.framework.common.pojos.DeviceSecret;
 import cn.devicelinks.framework.common.secret.AesSecretKeySet;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceSecretDTO;
+import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 import cn.devicelinks.service.device.DeviceSecretService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

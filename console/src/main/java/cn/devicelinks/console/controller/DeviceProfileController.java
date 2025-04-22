@@ -1,12 +1,12 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.api.support.request.*;
+import cn.devicelinks.api.model.request.*;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.service.device.DeviceProfileService;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.DeviceProfileConverter;
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.converter.DeviceProfileConverter;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
 import cn.devicelinks.framework.common.LogAction;

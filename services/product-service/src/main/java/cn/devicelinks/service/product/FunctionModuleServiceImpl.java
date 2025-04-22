@@ -1,7 +1,7 @@
 package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.exception.ApiException;

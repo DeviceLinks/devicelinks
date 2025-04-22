@@ -17,8 +17,9 @@
 
 package cn.devicelinks.service.system;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.pojos.SysLog;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
@@ -47,6 +48,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog, String, SysLogRep
     @Override
     public PageResult<SysLog> getByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
-        return this.repository.getByPageable(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
+        return this.repository.getByPageable(searchFieldConditionList, converter.toPageQuery(), converter.toSortCondition());
     }
 }

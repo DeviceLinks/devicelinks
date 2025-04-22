@@ -3,7 +3,7 @@ package cn.devicelinks.console.controller;
 import cn.devicelinks.service.device.DeviceCredentialsService;
 import cn.devicelinks.service.device.DeviceService;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.request.UpdateDeviceCredentialsRequest;
+import cn.devicelinks.api.model.request.UpdateDeviceCredentialsRequest;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;

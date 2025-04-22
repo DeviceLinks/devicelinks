@@ -17,9 +17,9 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
 import cn.devicelinks.framework.common.pojos.DeviceOta;
 import cn.devicelinks.framework.jdbc.core.Repository;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
 
 import java.util.List;
 

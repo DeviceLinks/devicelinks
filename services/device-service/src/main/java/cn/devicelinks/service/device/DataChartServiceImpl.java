@@ -1,8 +1,8 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.DataChartConverter;
-import cn.devicelinks.api.support.request.AddDataChartRequest;
+import cn.devicelinks.api.model.converter.DataChartConverter;
+import cn.devicelinks.api.model.request.AddDataChartRequest;
 import cn.devicelinks.framework.common.DataChartFieldType;
 import cn.devicelinks.framework.common.DataChartTargetLocation;
 import cn.devicelinks.framework.common.DataChartType;
@@ -14,7 +14,7 @@ import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.model.dto.DataChartDTO;
+import cn.devicelinks.api.model.dto.DataChartDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DataChartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

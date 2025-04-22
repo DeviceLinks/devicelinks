@@ -18,9 +18,10 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.DeviceConverter;
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.converter.DeviceConverter;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.DeviceStatus;
@@ -31,8 +32,8 @@ import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceFunctionModuleOtaDTO;
+import cn.devicelinks.api.model.dto.DeviceDTO;
+import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
 import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
 import cn.devicelinks.service.ota.DeviceOtaService;
 import cn.devicelinks.service.product.ProductService;
@@ -83,7 +84,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     @Override
     public PageResult<Device> selectByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
-        return this.repository.selectByPageable(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
+        return this.repository.selectByPageable(searchFieldConditionList, converter.toPageQuery(), converter.toSortCondition());
     }
 
     @Override

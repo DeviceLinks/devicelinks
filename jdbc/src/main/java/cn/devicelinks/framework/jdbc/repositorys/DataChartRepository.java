@@ -1,9 +1,9 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.api.model.dto.DataChartDTO;
 import cn.devicelinks.framework.common.pojos.DataChart;
 import cn.devicelinks.framework.jdbc.core.Repository;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.model.dto.DataChartDTO;
 
 import java.util.List;
 

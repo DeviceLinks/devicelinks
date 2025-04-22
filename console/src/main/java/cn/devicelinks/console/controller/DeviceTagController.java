@@ -1,11 +1,11 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.service.device.DeviceTagService;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDeviceTagRequest;
+import cn.devicelinks.api.model.request.AddDeviceTagRequest;
 import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;

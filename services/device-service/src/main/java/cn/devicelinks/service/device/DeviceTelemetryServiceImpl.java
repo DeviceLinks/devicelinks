@@ -1,10 +1,11 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDeviceTelemetryRequest;
+import cn.devicelinks.api.model.request.AddDeviceTelemetryRequest;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.TelemetryMetricType;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -40,8 +41,9 @@ public class DeviceTelemetryServiceImpl extends BaseServiceImpl<DeviceTelemetry,
     @Override
     public PageResult<DeviceTelemetry> getTelemetryByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
         return this.repository.getTelemetryByPage(searchFieldConditionList,
-                paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+                converter.toPageQuery(), converter.toSortCondition());
     }
 
     @Override

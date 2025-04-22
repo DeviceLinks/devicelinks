@@ -1,10 +1,11 @@
 package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.response.RegenerateKeySecretResponse;
+import cn.devicelinks.api.model.response.RegenerateKeySecretResponse;
 import cn.devicelinks.framework.common.ProductStatus;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -50,7 +51,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
     @Override
     public PageResult<Product> getPageByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
-        return this.repository.getProductsByPageable(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
+        return this.repository.getProductsByPageable(searchFieldConditionList, converter.toPageQuery(), converter.toSortCondition());
     }
 
     @Override

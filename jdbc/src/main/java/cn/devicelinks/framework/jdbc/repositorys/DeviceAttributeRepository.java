@@ -1,5 +1,7 @@
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
+import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
 import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.common.pojos.DeviceAttribute;
 import cn.devicelinks.framework.jdbc.core.Repository;
@@ -7,8 +9,6 @@ import cn.devicelinks.framework.jdbc.core.page.PageQuery;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeDTO;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceAttributeLatestDTO;
 
 import java.util.List;
 

@@ -18,7 +18,7 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.console.utils.ApiEnumScanner;
-import cn.devicelinks.api.support.query.GetSearchFieldQuery;
+import cn.devicelinks.api.model.query.GetSearchFieldQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldModuleFactory;
 import cn.devicelinks.framework.common.api.ApiResponse;
 import cn.devicelinks.framework.common.exception.ApiException;

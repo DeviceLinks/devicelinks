@@ -18,10 +18,10 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddUserRequest;
-import cn.devicelinks.api.support.request.UpdateUserRequest;
+import cn.devicelinks.api.model.request.AddUserRequest;
+import cn.devicelinks.api.model.request.UpdateUserRequest;
 import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.framework.common.LogAction;
@@ -35,7 +35,7 @@ import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.common.utils.SecureRandomUtils;
 import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
+import cn.devicelinks.api.model.dto.UserDTO;
 import cn.devicelinks.service.system.SysUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

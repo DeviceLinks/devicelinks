@@ -1,10 +1,10 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDeviceProfileRequest;
-import cn.devicelinks.api.support.request.BatchSetDeviceProfileRequest;
-import cn.devicelinks.api.support.request.UpdateDeviceProfileBasicInfoRequest;
+import cn.devicelinks.api.model.request.AddDeviceProfileRequest;
+import cn.devicelinks.api.model.request.BatchSetDeviceProfileRequest;
+import cn.devicelinks.api.model.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.pojos.DeviceProfile;
 import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;

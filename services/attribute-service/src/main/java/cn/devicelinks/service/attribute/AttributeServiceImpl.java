@@ -1,13 +1,14 @@
 package cn.devicelinks.service.attribute;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.support.converter.AttributeConverter;
-import cn.devicelinks.api.support.query.PaginationQuery;
-import cn.devicelinks.api.support.search.SearchFieldConditionBuilder;
+import cn.devicelinks.api.model.converter.AttributeConverter;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
+import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddAttributeRequest;
-import cn.devicelinks.api.support.request.AttributeInfoRequest;
-import cn.devicelinks.api.support.request.UpdateAttributeRequest;
+import cn.devicelinks.api.model.request.AddAttributeRequest;
+import cn.devicelinks.api.model.request.AttributeInfoRequest;
+import cn.devicelinks.api.model.request.UpdateAttributeRequest;
 import cn.devicelinks.framework.common.AttributeDataType;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.exception.ApiException;
@@ -15,7 +16,7 @@ import cn.devicelinks.framework.common.pojos.Attribute;
 import cn.devicelinks.framework.jdbc.BaseServiceImpl;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.model.dto.AttributeDTO;
+import cn.devicelinks.api.model.dto.AttributeDTO;
 import cn.devicelinks.framework.jdbc.repositorys.AttributeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -105,7 +106,8 @@ public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, Att
     @Override
     public PageResult<Attribute> getAttributesByPage(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
-        return this.repository.getAttributesByPage(searchFieldConditionList, paginationQuery.toPageQuery(), paginationQuery.toSortCondition());
+        PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
+        return this.repository.getAttributesByPage(searchFieldConditionList, converter.toPageQuery(), converter.toSortCondition());
     }
 
     @Override

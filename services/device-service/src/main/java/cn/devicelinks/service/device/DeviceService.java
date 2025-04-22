@@ -17,7 +17,7 @@
 
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.framework.common.DeviceCredentialsType;
 import cn.devicelinks.framework.common.pojos.Device;
@@ -25,7 +25,7 @@ import cn.devicelinks.framework.common.pojos.DeviceCredentialsAddition;
 import cn.devicelinks.framework.common.secret.AesSecretKeySet;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.model.dto.DeviceDTO;
+import cn.devicelinks.api.model.dto.DeviceDTO;
 
 import java.util.List;
 

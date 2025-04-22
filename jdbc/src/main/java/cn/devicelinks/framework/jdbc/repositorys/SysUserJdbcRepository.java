@@ -17,6 +17,7 @@
 
 package cn.devicelinks.framework.jdbc.repositorys;
 
+import cn.devicelinks.api.model.dto.UserDTO;
 import cn.devicelinks.framework.common.pojos.SysUser;
 import cn.devicelinks.framework.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.framework.jdbc.core.JdbcRepository;
@@ -27,7 +28,6 @@ import cn.devicelinks.framework.jdbc.core.sql.Dynamic;
 import cn.devicelinks.framework.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.framework.jdbc.core.sql.SortCondition;
-import cn.devicelinks.framework.jdbc.model.dto.UserDTO;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;

@@ -1,12 +1,12 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.request.AddDataChartRequest;
+import cn.devicelinks.api.model.request.AddDataChartRequest;
 import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
 import cn.devicelinks.framework.common.pojos.DataChart;
 import cn.devicelinks.framework.common.pojos.DataChartField;
 import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.model.dto.DataChartDTO;
+import cn.devicelinks.api.model.dto.DataChartDTO;
 
 import java.util.List;
 

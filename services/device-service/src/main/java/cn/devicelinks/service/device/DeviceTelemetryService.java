@@ -1,8 +1,8 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDeviceTelemetryRequest;
+import cn.devicelinks.api.model.request.AddDeviceTelemetryRequest;
 import cn.devicelinks.framework.common.exception.ApiException;
 import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
 import cn.devicelinks.framework.jdbc.BaseService;

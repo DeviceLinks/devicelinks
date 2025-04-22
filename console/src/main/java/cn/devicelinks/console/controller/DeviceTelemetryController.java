@@ -1,9 +1,9 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.service.device.DeviceTelemetryService;
-import cn.devicelinks.api.support.query.PaginationQuery;
+import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.support.request.AddDeviceTelemetryRequest;
+import cn.devicelinks.api.model.request.AddDeviceTelemetryRequest;
 import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
 import cn.devicelinks.framework.common.LogAction;
 import cn.devicelinks.framework.common.LogObjectType;
