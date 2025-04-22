@@ -17,9 +17,9 @@
 
 package cn.devicelinks.console.startup.listener;
 
-import cn.devicelinks.framework.common.startup.AbstractStartupEventListener;
-import cn.devicelinks.framework.common.startup.ServerStartupEvent;
-import cn.devicelinks.framework.common.utils.RSAKeyUtils;
+import cn.devicelinks.common.startup.AbstractStartupEventListener;
+import cn.devicelinks.common.startup.ServerStartupEvent;
+import cn.devicelinks.common.utils.RSAKeyUtils;
 import com.nimbusds.jose.jwk.RSAKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -21,6 +21,10 @@
     <dependencies>
         <dependency>
             <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-device-center-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-attribute-service</artifactId>
         </dependency>
         <dependency>

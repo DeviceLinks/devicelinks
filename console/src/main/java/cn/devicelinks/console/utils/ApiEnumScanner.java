@@ -1,8 +1,8 @@
 package cn.devicelinks.console.utils;
 
-import cn.devicelinks.framework.common.EnumShowStyle;
-import cn.devicelinks.framework.common.annotation.ApiEnum;
-import cn.devicelinks.framework.common.utils.EnumUtils;
+import cn.devicelinks.common.EnumShowStyle;
+import cn.devicelinks.common.annotation.ApiEnum;
+import cn.devicelinks.common.utils.EnumUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static cn.devicelinks.framework.common.Constants.ENUM_OBJECT_LABEL_FIELD;
-import static cn.devicelinks.framework.common.Constants.ENUM_SHOW_STYLE_FIELD;
+import static cn.devicelinks.common.Constants.ENUM_OBJECT_LABEL_FIELD;
+import static cn.devicelinks.common.Constants.ENUM_SHOW_STYLE_FIELD;
 
 /**
  * 接口枚举扫描器

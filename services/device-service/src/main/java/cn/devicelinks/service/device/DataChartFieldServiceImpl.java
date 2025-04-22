@@ -1,14 +1,14 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.framework.common.pojos.DataChartField;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.repositorys.DataChartFieldRepository;
+import cn.devicelinks.entity.DataChartField;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.repository.DataChartFieldRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDataChartField.DATA_CHART_FIELD;
+import static cn.devicelinks.jdbc.tables.TDataChartField.DATA_CHART_FIELD;
 
 /**
  * 数据图表字段业务逻辑实现类

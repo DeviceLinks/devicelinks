@@ -17,13 +17,13 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.web.api.StatusCode;
+import cn.devicelinks.entity.SysDepartment;
+import cn.devicelinks.entity.SysUser;
 import cn.devicelinks.service.system.SysDepartmentService;
 import cn.devicelinks.service.system.SysUserService;
-import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.common.pojos.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 

@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console;
 
-import cn.devicelinks.framework.common.utils.RegexUtils;
+import cn.devicelinks.common.utils.RegexUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.regex.Pattern;

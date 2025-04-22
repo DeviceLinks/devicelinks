@@ -1,10 +1,10 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.framework.common.DeviceCredentialsType;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceCredentials;
-import cn.devicelinks.framework.common.pojos.DeviceCredentialsAddition;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceCredentials;
+import cn.devicelinks.entity.DeviceCredentialsAddition;
+import cn.devicelinks.jdbc.BaseService;
 
 import java.time.LocalDateTime;
 

@@ -2,11 +2,12 @@ package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.model.response.RegenerateKeySecretResponse;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.common.ProductStatus;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.entity.Product;
+import cn.devicelinks.jdbc.BaseService;
+import cn.devicelinks.jdbc.core.page.PageResult;
 
 /**
  * 产品业务逻辑接口
@@ -57,7 +58,7 @@ public interface ProductService extends BaseService<Product, String> {
     /**
      * 发布产品
      * <p>
-     * 仅处于开发状态{@link cn.devicelinks.framework.common.ProductStatus#Development}才允许发布产品
+     * 仅处于开发状态{@link ProductStatus#Development}才允许发布产品
      *
      * @param productId 产品 ID {@link Product#getId()}
      * @return 已发布的产品信息 {@link Product}

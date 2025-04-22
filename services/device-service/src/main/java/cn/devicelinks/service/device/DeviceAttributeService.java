@@ -1,16 +1,16 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.DeviceAttribute;
-import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.Attribute;
+import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.jdbc.BaseService;
+import cn.devicelinks.jdbc.core.page.PageResult;
 
 import java.util.List;
 

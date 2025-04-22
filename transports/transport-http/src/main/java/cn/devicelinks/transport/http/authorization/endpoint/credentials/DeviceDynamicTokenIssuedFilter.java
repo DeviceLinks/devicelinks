@@ -1,10 +1,10 @@
 package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
-import cn.devicelinks.framework.common.web.ApiResponseHttpMessageConverter;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
+import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.api.StatusCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

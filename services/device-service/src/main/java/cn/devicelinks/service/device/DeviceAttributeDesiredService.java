@@ -1,17 +1,17 @@
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.model.dto.DeviceAttributeDesiredDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.request.AddDeviceDesiredAttributeRequest;
 import cn.devicelinks.api.model.request.ExtractUnknownDesiredAttributeRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceDesiredAttributeRequest;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
-import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.api.model.dto.DeviceAttributeDesiredDTO;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.Attribute;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceAttributeDesired;
+import cn.devicelinks.jdbc.BaseService;
+import cn.devicelinks.jdbc.core.page.PageResult;
 
 /**
  * 设备期望属性业务逻辑接口

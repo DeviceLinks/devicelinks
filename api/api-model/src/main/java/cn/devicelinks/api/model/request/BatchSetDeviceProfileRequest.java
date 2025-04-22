@@ -1,8 +1,8 @@
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.DeviceProfileBatchSetAway;
-import cn.devicelinks.framework.common.DeviceType;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.common.DeviceProfileBatchSetAway;
+import cn.devicelinks.common.DeviceType;
+import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 

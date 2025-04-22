@@ -18,7 +18,7 @@
 package cn.devicelinks.transport.http;
 
 import cn.devicelinks.api.device.center.configuration.DeviceCenterFeignClientConfiguration;
-import cn.devicelinks.framework.common.annotation.DeviceLinksBeanScan;
+import cn.devicelinks.component.web.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;

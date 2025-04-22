@@ -1,6 +1,6 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.entity.Device;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 

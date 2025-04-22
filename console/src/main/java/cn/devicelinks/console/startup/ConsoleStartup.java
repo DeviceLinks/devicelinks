@@ -18,7 +18,7 @@
 package cn.devicelinks.console.startup;
 
 import cn.devicelinks.console.startup.listener.InitializationAdminPasswordListener;
-import cn.devicelinks.framework.common.startup.ServerStartupEvent;
+import cn.devicelinks.common.startup.ServerStartupEvent;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
 package cn.devicelinks.api.device.center;
 
 import cn.devicelinks.api.support.feign.FeignConstants;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.common.secret.AesSecretKeySet;
 import feign.Headers;
 import feign.RequestLine;
 

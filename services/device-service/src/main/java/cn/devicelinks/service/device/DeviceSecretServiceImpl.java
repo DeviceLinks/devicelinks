@@ -3,23 +3,23 @@ package cn.devicelinks.service.device;
 import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DeviceSecretConverter;
-import cn.devicelinks.framework.common.DeviceSecretStatus;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.DeviceSecret;
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
-import cn.devicelinks.framework.common.utils.AesEncryptor;
-import cn.devicelinks.framework.common.utils.AesUtils;
-import cn.devicelinks.framework.common.utils.SecureRandomUtils;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
+import cn.devicelinks.common.DeviceSecretStatus;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.DeviceSecret;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.common.utils.AesEncryptor;
+import cn.devicelinks.common.utils.AesUtils;
+import cn.devicelinks.common.utils.SecureRandomUtils;
+import cn.devicelinks.jdbc.BaseServiceImpl;
 import cn.devicelinks.api.model.dto.DeviceSecretDTO;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceSecretRepository;
+import cn.devicelinks.jdbc.repository.DeviceSecretRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceSecret.DEVICE_SECRET;
+import static cn.devicelinks.jdbc.tables.TDeviceSecret.DEVICE_SECRET;
 
 /**
  * 设备密钥业务逻辑实现类

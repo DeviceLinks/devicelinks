@@ -1,7 +1,7 @@
 package cn.devicelinks.service.system;
 
-import cn.devicelinks.framework.common.pojos.SysSetting;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.entity.SysSetting;
+import cn.devicelinks.jdbc.BaseService;
 
 import java.util.List;
 

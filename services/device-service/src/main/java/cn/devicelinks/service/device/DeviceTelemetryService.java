@@ -1,12 +1,12 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.request.AddDeviceTelemetryRequest;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
-import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.DeviceTelemetry;
+import cn.devicelinks.jdbc.BaseService;
+import cn.devicelinks.jdbc.core.page.PageResult;
 
 /**
  * 遥测数据业务逻辑接口

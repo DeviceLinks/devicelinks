@@ -17,10 +17,10 @@
 
 package cn.devicelinks.console.authorization.endpoint.access;
 
-import cn.devicelinks.console.authorization.BearerTokenResolver;
-import cn.devicelinks.console.authorization.DefaultBearerTokenResolver;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
+import cn.devicelinks.component.web.resolver.BearerTokenResolver;
+import cn.devicelinks.component.web.resolver.DefaultBearerTokenResolver;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

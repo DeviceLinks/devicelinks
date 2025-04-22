@@ -1,11 +1,11 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.common.DeviceShadowStatus;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.*;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceShadowRepository;
+import cn.devicelinks.common.DeviceShadowStatus;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.entity.*;
+import cn.devicelinks.jdbc.repository.DeviceShadowRepository;
 import cn.devicelinks.service.attribute.AttributeService;
 import cn.devicelinks.service.product.FunctionModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceShadow.DEVICE_SHADOW;
+import static cn.devicelinks.jdbc.tables.TDeviceShadow.DEVICE_SHADOW;
 
 /**
  * 设备影子业务逻辑实现类

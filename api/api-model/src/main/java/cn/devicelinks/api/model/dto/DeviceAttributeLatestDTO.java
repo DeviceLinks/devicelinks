@@ -1,8 +1,8 @@
 package cn.devicelinks.api.model.dto;
 
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.AttributeScope;
-import cn.devicelinks.framework.common.AttributeValueSource;
+import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.common.AttributeScope;
+import cn.devicelinks.common.AttributeValueSource;
 import lombok.Data;
 
 import java.time.LocalDateTime;

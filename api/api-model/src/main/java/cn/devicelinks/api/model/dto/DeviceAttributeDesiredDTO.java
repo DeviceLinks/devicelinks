@@ -1,8 +1,8 @@
 package cn.devicelinks.api.model.dto;
 
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.pojos.AttributeAddition;
-import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
+import cn.devicelinks.entity.AttributeAddition;
+import cn.devicelinks.entity.DeviceAttributeDesired;
+import cn.devicelinks.common.AttributeDataType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

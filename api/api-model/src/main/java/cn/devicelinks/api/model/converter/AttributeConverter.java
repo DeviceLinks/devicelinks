@@ -2,7 +2,7 @@ package cn.devicelinks.api.model.converter;
 
 import cn.devicelinks.api.model.dto.AttributeDTO;
 import cn.devicelinks.api.model.request.AttributeInfoRequest;
-import cn.devicelinks.framework.common.pojos.Attribute;
+import cn.devicelinks.entity.Attribute;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -30,7 +30,7 @@ public interface AttributeConverter {
     AttributeDTO fromEntity(Attribute attribute);
 
     @Mappings(
-            @Mapping(target = "dataType", expression = "java(cn.devicelinks.framework.common.AttributeDataType.valueOf(attributeInfo.getDataType()))")
+            @Mapping(target = "dataType", expression = "java(cn.devicelinks.common.AttributeDataType.valueOf(attributeInfo.getDataType()))")
     )
     Attribute fromAttributeInfo(AttributeInfoRequest attributeInfo);
 }

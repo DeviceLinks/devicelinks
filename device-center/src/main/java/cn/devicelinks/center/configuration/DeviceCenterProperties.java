@@ -1,6 +1,6 @@
 package cn.devicelinks.center.configuration;
 
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
+import cn.devicelinks.common.secret.AesSecretKeySet;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;

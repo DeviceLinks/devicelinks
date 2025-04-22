@@ -1,7 +1,7 @@
 package cn.devicelinks.api.support.search.module;
 
-import cn.devicelinks.framework.common.web.search.*;
-import cn.devicelinks.framework.common.TelemetryMetricType;
+import cn.devicelinks.common.TelemetryMetricType;
+import cn.devicelinks.component.web.search.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

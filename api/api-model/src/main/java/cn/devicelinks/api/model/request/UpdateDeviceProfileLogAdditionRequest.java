@@ -1,6 +1,6 @@
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.pojos.DeviceProfileLogAddition;
+import cn.devicelinks.entity.DeviceProfileLogAddition;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

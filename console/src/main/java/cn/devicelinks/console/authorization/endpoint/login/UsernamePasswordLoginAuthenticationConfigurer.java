@@ -17,9 +17,9 @@
 
 package cn.devicelinks.console.authorization.endpoint.login;
 
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.service.system.SysLogService;
 import cn.devicelinks.service.system.SysUserSessionService;
 import org.springframework.context.ApplicationContext;

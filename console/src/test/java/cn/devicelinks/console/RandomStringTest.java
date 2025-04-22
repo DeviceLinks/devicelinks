@@ -1,6 +1,6 @@
 package cn.devicelinks.console;
 
-import cn.devicelinks.framework.common.utils.SecureRandomUtils;
+import cn.devicelinks.common.utils.SecureRandomUtils;
 
 import java.util.Arrays;
 

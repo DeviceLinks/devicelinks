@@ -1,15 +1,15 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.framework.common.pojos.DeviceTag;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceTagRepository;
+import cn.devicelinks.entity.DeviceTag;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.repository.DeviceTagRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceTag.DEVICE_TAG;
+import static cn.devicelinks.jdbc.tables.TDeviceTag.DEVICE_TAG;
 
 /**
  * 设备标签业务逻辑实现类

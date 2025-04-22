@@ -29,10 +29,10 @@
     <logger name="cn.devicelinks.rule.engine" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
-    <logger name="cn.devicelinks.framework.jdbc" level="DEBUG" additivity="false">
+    <logger name="cn.devicelinks.jdbc" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
-    <logger name="cn.devicelinks.framework.component" level="DEBUG" additivity="false">
+    <logger name="cn.devicelinks.component" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
 </configuration>

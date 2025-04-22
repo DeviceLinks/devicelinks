@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-jdbc</artifactId>
+            <artifactId>devicelinks-jdbc-repository</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

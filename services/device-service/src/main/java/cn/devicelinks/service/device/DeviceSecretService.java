@@ -1,10 +1,10 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
-import cn.devicelinks.framework.common.pojos.DeviceSecret;
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
-import cn.devicelinks.framework.jdbc.BaseService;
 import cn.devicelinks.api.model.dto.DeviceSecretDTO;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.entity.DeviceSecret;
+import cn.devicelinks.jdbc.BaseService;
 
 /**
  * 设备密钥业务逻辑接口

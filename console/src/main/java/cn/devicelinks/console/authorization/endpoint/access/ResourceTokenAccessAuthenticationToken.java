@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
+import cn.devicelinks.console.authorization.DeviceLinksUserDetails;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.util.Assert;

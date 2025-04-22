@@ -52,7 +52,17 @@
             </dependency>
             <dependency>
                 <groupId>cn.devicelinks</groupId>
-                <artifactId>devicelinks-jdbc</artifactId>
+                <artifactId>devicelinks-entity</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-jdbc-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-jdbc-repository</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -108,6 +118,26 @@
             <dependency>
                 <groupId>cn.devicelinks</groupId>
                 <artifactId>devicelinks-system-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-component-operate-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-component-jackson</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-component-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-component-authorization</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

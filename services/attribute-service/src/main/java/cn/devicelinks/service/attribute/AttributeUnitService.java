@@ -1,7 +1,7 @@
 package cn.devicelinks.service.attribute;
 
-import cn.devicelinks.framework.common.pojos.AttributeUnit;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.entity.AttributeUnit;
+import cn.devicelinks.jdbc.BaseService;
 
 import java.util.List;
 

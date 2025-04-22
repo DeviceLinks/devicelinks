@@ -18,12 +18,12 @@
 package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
-import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
-import cn.devicelinks.framework.jdbc.repositorys.SysDepartmentRepository;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.SysDepartment;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
+import cn.devicelinks.jdbc.repository.SysDepartmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -31,7 +31,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
+import static cn.devicelinks.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
 
 /**
  * 部门业务逻辑接口实现类

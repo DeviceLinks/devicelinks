@@ -17,8 +17,8 @@
 
 package cn.devicelinks.console.authorization.endpoint.login;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.web.api.StatusCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -17,7 +17,7 @@
 
 package cn.devicelinks.transport.mqtt;
 
-import cn.devicelinks.framework.common.annotation.DeviceLinksBeanScan;
+import cn.devicelinks.component.web.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

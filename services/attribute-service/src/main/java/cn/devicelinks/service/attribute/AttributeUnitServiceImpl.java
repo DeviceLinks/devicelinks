@@ -1,14 +1,14 @@
 package cn.devicelinks.service.attribute;
 
-import cn.devicelinks.framework.common.pojos.AttributeUnit;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.repositorys.AttributeUnitRepository;
+import cn.devicelinks.entity.AttributeUnit;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.repository.AttributeUnitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TAttributeUnit.ATTRIBUTE_UNIT;
+import static cn.devicelinks.jdbc.tables.TAttributeUnit.ATTRIBUTE_UNIT;
 
 /**
  * 属性单位业务逻辑接口实现类

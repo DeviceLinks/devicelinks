@@ -1,12 +1,12 @@
 package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.SysSettingDataType;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.SysSetting;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.repositorys.SysSettingRepository;
+import cn.devicelinks.common.Constants;
+import cn.devicelinks.common.SysSettingDataType;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.SysSetting;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.repository.SysSettingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TSysSetting.SYS_SETTING;
+import static cn.devicelinks.jdbc.tables.TSysSetting.SYS_SETTING;
 
 /**
  * 系统参数设置业务逻辑实现类

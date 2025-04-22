@@ -17,11 +17,11 @@
 
 package cn.devicelinks.console;
 
+import cn.devicelinks.component.jackson.utils.JacksonUtils;
+import cn.devicelinks.component.web.search.SearchField;
+import cn.devicelinks.component.web.search.SearchFieldModuleFactory;
+import cn.devicelinks.component.web.search.SearchFieldModuleIdentifier;
 import cn.devicelinks.console.annotation.RunTest;
-import cn.devicelinks.framework.common.web.search.SearchFieldModuleFactory;
-import cn.devicelinks.framework.common.utils.JacksonUtils;
-import cn.devicelinks.framework.common.web.search.SearchField;
-import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

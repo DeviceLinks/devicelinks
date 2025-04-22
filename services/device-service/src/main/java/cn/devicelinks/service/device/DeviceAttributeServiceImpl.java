@@ -1,26 +1,26 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.model.request.AddAttributeRequest;
-import cn.devicelinks.api.model.request.AttributeInfoRequest;
-import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.DeviceAttribute;
-import cn.devicelinks.framework.common.pojos.FunctionModule;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.api.model.dto.AttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceAttributeRepository;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.api.model.request.AddAttributeRequest;
+import cn.devicelinks.api.model.request.AttributeInfoRequest;
+import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.api.support.StatusCodeConstants;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.Attribute;
+import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.repository.DeviceAttributeRepository;
 import cn.devicelinks.service.attribute.AttributeService;
 import cn.devicelinks.service.product.FunctionModuleService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceAttribute.DEVICE_ATTRIBUTE;
+import static cn.devicelinks.jdbc.tables.TDeviceAttribute.DEVICE_ATTRIBUTE;
+
 
 /**
  * 设备属性业务逻辑实现类

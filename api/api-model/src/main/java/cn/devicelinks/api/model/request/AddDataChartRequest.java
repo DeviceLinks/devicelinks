@@ -1,9 +1,9 @@
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.DataChartFieldType;
-import cn.devicelinks.framework.common.DataChartTargetLocation;
-import cn.devicelinks.framework.common.DataChartType;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.common.DataChartFieldType;
+import cn.devicelinks.common.DataChartTargetLocation;
+import cn.devicelinks.common.DataChartType;
+import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

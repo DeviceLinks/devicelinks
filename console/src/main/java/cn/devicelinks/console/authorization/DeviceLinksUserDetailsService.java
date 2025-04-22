@@ -17,8 +17,7 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

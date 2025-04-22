@@ -1,20 +1,20 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.common.DeviceCredentialsType;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.DeviceCredentials;
-import cn.devicelinks.framework.common.pojos.DeviceCredentialsAddition;
-import cn.devicelinks.framework.common.utils.X509Utils;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceCredentialsRepository;
+import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.DeviceCredentials;
+import cn.devicelinks.entity.DeviceCredentialsAddition;
+import cn.devicelinks.common.utils.X509Utils;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.repository.DeviceCredentialsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceCredentials.DEVICE_CREDENTIALS;
+import static cn.devicelinks.jdbc.tables.TDeviceCredentials.DEVICE_CREDENTIALS;
 
 /**
  * 设备鉴权业务逻辑实现类

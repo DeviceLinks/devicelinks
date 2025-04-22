@@ -1,7 +1,7 @@
 package cn.devicelinks.api.model.converter;
 
 import cn.devicelinks.api.model.dto.DataChartDTO;
-import cn.devicelinks.framework.common.pojos.DataChart;
+import cn.devicelinks.entity.DataChart;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

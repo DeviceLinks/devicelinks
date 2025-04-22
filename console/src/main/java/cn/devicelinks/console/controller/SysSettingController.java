@@ -2,12 +2,12 @@ package cn.devicelinks.console.controller;
 
 import cn.devicelinks.api.model.request.UpdateSysSettingRequest;
 import cn.devicelinks.service.system.SysSettingService;
-import cn.devicelinks.framework.common.LogAction;
-import cn.devicelinks.framework.common.LogObjectType;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.operate.log.OperationLog;
-import cn.devicelinks.framework.common.pojos.SysSetting;
+import cn.devicelinks.common.LogAction;
+import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.operate.log.annotation.OperationLog;
+import cn.devicelinks.entity.SysSetting;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

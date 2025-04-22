@@ -17,8 +17,8 @@
 
 package cn.devicelinks.service.system;
 
-import cn.devicelinks.framework.common.pojos.SysUserSession;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.entity.SysUserSession;
+import cn.devicelinks.jdbc.BaseService;
 
 /**
  * 用户会话业务逻辑接口定义

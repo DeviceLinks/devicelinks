@@ -1,9 +1,9 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
-import cn.devicelinks.framework.common.web.access.BearerTokenResolver;
-import cn.devicelinks.framework.common.web.access.DefaultBearerTokenResolver;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
+import cn.devicelinks.component.web.resolver.BearerTokenResolver;
+import cn.devicelinks.component.web.resolver.DefaultBearerTokenResolver;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

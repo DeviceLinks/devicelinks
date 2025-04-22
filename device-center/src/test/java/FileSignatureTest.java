@@ -15,10 +15,10 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import cn.devicelinks.framework.common.SignatureAlgorithm;
-import cn.devicelinks.framework.common.utils.DigestUtils;
-import cn.devicelinks.framework.common.utils.RSAKeyUtils;
-import cn.devicelinks.framework.common.utils.SignatureUtils;
+import cn.devicelinks.common.SignatureAlgorithm;
+import cn.devicelinks.common.utils.DigestUtils;
+import cn.devicelinks.common.utils.RSAKeyUtils;
+import cn.devicelinks.common.utils.SignatureUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

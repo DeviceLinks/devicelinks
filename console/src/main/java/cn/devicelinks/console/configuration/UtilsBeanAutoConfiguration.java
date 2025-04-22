@@ -17,8 +17,8 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.framework.common.utils.ApplicationContextUtils;
-import cn.devicelinks.framework.common.utils.BeanFactoryUtils;
+import cn.devicelinks.common.utils.ApplicationContextUtils;
+import cn.devicelinks.common.utils.BeanFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

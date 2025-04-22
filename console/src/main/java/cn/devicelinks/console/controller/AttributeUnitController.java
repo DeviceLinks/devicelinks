@@ -1,8 +1,8 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.AttributeUnit;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.AttributeUnit;
 import cn.devicelinks.service.attribute.AttributeUnitService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

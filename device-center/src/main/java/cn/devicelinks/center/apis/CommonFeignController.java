@@ -2,8 +2,8 @@ package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.CommonFeignClient;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.common.secret.AesSecretKeySet;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

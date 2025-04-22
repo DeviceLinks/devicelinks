@@ -1,8 +1,8 @@
 package cn.devicelinks.api.support.search.module;
 
-import cn.devicelinks.framework.common.web.search.*;
-import cn.devicelinks.framework.common.DataChartTargetLocation;
-import cn.devicelinks.framework.common.DataChartType;
+import cn.devicelinks.common.DataChartTargetLocation;
+import cn.devicelinks.common.DataChartType;
+import cn.devicelinks.component.web.search.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

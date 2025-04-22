@@ -2,31 +2,31 @@ package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.response.RegenerateKeySecretResponse;
-import cn.devicelinks.framework.common.ProductStatus;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.common.utils.SecureRandomUtils;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceRepository;
-import cn.devicelinks.framework.jdbc.repositorys.ProductRepository;
+import cn.devicelinks.common.ProductStatus;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.Product;
+import cn.devicelinks.common.utils.SecureRandomUtils;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
+import cn.devicelinks.jdbc.repository.DeviceRepository;
+import cn.devicelinks.jdbc.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDevice.DEVICE;
-import static cn.devicelinks.framework.jdbc.tables.TProduct.PRODUCT;
+import static cn.devicelinks.jdbc.tables.TDevice.DEVICE;
+import static cn.devicelinks.jdbc.tables.TProduct.PRODUCT;
 
 /**
  * 产品业务逻辑实现类

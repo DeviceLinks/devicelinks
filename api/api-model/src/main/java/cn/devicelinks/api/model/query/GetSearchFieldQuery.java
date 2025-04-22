@@ -17,8 +17,8 @@
 
 package cn.devicelinks.api.model.query;
 
-import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.component.web.search.SearchFieldModuleIdentifier;
+import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 

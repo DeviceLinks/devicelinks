@@ -3,7 +3,7 @@ package cn.devicelinks.api.model.converter;
 import cn.devicelinks.api.model.request.AddDeviceProfileRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceProfileBasicInfoRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceProfileRequest;
-import cn.devicelinks.framework.common.pojos.DeviceProfile;
+import cn.devicelinks.entity.DeviceProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;

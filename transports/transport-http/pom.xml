@@ -41,6 +41,10 @@
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-authorization</artifactId>
+        </dependency>
         <!--SpringBoot Dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

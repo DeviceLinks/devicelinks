@@ -1,7 +1,7 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.framework.common.pojos.DataChartField;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.entity.DataChartField;
+import cn.devicelinks.jdbc.BaseService;
 
 import java.util.List;
 

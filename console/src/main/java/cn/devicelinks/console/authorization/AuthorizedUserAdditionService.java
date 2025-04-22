@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**

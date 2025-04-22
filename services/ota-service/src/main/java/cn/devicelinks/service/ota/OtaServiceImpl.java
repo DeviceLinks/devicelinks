@@ -1,13 +1,13 @@
 package cn.devicelinks.service.ota;
 
-import cn.devicelinks.framework.common.OtaPackageType;
-import cn.devicelinks.framework.common.pojos.Ota;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.repositorys.OtaRepository;
+import cn.devicelinks.common.OtaPackageType;
+import cn.devicelinks.entity.Ota;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.repository.OtaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static cn.devicelinks.framework.jdbc.tables.TOta.OTA;
+import static cn.devicelinks.jdbc.tables.TOta.OTA;
 
 /**
  * Ota业务逻辑实现类

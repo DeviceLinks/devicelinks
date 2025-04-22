@@ -17,13 +17,12 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.framework.common.operate.log.OperationLog;
-import cn.devicelinks.framework.common.operate.log.OperationLogAnnotationMethodInterceptor;
-import cn.devicelinks.framework.common.operate.log.OperationLogAnnotationPointcutAdvisor;
-import cn.devicelinks.framework.common.operate.log.OperationLogStorage;
-import cn.devicelinks.framework.common.authorization.SecurityUserDetailsProvider;
+import cn.devicelinks.component.operate.log.*;
+import cn.devicelinks.component.operate.log.annotation.OperationLog;
+import cn.devicelinks.console.authorization.UserDetailsContext;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,16 +36,44 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OperationLogAutoConfiguration {
     /**
+     * 创建{@link OperatorIdsProvider}对象实例
+     * <p>
+     * 提供给操作日志组件使用操作人相关的数据
+     *
+     * @return {@link OperatorIdsProvider}
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public OperatorIdsProvider operatorIdsProvider() {
+        return new OperatorIdsProvider() {
+            @Override
+            public String getUserId() {
+                return UserDetailsContext.getUserId();
+            }
+
+            @Override
+            public String getSessionId() {
+                return UserDetailsContext.getSessionId();
+            }
+
+            @Override
+            public String getDepartmentId() {
+                return UserDetailsContext.getCurrentUser().getDepartmentId();
+            }
+        };
+    }
+
+    /**
      * 操作日志注解{@link OperationLog}方法拦截器
      *
      * @param storageObjectProvider 日志存储 {@link OperationLogStorage}
-     * @param userDetailsProvider   用户详情提供者 {@link SecurityUserDetailsProvider}
+     * @param operatorIdsProvider   操作人IDs信息提供者 {@link OperatorIdsProvider}
      * @return {@link OperationLogAnnotationMethodInterceptor}
      */
     @Bean
     public OperationLogAnnotationMethodInterceptor operationLogAnnotationMethodInterceptor(ObjectProvider<OperationLogStorage> storageObjectProvider,
-                                                                                           SecurityUserDetailsProvider userDetailsProvider) {
-        return new OperationLogAnnotationMethodInterceptor(storageObjectProvider.getIfAvailable(), userDetailsProvider);
+                                                                                           OperatorIdsProvider operatorIdsProvider) {
+        return new OperationLogAnnotationMethodInterceptor(storageObjectProvider.getIfAvailable(), operatorIdsProvider);
     }
 
     /**

@@ -19,19 +19,19 @@ package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.framework.common.UserActivateMethod;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.common.UserActivateMethod;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.SysUser;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.api.model.dto.UserDTO;
-import cn.devicelinks.framework.jdbc.repositorys.SysUserRepository;
+import cn.devicelinks.jdbc.repository.SysUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TSysUser.SYS_USER;
+import static cn.devicelinks.jdbc.tables.TSysUser.SYS_USER;
 
 /**
  * 用户业务逻辑实现类

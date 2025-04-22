@@ -1,7 +1,7 @@
 package cn.devicelinks.center.authorization.endpoint.api;
 
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;

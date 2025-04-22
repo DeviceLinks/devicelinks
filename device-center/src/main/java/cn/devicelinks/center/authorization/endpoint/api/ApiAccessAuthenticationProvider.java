@@ -2,8 +2,8 @@ package cn.devicelinks.center.authorization.endpoint.api;
 
 import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.common.Constants;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;

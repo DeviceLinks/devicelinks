@@ -1,7 +1,7 @@
 package cn.devicelinks.api.model.dto;
 
-import cn.devicelinks.framework.common.pojos.DataChart;
-import cn.devicelinks.framework.common.pojos.DataChartField;
+import cn.devicelinks.entity.DataChart;
+import cn.devicelinks.entity.DataChartField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

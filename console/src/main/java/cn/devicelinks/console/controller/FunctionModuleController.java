@@ -3,18 +3,18 @@ package cn.devicelinks.console.controller;
 import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.service.product.FunctionModuleService;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.request.AddFunctionModuleRequest;
 import cn.devicelinks.api.model.request.UpdateFunctionModuleRequest;
-import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
-import cn.devicelinks.framework.common.LogAction;
-import cn.devicelinks.framework.common.LogObjectType;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.operate.log.OperationLog;
-import cn.devicelinks.framework.common.pojos.FunctionModule;
-import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
+import cn.devicelinks.component.web.search.annotation.SearchModule;
+import cn.devicelinks.common.LogAction;
+import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.operate.log.annotation.OperationLog;
+import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.entity.SysUser;
+import cn.devicelinks.component.web.search.SearchFieldModuleIdentifier;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -44,7 +44,7 @@ public class FunctionModuleController {
      *
      * @param searchFieldQuery 搜索字段查询参数 {@link SearchFieldQuery}
      *                         包含用于搜索功能模块的字段和值。
-     * @return {@link cn.devicelinks.framework.common.pojos.FunctionModule}
+     * @return {@link FunctionModule}
      * 包含符合查询条件的功能模块的分页结果。
      * @throws ApiException 如果在获取功能模块列表时发生错误。
      */

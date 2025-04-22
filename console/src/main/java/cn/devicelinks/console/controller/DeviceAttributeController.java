@@ -1,24 +1,24 @@
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.service.device.DeviceAttributeService;
-import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
-import cn.devicelinks.framework.common.web.search.annotation.SearchModule;
-import cn.devicelinks.framework.common.LogAction;
-import cn.devicelinks.framework.common.LogObjectType;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.operate.log.OperationLog;
-import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceAttribute;
-import cn.devicelinks.framework.common.web.search.SearchFieldModuleIdentifier;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
+import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.common.LogAction;
+import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.component.operate.log.annotation.OperationLog;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.search.SearchFieldModuleIdentifier;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.component.web.search.annotation.SearchModule;
+import cn.devicelinks.console.authorization.UserDetailsContext;
+import cn.devicelinks.entity.Attribute;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.service.device.DeviceAttributeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -76,7 +76,7 @@ public class DeviceAttributeController {
      *
      * @param deviceAttributeId 属性ID {@link DeviceAttribute#getId()}
      * @param request           提取属性请求参数 {@link ExtractUnknownDeviceAttributeRequest}
-     * @return 提取后的属性 {@link cn.devicelinks.framework.common.pojos.Attribute}
+     * @return 提取后的属性 {@link Attribute}
      * @throws ApiException 遇到的业务逻辑异常
      */
     @PostMapping(value = "/attribute/{deviceAttributeId}/extract")

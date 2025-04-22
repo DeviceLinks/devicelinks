@@ -18,12 +18,12 @@
 package cn.devicelinks.console.startup.listener;
 
 import cn.devicelinks.service.system.SysUserService;
-import cn.devicelinks.framework.common.UserIdentity;
-import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.startup.AbstractStartupEventListener;
-import cn.devicelinks.framework.common.startup.ServerStartupEvent;
-import cn.devicelinks.framework.common.utils.ObjectIdUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
+import cn.devicelinks.common.UserIdentity;
+import cn.devicelinks.entity.SysUser;
+import cn.devicelinks.common.startup.AbstractStartupEventListener;
+import cn.devicelinks.common.startup.ServerStartupEvent;
+import cn.devicelinks.common.utils.ObjectIdUtils;
+import cn.devicelinks.common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

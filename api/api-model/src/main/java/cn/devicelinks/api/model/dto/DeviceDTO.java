@@ -1,7 +1,7 @@
 package cn.devicelinks.api.model.dto;
 
-import cn.devicelinks.framework.common.DeviceCredentialsType;
-import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.entity.Device;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

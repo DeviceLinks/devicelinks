@@ -17,8 +17,8 @@
 
 package cn.devicelinks.console.authorization.jose;
 
-import cn.devicelinks.framework.common.DeviceLinksVersion;
-import cn.devicelinks.framework.common.utils.RSAKeyUtils;
+import cn.devicelinks.common.DeviceLinksVersion;
+import cn.devicelinks.common.utils.RSAKeyUtils;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSelector;

@@ -1,8 +1,8 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.framework.common.pojos.DeviceAttributeDesired;
-import cn.devicelinks.framework.common.pojos.DeviceShadow;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.entity.DeviceAttributeDesired;
+import cn.devicelinks.entity.DeviceShadow;
+import cn.devicelinks.jdbc.BaseService;
 
 /**
  * 设备影子业务逻辑接口

@@ -18,14 +18,14 @@
 package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.framework.common.pojos.SysLog;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.repositorys.SysLogRepository;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.SysLog;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.repository.SysLogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.pojos.AttributeAddition;
+import cn.devicelinks.entity.AttributeAddition;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

@@ -27,5 +27,9 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-jackson</artifactId>
+        </dependency>
     </dependencies>
 </project>

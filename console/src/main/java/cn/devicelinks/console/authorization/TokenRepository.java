@@ -17,8 +17,6 @@
 
 package cn.devicelinks.console.authorization;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
-
 /**
  * The token repository
  *

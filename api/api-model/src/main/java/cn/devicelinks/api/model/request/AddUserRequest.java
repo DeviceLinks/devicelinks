@@ -17,8 +17,8 @@
 
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.UserActivateMethod;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.common.UserActivateMethod;
+import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

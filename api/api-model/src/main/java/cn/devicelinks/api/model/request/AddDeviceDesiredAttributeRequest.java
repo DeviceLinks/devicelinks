@@ -1,8 +1,8 @@
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.AttributeKnowType;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.common.AttributeKnowType;
+import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

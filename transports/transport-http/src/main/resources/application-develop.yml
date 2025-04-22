@@ -23,6 +23,3 @@ devicelinks:
         key-store-password: fZjLaxFgt5Txs7qSF5od
         trust-store: /ssl/server.jks
         trust-store-password: fZjLaxFgt5Txs7qSF5od
-logging:
-  level:
-    cn.devicelinks.framework.jdbc: debug

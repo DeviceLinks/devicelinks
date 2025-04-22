@@ -1,8 +1,9 @@
 package cn.devicelinks.api.device.center;
 
-import cn.devicelinks.framework.common.api.ApiResponse;
+import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.api.support.feign.FeignConstants;
-import cn.devicelinks.framework.common.pojos.DeviceCredentials;
+import cn.devicelinks.entity.DeviceCredentials;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -19,8 +20,8 @@ public interface DeviceCredentialsFeignClient {
      *
      * @param token 令牌，动态令牌或者静态令牌
      * @return 设备凭证信息 {@link DeviceCredentials}
-     * @see cn.devicelinks.framework.common.DeviceCredentialsType#DynamicToken
-     * @see cn.devicelinks.framework.common.DeviceCredentialsType#StaticToken
+     * @see DeviceCredentialsType#DynamicToken
+     * @see DeviceCredentialsType#StaticToken
      */
     @RequestLine("GET /api/device/credentials?token={token}")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)

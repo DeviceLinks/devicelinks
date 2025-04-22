@@ -3001,7 +3001,7 @@
                               "value": "GatewaySub"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.framework.common.DeviceType",
+                          "enumClass": "cn.devicelinks.common.DeviceType",
                           "operators": [
                             {
                               "description": "等于",
@@ -3043,7 +3043,7 @@
                               "value": "Ethernet"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.framework.common.DeviceNetworkingAway",
+                          "enumClass": "cn.devicelinks.common.DeviceNetworkingAway",
                           "operators": [
                             {
                               "description": "等于",
@@ -3097,7 +3097,7 @@
                               "value": "Ble"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.framework.common.AccessGatewayProtocol",
+                          "enumClass": "cn.devicelinks.common.AccessGatewayProtocol",
                           "operators": [
                             {
                               "description": "等于",
@@ -3139,7 +3139,7 @@
                               "value": "Hex"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.framework.common.DataFormat",
+                          "enumClass": "cn.devicelinks.common.DataFormat",
                           "operators": [
                             {
                               "description": "等于",
@@ -3189,7 +3189,7 @@
                               "value": "X509"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.framework.common.DeviceAuthenticationMethod",
+                          "enumClass": "cn.devicelinks.common.DeviceAuthenticationMethod",
                           "operators": [
                             {
                               "description": "等于",
@@ -3257,7 +3257,7 @@
                               "value": "Published"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.framework.common.ProductStatus",
+                          "enumClass": "cn.devicelinks.common.ProductStatus",
                           "operators": [
                             {
                               "description": "等于",

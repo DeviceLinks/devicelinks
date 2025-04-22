@@ -17,8 +17,8 @@
 
 package cn.devicelinks.console.configuration.initializer;
 
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.exception.DeviceLinksException;
+import cn.devicelinks.common.Constants;
+import cn.devicelinks.common.exception.DeviceLinksException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;

@@ -1,9 +1,9 @@
 package cn.devicelinks.service.product;
 
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.pojos.FunctionModule;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.jdbc.BaseService;
 
 import java.util.List;
 

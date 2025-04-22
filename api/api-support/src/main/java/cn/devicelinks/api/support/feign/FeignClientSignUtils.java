@@ -1,8 +1,8 @@
 package cn.devicelinks.api.support.feign;
 
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.utils.HmacSignature;
-import cn.devicelinks.framework.common.utils.HttpRequestUtils;
+import cn.devicelinks.common.Constants;
+import cn.devicelinks.common.utils.HmacSignature;
+import cn.devicelinks.component.web.utils.HttpRequestUtils;
 import feign.RequestTemplate;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.ObjectUtils;

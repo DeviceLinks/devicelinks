@@ -17,7 +17,7 @@
 
 package cn.devicelinks.api.support;
 
-import cn.devicelinks.framework.common.api.StatusCode;
+import cn.devicelinks.component.web.api.StatusCode;
 
 /**
  * The {@link StatusCode} Constants

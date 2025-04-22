@@ -17,13 +17,13 @@
 
 package cn.devicelinks.service.system;
 
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.SessionStatus;
-import cn.devicelinks.framework.common.pojos.SysUserSession;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.sql.FusionCondition;
-import cn.devicelinks.framework.jdbc.core.sql.LimitCondition;
-import cn.devicelinks.framework.jdbc.repositorys.SysUserSessionRepository;
+import cn.devicelinks.common.Constants;
+import cn.devicelinks.common.SessionStatus;
+import cn.devicelinks.entity.SysUserSession;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.jdbc.core.sql.LimitCondition;
+import cn.devicelinks.jdbc.repository.SysUserSessionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -31,7 +31,7 @@ import org.springframework.util.ObjectUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TSysUserSession.SYS_USER_SESSION;
+import static cn.devicelinks.jdbc.tables.TSysUserSession.SYS_USER_SESSION;
 
 /**
  * 用户会话业务逻辑实现类

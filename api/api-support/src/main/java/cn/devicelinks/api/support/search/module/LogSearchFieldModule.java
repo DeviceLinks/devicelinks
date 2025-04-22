@@ -1,8 +1,8 @@
 package cn.devicelinks.api.support.search.module;
 
-import cn.devicelinks.framework.common.web.search.*;
-import cn.devicelinks.framework.common.LogAction;
-import cn.devicelinks.framework.common.LogObjectType;
+import cn.devicelinks.common.LogAction;
+import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.component.web.search.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

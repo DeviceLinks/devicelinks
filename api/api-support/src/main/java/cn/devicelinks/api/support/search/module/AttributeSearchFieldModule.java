@@ -1,7 +1,7 @@
 package cn.devicelinks.api.support.search.module;
 
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.web.search.*;
+import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.component.web.search.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

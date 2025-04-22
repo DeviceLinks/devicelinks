@@ -18,14 +18,14 @@
 package cn.devicelinks.console.authorization.endpoint.logout;
 
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.framework.common.LogAction;
-import cn.devicelinks.framework.common.LogObjectType;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.pojos.SysLog;
-import cn.devicelinks.framework.common.pojos.SysLogAddition;
-import cn.devicelinks.framework.common.pojos.SysUserSession;
-import cn.devicelinks.framework.common.utils.HttpRequestUtils;
-import cn.devicelinks.framework.common.utils.ObjectIdUtils;
+import cn.devicelinks.common.LogAction;
+import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.entity.SysLog;
+import cn.devicelinks.entity.SysLogAddition;
+import cn.devicelinks.entity.SysUserSession;
+import cn.devicelinks.component.web.utils.HttpRequestUtils;
+import cn.devicelinks.common.utils.ObjectIdUtils;
 import cn.devicelinks.service.system.SysLogService;
 import cn.devicelinks.service.system.SysUserSessionService;
 import jakarta.servlet.http.HttpServletRequest;

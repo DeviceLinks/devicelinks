@@ -1,8 +1,8 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.framework.common.pojos.DeviceTag;
-import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.entity.DeviceTag;
+import cn.devicelinks.jdbc.BaseService;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 
 import java.util.List;
 

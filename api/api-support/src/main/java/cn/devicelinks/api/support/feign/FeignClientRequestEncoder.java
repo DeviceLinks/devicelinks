@@ -1,6 +1,6 @@
 package cn.devicelinks.api.support.feign;
 
-import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
+import cn.devicelinks.component.jackson.DeviceLinksJsonMapper;
 import feign.jackson.JacksonEncoder;
 
 /**

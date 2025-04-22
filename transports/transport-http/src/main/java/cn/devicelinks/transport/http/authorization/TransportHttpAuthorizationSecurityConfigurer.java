@@ -1,6 +1,6 @@
 package cn.devicelinks.transport.http.authorization;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationWebSecurityConfigurer;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationWebSecurityConfigurer;
 import cn.devicelinks.transport.http.authorization.endpoint.credentials.DeviceDynamicTokenIssuedAuthenticationConfigurer;
 
 /**

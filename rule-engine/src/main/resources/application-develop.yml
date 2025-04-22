@@ -13,4 +13,4 @@ spring:
 
 logging:
   level:
-    cn.devicelinks.framework.jdbc: debug
+    cn.devicelinks.jdbc: debug

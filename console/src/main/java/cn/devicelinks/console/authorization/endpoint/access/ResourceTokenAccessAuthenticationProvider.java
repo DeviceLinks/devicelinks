@@ -17,11 +17,11 @@
 
 package cn.devicelinks.console.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.framework.common.Constants;
-import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
-import cn.devicelinks.framework.jdbc.repositorys.SysUserSessionRepository;
+import cn.devicelinks.common.Constants;
+import cn.devicelinks.console.authorization.DeviceLinksUserDetails;
+import cn.devicelinks.jdbc.repository.SysUserSessionRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

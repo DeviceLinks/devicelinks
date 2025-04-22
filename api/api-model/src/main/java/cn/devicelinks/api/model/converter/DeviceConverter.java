@@ -2,7 +2,7 @@ package cn.devicelinks.api.model.converter;
 
 import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.request.AddDeviceRequest;
-import cn.devicelinks.framework.common.pojos.Device;
+import cn.devicelinks.entity.Device;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -22,7 +22,7 @@ public interface DeviceConverter {
     DeviceConverter INSTANCE = Mappers.getMapper(DeviceConverter.class);
 
     @Mappings({
-            @Mapping(target = "deviceType", expression = "java(cn.devicelinks.framework.common.DeviceType.valueOf(request.getDeviceType()))")
+            @Mapping(target = "deviceType", expression = "java(cn.devicelinks.common.DeviceType.valueOf(request.getDeviceType()))")
     })
     Device fromAddDeviceRequest(AddDeviceRequest request);
 

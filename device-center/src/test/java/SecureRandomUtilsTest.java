@@ -1,4 +1,4 @@
-import cn.devicelinks.framework.common.utils.SecureRandomUtils;
+import cn.devicelinks.common.utils.SecureRandomUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Base64;

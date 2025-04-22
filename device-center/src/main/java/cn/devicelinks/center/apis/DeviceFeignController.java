@@ -2,12 +2,12 @@ package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.api.StatusCode;
-import cn.devicelinks.framework.common.exception.ApiException;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.api.StatusCode;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceSecret;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceSecret;
 import cn.devicelinks.service.device.DeviceSecretService;
 import cn.devicelinks.service.device.DeviceService;
 import lombok.AllArgsConstructor;

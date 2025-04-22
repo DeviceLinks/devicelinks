@@ -17,7 +17,7 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.framework.common.api.ApiExceptionAdvice;
+import cn.devicelinks.component.web.api.ApiExceptionAdvice;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

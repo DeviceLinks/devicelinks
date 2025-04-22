@@ -1,9 +1,9 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.service.device.DeviceShadowService;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.DeviceShadow;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.DeviceShadow;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -17,9 +17,9 @@
 
 package cn.devicelinks.console.authorization;
 
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationWebSecurityConfigurer;
 import cn.devicelinks.console.authorization.endpoint.login.UsernamePasswordLoginAuthenticationConfigurer;
 import cn.devicelinks.console.authorization.endpoint.logout.LogoutAuthenticationConfigurer;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationWebSecurityConfigurer;
 
 /**
  * 安全认证统一配置

@@ -1,6 +1,6 @@
 package cn.devicelinks.api.model.dto;
 
-import cn.devicelinks.framework.common.pojos.Attribute;
+import cn.devicelinks.entity.Attribute;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

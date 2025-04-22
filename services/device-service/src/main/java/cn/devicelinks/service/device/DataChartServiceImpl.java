@@ -3,19 +3,19 @@ package cn.devicelinks.service.device;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DataChartConverter;
 import cn.devicelinks.api.model.request.AddDataChartRequest;
-import cn.devicelinks.framework.common.DataChartFieldType;
-import cn.devicelinks.framework.common.DataChartTargetLocation;
-import cn.devicelinks.framework.common.DataChartType;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.DataChart;
-import cn.devicelinks.framework.common.pojos.DataChartField;
-import cn.devicelinks.framework.common.pojos.DeviceAttribute;
-import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.common.DataChartFieldType;
+import cn.devicelinks.common.DataChartTargetLocation;
+import cn.devicelinks.common.DataChartType;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.DataChart;
+import cn.devicelinks.entity.DataChartField;
+import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.entity.DeviceTelemetry;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.api.model.dto.DataChartDTO;
-import cn.devicelinks.framework.jdbc.repositorys.DataChartRepository;
+import cn.devicelinks.jdbc.repository.DataChartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import static cn.devicelinks.framework.jdbc.tables.TDataChart.DATA_CHART;
+import static cn.devicelinks.jdbc.tables.TDataChart.DATA_CHART;
 
 /**
  * 数据图表业务逻辑实现类

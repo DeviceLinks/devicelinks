@@ -2,12 +2,12 @@ package cn.devicelinks.transport.http.authorization.endpoint.access;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
-import cn.devicelinks.framework.common.DeviceCredentialsType;
-import cn.devicelinks.framework.common.DeviceStatus;
-import cn.devicelinks.framework.common.api.ApiResponseUnwrapper;
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceCredentials;
+import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.common.DeviceStatus;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceCredentials;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

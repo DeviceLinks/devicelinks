@@ -1,23 +1,23 @@
 package cn.devicelinks.service.attribute;
 
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.AttributeConverter;
+import cn.devicelinks.api.model.dto.AttributeDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.request.AddAttributeRequest;
 import cn.devicelinks.api.model.request.AttributeInfoRequest;
 import cn.devicelinks.api.model.request.UpdateAttributeRequest;
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Attribute;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.api.model.dto.AttributeDTO;
-import cn.devicelinks.framework.jdbc.repositorys.AttributeRepository;
+import cn.devicelinks.api.support.StatusCodeConstants;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.Attribute;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.repository.AttributeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -25,7 +25,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TAttribute.ATTRIBUTE;
+import static cn.devicelinks.jdbc.tables.TAttribute.ATTRIBUTE;
 
 /**
  * 属性业务逻辑实现类

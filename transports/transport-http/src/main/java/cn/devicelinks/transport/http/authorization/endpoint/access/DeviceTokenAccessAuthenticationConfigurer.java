@@ -1,6 +1,6 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.framework.common.authorization.DeviceLinksAuthorizationEndpointConfigurer;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
 import org.springframework.context.ApplicationContext;

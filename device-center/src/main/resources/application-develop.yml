@@ -41,6 +41,3 @@ devicelinks:
     token-setting:
       issued-dynamic-token-length: 64
       validity-seconds: 7200
-logging:
-  level:
-    cn.devicelinks.framework.jdbc: debug

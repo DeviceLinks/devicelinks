@@ -1,25 +1,25 @@
 package cn.devicelinks.service.product;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.framework.common.authorization.UserAuthorizedAddition;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.FunctionModule;
-import cn.devicelinks.framework.common.pojos.Product;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.sql.ConditionGroup;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.core.sql.operator.SqlFederationAway;
-import cn.devicelinks.framework.jdbc.repositorys.FunctionModuleRepository;
-import cn.devicelinks.framework.jdbc.repositorys.ProductRepository;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.entity.Product;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
+import cn.devicelinks.jdbc.repository.FunctionModuleRepository;
+import cn.devicelinks.jdbc.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TFunctionModule.FUNCTION_MODULE;
+import static cn.devicelinks.jdbc.tables.TFunctionModule.FUNCTION_MODULE;
 
 /**
  * 功能模块业务逻辑实现类

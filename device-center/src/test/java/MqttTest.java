@@ -15,8 +15,8 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import cn.devicelinks.framework.common.utils.SSLUtils;
-import cn.devicelinks.framework.common.utils.UUIDUtils;
+import cn.devicelinks.common.utils.SSLUtils;
+import cn.devicelinks.common.utils.UUIDUtils;
 import lombok.SneakyThrows;
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;

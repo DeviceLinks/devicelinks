@@ -17,12 +17,7 @@
 
 package cn.devicelinks.console.configuration;
 
-import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.framework.common.pojos.SysDepartment;
-import cn.devicelinks.framework.common.pojos.SysUser;
-import cn.devicelinks.framework.common.web.RequestContextWebFilter;
-import cn.devicelinks.framework.common.authorization.SecurityUserDetailsProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import cn.devicelinks.component.web.RequestContextWebFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,34 +29,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ConsoleConfiguration {
-
-    /**
-     * 创建{@link SecurityUserDetailsProvider}对象实例
-     * <p>
-     * 当应用中不存在自定义的{@link SecurityUserDetailsProvider}对象实例时，使用默认实现
-     *
-     * @return {@link SecurityUserDetailsProvider}默认实现
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public SecurityUserDetailsProvider deviceLinksUserDetailsProvider() {
-        return new SecurityUserDetailsProvider() {
-            @Override
-            public String getSessionId() {
-                return UserDetailsContext.getSessionId();
-            }
-
-            @Override
-            public SysUser getUser() {
-                return UserDetailsContext.getCurrentUser();
-            }
-
-            @Override
-            public SysDepartment getUserDepartment() {
-                return UserDetailsContext.getDepartment();
-            }
-        };
-    }
 
     /**
      * 创建并返回一个 {@link RequestContextWebFilter} 实例。

@@ -26,7 +26,12 @@
         <version>${revision}</version>
         <relativePath>../parent</relativePath>
     </parent>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>entity</module>
+        <module>jdbc-repository</module>
+        <module>jdbc-core</module>
+    </modules>
     <artifactId>devicelinks-jdbc</artifactId>
 
     <properties>
@@ -44,10 +49,6 @@
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-common</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-api-model</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -1,7 +1,7 @@
 package cn.devicelinks.service.ota;
 
-import cn.devicelinks.framework.common.pojos.Ota;
-import cn.devicelinks.framework.jdbc.BaseService;
+import cn.devicelinks.entity.Ota;
+import cn.devicelinks.jdbc.BaseService;
 
 /**
  * Ota业务逻辑接口定义

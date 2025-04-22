@@ -1,7 +1,7 @@
 package cn.devicelinks.api.model.converter;
 
 import cn.devicelinks.api.model.dto.DeviceSecretDTO;
-import cn.devicelinks.framework.common.pojos.DeviceSecret;
+import cn.devicelinks.entity.DeviceSecret;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

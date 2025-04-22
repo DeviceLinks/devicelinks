@@ -17,6 +17,7 @@
 
 package cn.devicelinks.console.configuration.initializer;
 
+import cn.devicelinks.common.Constants;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
@@ -57,7 +58,7 @@ public class DatabaseInitializerProperties {
     /**
      * 检查将要初始化的表结构数量的SQL
      * <p>
-     * 该sql返回{@link Integer}类型的单值，如果该值大于{@link cn.devicelinks.framework.common.Constants#ZERO}则不会执行初始化
+     * 该sql返回{@link Integer}类型的单值，如果该值大于{@link Constants#ZERO}则不会执行初始化
      * 仅{@link #initializerAway}配置为{@link DatabaseInitializerAway#check}时生效
      */
     private String checkInitTablesCountSql;

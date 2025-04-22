@@ -18,7 +18,6 @@
 package cn.devicelinks.console.authorization;
 
 import cn.devicelinks.console.configuration.ConsoleProperties;
-import cn.devicelinks.framework.common.authorization.DeviceLinksUserDetails;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;

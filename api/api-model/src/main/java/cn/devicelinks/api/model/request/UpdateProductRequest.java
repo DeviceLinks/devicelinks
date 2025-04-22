@@ -1,7 +1,10 @@
 package cn.devicelinks.api.model.request;
 
-import cn.devicelinks.framework.common.*;
-import cn.devicelinks.framework.common.web.validator.EnumValid;
+import cn.devicelinks.common.AccessGatewayProtocol;
+import cn.devicelinks.common.DataFormat;
+import cn.devicelinks.common.DeviceNetworkingAway;
+import cn.devicelinks.common.DeviceType;
+import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

@@ -17,8 +17,8 @@
 
 package cn.devicelinks.center.authorization.endpoint.api;
 
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.jackson2.DeviceLinksJsonMapper;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.jackson.DeviceLinksJsonMapper;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;

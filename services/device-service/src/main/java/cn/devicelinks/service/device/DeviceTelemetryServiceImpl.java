@@ -2,26 +2,26 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.jdbc.PaginationQueryConverter;
-import cn.devicelinks.framework.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.request.AddDeviceTelemetryRequest;
-import cn.devicelinks.framework.common.AttributeDataType;
-import cn.devicelinks.framework.common.TelemetryMetricType;
-import cn.devicelinks.framework.common.exception.ApiException;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceTelemetry;
-import cn.devicelinks.framework.common.pojos.TelemetryAddition;
-import cn.devicelinks.framework.jdbc.BaseServiceImpl;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
-import cn.devicelinks.framework.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.framework.jdbc.repositorys.DeviceTelemetryRepository;
+import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.common.TelemetryMetricType;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceTelemetry;
+import cn.devicelinks.entity.TelemetryAddition;
+import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.core.page.PageResult;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+import cn.devicelinks.jdbc.repository.DeviceTelemetryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.devicelinks.framework.jdbc.tables.TDeviceTelemetry.DEVICE_TELEMETRY;
+import static cn.devicelinks.jdbc.tables.TDeviceTelemetry.DEVICE_TELEMETRY;
 
 /**
  * 遥测数据业务逻辑实现类

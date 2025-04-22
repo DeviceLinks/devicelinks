@@ -17,7 +17,7 @@
 
 package cn.devicelinks.api.model.dto;
 
-import cn.devicelinks.framework.common.pojos.SysUser;
+import cn.devicelinks.entity.SysUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

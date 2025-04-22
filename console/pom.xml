@@ -42,6 +42,22 @@
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-operate-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-authorization</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-service-dependencies</artifactId>
         </dependency>
         <!--SpringBoot Dependencies-->

@@ -18,10 +18,10 @@
 package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.framework.common.web.search.SearchFieldQuery;
-import cn.devicelinks.framework.common.pojos.SysLog;
-import cn.devicelinks.framework.jdbc.BaseService;
-import cn.devicelinks.framework.jdbc.core.page.PageResult;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.SysLog;
+import cn.devicelinks.jdbc.BaseService;
+import cn.devicelinks.jdbc.core.page.PageResult;
 
 /**
  * 操作日志业务逻辑接口定义

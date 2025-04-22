@@ -2,9 +2,9 @@ package cn.devicelinks.api.device.center;
 
 import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.api.support.feign.FeignConstants;
-import cn.devicelinks.framework.common.api.ApiResponse;
-import cn.devicelinks.framework.common.pojos.Device;
-import cn.devicelinks.framework.common.pojos.DeviceSecret;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceSecret;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
