@@ -8,7 +8,10 @@ import cn.devicelinks.api.support.feign.FeignClientResponseDecoder;
 import cn.devicelinks.api.support.ssl.SSLContextFactory;
 import feign.Client;
 import feign.Feign;
+import feign.Logger;
+import feign.slf4j.Slf4jLogger;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 import javax.net.ssl.SSLContext;
@@ -20,6 +23,7 @@ import javax.net.ssl.SSLContext;
  * @since 1.0
  */
 @Slf4j
+@EnableConfigurationProperties(DeviceCenterApiProperties.class)
 public class DeviceCenterFeignClientConfiguration {
 
     private final DeviceCenterApiProperties deviceCenterApiProperties;
@@ -61,6 +65,8 @@ public class DeviceCenterFeignClientConfiguration {
                 .client(feignClient())
                 .encoder(new FeignClientRequestEncoder())
                 .decoder(new FeignClientResponseDecoder())
+                .logger(new Slf4jLogger(feignClientClass))
+                .logLevel(Logger.Level.FULL)
                 .requestInterceptor(new DeviceCenterFeignClientSignRequestInterceptor(deviceCenterApiProperties))
                 .target(feignClientClass, deviceCenterApiProperties.getUri());
         // @formatter:on

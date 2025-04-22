@@ -35,4 +35,8 @@
     <logger name="cn.devicelinks.service" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
+    <!--OpenFeign client logger-->
+    <logger name="cn.devicelinks.api" level="DEBUG" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
 </configuration>
