@@ -6,7 +6,7 @@ server:
     key-store-password: fZjLaxFgt5Txs7qSF5od
     key-alias: server
     # 服务端证书信任库
-    trust-store: ${HOME_DIR}/conf/ssl/server.jks
+    trust-store: ${HOME_DIR}/conf/ssl/truststore.jks
     trust-store-password: fZjLaxFgt5Txs7qSF5od
     # 开启双向认证
     client-auth: need

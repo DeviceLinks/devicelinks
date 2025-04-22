@@ -28,7 +28,7 @@ devicelinks:
       ssl:
         key-store: ${HOME_DIR}/conf/ssl/transport.jks
         key-store-password: ${DEVICELINKS_DEVICE_CENTER_KEY_STORE_PASSWORD:fZjLaxFgt5Txs7qSF5od}
-        trust-store: ${HOME_DIR}/conf/ssl/server.jks
+        trust-store: ${HOME_DIR}/conf/ssl/truststore.jks
         trust-store-password: ${DEVICELINKS_DEVICE_CENTER_TRUST_STORE_PASSWORD:fZjLaxFgt5Txs7qSF5od}
 
 logging:

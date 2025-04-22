@@ -16,6 +16,7 @@ WORKDIR $HOME_DIR
 ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
 # 复制服务端JKS证书库
+ADD /build/docker/conf/ssl/truststore.jks conf/ssl/truststore.jks
 ADD /build/docker/conf/ssl/server.jks conf/ssl/server.jks
 
 # 复制“设备中心”配置文件以及可执行Jar
