@@ -32,9 +32,9 @@ devicelinks:
       api-key: 6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e
       api-secret: 2de3b8966f139ded0b34ad80210e296f1d35c378d79a5780f654e03f684d5b53f0c1b0672bc54c68fe4ea3931bbca195827f2dfb45e571eb51043006e204dee0
       ssl:
-        key-store: /ssl/console.jks
+        key-store: classpath:ssl/console.jks
         key-store-password: fZjLaxFgt5Txs7qSF5od
-        trust-store: /ssl/truststore.jks
+        trust-store: classpath:ssl/truststore.jks
         trust-store-password: fZjLaxFgt5Txs7qSF5od
 
 logging:

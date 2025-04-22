@@ -4,12 +4,14 @@ server:
     enabled: true
     key-store: classpath:ssl/server.jks
     key-store-password: fZjLaxFgt5Txs7qSF5od
+    key-store-type: JKS
     key-alias: server
     # 服务端证书信任库
     trust-store: classpath:ssl/truststore.jks
     trust-store-password: fZjLaxFgt5Txs7qSF5od
     # 开启双向认证
     client-auth: need
+    trust-store-type: JKS
 spring:
   profiles:
     active: develop

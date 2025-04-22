@@ -3,6 +3,7 @@ package cn.devicelinks.api.support.ssl;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 
@@ -18,7 +19,7 @@ public class SSLContextFactory {
 
     public static SSLContext createSSLContext(String keyStorePath, String keyStorePassword, String trustStorePath, String trustStorePassword) throws Exception {
         KeyStore keyStore = KeyStore.getInstance(KEY_STORE_TYPE);
-        try (InputStream keyStoreStream = SSLContextFactory.class.getResourceAsStream(keyStorePath)) {
+        try (InputStream keyStoreStream = getInputStream(keyStorePath)) {
             keyStore.load(keyStoreStream, keyStorePassword.toCharArray());
         }
 
@@ -26,7 +27,7 @@ public class SSLContextFactory {
         keyManagerFactory.init(keyStore, keyStorePassword.toCharArray());
 
         KeyStore trustStore = KeyStore.getInstance(KEY_STORE_TYPE);
-        try (InputStream trustStoreStream = SSLContextFactory.class.getResourceAsStream(trustStorePath)) {
+        try (InputStream trustStoreStream = getInputStream(trustStorePath)) {
             trustStore.load(trustStoreStream, trustStorePassword.toCharArray());
         }
 
@@ -37,5 +38,18 @@ public class SSLContextFactory {
         sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
 
         return sslContext;
+    }
+
+    private static InputStream getInputStream(String path) throws Exception {
+        if (path.startsWith("classpath:")) {
+            String resourcePath = path.substring("classpath:".length());
+            InputStream stream = SSLContextFactory.class.getResourceAsStream(resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath);
+            if (stream == null) {
+                throw new IllegalArgumentException("Resource not found: " + path);
+            }
+            return stream;
+        } else {
+            return new FileInputStream(path);
+        }
     }
 }
