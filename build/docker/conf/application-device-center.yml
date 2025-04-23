@@ -2,7 +2,7 @@ server:
   port: ${DEVICELINKS_CORE_SERVICE_PORT:13651}
   ssl:
     enabled: true
-    key-store: ${HOME_DIR}/conf/ssl/server.jks
+    key-store: ${HOME_DIR}/conf/ssl/device-center.jks
     key-store-password: fZjLaxFgt5Txs7qSF5od
     key-alias: server
     # 服务端证书信任库

@@ -17,7 +17,7 @@ ADD /build/docker/bin/docker-startup.sh bin/docker-startup.sh
 
 # 复制服务端JKS证书库
 ADD /build/docker/conf/ssl/truststore.jks conf/ssl/truststore.jks
-ADD /build/docker/conf/ssl/transport.jks conf/ssl/transport.jks
+ADD /build/docker/conf/ssl/transport-http.jks conf/ssl/transport-http.jks
 
 # 复制配置文件以及可执行Jar
 ADD /build/docker/conf/application-transport-http.yml conf/application.yml
