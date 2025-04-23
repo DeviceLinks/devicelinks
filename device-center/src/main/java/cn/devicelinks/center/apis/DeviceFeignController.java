@@ -1,16 +1,18 @@
 package cn.devicelinks.center.apis;
 
-import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
+import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
+import cn.devicelinks.common.secret.AesProperties;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.component.web.api.StatusCode;
-import cn.devicelinks.component.web.api.ApiException;
-import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceSecret;
 import cn.devicelinks.service.device.DeviceSecretService;
 import cn.devicelinks.service.device.DeviceService;
 import lombok.AllArgsConstructor;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -55,16 +57,13 @@ public class DeviceFeignController implements DeviceFeignClient {
         if (deviceSecret == null || (deviceSecret.getExpiresTime() != null && deviceSecret.getExpiresTime().isAfter(LocalDateTime.now()))) {
             throw new ApiException(DEVICE_SECRET_INVALID);
         }
-        String decryptedSecret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), deviceSecret.getIv(),
-                deviceSecret.getSecretKeyVersion(), deviceCenterProperties.getDeviceSecretKeySet());
+        AesProperties aesProperties = deviceSecret.getEncryptedSecretAddition().getAes();
+        if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
+            throw new ApiException(StatusCodeConstants.AES_DECRYPTION_ERROR);
+        }
+        String decryptedSecret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), aesProperties.getIv(),
+                aesProperties.getKeyVersion(), deviceCenterProperties.getDeviceSecretKeySet());
         return ApiResponse.success(decryptedSecret);
-    }
-
-    @Override
-    @PostMapping("/{deviceId}/encrypt-secret")
-    public ApiResponse<EncryptDeviceSecretResponse> encryptDeviceSecret(@PathVariable("deviceId") String deviceId, @RequestParam("secret") String secret) {
-        EncryptDeviceSecretResponse response = deviceSecretService.encryptSecret(secret, deviceCenterProperties.getDeviceSecretKeySet());
-        return ApiResponse.success(response);
     }
 
     @Override

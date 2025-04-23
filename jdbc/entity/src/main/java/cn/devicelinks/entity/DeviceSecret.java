@@ -24,9 +24,8 @@ public class DeviceSecret implements Serializable {
     private String id;
     private String deviceId;
     private String encryptedSecret;
-    private String iv;
+    private DeviceEncryptedSecretAddition encryptedSecretAddition;
     private String secretVersion;
-    private String secretKeyVersion;
     private DeviceSecretStatus status;
     private LocalDateTime expiresTime;
     private LocalDateTime lastUseTime;

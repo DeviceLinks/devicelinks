@@ -19,6 +19,7 @@ package cn.devicelinks.entity;
 
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.DeviceLinksVersion;
+import cn.devicelinks.common.secret.AesProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -65,12 +66,5 @@ public class DeviceCredentialsAddition implements Serializable {
         private String clientId;
         private String username;
         private String password;
-    }
-
-    @Data
-    @Accessors(chain = true)
-    public static class AesProperties {
-        private String iv;
-        private String keyVersion;
     }
 }

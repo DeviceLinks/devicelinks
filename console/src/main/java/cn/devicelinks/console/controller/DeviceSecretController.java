@@ -1,17 +1,19 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.api.device.center.CommonFeignClient;
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DeviceSecretConverter;
+import cn.devicelinks.api.model.dto.DeviceSecretDTO;
+import cn.devicelinks.api.support.StatusCodeConstants;
+import cn.devicelinks.common.exception.DeviceLinksException;
+import cn.devicelinks.common.secret.AesProperties;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
-import cn.devicelinks.component.web.api.ApiException;
-import cn.devicelinks.common.exception.DeviceLinksException;
 import cn.devicelinks.entity.DeviceSecret;
-import cn.devicelinks.common.secret.AesSecretKeySet;
-import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 import cn.devicelinks.service.device.DeviceSecretService;
 import lombok.AllArgsConstructor;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -45,11 +47,15 @@ public class DeviceSecretController {
         }
         DeviceSecretDTO deviceSecretDTO = DeviceSecretConverter.INSTANCE.fromDeviceSecret(deviceSecret);
         try {
-            String secret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), deviceSecret.getIv(),
-                    deviceSecret.getSecretKeyVersion(), deviceSecretKeySet);
+            AesProperties aesProperties = deviceSecret.getEncryptedSecretAddition().getAes();
+            if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
+                throw new ApiException(StatusCodeConstants.AES_DECRYPTION_ERROR);
+            }
+            String secret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), aesProperties.getIv(),
+                    aesProperties.getKeyVersion(), deviceSecretKeySet);
             deviceSecretDTO.setSecret(secret);
         } catch (DeviceLinksException e) {
-            throw new ApiException(StatusCodeConstants.DEVICE_SECRET_DECRYPTION_ERROR);
+            throw new ApiException(StatusCodeConstants.AES_DECRYPTION_ERROR);
         }
         return ApiResponse.success(deviceSecretDTO);
     }

@@ -1,17 +1,19 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DeviceSecretConverter;
+import cn.devicelinks.api.model.dto.DeviceSecretDTO;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceSecretStatus;
-import cn.devicelinks.component.web.api.ApiException;
-import cn.devicelinks.entity.DeviceSecret;
+import cn.devicelinks.common.secret.AesProperties;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.common.utils.AesEncryptor;
 import cn.devicelinks.common.utils.AesUtils;
 import cn.devicelinks.common.utils.SecureRandomUtils;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.entity.DeviceEncryptedSecretAddition;
+import cn.devicelinks.entity.DeviceSecret;
 import cn.devicelinks.jdbc.BaseServiceImpl;
-import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 import cn.devicelinks.jdbc.repository.DeviceSecretRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -86,20 +88,20 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
 
     private DeviceSecretDTO saveDeviceSecret(String deviceId, AesSecretKeySet aesSecretKeySet) {
         String iv = AesUtils.generateBase64IV();
-        AesSecretKeySet.AesSecretKey deviceSecretKey = aesSecretKeySet.getRandomAesSecretKey();
-        if (deviceSecretKey == null) {
+        AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getRandomAesSecretKey();
+        if (aesSecretKey == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_SECRET_NOT_HAVE_VERSION_kEY);
         }
+        AesProperties aesProperties = new AesProperties(iv, aesSecretKey.getVersion());
         String secret = SecureRandomUtils.generateRandomHex(DEVICE_SECRET_LENGTH);
-        String encryptedSecret = AesEncryptor.init(deviceSecretKey.getKey(), iv).encrypt(secret);
+        String encryptedSecret = AesEncryptor.init(aesSecretKey.getKey(), iv).encrypt(secret);
 
         // @formatter:off
         DeviceSecret deviceSecret = new DeviceSecret()
                 .setDeviceId(deviceId)
                 .setEncryptedSecret(encryptedSecret)
-                .setIv(iv)
-                .setSecretVersion(DEVICE_SECRET_DEFAULT_VERSION)
-                .setSecretKeyVersion(deviceSecretKey.getVersion());
+                .setEncryptedSecretAddition(new DeviceEncryptedSecretAddition().setAes(aesProperties))
+                .setSecretVersion(DEVICE_SECRET_DEFAULT_VERSION);
         // @formatter:on
 
         this.repository.insert(deviceSecret);

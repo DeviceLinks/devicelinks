@@ -2,6 +2,7 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.common.secret.AesProperties;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.common.utils.AesEncryptor;
 import cn.devicelinks.common.utils.X509Utils;
@@ -155,7 +156,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
 
             AesEncryptor encryptor = AesEncryptor.init(aesSecretKeySet);
 
-            DeviceCredentialsAddition.AesProperties aesProperties = new DeviceCredentialsAddition.AesProperties()
+            AesProperties aesProperties = new AesProperties()
                     .setIv(encryptor.getIv())
                     .setKeyVersion(encryptor.getAesSecretKey().getVersion());
 
@@ -176,7 +177,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
         if (DeviceCredentialsType.StaticToken == deviceCredentialsType ||
                 DeviceCredentialsType.DynamicToken == deviceCredentialsType ||
                 DeviceCredentialsType.MqttBasic == deviceCredentialsType) {
-            DeviceCredentialsAddition.AesProperties aesProperties = credentialsAddition.getAes();
+            AesProperties aesProperties = credentialsAddition.getAes();
             if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
                 throw new ApiException(StatusCodeConstants.DEVICE_SECRET_KEY_INVALID);
             }

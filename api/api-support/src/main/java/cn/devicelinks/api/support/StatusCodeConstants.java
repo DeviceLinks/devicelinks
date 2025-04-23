@@ -34,6 +34,7 @@ public interface StatusCodeConstants {
     StatusCode REQUEST_EXPIRED = StatusCode.build("REQUEST_EXPIRED", "请求已过期");
     StatusCode SIGN_VERIFICATION_FAILED = StatusCode.build("SIGN_VERIFICATION_FAILED", "签名校验失败.");
     StatusCode PASSWORD_VERIFICATION_FAILED = StatusCode.build("PASSWORD_VERIFICATION_FAILED", "密码校验失败.");
+    StatusCode AES_DECRYPTION_ERROR = StatusCode.build("AES_DECRYPTION_ERROR", "AES算法解密失败.");
 
     /**
      * Api相关
