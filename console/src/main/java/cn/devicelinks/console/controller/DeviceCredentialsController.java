@@ -1,5 +1,8 @@
 package cn.devicelinks.console.controller;
 
+import cn.devicelinks.api.device.center.CommonFeignClient;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.service.device.DeviceCredentialsService;
 import cn.devicelinks.service.device.DeviceService;
 import cn.devicelinks.api.support.StatusCodeConstants;
@@ -28,6 +31,8 @@ public class DeviceCredentialsController {
 
     private DeviceService deviceService;
 
+    private CommonFeignClient commonFeignClient;
+
     /**
      * 获取设备凭证
      *
@@ -50,14 +55,15 @@ public class DeviceCredentialsController {
      */
     @PostMapping(value = "/{deviceId}/credentials")
     public ApiResponse<DeviceCredentials> updateDeviceCredentials(@PathVariable("deviceId") String deviceId,
-                                                                    @Valid @RequestBody UpdateDeviceCredentialsRequest request) throws ApiException {
+                                                                  @Valid @RequestBody UpdateDeviceCredentialsRequest request) throws ApiException {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
         }
         DeviceCredentialsType credentialsType = DeviceCredentialsType.valueOf(request.getCredentialsType());
+        AesSecretKeySet aesSecretKeySet = ApiResponseUnwrapper.unwrap(commonFeignClient.getAesSecretKeys());
         DeviceCredentials deviceAuthentication =
-                this.deviceCredentialsService.updateCredentials(deviceId, credentialsType, request.getCredentialsAddition());
+                this.deviceCredentialsService.updateCredentials(deviceId, credentialsType, request.getCredentialsAddition(), aesSecretKeySet);
         return ApiResponse.success(deviceAuthentication);
     }
 }

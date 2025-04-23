@@ -2,10 +2,12 @@ package cn.devicelinks.service.device;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.common.utils.AesEncryptor;
+import cn.devicelinks.common.utils.X509Utils;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.entity.DeviceCredentials;
 import cn.devicelinks.entity.DeviceCredentialsAddition;
-import cn.devicelinks.common.utils.X509Utils;
 import cn.devicelinks.jdbc.BaseServiceImpl;
 import cn.devicelinks.jdbc.repository.DeviceCredentialsRepository;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,8 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     public DeviceCredentials addCredentials(String deviceId,
                                             DeviceCredentialsType deviceCredentialsType,
                                             LocalDateTime expirationTime,
-                                            DeviceCredentialsAddition credentialsAddition) {
+                                            DeviceCredentialsAddition credentialsAddition,
+                                            AesSecretKeySet aesSecretKeySet) {
         // validate authentication
         this.validateAuthentication(deviceId, deviceCredentialsType, credentialsAddition, false);
         // @formatter:off
@@ -59,26 +62,34 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                 .setExpirationTime(expirationTime)
                 .setCreateTime(LocalDateTime.now());
         // @formatter:on
+
+        this.encrypt(deviceCredentialsType, credentialsAddition, aesSecretKeySet);
+
         this.repository.insert(credentials);
         return credentials;
     }
 
     @Override
-    public DeviceCredentials addDynamicToken(String deviceId, String dynamicToken, LocalDateTime expirationTime) {
+    public DeviceCredentials addDynamicToken(String deviceId,
+                                             String dynamicToken,
+                                             LocalDateTime expirationTime,
+                                             AesSecretKeySet aesSecretKeySet) {
         // @formatter:off
         LocalDateTime currentTime = LocalDateTime.now();
         this.repository.update(List.of(DEVICE_CREDENTIALS.EXPIRATION_TIME.set(currentTime)),
                 DEVICE_CREDENTIALS.DEVICE_ID.eq(deviceId),
                 DEVICE_CREDENTIALS.DELETED.eq(Boolean.FALSE),
                 DEVICE_CREDENTIALS.EXPIRATION_TIME.gt(currentTime));
-        // @formatter:off
-        return this.addCredentials(deviceId, DeviceCredentialsType.DynamicToken, expirationTime, new DeviceCredentialsAddition().setToken(dynamicToken));
+        // @formatter:on
+        return this.addCredentials(deviceId, DeviceCredentialsType.DynamicToken, expirationTime,
+                new DeviceCredentialsAddition().setToken(dynamicToken), aesSecretKeySet);
     }
 
     @Override
     public DeviceCredentials updateCredentials(String deviceId,
                                                DeviceCredentialsType deviceCredentialsType,
-                                               DeviceCredentialsAddition credentialsAddition) {
+                                               DeviceCredentialsAddition credentialsAddition,
+                                               AesSecretKeySet aesSecretKeySet) {
         // validate authentication
         this.validateAuthentication(deviceId, deviceCredentialsType, credentialsAddition, true);
 
@@ -87,6 +98,9 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
             throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
         }
         deviceAuthentication.setCredentialsType(deviceCredentialsType).setAddition(credentialsAddition);
+
+        this.encrypt(deviceCredentialsType, credentialsAddition, aesSecretKeySet);
+
         this.repository.update(deviceAuthentication);
         return deviceAuthentication;
     }
@@ -124,6 +138,30 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                     throw new ApiException(StatusCodeConstants.INVALID_DEVICE_X509_PEM, credentialsAddition.getX509Pem());
                 }
                 break;
+        }
+    }
+
+    private void encrypt(DeviceCredentialsType deviceCredentialsType, DeviceCredentialsAddition credentialsAddition, AesSecretKeySet aesSecretKeySet) {
+        if (DeviceCredentialsType.StaticToken == deviceCredentialsType ||
+                DeviceCredentialsType.DynamicToken == deviceCredentialsType ||
+                DeviceCredentialsType.MqttBasic == deviceCredentialsType) {
+
+            AesEncryptor encryptor = AesEncryptor.init(aesSecretKeySet);
+
+            DeviceCredentialsAddition.AesProperties aesProperties = new DeviceCredentialsAddition.AesProperties()
+                    .setIv(encryptor.getIv())
+                    .setKeyVersion(encryptor.getAesSecretKey().getVersion());
+
+            credentialsAddition.setAes(aesProperties);
+
+            if (DeviceCredentialsType.StaticToken == deviceCredentialsType || DeviceCredentialsType.DynamicToken == deviceCredentialsType) {
+                // Set the encrypted token
+                credentialsAddition.setToken(encryptor.encrypt(credentialsAddition.getToken()));
+            } else {
+                // Set the encrypted password
+                DeviceCredentialsAddition.MqttBasic mqttBasic = credentialsAddition.getMqttBasic();
+                mqttBasic.setPassword(encryptor.encrypt(mqttBasic.getPassword()));
+            }
         }
     }
 }

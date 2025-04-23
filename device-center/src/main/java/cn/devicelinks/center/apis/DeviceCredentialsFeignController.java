@@ -49,7 +49,8 @@ public class DeviceCredentialsFeignController implements DeviceCredentialsFeignC
         DeviceCenterProperties.TokenSetting tokenSetting = deviceCenterProperties.getTokenSetting();
         String dynamicToken = SecureRandomUtils.generateRandomHex(tokenSetting.getIssuedDynamicTokenLength());
         LocalDateTime tokenExpirationTime = LocalDateTime.now().plusSeconds(tokenSetting.getValiditySeconds());
-        DeviceCredentials deviceCredentials = deviceCredentialsService.addDynamicToken(deviceId, dynamicToken, tokenExpirationTime);
+        DeviceCredentials deviceCredentials = deviceCredentialsService.addDynamicToken(deviceId, dynamicToken,
+                tokenExpirationTime, deviceCenterProperties.getDeviceSecretKeySet());
         return ApiResponse.success(deviceCredentials);
     }
 }

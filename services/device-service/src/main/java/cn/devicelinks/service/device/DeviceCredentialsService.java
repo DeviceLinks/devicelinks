@@ -1,6 +1,7 @@
 package cn.devicelinks.service.device;
 
 import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceCredentials;
 import cn.devicelinks.entity.DeviceCredentialsAddition;
@@ -45,21 +46,30 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
      * @param deviceId            设备ID {@link DeviceCredentials#getDeviceId()}
      * @param credentialsType     鉴权方式 {@link DeviceCredentialsType}
      * @param credentialsAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
+     * @param aesSecretKeySet     AES加密Key集合
      * @return 返回保存的鉴权信息 {@link DeviceCredentials}
      */
-    DeviceCredentials addCredentials(String deviceId, DeviceCredentialsType credentialsType, LocalDateTime expirationTime, DeviceCredentialsAddition credentialsAddition);
+    DeviceCredentials addCredentials(String deviceId,
+                                     DeviceCredentialsType credentialsType,
+                                     LocalDateTime expirationTime,
+                                     DeviceCredentialsAddition credentialsAddition,
+                                     AesSecretKeySet aesSecretKeySet);
 
     /**
      * 添加动态令牌
      * <p>
      * 会将设备之前所有有效的动态令牌设置为过期
      *
-     * @param deviceId       设备ID {@link DeviceCredentials#getDeviceId()}
-     * @param dynamicToken   动态令牌
-     * @param expirationTime 过期时间
+     * @param deviceId        设备ID {@link DeviceCredentials#getDeviceId()}
+     * @param dynamicToken    动态令牌
+     * @param expirationTime  过期时间
+     * @param aesSecretKeySet AES加密Key集合
      * @return 添加的动态令牌凭证 {@link DeviceCredentials}
      */
-    DeviceCredentials addDynamicToken(String deviceId, String dynamicToken, LocalDateTime expirationTime);
+    DeviceCredentials addDynamicToken(String deviceId,
+                                      String dynamicToken,
+                                      LocalDateTime expirationTime,
+                                      AesSecretKeySet aesSecretKeySet);
 
     /**
      * 更新设备鉴权信息
@@ -67,7 +77,11 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
      * @param deviceId            设备ID {@link Device#getId()}
      * @param credentialsType     鉴权方式 {@link DeviceCredentialsType}
      * @param credentialsAddition 鉴权附加数据 {@link DeviceCredentialsAddition}
+     * @param aesSecretKeySet     AES加密Key集合
      * @return 返回保存的鉴权信息 {@link DeviceCredentials}
      */
-    DeviceCredentials updateCredentials(String deviceId, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition);
+    DeviceCredentials updateCredentials(String deviceId,
+                                        DeviceCredentialsType credentialsType,
+                                        DeviceCredentialsAddition credentialsAddition,
+                                        AesSecretKeySet aesSecretKeySet);
 }

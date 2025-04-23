@@ -17,23 +17,23 @@
 
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DeviceConverter;
+import cn.devicelinks.api.model.dto.DeviceDTO;
+import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.jdbc.PaginationQueryConverter;
-import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.DeviceStatus;
-import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.*;
 import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.api.model.dto.DeviceDTO;
-import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
-import cn.devicelinks.entity.*;
 import cn.devicelinks.jdbc.repository.DeviceRepository;
 import cn.devicelinks.service.ota.DeviceOtaService;
 import cn.devicelinks.service.product.ProductService;
@@ -122,7 +122,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
-    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition, AesSecretKeySet deviceSecretKeySet) {
+    public Device addDevice(Device device, DeviceCredentialsType credentialsType, DeviceCredentialsAddition credentialsAddition, AesSecretKeySet aesSecretKeySet) {
         // check request data
         this.checkData(device, false);
 
@@ -139,10 +139,10 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
         }
 
         // Save Device Secret
-        this.deviceSecretService.initializeSecret(device.getId(), deviceSecretKeySet);
+        this.deviceSecretService.initializeSecret(device.getId(), aesSecretKeySet);
 
         // Save device credentials
-        this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, null, credentialsAddition);
+        this.deviceCredentialsService.addCredentials(device.getId(), credentialsType, null, credentialsAddition, aesSecretKeySet);
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());

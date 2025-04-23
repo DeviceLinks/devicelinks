@@ -54,6 +54,10 @@ public class DeviceCredentialsAddition implements Serializable {
      * @see DeviceCredentialsType#MqttBasic
      */
     private MqttBasic mqttBasic;
+    /**
+     * Aes加密算法属性，敏感数据通过该算法对称加密
+     */
+    private AesProperties aes;
 
     @Data
     @Accessors(chain = true)
@@ -61,5 +65,12 @@ public class DeviceCredentialsAddition implements Serializable {
         private String clientId;
         private String username;
         private String password;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class AesProperties {
+        private String iv;
+        private String keyVersion;
     }
 }
