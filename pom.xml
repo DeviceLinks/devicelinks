@@ -26,7 +26,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <description>
-        连接每一台设备.
+        连接无界，智联万物。
     </description>
     <modules>
         <module>dependencies</module>

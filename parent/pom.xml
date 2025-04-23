@@ -59,6 +59,12 @@
                             <Built-By>DeviceLinks</Built-By>
                         </manifestEntries>
                     </archive>
+                    <!--Exclude development configuration files-->
+                    <excludes>
+                        <exclude>application*.yml</exclude>
+                        <exclude>logback*.xml</exclude>
+                        <exclude>ssl/**</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
