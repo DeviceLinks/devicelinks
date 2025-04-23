@@ -26,7 +26,7 @@ import static cn.devicelinks.common.Constants.ENUM_SHOW_STYLE_FIELD;
 @Slf4j
 public class ApiEnumScanner {
 
-    private static final String ENUM_SCAN_PACKAGE = "cn.devicelinks.framework.common";
+    private static final String ENUM_SCAN_PACKAGE = "cn.devicelinks.common";
 
     private static final Map<String, List<ApiEnumObject>> API_ENUM_MAP = new LinkedHashMap<>();
 
