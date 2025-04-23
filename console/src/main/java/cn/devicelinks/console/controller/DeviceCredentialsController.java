@@ -42,7 +42,8 @@ public class DeviceCredentialsController {
      */
     @GetMapping(value = "/{deviceId}/credentials")
     public ApiResponse<DeviceCredentials> getDeviceCredentials(@PathVariable("deviceId") String deviceId) throws ApiException {
-        return ApiResponse.success(this.deviceCredentialsService.selectByDeviceId(deviceId));
+        AesSecretKeySet aesSecretKeySet = ApiResponseUnwrapper.unwrap(commonFeignClient.getAesSecretKeys());
+        return ApiResponse.success(this.deviceCredentialsService.selectAndDecryptByDeviceId(deviceId, aesSecretKeySet));
     }
 
     /**

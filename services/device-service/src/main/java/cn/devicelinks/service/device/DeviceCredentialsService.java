@@ -25,6 +25,15 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
     DeviceCredentials selectByDeviceId(String deviceId);
 
     /**
+     * 查询设备凭证并解密
+     *
+     * @param deviceId        设备ID {@link Device#getId()}
+     * @param aesSecretKeySet AES加密Key集合
+     * @return {@link DeviceCredentials}
+     */
+    DeviceCredentials selectAndDecryptByDeviceId(String deviceId, AesSecretKeySet aesSecretKeySet);
+
+    /**
      * 通过AccessToken查询鉴权信息
      *
      * @param token 请求令牌（静态令牌、动态令牌）

@@ -37,6 +37,13 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     }
 
     @Override
+    public DeviceCredentials selectAndDecryptByDeviceId(String deviceId, AesSecretKeySet aesSecretKeySet) {
+        DeviceCredentials credentials = this.selectByDeviceId(deviceId);
+        this.decrypt(credentials.getCredentialsType(), credentials.getAddition(), aesSecretKeySet);
+        return credentials;
+    }
+
+    @Override
     public DeviceCredentials selectByToken(String staticToken) {
         return this.repository.selectByToken(staticToken);
     }
@@ -162,6 +169,30 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                 DeviceCredentialsAddition.MqttBasic mqttBasic = credentialsAddition.getMqttBasic();
                 mqttBasic.setPassword(encryptor.encrypt(mqttBasic.getPassword()));
             }
+        }
+    }
+
+    private void decrypt(DeviceCredentialsType deviceCredentialsType, DeviceCredentialsAddition credentialsAddition, AesSecretKeySet aesSecretKeySet) {
+        if (DeviceCredentialsType.StaticToken == deviceCredentialsType ||
+                DeviceCredentialsType.DynamicToken == deviceCredentialsType ||
+                DeviceCredentialsType.MqttBasic == deviceCredentialsType) {
+            DeviceCredentialsAddition.AesProperties aesProperties = credentialsAddition.getAes();
+            if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
+                throw new ApiException(StatusCodeConstants.DEVICE_SECRET_KEY_INVALID);
+            }
+
+            AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getAesSecretKey(aesProperties.getKeyVersion());
+            AesEncryptor encryptor = AesEncryptor.init(aesSecretKey.getKey(), aesProperties.getIv());
+
+            if (DeviceCredentialsType.StaticToken == deviceCredentialsType || DeviceCredentialsType.DynamicToken == deviceCredentialsType) {
+                // Set the decrypted token
+                credentialsAddition.setToken(encryptor.decrypt(credentialsAddition.getToken()));
+            } else {
+                // Set the decrypted password
+                DeviceCredentialsAddition.MqttBasic mqttBasic = credentialsAddition.getMqttBasic();
+                mqttBasic.setPassword(encryptor.decrypt(mqttBasic.getPassword()));
+            }
+
         }
     }
 }
