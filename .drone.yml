@@ -136,7 +136,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-device-center
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center:latest
-        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.11 --name devicelinks-device-center --env-file /usr/local/docker/devicelinks/run.env --env-file /usr/local/docker/devicelinks/device-center.env registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center:latest
+        - /usr/local/bin/docker run -p 13651:13651 -d --restart=always --net=devicelinks --ip=172.10.1.20 --name devicelinks-device-center --env-file /usr/local/docker/devicelinks/run.env --env-file /usr/local/docker/devicelinks/device-center.env registry.cn-hangzhou.aliyuncs.com/devicelinks/device-center:latest
 
   # Deploy Rule-Engine
   - name: deploy rule-engine
