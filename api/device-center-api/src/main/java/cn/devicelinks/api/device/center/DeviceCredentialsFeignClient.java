@@ -2,6 +2,7 @@ package cn.devicelinks.api.device.center;
 
 import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
 import cn.devicelinks.api.support.feign.FeignConstants;
+import cn.devicelinks.api.support.feign.cache.FeignCacheable;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.entity.DeviceCredentials;
@@ -26,6 +27,7 @@ public interface DeviceCredentialsFeignClient {
      */
     @RequestLine("GET /api/device/credentials?tokenHash={tokenHash}")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @FeignCacheable
     ApiResponse<DeviceCredentials> selectByTokenHash(@Param("tokenHash") String tokenHash);
 
     /**
@@ -36,6 +38,7 @@ public interface DeviceCredentialsFeignClient {
      */
     @RequestLine("GET /api/device/credentials/token-decrypt?tokenHash={tokenHash}")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @FeignCacheable
     ApiResponse<DecryptTokenResponse> decryptToken(@Param("tokenHash") String tokenHash);
 
     /**

@@ -1,6 +1,7 @@
 package cn.devicelinks.api.device.center;
 
 import cn.devicelinks.api.support.feign.FeignConstants;
+import cn.devicelinks.api.support.feign.cache.FeignCacheable;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.entity.Device;
 import feign.Headers;
@@ -22,6 +23,7 @@ public interface DeviceFeignClient {
      */
     @RequestLine("GET /api/devices?deviceName={deviceName}")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @FeignCacheable
     ApiResponse<Device> getDeviceByName(@Param("deviceName") String deviceName);
 
     /**
@@ -32,6 +34,7 @@ public interface DeviceFeignClient {
      */
     @RequestLine("GET /api/devices/{deviceId}")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @FeignCacheable
     ApiResponse<Device> getDeviceById(@Param("deviceId") String deviceId);
 
     /**
@@ -42,6 +45,7 @@ public interface DeviceFeignClient {
      */
     @RequestLine("GET /api/devices/{deviceId}/decrypt-secret")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @FeignCacheable
     ApiResponse<String> decryptDeviceSecret(@Param("deviceId") String deviceId);
 
     /**

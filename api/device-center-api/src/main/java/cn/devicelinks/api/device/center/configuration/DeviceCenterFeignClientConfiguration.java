@@ -5,9 +5,11 @@ import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.api.support.feign.FeignClientRequestEncoder;
 import cn.devicelinks.api.support.feign.FeignClientResponseDecoder;
+import cn.devicelinks.api.support.feign.cache.CachingFeignInvocationHandlerFactory;
 import cn.devicelinks.api.support.ssl.SSLContextFactory;
 import feign.Client;
 import feign.Feign;
+import feign.InvocationHandlerFactory;
 import feign.Logger;
 import feign.slf4j.Slf4jLogger;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +65,7 @@ public class DeviceCenterFeignClientConfiguration {
         // @formatter:off
         return Feign.builder()
                 .client(feignClient())
+                .invocationHandlerFactory(new CachingFeignInvocationHandlerFactory(new InvocationHandlerFactory.Default()))
                 .encoder(new FeignClientRequestEncoder())
                 .decoder(new FeignClientResponseDecoder())
                 .logger(new Slf4jLogger(feignClientClass))

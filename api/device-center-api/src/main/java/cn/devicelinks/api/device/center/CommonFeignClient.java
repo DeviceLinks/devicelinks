@@ -1,6 +1,7 @@
 package cn.devicelinks.api.device.center;
 
 import cn.devicelinks.api.support.feign.FeignConstants;
+import cn.devicelinks.api.support.feign.cache.FeignCacheable;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import feign.Headers;
@@ -20,5 +21,6 @@ public interface CommonFeignClient {
      */
     @RequestLine("GET /api/common/aes-secret-keys")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @FeignCacheable
     ApiResponse<AesSecretKeySet> getAesSecretKeys();
 }

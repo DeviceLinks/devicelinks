@@ -17,15 +17,15 @@ devicelinks:
     # Consistent with console service，Used to decrypt device secret
     device-secret-key-set:
       keys:
-        - version: v1
+        - id: v1
           key: HYmRnapKknjS5kxvFEcM5EZQovfmMAtiJfzUarLaU3I=
-        - version: v2
+        - id: v2
           key: mM8HVUaiUvtPCmlNV3DZ96PlJj26STg6KQtohRBVT1A=
-        - version: v3
+        - id: v3
           key: bbFdYaX2I+M4XH1E+OmE2qqwqcirZxu/W103r8zI4eE=
-        - version: v4
+        - id: v4
           key: RoY5eyPVIhemcU0Jz7etEt+BOY9TkdwiBHbxQKnP9LU=
-        - version: v5
+        - id: v5
           key: NLPkOuClmtDqYVfIDcrMP5+wwrd7L4J+hDmBbvKY69g=
     # Api Keys
     api-keys:
