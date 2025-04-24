@@ -27,7 +27,7 @@ public class DeviceLinksAuthorizationExceptionFailureHandler implements Authenti
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException authenticationException) throws IOException, ServletException {
         DeviceLinksAuthorizationException deviceLinksAuthorizationException = (DeviceLinksAuthorizationException) authenticationException;
-        ApiResponse<?> errorResponse = ApiResponse.error(deviceLinksAuthorizationException.getStatusCode());
+        ApiResponse<?> errorResponse = ApiResponse.error(deviceLinksAuthorizationException.getStatusCode(), deviceLinksAuthorizationException.getMessageVariables());
         ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
         this.httpMessageConverter.write(errorResponse, null, httpResponse);
     }

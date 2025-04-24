@@ -94,7 +94,7 @@ public interface StatusCodeConstants {
     StatusCode INVALID_DEVICE_MQTT_BASIC_AUTH = StatusCode.build("INVALID_DEVICE_MQTT_BASIC_AUTH", "无效的MQTT Basic Auth.");
     StatusCode DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS = StatusCode.build("DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS", "MQTT客户端ID已经存在.");
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");
-    StatusCode DEVICE_AUTHENTICATION_NOT_EXISTS = StatusCode.build("DEVICE_AUTHENTICATION_NOT_EXISTS", "设备：%s，认证信息不存在.");
+    StatusCode DEVICE_CREDENTIALS_NOT_EXISTS = StatusCode.build("DEVICE_CREDENTIALS_NOT_EXISTS", "设备：%s，认证信息不存在.");
 
     /**
      * 设备配置文件

@@ -63,6 +63,22 @@ public class DeviceCredentialsJdbcRepository extends JdbcRepository<DeviceCreden
     }
 
     @Override
+    public DeviceCredentials selectByTokenHash(String tokenHash) {
+        if (ObjectUtils.isEmpty(tokenHash)) {
+            throw new IllegalArgumentException("accessToken hash can't be null");
+        }
+        // @formatter:off
+        DynamicWrapper wrapper = DynamicWrapper.select(TDeviceCredentials.DEVICE_CREDENTIALS.getQuerySql())
+                .resultColumns(columns -> columns.addAll(TDeviceCredentials.DEVICE_CREDENTIALS.getColumns()))
+                .appendCondition(Boolean.TRUE, "json_extract(addition, '$.tokenHash') = ?", tokenHash)
+                .resultType(DeviceCredentials.class)
+                .build();
+        // @formatter:on
+        List<DeviceCredentials> authenticationList = this.dynamicSelect(wrapper.dynamic(), wrapper.parameters());
+        return authenticationList.isEmpty() ? null : authenticationList.getFirst();
+    }
+
+    @Override
     public DeviceCredentials selectByClientId(String clientId) {
         if (ObjectUtils.isEmpty(clientId)) {
             throw new IllegalArgumentException("clientId can't be null");

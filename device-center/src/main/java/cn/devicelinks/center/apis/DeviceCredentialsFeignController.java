@@ -1,13 +1,14 @@
 package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
+import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
-import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.common.utils.SecureRandomUtils;
 import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceCredentials;
-import cn.devicelinks.common.utils.SecureRandomUtils;
 import cn.devicelinks.service.device.DeviceCredentialsService;
 import cn.devicelinks.service.device.DeviceService;
 import lombok.AllArgsConstructor;
@@ -34,13 +35,20 @@ public class DeviceCredentialsFeignController implements DeviceCredentialsFeignC
 
     @Override
     @GetMapping
-    public ApiResponse<DeviceCredentials> selectByToken(@RequestParam("token") String token) {
+    public ApiResponse<DeviceCredentials> selectByTokenHash(@RequestParam("token") String token) {
         DeviceCredentials deviceCredentials = deviceCredentialsService.selectByToken(token);
         return ApiResponse.success(deviceCredentials);
     }
 
     @Override
-    @PostMapping("generate-dynamic-token")
+    @GetMapping("/token-decrypt")
+    public ApiResponse<DecryptTokenResponse> decryptToken(String tokenHash) {
+        DecryptTokenResponse response = deviceCredentialsService.decryptToken(tokenHash, deviceCenterProperties.getDeviceSecretKeySet());
+        return ApiResponse.success(response);
+    }
+
+    @Override
+    @PostMapping("/generate-dynamic-token")
     public ApiResponse<DeviceCredentials> generateDynamicToken(@RequestParam("deviceId") String deviceId) {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {

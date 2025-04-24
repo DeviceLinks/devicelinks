@@ -1,8 +1,9 @@
 package cn.devicelinks.api.device.center;
 
+import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
+import cn.devicelinks.api.support.feign.FeignConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.component.web.api.ApiResponse;
-import cn.devicelinks.api.support.feign.FeignConstants;
 import cn.devicelinks.entity.DeviceCredentials;
 import feign.Headers;
 import feign.Param;
@@ -18,14 +19,24 @@ public interface DeviceCredentialsFeignClient {
     /**
      * 根据令牌查询设备凭证信息
      *
-     * @param token 令牌，动态令牌或者静态令牌
+     * @param tokenHash 令牌Hash值，非明文令牌
      * @return 设备凭证信息 {@link DeviceCredentials}
      * @see DeviceCredentialsType#DynamicToken
      * @see DeviceCredentialsType#StaticToken
      */
-    @RequestLine("GET /api/device/credentials?token={token}")
+    @RequestLine("GET /api/device/credentials?tokenHash={tokenHash}")
     @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
-    ApiResponse<DeviceCredentials> selectByToken(@Param("token") String token);
+    ApiResponse<DeviceCredentials> selectByTokenHash(@Param("tokenHash") String tokenHash);
+
+    /**
+     * 令牌解密
+     *
+     * @param tokenHash 令牌哈希值
+     * @return 解密后的令牌
+     */
+    @RequestLine("GET /api/device/credentials/token-decrypt?tokenHash={tokenHash}")
+    @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    ApiResponse<DecryptTokenResponse> decryptToken(@Param("tokenHash") String tokenHash);
 
     /**
      * 生成动态令牌

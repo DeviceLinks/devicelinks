@@ -1,8 +1,8 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
-import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
+import cn.devicelinks.transport.support.TokenValidationService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,9 +19,9 @@ public class DeviceTokenAccessAuthenticationConfigurer extends DeviceLinksAuthor
     public void init(HttpSecurity httpSecurity) {
         ApplicationContext applicationContext = httpSecurity.getSharedObject(ApplicationContext.class);
         DeviceFeignClient deviceFeignClient = applicationContext.getBean(DeviceFeignClient.class);
-        DeviceCredentialsFeignClient deviceCredentialsFeignClient = applicationContext.getBean(DeviceCredentialsFeignClient.class);
+        TokenValidationService tokenValidationService = applicationContext.getBean(TokenValidationService.class);
         DeviceTokenAccessAuthenticationProvider deviceTokenAccessAuthenticationProvider =
-                new DeviceTokenAccessAuthenticationProvider(deviceFeignClient, deviceCredentialsFeignClient);
+                new DeviceTokenAccessAuthenticationProvider(deviceFeignClient, tokenValidationService);
         httpSecurity.authenticationProvider(deviceTokenAccessAuthenticationProvider);
     }
 

@@ -45,6 +45,10 @@ public class DeviceCredentialsAddition implements Serializable {
      * @see DeviceCredentialsType#DynamicToken
      */
     private String token;
+    /**
+     * The hash value encrypted by SHA-256 is used to retrieve the token
+     */
+    private String tokenHash;
 
     /**
      * @see DeviceCredentialsType#X509

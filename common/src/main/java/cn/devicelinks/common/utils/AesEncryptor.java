@@ -33,6 +33,10 @@ public class AesEncryptor {
         return new AesEncryptor(aesSecretKey.getKey(), iv);
     }
 
+    public static AesEncryptor init(AesSecretKeySet.AesSecretKey aesSecretKey, String iv) {
+        return new AesEncryptor(aesSecretKey.getKey(), iv);
+    }
+
     public static AesEncryptor init(AesSecretKeySet aesSecretKeySet) {
         String iv = AesUtils.generateBase64IV();
         AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getRandomAesSecretKey();

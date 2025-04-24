@@ -30,6 +30,7 @@ import org.springframework.security.core.AuthenticationException;
 @Getter
 public class DeviceLinksAuthorizationException extends AuthenticationException {
     private StatusCode statusCode;
+    private Object[] messageVariables;
 
     public DeviceLinksAuthorizationException(String msg) {
         super(msg);
@@ -38,5 +39,11 @@ public class DeviceLinksAuthorizationException extends AuthenticationException {
     public DeviceLinksAuthorizationException(StatusCode statusCode) {
         super(statusCode.getMessage());
         this.statusCode = statusCode;
+    }
+
+    public DeviceLinksAuthorizationException(StatusCode statusCode, Object... messageVariables) {
+        super(statusCode.formatMessage(messageVariables));
+        this.statusCode = statusCode;
+        this.messageVariables = messageVariables;
     }
 }

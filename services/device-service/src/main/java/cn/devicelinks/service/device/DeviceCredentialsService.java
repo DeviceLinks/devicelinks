@@ -1,5 +1,6 @@
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.entity.Device;
@@ -40,6 +41,23 @@ public interface DeviceCredentialsService extends BaseService<DeviceCredentials,
      * @return 鉴权信息 {@link DeviceCredentials}
      */
     DeviceCredentials selectByToken(String token);
+
+    /**
+     * 通过AccessToken查询鉴权信息
+     *
+     * @param tokenHash 令牌哈希值
+     * @return 鉴权信息 {@link DeviceCredentials}
+     */
+    DeviceCredentials selectByTokenHash(String tokenHash);
+
+    /**
+     * 根据令牌哈希值解密令牌
+     *
+     * @param tokenHash       令牌哈希值
+     * @param aesSecretKeySet AES加密Key集合
+     * @return {@link DeviceCredentials}
+     */
+    DecryptTokenResponse decryptToken(String tokenHash, AesSecretKeySet aesSecretKeySet);
 
     /**
      * 通过clientId查询鉴权信息

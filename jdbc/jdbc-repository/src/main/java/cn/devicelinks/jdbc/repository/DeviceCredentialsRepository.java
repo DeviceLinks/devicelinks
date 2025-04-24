@@ -46,6 +46,14 @@ public interface DeviceCredentialsRepository extends Repository<DeviceCredential
     DeviceCredentials selectByToken(String token);
 
     /**
+     * 根据令牌哈希值获取设备凭证信息
+     *
+     * @param tokenHash 令牌哈希值
+     * @return {@link DeviceCredentials}
+     */
+    DeviceCredentials selectByTokenHash(String tokenHash);
+
+    /**
      * 通过clientId查询鉴权信息
      *
      * @param clientId 客户端ID {@link DeviceCredentialsAddition.MqttBasic#getClientId()}

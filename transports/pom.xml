@@ -36,6 +36,7 @@
         <module>transport-http</module>
         <module>transport-coap</module>
         <module>transport-jt808</module>
+        <module>transport-support</module>
     </modules>
 
     <properties>
@@ -47,6 +48,10 @@
         <dependency>
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-api-dependencies</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-transport-support</artifactId>
         </dependency>
     </dependencies>
     <build>

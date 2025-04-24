@@ -1,19 +1,18 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
-import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.DeviceStatus;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.entity.Device;
-import cn.devicelinks.entity.DeviceCredentials;
+import cn.devicelinks.transport.support.TokenValidationResponse;
+import cn.devicelinks.transport.support.TokenValidationService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.util.ObjectUtils;
-
-import java.time.LocalDateTime;
 
 import static cn.devicelinks.api.support.StatusCodeConstants.*;
 
@@ -29,29 +28,24 @@ import static cn.devicelinks.api.support.StatusCodeConstants.*;
 public class DeviceTokenAccessAuthenticationProvider implements AuthenticationProvider {
 
     private final DeviceFeignClient deviceFeignClient;
-    private final DeviceCredentialsFeignClient deviceCredentialsFeignClient;
+    private final TokenValidationService tokenValidationService;
 
-    public DeviceTokenAccessAuthenticationProvider(DeviceFeignClient deviceFeignClient, DeviceCredentialsFeignClient deviceCredentialsFeignClient) {
+    public DeviceTokenAccessAuthenticationProvider(DeviceFeignClient deviceFeignClient, TokenValidationService tokenValidationService) {
         this.deviceFeignClient = deviceFeignClient;
-        this.deviceCredentialsFeignClient = deviceCredentialsFeignClient;
+        this.tokenValidationService = tokenValidationService;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         DeviceTokenAccessAuthenticationToken authenticationToken = (DeviceTokenAccessAuthenticationToken) authentication;
-        // Checking token credential validity
-        DeviceCredentials deviceCredentials = ApiResponseUnwrapper.unwrap(this.deviceCredentialsFeignClient.selectByToken(authenticationToken.getAccessToken()));
-        if (deviceCredentials == null || deviceCredentials.isDeleted()) {
-            throw new DeviceLinksAuthorizationException(TOKEN_INVALID);
-        }
-        // If it is a dynamic token, verify the validity period
-        if (DeviceCredentialsType.DynamicToken == deviceCredentials.getCredentialsType() && deviceCredentials.getExpirationTime() != null) {
-            if (LocalDateTime.now().isAfter(deviceCredentials.getExpirationTime())) {
-                throw new DeviceLinksAuthorizationException(TOKEN_EXPIRED);
-            }
+        TokenValidationResponse validationResponse;
+        try {
+            validationResponse = tokenValidationService.validationToken(authenticationToken.getAccessToken());
+        } catch (ApiException e) {
+            throw new DeviceLinksAuthorizationException(e.getStatusCode());
         }
         // Checking device validity
-        Device device = ApiResponseUnwrapper.unwrap(this.deviceFeignClient.getDeviceById(deviceCredentials.getDeviceId()));
+        Device device = ApiResponseUnwrapper.unwrap(this.deviceFeignClient.getDeviceById(validationResponse.getDeviceId()));
         if (device == null || device.isDeleted()) {
             throw new DeviceLinksAuthorizationException(UNKNOWN_DEVICE);
         }

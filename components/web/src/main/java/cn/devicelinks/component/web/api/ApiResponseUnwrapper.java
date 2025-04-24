@@ -1,6 +1,5 @@
 package cn.devicelinks.component.web.api;
 
-import cn.devicelinks.common.exception.DeviceLinksException;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -15,13 +14,13 @@ import java.util.Optional;
 public class ApiResponseUnwrapper {
     public static <T> T unwrap(ApiResponse<T> response) {
         return tryUnwrap(response)
-                .orElseThrow(() -> new DeviceLinksException("请求失败，状态码：[" + response.getCode() + "]，状态描述：[" + response.getMessage() + "]."));
+                .orElseThrow(() -> new ApiException(StatusCode.build(response.getCode(), response.getMessage())));
     }
 
     public static <T> T unwrap(ApiResponse<T> response, String errorMsg) {
         return tryUnwrap(response)
-                .orElseThrow(() -> new DeviceLinksException("请求失败，状态码：[" + response.getCode() + "]，状态描述：[" +
-                        (!ObjectUtils.isEmpty(errorMsg) ? errorMsg : response.getMessage()) + "]."));
+                .orElseThrow(() -> new ApiException(StatusCode.build(response.getCode(),
+                        (!ObjectUtils.isEmpty(errorMsg) ? errorMsg : response.getMessage()))));
     }
 
     public static <T> Optional<T> tryUnwrap(ApiResponse<T> response) {

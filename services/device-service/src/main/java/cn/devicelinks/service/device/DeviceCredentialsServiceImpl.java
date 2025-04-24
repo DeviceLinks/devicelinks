@@ -1,10 +1,12 @@
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.secret.AesProperties;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.common.utils.AesEncryptor;
+import cn.devicelinks.common.utils.DigestUtils;
 import cn.devicelinks.common.utils.X509Utils;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.entity.DeviceCredentials;
@@ -14,6 +16,7 @@ import cn.devicelinks.jdbc.repository.DeviceCredentialsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +43,9 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     @Override
     public DeviceCredentials selectAndDecryptByDeviceId(String deviceId, AesSecretKeySet aesSecretKeySet) {
         DeviceCredentials credentials = this.selectByDeviceId(deviceId);
+        if (credentials == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NOT_EXISTS, deviceId);
+        }
         this.decrypt(credentials.getCredentialsType(), credentials.getAddition(), aesSecretKeySet);
         return credentials;
     }
@@ -47,6 +53,30 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     @Override
     public DeviceCredentials selectByToken(String staticToken) {
         return this.repository.selectByToken(staticToken);
+    }
+
+    @Override
+    public DeviceCredentials selectByTokenHash(String tokenHash) {
+        return repository.selectByTokenHash(tokenHash);
+    }
+
+    @Override
+    public DecryptTokenResponse decryptToken(String tokenHash, AesSecretKeySet aesSecretKeySet) {
+        DeviceCredentials deviceCredentials = repository.selectByTokenHash(tokenHash);
+        if (deviceCredentials == null || deviceCredentials.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.TOKEN_INVALID);
+        }
+        AesProperties aesProperties = deviceCredentials.getAddition().getAes();
+        AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getAesSecretKey(aesProperties.getKeyVersion());
+        String decryptedToken = AesEncryptor.init(aesSecretKey, aesProperties.getIv()).decrypt(deviceCredentials.getAddition().getToken());
+
+        // @formatter:off
+        return new DecryptTokenResponse()
+                .setToken(decryptedToken)
+                .setCredentialsType(deviceCredentials.getCredentialsType())
+                .setExpirationTime(deviceCredentials.getExpirationTime())
+                .setDeviceId(deviceCredentials.getDeviceId());
+        // @formatter:on
     }
 
     @Override
@@ -103,7 +133,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
 
         DeviceCredentials deviceAuthentication = selectByDeviceId(deviceId);
         if (deviceAuthentication == null || deviceAuthentication.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_AUTHENTICATION_NOT_EXISTS, deviceId);
+            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NOT_EXISTS, deviceId);
         }
         deviceAuthentication.setCredentialsType(deviceCredentialsType).setAddition(credentialsAddition);
 
@@ -163,6 +193,8 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
             credentialsAddition.setAes(aesProperties);
 
             if (DeviceCredentialsType.StaticToken == deviceCredentialsType || DeviceCredentialsType.DynamicToken == deviceCredentialsType) {
+                // Set the token hash
+                credentialsAddition.setTokenHash(DigestUtils.getHexDigest(DigestUtils.SHA256, credentialsAddition.getToken().getBytes(StandardCharsets.UTF_8)));
                 // Set the encrypted token
                 credentialsAddition.setToken(encryptor.encrypt(credentialsAddition.getToken()));
             } else {
