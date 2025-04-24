@@ -11,8 +11,8 @@ import {
   Spin,
   Tooltip,
 } from 'antd';
-import style from './styles/index.module.css';
 import React from 'react';
+import style from './styles/index.module.css';
 
 export const FilterButtonBox = ({
   initialValues,
@@ -206,7 +206,13 @@ export const FilterButtonBox = ({
         {loading ? (
           <Spin size={'small'} percent={'auto'}></Spin>
         ) : (
-          <FilterOutlined className={style.filterIcon} />
+          <FilterOutlined
+            className={
+              searchFields?.length > 0 && searchFields[0]?.field
+                ? style.selectedFilterIcon
+                : style.filterIcon
+            }
+          />
         )}
       </Tooltip>
     </Popover>
