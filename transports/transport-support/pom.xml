@@ -6,15 +6,27 @@
     <parent>
         <groupId>cn.devicelinks</groupId>
         <artifactId>devicelinks-transports</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>devicelinks-transport-support</artifactId>
-
+    <description>
+        Multi-protocol transport services and public support.
+    </description>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

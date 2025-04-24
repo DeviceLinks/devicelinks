@@ -49,10 +49,6 @@
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-api-dependencies</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-transport-support</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <resources>
