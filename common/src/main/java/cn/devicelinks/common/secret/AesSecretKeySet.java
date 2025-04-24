@@ -28,10 +28,10 @@ public class AesSecretKeySet {
         return this.keys.get(randomIndex);
     }
 
-    public AesSecretKey getAesSecretKey(String version) {
+    public AesSecretKey getAesSecretKey(String keyId) {
         // @formatter:off
         return this.keys.stream()
-                .filter(aesSecretKey -> aesSecretKey.getVersion().equals(version))
+                .filter(aesSecretKey -> aesSecretKey.getId().equals(keyId))
                 .findFirst()
                 .orElse(null);
         // @formatter:on
@@ -41,7 +41,7 @@ public class AesSecretKeySet {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AesSecretKey {
-        private String version;
+        private String id;
         private String key;
     }
 }

@@ -44,7 +44,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
     public DeviceCredentials selectAndDecryptByDeviceId(String deviceId, AesSecretKeySet aesSecretKeySet) {
         DeviceCredentials credentials = this.selectByDeviceId(deviceId);
         if (credentials == null) {
-            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NOT_EXISTS, deviceId);
+            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NO_VALID_EXISTS, deviceId);
         }
         this.decrypt(credentials.getCredentialsType(), credentials.getAddition(), aesSecretKeySet);
         return credentials;
@@ -67,7 +67,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
             throw new ApiException(StatusCodeConstants.TOKEN_INVALID);
         }
         AesProperties aesProperties = deviceCredentials.getAddition().getAes();
-        AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getAesSecretKey(aesProperties.getKeyVersion());
+        AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getAesSecretKey(aesProperties.getKeyId());
         String decryptedToken = AesEncryptor.init(aesSecretKey, aesProperties.getIv()).decrypt(deviceCredentials.getAddition().getToken());
 
         // @formatter:off
@@ -133,7 +133,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
 
         DeviceCredentials deviceAuthentication = selectByDeviceId(deviceId);
         if (deviceAuthentication == null || deviceAuthentication.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NOT_EXISTS, deviceId);
+            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NO_VALID_EXISTS, deviceId);
         }
         deviceAuthentication.setCredentialsType(deviceCredentialsType).setAddition(credentialsAddition);
 
@@ -188,7 +188,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
 
             AesProperties aesProperties = new AesProperties()
                     .setIv(encryptor.getIv())
-                    .setKeyVersion(encryptor.getAesSecretKey().getVersion());
+                    .setKeyId(encryptor.getAesSecretKey().getId());
 
             credentialsAddition.setAes(aesProperties);
 
@@ -210,11 +210,11 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
                 DeviceCredentialsType.DynamicToken == deviceCredentialsType ||
                 DeviceCredentialsType.MqttBasic == deviceCredentialsType) {
             AesProperties aesProperties = credentialsAddition.getAes();
-            if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
+            if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyId())) {
                 throw new ApiException(StatusCodeConstants.DEVICE_SECRET_KEY_INVALID);
             }
 
-            AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getAesSecretKey(aesProperties.getKeyVersion());
+            AesSecretKeySet.AesSecretKey aesSecretKey = aesSecretKeySet.getAesSecretKey(aesProperties.getKeyId());
             AesEncryptor encryptor = AesEncryptor.init(aesSecretKey.getKey(), aesProperties.getIv());
 
             if (DeviceCredentialsType.StaticToken == deviceCredentialsType || DeviceCredentialsType.DynamicToken == deviceCredentialsType) {

@@ -17,5 +17,5 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public class AesProperties {
     private String iv;
-    private String keyVersion;
+    private String keyId;
 }

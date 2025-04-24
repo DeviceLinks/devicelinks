@@ -48,11 +48,11 @@ public class DeviceSecretController {
         DeviceSecretDTO deviceSecretDTO = DeviceSecretConverter.INSTANCE.fromDeviceSecret(deviceSecret);
         try {
             AesProperties aesProperties = deviceSecret.getEncryptedSecretAddition().getAes();
-            if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
+            if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyId())) {
                 throw new ApiException(StatusCodeConstants.AES_DECRYPTION_ERROR);
             }
             String secret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), aesProperties.getIv(),
-                    aesProperties.getKeyVersion(), deviceSecretKeySet);
+                    aesProperties.getKeyId(), deviceSecretKeySet);
             deviceSecretDTO.setSecret(secret);
         } catch (DeviceLinksException e) {
             throw new ApiException(StatusCodeConstants.AES_DECRYPTION_ERROR);

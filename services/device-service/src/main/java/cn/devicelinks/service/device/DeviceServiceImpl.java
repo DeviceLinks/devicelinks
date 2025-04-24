@@ -110,7 +110,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
         DeviceCredentials deviceCredentials = this.deviceCredentialsService.selectByDeviceId(deviceId);
         if (deviceCredentials == null) {
-            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NOT_EXISTS, deviceId);
+            throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NO_VALID_EXISTS, deviceId);
         }
         deviceDTO.setCredentialsType(deviceCredentials.getCredentialsType());
         List<DeviceFunctionModuleOtaDTO> deviceOtaList = this.deviceOtaService.selectByDeviceId(deviceId);

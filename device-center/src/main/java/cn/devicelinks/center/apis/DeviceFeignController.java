@@ -58,11 +58,11 @@ public class DeviceFeignController implements DeviceFeignClient {
             throw new ApiException(DEVICE_SECRET_INVALID);
         }
         AesProperties aesProperties = deviceSecret.getEncryptedSecretAddition().getAes();
-        if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyVersion())) {
+        if (ObjectUtils.isEmpty(aesProperties.getIv()) || ObjectUtils.isEmpty(aesProperties.getKeyId())) {
             throw new ApiException(StatusCodeConstants.AES_DECRYPTION_ERROR);
         }
         String decryptedSecret = deviceSecretService.decryptSecret(deviceSecret.getEncryptedSecret(), aesProperties.getIv(),
-                aesProperties.getKeyVersion(), deviceCenterProperties.getDeviceSecretKeySet());
+                aesProperties.getKeyId(), deviceCenterProperties.getDeviceSecretKeySet());
         return ApiResponse.success(decryptedSecret);
     }
 

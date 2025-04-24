@@ -70,7 +70,7 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
             throw new ApiException(StatusCodeConstants.DEVICE_SECRET_NOT_HAVE_VERSION_kEY);
         }
         String encryptedSecret = AesEncryptor.init(aesSecretKey.getKey(), iv).encrypt(secret);
-        return new EncryptDeviceSecretResponse().setIv(iv).setAesKeyVersion(aesSecretKey.getVersion()).setEncryptedSecret(encryptedSecret);
+        return new EncryptDeviceSecretResponse().setIv(iv).setAesKeyVersion(aesSecretKey.getId()).setEncryptedSecret(encryptedSecret);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class DeviceSecretServiceImpl extends BaseServiceImpl<DeviceSecret, Strin
         if (aesSecretKey == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_SECRET_NOT_HAVE_VERSION_kEY);
         }
-        AesProperties aesProperties = new AesProperties(iv, aesSecretKey.getVersion());
+        AesProperties aesProperties = new AesProperties(iv, aesSecretKey.getId());
         String secret = SecureRandomUtils.generateRandomHex(DEVICE_SECRET_LENGTH);
         String encryptedSecret = AesEncryptor.init(aesSecretKey.getKey(), iv).encrypt(secret);
 
