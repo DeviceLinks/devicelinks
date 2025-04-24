@@ -2,6 +2,7 @@ import UserInfo from '@/pages/system/user/profile/modules/UserInfo';
 import {
   deleteApiUserUserId,
   getApiUserUserId,
+  postApiUserStatusUserId,
   postApiUserUserId,
 } from '@/services/device-links-console-ui/user';
 import { useSearchParams } from '@@/exports';
@@ -75,6 +76,10 @@ const UserProfile = () => {
     },
   ];
   const handleMenuClick: MenuProps['onClick'] = (e) => {
+    if (!user || user.id) {
+      message.error('暂无可操作用户');
+      return;
+    }
     if (e.key === 'delete') {
       Modal.confirm({
         title: '提示',
@@ -87,6 +92,34 @@ const UserProfile = () => {
           } as API.deleteApiUserUserIdParams);
         },
       });
+    } else if (e.key === 'enable') {
+      Modal.confirm({
+        title: '提示',
+        content: '确定要启用该用户吗？',
+        okText: '确定',
+        cancelText: '取消',
+        onOk: async () => {
+          await postApiUserStatusUserId({
+            userId: user?.id,
+            enabled: String(!user?.enabled),
+          });
+        },
+      });
+    } else if (e.key === 'disable') {
+      Modal.confirm({
+        title: '提示',
+        content: '确定要禁用该用户吗？',
+        okText: '确定',
+        cancelText: '取消',
+        onOk: async () => {
+          await postApiUserStatusUserId({
+            userId: user?.id,
+            enabled: String(!user?.enabled),
+          });
+        },
+      });
+    } else {
+      message.warning('暂不支持此功能');
     }
   };
   React.useEffect(() => {
