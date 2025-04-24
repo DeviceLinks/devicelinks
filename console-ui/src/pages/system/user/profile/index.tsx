@@ -90,6 +90,7 @@ const UserProfile = () => {
           await deleteApiUserUserId({
             userId: user?.id,
           } as API.deleteApiUserUserIdParams);
+          history.push('/system/user/list');
         },
       });
     } else if (e.key === 'enable') {
@@ -103,6 +104,7 @@ const UserProfile = () => {
             userId: user?.id,
             enabled: String(!user?.enabled),
           });
+          getUserInfo();
         },
       });
     } else if (e.key === 'disable') {
@@ -116,6 +118,7 @@ const UserProfile = () => {
             userId: user?.id,
             enabled: String(!user?.enabled),
           });
+          getUserInfo();
         },
       });
     } else {
