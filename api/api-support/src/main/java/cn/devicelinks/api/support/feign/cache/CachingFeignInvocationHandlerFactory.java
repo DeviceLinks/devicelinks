@@ -1,14 +1,12 @@
 package cn.devicelinks.api.support.feign.cache;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import cn.devicelinks.component.cache.core.Cache;
 import feign.InvocationHandlerFactory;
 import feign.Target;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The {@link InvocationHandlerFactory} Cache Implementation
@@ -18,13 +16,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class CachingFeignInvocationHandlerFactory implements InvocationHandlerFactory {
     private final InvocationHandlerFactory delegate;
-    private final Cache<String, Object> cache = CacheBuilder.newBuilder()
-            .expireAfterWrite(10, TimeUnit.SECONDS)
-            .maximumSize(1000)
-            .build();
+    private final Cache<String, Object> cache;
 
-    public CachingFeignInvocationHandlerFactory(InvocationHandlerFactory delegate) {
+    public CachingFeignInvocationHandlerFactory(InvocationHandlerFactory delegate, Cache<String, Object> cache) {
         this.delegate = delegate;
+        this.cache = cache;
     }
 
     @Override
@@ -35,7 +31,7 @@ public class CachingFeignInvocationHandlerFactory implements InvocationHandlerFa
             FeignCacheable cacheable = method.getAnnotation(FeignCacheable.class);
             if (cacheable != null) {
                 String key = FeignCacheKeyBuilder.build(method, args);
-                return cache.get(key, () -> {
+                return cache.get(key, k -> {
                     try {
                         return handler.invoke(proxy, method, args);
                     } catch (Throwable e) {

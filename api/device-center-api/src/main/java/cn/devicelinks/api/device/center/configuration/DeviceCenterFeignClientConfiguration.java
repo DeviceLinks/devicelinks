@@ -7,6 +7,9 @@ import cn.devicelinks.api.support.feign.FeignClientRequestEncoder;
 import cn.devicelinks.api.support.feign.FeignClientResponseDecoder;
 import cn.devicelinks.api.support.feign.cache.CachingFeignInvocationHandlerFactory;
 import cn.devicelinks.api.support.ssl.SSLContextFactory;
+import cn.devicelinks.component.cache.CacheType;
+import cn.devicelinks.component.cache.annotation.EnableCache;
+import cn.devicelinks.component.cache.core.Cache;
 import feign.Client;
 import feign.Feign;
 import feign.InvocationHandlerFactory;
@@ -26,12 +29,16 @@ import javax.net.ssl.SSLContext;
  */
 @Slf4j
 @EnableConfigurationProperties(DeviceCenterApiProperties.class)
+@EnableCache(cacheType = CacheType.Composite)
 public class DeviceCenterFeignClientConfiguration {
 
     private final DeviceCenterApiProperties deviceCenterApiProperties;
 
-    public DeviceCenterFeignClientConfiguration(DeviceCenterApiProperties deviceCenterApiProperties) {
+    private final Cache<String, Object> cache;
+
+    public DeviceCenterFeignClientConfiguration(DeviceCenterApiProperties deviceCenterApiProperties, Cache<String, Object> cache) {
         this.deviceCenterApiProperties = deviceCenterApiProperties;
+        this.cache = cache;
     }
 
     @Bean
@@ -65,7 +72,7 @@ public class DeviceCenterFeignClientConfiguration {
         // @formatter:off
         return Feign.builder()
                 .client(feignClient())
-                .invocationHandlerFactory(new CachingFeignInvocationHandlerFactory(new InvocationHandlerFactory.Default()))
+                .invocationHandlerFactory(new CachingFeignInvocationHandlerFactory(new InvocationHandlerFactory.Default(), this.cache))
                 .encoder(new FeignClientRequestEncoder())
                 .decoder(new FeignClientResponseDecoder())
                 .logger(new Slf4jLogger(feignClientClass))

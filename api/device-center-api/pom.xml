@@ -32,5 +32,9 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-slf4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-cache</artifactId>
+        </dependency>
     </dependencies>
 </project>
