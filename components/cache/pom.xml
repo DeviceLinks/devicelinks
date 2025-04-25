@@ -5,21 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.devicelinks</groupId>
-        <artifactId>devicelinks-parent</artifactId>
+        <artifactId>devicelinks-components</artifactId>
         <version>${revision}</version>
-        <relativePath>../parent</relativePath>
     </parent>
-    <packaging>pom</packaging>
-    <modules>
-        <module>operate-log</module>
-        <module>jackson</module>
-        <module>web</module>
-        <module>authorization</module>
-        <module>cache</module>
-    </modules>
-    <artifactId>devicelinks-components</artifactId>
+    <packaging>jar</packaging>
+    <artifactId>devicelinks-component-cache</artifactId>
     <description>
-        List of packaged components.
+        Data Cache Components.
     </description>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -28,18 +20,21 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>compile</scope>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-jackson</artifactId>
         </dependency>
     </dependencies>
 </project>
