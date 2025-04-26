@@ -44,6 +44,10 @@ public interface Constants {
      */
     String SEPARATOR = ",";
     /**
+     * 冒号
+     */
+    String RISK = ":";
+    /**
      * 空字节
      */
     byte EMPTY_BYTE = 0b00000000;
