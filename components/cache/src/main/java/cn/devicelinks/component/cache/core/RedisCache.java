@@ -88,7 +88,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
     }
 
     private String formatCacheKey(K key) {
-        return getCachePrefix() + key;
+        return getCachePrefix() + Constants.RISK + key;
     }
 
     private String getCachePrefix() {

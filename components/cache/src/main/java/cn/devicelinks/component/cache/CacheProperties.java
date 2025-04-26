@@ -31,7 +31,7 @@ public class CacheProperties {
 
     @Data
     public static class CacheRedisConfig {
-        private String prefix = "devicelinks:cache:";
+        private String prefix = "devicelinks:cache";
         private long ttlSeconds = 60L;
     }
 }
