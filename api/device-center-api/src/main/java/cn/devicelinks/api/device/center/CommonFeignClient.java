@@ -1,9 +1,10 @@
 package cn.devicelinks.api.device.center;
 
-import cn.devicelinks.api.support.feign.FeignConstants;
-import cn.devicelinks.api.support.feign.cache.FeignCacheable;
-import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.openfeign.OpenFeignConstants;
+import cn.devicelinks.component.openfeign.annotation.OpenFeignClient;
+import cn.devicelinks.component.openfeign.cache.FeignCacheable;
+import cn.devicelinks.component.web.api.ApiResponse;
 import feign.Headers;
 import feign.RequestLine;
 
@@ -13,6 +14,7 @@ import feign.RequestLine;
  * @author 恒宇少年
  * @since 1.0
  */
+@OpenFeignClient(name = "devicelinks-device-center")
 public interface CommonFeignClient {
     /**
      * 获取AES加密Keys集合
@@ -20,7 +22,7 @@ public interface CommonFeignClient {
      * @return {@link AesSecretKeySet}
      */
     @RequestLine("GET /api/common/aes-secret-keys")
-    @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     @FeignCacheable
     ApiResponse<AesSecretKeySet> getAesSecretKeys();
 }

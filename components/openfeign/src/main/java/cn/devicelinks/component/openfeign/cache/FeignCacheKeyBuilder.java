@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.feign.cache;
+package cn.devicelinks.component.openfeign.cache;
 
 import cn.devicelinks.common.Constants;
 import cn.devicelinks.component.jackson.DeviceLinksJsonMapper;

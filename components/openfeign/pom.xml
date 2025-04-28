@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.devicelinks</groupId>
-        <artifactId>devicelinks-apis</artifactId>
+        <artifactId>devicelinks-components</artifactId>
         <version>${revision}</version>
     </parent>
     <packaging>jar</packaging>
-    <artifactId>devicelinks-api-support</artifactId>
+    <artifactId>devicelinks-component-openfeign</artifactId>
     <description>
-        Support for API, including request, response, and public classes.
+        Encapsulation of native openfeign.
     </description>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,8 +20,25 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-slf4j</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-api-model</artifactId>
+            <artifactId>devicelinks-component-web</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.devicelinks</groupId>

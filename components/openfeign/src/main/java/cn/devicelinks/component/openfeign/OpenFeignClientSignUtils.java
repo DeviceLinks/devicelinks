@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.feign;
+package cn.devicelinks.component.openfeign;
 
 import cn.devicelinks.common.Constants;
 import cn.devicelinks.common.utils.HmacSignature;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @author 恒宇少年
  * @since 1.0
  */
-public class FeignClientSignUtils {
+public class OpenFeignClientSignUtils {
 
     /**
      * 从Feign的RequestTemplate中获取查询字符串

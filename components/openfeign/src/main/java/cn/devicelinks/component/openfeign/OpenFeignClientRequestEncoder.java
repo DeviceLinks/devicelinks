@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.feign;
+package cn.devicelinks.component.openfeign;
 
 import cn.devicelinks.component.jackson.DeviceLinksJsonMapper;
 import feign.jackson.JacksonEncoder;
@@ -9,8 +9,8 @@ import feign.jackson.JacksonEncoder;
  * @author 恒宇少年
  * @since 1.0
  */
-public class FeignClientRequestEncoder extends JacksonEncoder {
-    public FeignClientRequestEncoder() {
+public class OpenFeignClientRequestEncoder extends JacksonEncoder {
+    public OpenFeignClientRequestEncoder() {
         super(new DeviceLinksJsonMapper());
     }
 }

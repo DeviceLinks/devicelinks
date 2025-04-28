@@ -1,7 +1,7 @@
 package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
-import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
+import cn.devicelinks.api.device.center.model.response.DecryptTokenResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.common.utils.SecureRandomUtils;

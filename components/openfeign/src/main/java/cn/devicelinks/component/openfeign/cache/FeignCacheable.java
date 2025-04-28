@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.feign.cache;
+package cn.devicelinks.component.openfeign.cache;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.ssl;
+package cn.devicelinks.component.openfeign.ssl;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -13,7 +13,7 @@ import java.security.KeyStore;
  * @author 恒宇少年
  * @since 1.0
  */
-public class SSLContextFactory {
+public class SslContextFactory {
     private static final String KEY_STORE_TYPE = "JKS";
     private static final String SSL_PROTOCOL = "TLS";
 
@@ -43,7 +43,7 @@ public class SSLContextFactory {
     private static InputStream getInputStream(String path) throws Exception {
         if (path.startsWith("classpath:")) {
             String resourcePath = path.substring("classpath:".length());
-            InputStream stream = SSLContextFactory.class.getResourceAsStream(resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath);
+            InputStream stream = SslContextFactory.class.getResourceAsStream(resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath);
             if (stream == null) {
                 throw new IllegalArgumentException("Resource not found: " + path);
             }

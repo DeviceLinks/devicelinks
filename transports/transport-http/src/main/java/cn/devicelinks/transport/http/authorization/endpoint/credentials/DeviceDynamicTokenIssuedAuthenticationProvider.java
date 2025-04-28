@@ -2,10 +2,10 @@ package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
-import cn.devicelinks.api.support.feign.FeignClientSignUtils;
 import cn.devicelinks.common.Constants;
-import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
+import cn.devicelinks.component.openfeign.OpenFeignClientSignUtils;
+import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceCredentials;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -55,7 +55,7 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         }
         try {
             String decryptedSecret = ApiResponseUnwrapper.unwrap(deviceFeignClient.decryptDeviceSecret(device.getId()));
-            String sign = FeignClientSignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
+            String sign = OpenFeignClientSignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
             if (ObjectUtils.isEmpty(authenticationToken.getSign()) || !sign.equals(authenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
             }

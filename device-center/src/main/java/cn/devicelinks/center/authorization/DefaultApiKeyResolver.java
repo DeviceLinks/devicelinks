@@ -17,7 +17,7 @@
 
 package cn.devicelinks.center.authorization;
 
-import cn.devicelinks.api.support.feign.FeignConstants;
+import cn.devicelinks.component.openfeign.OpenFeignConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import org.springframework.util.ObjectUtils;
@@ -36,9 +36,9 @@ public class DefaultApiKeyResolver implements ApiKeyResolver {
     }
 
     private ApiKeyAuthenticationRequest resolveFromAuthorizationHeader(HttpServletRequest request) {
-        String apiKey = request.getHeader(FeignConstants.API_KEY_HEADER_NAME);
-        String sign = request.getHeader(FeignConstants.API_SIGN_HEADER_NAME);
-        String timestamp = request.getHeader(FeignConstants.API_TIMESTAMP_HEADER_NAME);
+        String apiKey = request.getHeader(OpenFeignConstants.API_KEY_HEADER_NAME);
+        String sign = request.getHeader(OpenFeignConstants.API_SIGN_HEADER_NAME);
+        String timestamp = request.getHeader(OpenFeignConstants.API_TIMESTAMP_HEADER_NAME);
         return ApiKeyAuthenticationRequest.build(apiKey, sign, !ObjectUtils.isEmpty(timestamp) ? Long.parseLong(timestamp) : 0L);
     }
 }

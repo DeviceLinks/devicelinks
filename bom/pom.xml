@@ -147,6 +147,11 @@
             </dependency>
             <dependency>
                 <groupId>cn.devicelinks</groupId>
+                <artifactId>devicelinks-component-openfeign</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.devicelinks</groupId>
                 <artifactId>devicelinks-transport-support</artifactId>
                 <version>${revision}</version>
             </dependency>

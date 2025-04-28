@@ -1,4 +1,4 @@
-package cn.devicelinks.api.device.center.response;
+package cn.devicelinks.api.device.center.model.response;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

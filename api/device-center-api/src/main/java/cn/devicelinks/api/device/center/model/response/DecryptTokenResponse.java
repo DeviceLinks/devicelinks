@@ -1,4 +1,4 @@
-package cn.devicelinks.api.device.center.response;
+package cn.devicelinks.api.device.center.model.response;
 
 import cn.devicelinks.common.DeviceCredentialsType;
 import lombok.Data;

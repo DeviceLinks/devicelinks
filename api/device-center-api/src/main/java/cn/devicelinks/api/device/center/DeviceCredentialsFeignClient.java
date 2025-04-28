@@ -1,9 +1,10 @@
 package cn.devicelinks.api.device.center;
 
-import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
-import cn.devicelinks.api.support.feign.FeignConstants;
-import cn.devicelinks.api.support.feign.cache.FeignCacheable;
+import cn.devicelinks.api.device.center.model.response.DecryptTokenResponse;
 import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.component.openfeign.OpenFeignConstants;
+import cn.devicelinks.component.openfeign.annotation.OpenFeignClient;
+import cn.devicelinks.component.openfeign.cache.FeignCacheable;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.entity.DeviceCredentials;
 import feign.Headers;
@@ -16,6 +17,7 @@ import feign.RequestLine;
  * @author 恒宇少年
  * @since 1.0
  */
+@OpenFeignClient(name = "devicelinks-device-center")
 public interface DeviceCredentialsFeignClient {
     /**
      * 根据令牌查询设备凭证信息
@@ -26,7 +28,7 @@ public interface DeviceCredentialsFeignClient {
      * @see DeviceCredentialsType#StaticToken
      */
     @RequestLine("GET /api/device/credentials?tokenHash={tokenHash}")
-    @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     @FeignCacheable
     ApiResponse<DeviceCredentials> selectByTokenHash(@Param("tokenHash") String tokenHash);
 
@@ -37,7 +39,7 @@ public interface DeviceCredentialsFeignClient {
      * @return 解密后的令牌
      */
     @RequestLine("GET /api/device/credentials/token-decrypt?tokenHash={tokenHash}")
-    @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     @FeignCacheable
     ApiResponse<DecryptTokenResponse> decryptToken(@Param("tokenHash") String tokenHash);
 
@@ -47,6 +49,6 @@ public interface DeviceCredentialsFeignClient {
      * @return 动态令牌凭据 {@link DeviceCredentials}
      */
     @RequestLine("POST /api/device/credentials/generate-dynamic-token?deviceId={deviceId}")
-    @Headers(FeignConstants.JSON_CONTENT_TYPE_HEADER)
+    @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     ApiResponse<DeviceCredentials> generateDynamicToken(@Param("deviceId") String deviceId);
 }

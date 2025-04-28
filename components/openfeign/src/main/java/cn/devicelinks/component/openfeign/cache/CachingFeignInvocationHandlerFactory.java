@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.feign.cache;
+package cn.devicelinks.component.openfeign.cache;
 
 import cn.devicelinks.component.cache.core.Cache;
 import feign.InvocationHandlerFactory;
@@ -31,7 +31,7 @@ public class CachingFeignInvocationHandlerFactory implements InvocationHandlerFa
             FeignCacheable cacheable = method.getAnnotation(FeignCacheable.class);
             if (cacheable != null) {
                 String key = FeignCacheKeyBuilder.build(method, args);
-                return cache.get(key, k -> {
+                return cache.get(key, cacheable.ttlSeconds(), k -> {
                     try {
                         return handler.invoke(proxy, method, args);
                     } catch (Throwable e) {

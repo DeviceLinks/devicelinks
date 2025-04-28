@@ -20,21 +20,12 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-api-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-slf4j</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.devicelinks</groupId>
-            <artifactId>devicelinks-component-cache</artifactId>
+            <artifactId>devicelinks-component-openfeign</artifactId>
         </dependency>
     </dependencies>
 </project>

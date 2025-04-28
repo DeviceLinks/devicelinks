@@ -1,6 +1,6 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.device.center.response.DecryptTokenResponse;
+import cn.devicelinks.api.device.center.model.response.DecryptTokenResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.secret.AesProperties;

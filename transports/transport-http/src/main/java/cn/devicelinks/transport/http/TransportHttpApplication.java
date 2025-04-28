@@ -17,12 +17,11 @@
 
 package cn.devicelinks.transport.http;
 
-import cn.devicelinks.api.device.center.configuration.DeviceCenterFeignClientConfiguration;
+import cn.devicelinks.component.openfeign.annotation.EnableOpenFeignClients;
 import cn.devicelinks.component.web.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
-import org.springframework.context.annotation.Import;
 
 /**
  * HTTP协议传输服务启动类
@@ -32,9 +31,8 @@ import org.springframework.context.annotation.Import;
  */
 @SpringBootApplication(exclude = UserDetailsServiceAutoConfiguration.class)
 @DeviceLinksBeanScan
-@Import(DeviceCenterFeignClientConfiguration.class)
+@EnableOpenFeignClients
 public class TransportHttpApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(TransportHttpApplication.class, args);
     }

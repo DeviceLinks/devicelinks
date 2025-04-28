@@ -1,4 +1,4 @@
-package cn.devicelinks.api.support.feign;
+package cn.devicelinks.component.openfeign;
 
 /**
  * Feign常量定义
@@ -6,7 +6,7 @@ package cn.devicelinks.api.support.feign;
  * @author 恒宇少年
  * @since 1.0
  */
-public interface FeignConstants {
+public interface OpenFeignConstants {
 
     String API_KEY_HEADER_NAME = "X-API-KEY";
 

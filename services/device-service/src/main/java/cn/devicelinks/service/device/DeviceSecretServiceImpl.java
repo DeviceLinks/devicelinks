@@ -1,6 +1,6 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.device.center.response.EncryptDeviceSecretResponse;
+import cn.devicelinks.api.device.center.model.response.EncryptDeviceSecretResponse;
 import cn.devicelinks.api.model.converter.DeviceSecretConverter;
 import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 import cn.devicelinks.api.support.StatusCodeConstants;

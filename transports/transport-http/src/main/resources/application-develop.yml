@@ -12,14 +12,15 @@ spring:
       password: homeserver@2025
 
 devicelinks:
-  center:
-    # 设备中心Api访问配置
-    api:
-      uri: https://localhost:13651
-      api-key: 6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e
-      api-secret: 2de3b8966f139ded0b34ad80210e296f1d35c378d79a5780f654e03f684d5b53f0c1b0672bc54c68fe4ea3931bbca195827f2dfb45e571eb51043006e204dee0
-      ssl:
-        key-store: classpath:ssl/transport.jks
-        key-store-password: fZjLaxFgt5Txs7qSF5od
-        trust-store: classpath:ssl/server.jks
-        trust-store-password: fZjLaxFgt5Txs7qSF5od
+  openfeign:
+    targets:
+      # devicelinks-device-center服务配置
+      devicelinks-device-center:
+        uri: https://localhost:13651
+        api-key: 6e32be35d591e4de55c1010abdd06e7fd850f35cb19939a7067318e1e1595b6e
+        api-secret: 2de3b8966f139ded0b34ad80210e296f1d35c378d79a5780f654e03f684d5b53f0c1b0672bc54c68fe4ea3931bbca195827f2dfb45e571eb51043006e204dee0
+        ssl:
+          key-store: classpath:ssl/transport.jks
+          key-store-password: fZjLaxFgt5Txs7qSF5od
+          trust-store: classpath:ssl/server.jks
+          trust-store-password: fZjLaxFgt5Txs7qSF5od
