@@ -2,7 +2,6 @@ package cn.devicelinks.component.cache;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import static cn.devicelinks.component.cache.CacheProperties.CACHE_CONFIG_PREFIX;
 
@@ -12,7 +11,6 @@ import static cn.devicelinks.component.cache.CacheProperties.CACHE_CONFIG_PREFIX
  * @author 恒宇少年
  * @since 1.0
  */
-@Configuration
 @ConfigurationProperties(prefix = CACHE_CONFIG_PREFIX)
 @Data
 public class CacheProperties {

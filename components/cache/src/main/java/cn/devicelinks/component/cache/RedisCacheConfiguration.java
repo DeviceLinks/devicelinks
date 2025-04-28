@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import static cn.devicelinks.component.cache.CacheRedisTemplateConfiguration.REDIS_TEMPLATE_FOR_CACHE_BEAN_NAME;
@@ -19,6 +20,7 @@ import static cn.devicelinks.component.cache.CacheRedisTemplateConfiguration.RED
  */
 @EnableConfigurationProperties(CacheProperties.class)
 @Slf4j
+@Import(CacheRedisTemplateConfiguration.class)
 public class RedisCacheConfiguration {
     public static final String REDIS_CACHE_BEAN_NAME = "redisCache";
 

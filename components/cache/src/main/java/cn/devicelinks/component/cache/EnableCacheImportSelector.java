@@ -27,9 +27,9 @@ public class EnableCacheImportSelector implements ImportSelector {
             case Caffeine:
                 return new String[]{CaffeineCacheConfiguration.class.getName()};
             case Redis:
-                return new String[]{CacheRedisTemplateConfiguration.class.getName(), RedisCacheConfiguration.class.getName()};
+                return new String[]{RedisCacheConfiguration.class.getName()};
             case Composite:
-                return new String[]{CacheRedisTemplateConfiguration.class.getName(), CompositeCacheConfiguration.class.getName()};
+                return new String[]{CompositeCacheConfiguration.class.getName()};
             default:
                 throw new DeviceLinksException("Unsupported CacheType：" + cacheType);
         }
