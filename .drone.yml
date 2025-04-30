@@ -176,7 +176,7 @@ steps:
         - /usr/local/bin/docker rm devicelinks-transport-http
         - /usr/local/bin/docker image rm -f $(/usr/local/bin/docker image ls registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http | awk 'NR>1{print $3}')
         - /usr/local/bin/docker pull registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http:latest
-        - /usr/local/bin/docker run -p 15001:15001 -d --restart=always --net=devicelinks --ip=172.10.1.13 --name devicelinks-transport-http --env-file /usr/local/docker/devicelinks/run.env registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http:latest
+        - /usr/local/bin/docker run -p 15001:15001 -d --restart=always --net=devicelinks --ip=172.10.1.13 --name devicelinks-transport-http --env-file /usr/local/docker/devicelinks/run.env --env-file /usr/local/docker/devicelinks/transport-http.env registry.cn-hangzhou.aliyuncs.com/devicelinks/transport-http:latest
 
 trigger:
   branch:

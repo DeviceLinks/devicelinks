@@ -29,12 +29,12 @@ devicelinks:
     version: ${DEVICELINKS_VERSION}
     # Api Keys
     api-keys:
-      - api-key: ${DEVICELINKS_HTTP_TRANSPORT_API_KEY}
-        api-secret: ${DEVICELINKS_HTTP_TRANSPORT_API_SECRET}
+      - api-key: ${DEVICELINKS_API_KEY_HTTP_TRANSPORT}
+        api-secret: ${DEVICELINKS_API_SECRET_HTTP_TRANSPORT}
         scopes:
           - Transport
-      - api-key: ${DEVICELINKS_CONSOLE_API_KEY}
-        api-secret: ${DEVICELINKS_CONSOLE_API_SECRET}
+      - api-key: ${DEVICELINKS_API_KEY_CONSOLE}
+        api-secret: ${DEVICELINKS_API_SECRET_CONSOLE}
         scopes:
           - Console
     # DeviceSecret加密Key列表
