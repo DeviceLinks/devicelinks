@@ -39,10 +39,12 @@ public enum SearchFieldVariable {
     USER_EMAIL("email", "邮箱地址"),
     USER_ACTIVATE_METHOD("activateMethod", "激活方式"),
 
+    DEPARTMENT_ID("departmentId", "部门ID"),
+
     DEVICE_ID("deviceId", "设备ID"),
     DEVICE_CODE("deviceCode", "设备号"),
     DEVICE_NAME("deviceName", "设备名称"),
-    DEVICE_NOTE_NAME("noteName","备注名称"),
+    DEVICE_NOTE_NAME("noteName", "备注名称"),
     DEVICE_TYPE("deviceType", "设备类型"),
     DEVICE_STATUS("status", "设备状态"),
     DEVICE_ACTIVATION_TIME("activationTime", "激活时间"),
@@ -96,9 +98,9 @@ public enum SearchFieldVariable {
     DEVICE_PROFILE_NAME("name", "设备配置文件名称"),
     DEVICE_PROFILE_FIRMWARE_ID("firmwareId", "固件ID"),
     DEVICE_PROFILE_SOFTWARE_ID("softwareId", "软件ID"),
-    DEVICE_PROFILE_PROVISION_REGISTRATION_STRATEGY("provisionRegistrationStrategy","预注册策略"),
+    DEVICE_PROFILE_PROVISION_REGISTRATION_STRATEGY("provisionRegistrationStrategy", "预注册策略"),
 
-    DEVICE_TAG_NAME("name","设备标签名称"),
+    DEVICE_TAG_NAME("name", "设备标签名称"),
     ;
     private final String field;
     private final String text;
