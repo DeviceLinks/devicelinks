@@ -1,10 +1,12 @@
 package cn.devicelinks.component.cache.core;
 
+import cn.devicelinks.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -23,7 +25,7 @@ public class CompositeCache<K, V> implements Cache<K, V> {
 
     private final ConcurrentMap<K, ReentrantLock> keyLocks = new ConcurrentHashMap<>();
 
-    private final List<Cache<K, V>> cacheLevels;
+    private final List<Cache<K, V>> caches;
 
     private final long ttlSeconds;
 
@@ -31,9 +33,10 @@ public class CompositeCache<K, V> implements Cache<K, V> {
         this(cacheLevels, DEFAULT_TTL_SECONDS);
     }
 
-    public CompositeCache(List<Cache<K, V>> cacheLevels, long ttlSeconds) {
-        Assert.notEmpty(cacheLevels, "Pass at least one level of cache instance.");
-        this.cacheLevels = cacheLevels;
+    public CompositeCache(List<Cache<K, V>> caches, long ttlSeconds) {
+        Assert.notEmpty(caches, "Pass at least one level of cache instance.");
+        this.caches = caches;
+        this.caches.sort(Comparator.comparing(Cache::getOrder));
         this.ttlSeconds = ttlSeconds;
     }
 
@@ -83,32 +86,37 @@ public class CompositeCache<K, V> implements Cache<K, V> {
     @Override
     public void put(K key, V value, long ttlSeconds) {
         // Update cache data in reverse order
-        List<Cache<K, V>> reversedList = new ArrayList<>(cacheLevels);
+        List<Cache<K, V>> reversedList = new ArrayList<>(caches);
         Collections.reverse(reversedList);
         reversedList.forEach(cache -> cache.put(key, value, ttlSeconds));
     }
 
     @Override
     public void remove(K key) {
-        cacheLevels.forEach(cache -> cache.remove(key));
+        caches.forEach(cache -> cache.remove(key));
     }
 
     @Override
     public void clear() {
-        cacheLevels.forEach(Cache::clear);
+        caches.forEach(Cache::clear);
     }
 
     private V getCacheLevelByLevel(K key) {
-        for (int i = 0; i < cacheLevels.size(); i++) {
-            V value = cacheLevels.get(i).get(key);
+        for (int i = 0; i < caches.size(); i++) {
+            V value = caches.get(i).get(key);
             if (value != null) {
                 // Backfill in reverse order
                 for (int j = 0; j < i; j++) {
-                    cacheLevels.get(j).put(key, value, ttlSeconds);
+                    caches.get(j).put(key, value, ttlSeconds);
                 }
                 return value;
             }
         }
         return null;
+    }
+
+    @Override
+    public int getOrder() {
+        return Constants.ZERO;
     }
 }

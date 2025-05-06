@@ -21,6 +21,8 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
     private static final long DEFAULT_L2_TTL_SECONDS = 10 * 60L;
 
+    private static final int L2_ORDER = 2;
+
     private final RedisTemplate<String, V> redisTemplate;
 
     private String cachePrefix;
@@ -97,5 +99,10 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
     private long getTtlSeconds() {
         return ttlSeconds <= Constants.ZERO ? DEFAULT_L2_TTL_SECONDS : ttlSeconds;
+    }
+
+    @Override
+    public int getOrder() {
+        return L2_ORDER;
     }
 }
