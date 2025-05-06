@@ -40,6 +40,8 @@ public enum SearchFieldVariable {
     USER_ACTIVATE_METHOD("activateMethod", "激活方式"),
 
     DEPARTMENT_ID("departmentId", "部门ID"),
+    DEPARTMENT_NAME("name", "部门名称"),
+    DEPARTMENT_IDENTIFIER("identifier", "标识符"),
 
     DEVICE_ID("deviceId", "设备ID"),
     DEVICE_CODE("deviceCode", "设备号"),

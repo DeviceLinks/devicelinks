@@ -19,6 +19,9 @@ package cn.devicelinks.jdbc.repository;
 
 import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.jdbc.core.Repository;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
+
+import java.util.List;
 
 /**
  * The {@link SysDepartment} Repository
@@ -27,5 +30,11 @@ import cn.devicelinks.jdbc.core.Repository;
  * @since 1.0
  */
 public interface SysDepartmentRepository extends Repository<SysDepartment, String> {
-	//...
+    /**
+     * 根据检索字段条件查询部门列表
+     *
+     * @param searchFieldConditions 检索字段条件列表 {@link SearchFieldCondition}
+     * @return 部门列表 {@link SysDepartment}
+     */
+    List<SysDepartment> selectListWithSearchConditions(List<SearchFieldCondition> searchFieldConditions);
 }

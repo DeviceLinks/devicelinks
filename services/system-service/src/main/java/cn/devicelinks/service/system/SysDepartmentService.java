@@ -17,8 +17,11 @@
 
 package cn.devicelinks.service.system;
 
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.jdbc.BaseService;
+
+import java.util.List;
 
 /**
  * 部门业务逻辑接口定义
@@ -28,9 +31,31 @@ import cn.devicelinks.jdbc.BaseService;
  */
 public interface SysDepartmentService extends BaseService<SysDepartment, String> {
 
+    /**
+     * 查询部门列表
+     *
+     * @param searchFieldQuery 查询字段封装对象
+     * @return 部门列表 {@link SysDepartment}
+     */
+    List<SysDepartment> selectList(SearchFieldQuery searchFieldQuery);
+
+    /**
+     * 添加部门
+     * @param department {@link SysDepartment}
+     * @return 已添加部门的对象 {@link SysDepartment}
+     */
     SysDepartment addDepartment(SysDepartment department);
 
+    /**
+     * 编辑部门
+     * @param department {@link SysDepartment}
+     * @return 已编辑部门的对象 {@link SysDepartment}
+     */
     SysDepartment updateDepartment(SysDepartment department);
 
+    /**
+     * 删除部门
+     * @param departmentId 部门ID {@link SysDepartment#getId()}
+     */
     void deleteDepartment(String departmentId);
 }

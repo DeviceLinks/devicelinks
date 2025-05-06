@@ -20,7 +20,12 @@ package cn.devicelinks.jdbc.repository;
 import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.jdbc.core.JdbcRepository;
+import cn.devicelinks.jdbc.core.sql.Condition;
+import cn.devicelinks.jdbc.core.sql.FusionCondition;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import org.springframework.jdbc.core.JdbcOperations;
+
+import java.util.List;
 
 import static cn.devicelinks.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
 
@@ -32,7 +37,19 @@ import static cn.devicelinks.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
  */
 @DeviceLinksRepository
 public class SysDepartmentJdbcRepository extends JdbcRepository<SysDepartment, String> implements SysDepartmentRepository {
-	public SysDepartmentJdbcRepository(JdbcOperations jdbcOperations) {
-		super(SYS_DEPARTMENT, jdbcOperations);
-	}
+    public SysDepartmentJdbcRepository(JdbcOperations jdbcOperations) {
+        super(SYS_DEPARTMENT, jdbcOperations);
+    }
+
+    @Override
+    public List<SysDepartment> selectListWithSearchConditions(List<SearchFieldCondition> searchFieldConditions) {
+        // @formatter:off
+        Condition[] conditions = searchFieldConditionToConditionArray(searchFieldConditions);
+        FusionCondition fusionCondition = FusionCondition
+                .withSort(SYS_DEPARTMENT.SORT.asc())
+                .conditions(conditions)
+                .build();
+        // @formatter:on
+        return this.select(fusionCondition);
+    }
 }
