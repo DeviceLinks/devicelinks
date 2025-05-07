@@ -1228,19 +1228,20 @@
                 "$ref": "#/components/schemas/AddDeviceRequest"
               },
               "example": {
-                "productId": "001a8f5dc760000100000000",
-                "departmentId": "001a8f5d2e86000100000000",
+                "productId": "67e24fa8e77abaf7934a3ec6",
+                "departmentId": "67e3695a00018a9231ea7212",
+                "profileId": "67e127530796da308297cc87",
                 "deviceType": "Direct",
-                "deviceCode": "test001",
-                "name": "测试设备",
+                "deviceName": "test0002",
+                "noteName": "测试设备0002",
                 "tags": [
                   "car",
                   "gps"
                 ],
                 "mark": "这是备注信息....",
-                "authenticationMethod": "AccessToken",
-                "authenticationAddition": {
-                  "accessToken": "uyF20TxVlzh7lZbvgiZT"
+                "credentialsType": "StaticToken",
+                "credentialsAddition": {
+                  "token": "uyF20TxVlzh7lZbvgiZT"
                 }
               }
             }
@@ -1709,7 +1710,7 @@
         ]
       }
     },
-    "/api/device/{deviceId}/authorization": {
+    "/api/device/{deviceId}/credentials": {
       "get": {
         "summary": "查询设备凭证",
         "deprecated": false,
@@ -1746,7 +1747,7 @@
                     },
                     "data": {
                       "description": "响应数据",
-                      "$ref": "#/components/schemas/DeviceAuthentication"
+                      "$ref": "#/components/schemas/DeviceCredentials"
                     },
                     "additional": {
                       "type": "object",
@@ -1768,17 +1769,20 @@
                       "code": "SUCCESS",
                       "message": "success",
                       "data": {
-                        "id": "67c127a3fd75f8b64d59c2dd",
-                        "deviceId": "67c127a3fd75f8b64d59c2dc",
-                        "authenticationMethod": "AccessToken",
+                        "id": "680892f63e9bb8f76b0c3059",
+                        "deviceId": "680892f63e9bb8f76b0c3057",
+                        "credentialsType": "StaticToken",
                         "addition": {
-                          "accessToken": "uyF20TxVlzh7lZbvgiZT"
+                          "token": "uyF20TxVlzh7lZbvgiZD",
+                          "aes": {
+                            "iv": "uAG8LzN3IgfpBFdE",
+                            "keyVersion": "v2"
+                          }
                         },
                         "expirationTime": null,
                         "deleted": false,
-                        "createTime": "2025-02-28T11:04:04"
-                      },
-                      "additional": {}
+                        "createTime": "2025-04-23T15:12:54"
+                      }
                     }
                   }
                 }
@@ -1816,12 +1820,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateDeviceAuthorizationRequest"
+                "$ref": "#/components/schemas/UpdateDeviceCredentialsRequest"
               },
               "example": {
-                "authenticationMethod": "AccessToken",
-                "authenticationAddition": {
-                  "accessToken": "uyF20TxVlzh7lZbvgiZT"
+                "credentialsType": "StaticToken",
+                "credentialsAddition": {
+                  "token": "uyF20TxVlzh7lZbvgiZT"
                 }
               }
             }
@@ -1844,7 +1848,7 @@
                     },
                     "data": {
                       "description": "响应数据",
-                      "$ref": "#/components/schemas/DeviceAuthentication"
+                      "$ref": "#/components/schemas/DeviceCredentials"
                     },
                     "additional": {
                       "type": "object",
@@ -2856,6 +2860,238 @@
         ]
       }
     },
+    "/api/department/filter": {
+      "post": {
+        "summary": "查询部门列表",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "department"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchFieldQuery"
+              },
+              "example": {
+                "searchFieldModule": "Department",
+                "searchMatch": "ALL",
+                "searchFields": [
+                  {
+                    "field": "name",
+                    "operator": "Like",
+                    "value": "测试"
+                  },
+                  {
+                    "field": "deleted",
+                    "operator": "EqualTo",
+                    "value": false
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Department"
+                      },
+                      "description": "响应数据",
+                      "nullable": true
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "是否成功，前端使用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
+                  "type": "object"
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": [
+                        {
+                          "id": "67e3695a00018a9231ea7212",
+                          "name": "测试部门",
+                          "identifier": "test",
+                          "pid": null,
+                          "sort": 0,
+                          "level": 1,
+                          "deleted": false,
+                          "createBy": "67e20533000183d65f061bac",
+                          "createTime": "2025-03-26T10:41:30",
+                          "description": null
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/department/tree/filter": {
+      "post": {
+        "summary": "查询部门树形结构",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "department"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchFieldQuery"
+              },
+              "example": {
+                "searchFieldModule": "Department",
+                "searchMatch": "ALL",
+                "searchFields": [
+                  {
+                    "field": "name",
+                    "operator": "Like",
+                    "value": "测试"
+                  },
+                  {
+                    "field": "deleted",
+                    "operator": "EqualTo",
+                    "value": false
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DepartmentTree"
+                      },
+                      "description": "响应数据"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "是否成功，前端使用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
+                  "type": "object"
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": [
+                        {
+                          "id": "67e3695a00018a9231ea7212",
+                          "name": "测试部门",
+                          "identifier": "test",
+                          "pid": null,
+                          "sort": 0,
+                          "level": 1,
+                          "deleted": false,
+                          "createBy": "67e20533000183d65f061bac",
+                          "createTime": "2025-03-26T10:41:30",
+                          "description": null,
+                          "children": [
+                            {
+                              "id": "6819c9c5000179917fe18a46",
+                              "name": "测试子部门",
+                              "identifier": "testChild",
+                              "pid": "67e3695a00018a9231ea7212",
+                              "sort": 0,
+                              "level": 1,
+                              "deleted": false,
+                              "createBy": "67e20533000183d65f061bac",
+                              "createTime": "2025-05-06T16:35:17",
+                              "description": null,
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/common/search/field": {
       "get": {
         "summary": "查询检索字段",
@@ -3001,7 +3237,7 @@
                               "value": "GatewaySub"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.common.DeviceType",
+                          "enumClass": "cn.devicelinks.framework.common.DeviceType",
                           "operators": [
                             {
                               "description": "等于",
@@ -3043,7 +3279,7 @@
                               "value": "Ethernet"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.common.DeviceNetworkingAway",
+                          "enumClass": "cn.devicelinks.framework.common.DeviceNetworkingAway",
                           "operators": [
                             {
                               "description": "等于",
@@ -3097,7 +3333,7 @@
                               "value": "Ble"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.common.AccessGatewayProtocol",
+                          "enumClass": "cn.devicelinks.framework.common.AccessGatewayProtocol",
                           "operators": [
                             {
                               "description": "等于",
@@ -3139,7 +3375,7 @@
                               "value": "Hex"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.common.DataFormat",
+                          "enumClass": "cn.devicelinks.framework.common.DataFormat",
                           "operators": [
                             {
                               "description": "等于",
@@ -3189,7 +3425,7 @@
                               "value": "X509"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.common.DeviceAuthenticationMethod",
+                          "enumClass": "cn.devicelinks.framework.common.DeviceAuthenticationMethod",
                           "operators": [
                             {
                               "description": "等于",
@@ -3257,7 +3493,7 @@
                               "value": "Published"
                             }
                           ],
-                          "enumClass": "cn.devicelinks.common.ProductStatus",
+                          "enumClass": "cn.devicelinks.framework.common.ProductStatus",
                           "operators": [
                             {
                               "description": "等于",
@@ -7267,7 +7503,7 @@
                   {
                     "field": "userId",
                     "operator": "EqualTo",
-                    "value": "c31377a505e14fd2b52da54486ccaa4e"
+                    "value": "67e20533000183d65f061bac"
                   },
                   {
                     "field": "action",
@@ -10250,6 +10486,188 @@
           }
         ]
       }
+    },
+    "/api/device/{deviceId}/secret": {
+      "get": {
+        "summary": "查询设备密钥",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "device"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "设备ID",
+            "required": true,
+            "example": "67e369b100018a92341ad2ec",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "description": "响应数据",
+                      "$ref": "#/components/schemas/DeviceSecretDTO"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "是否成功，前端使用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
+                  "type": "object"
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "id": "67fdc9200001339a6fc90b78",
+                        "deviceId": "67e369b100018a92341ad2ec",
+                        "encryptedSecret": "+/9XlyXTep4IE7YOXnlJNcBuXxI+kR19bfKlJqqItv+RrOUW3HPQ71oetXYqxVJW4kpDDupwkZNE54FRYj4XiFYuU/ChbVDUiy/ypzXuNaIZvO8FqqTgjoaf9hIXJMtxLGAntJhR/VXjIs99HSNgePkG7Fk=",
+                        "iv": "0ZPEdkX/u4sqBGf2",
+                        "secretVersion": "v1",
+                        "secretKeyVersion": "v1",
+                        "status": "Active",
+                        "expiresTime": null,
+                        "lastUseTime": null,
+                        "createTime": "2025-04-15T10:49:04",
+                        "secret": "6babcdaee384eb6044d5077ba80b6b2c8587f8a54f046e40c6b1b2c338a75bf1fa48febafa983e9583e6ac52933827c0c3f5"
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/device/{deviceId}/secret-regenerate": {
+      "post": {
+        "summary": "重新生成设备密钥",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "device"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "设备ID",
+            "required": true,
+            "example": "67e369b100018a92341ad2ec",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "状态码"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "消息"
+                    },
+                    "data": {
+                      "description": "响应数据",
+                      "$ref": "#/components/schemas/DeviceSecretDTO"
+                    },
+                    "additional": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "是否成功，前端使用"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data",
+                    "additional"
+                  ],
+                  "type": "object"
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "code": "SUCCESS",
+                      "message": "success",
+                      "data": {
+                        "id": null,
+                        "deviceId": "67e369b100018a92341ad2ec",
+                        "encryptedSecret": "HA86cQuKGnfmcpWP2oW6QvKd901kxWzBzT4lBXDogeTyWe744vNWrAXmG6GOdaWtnKU4gE23BnZdJ4cPPG3cEuP+YhHGdHdvUTDV1l9gONj0YqAVqOLm5G1ty/GOb62rAyo63atTAcLAYu4mTiE0FFt8nt8=",
+                        "iv": "Dta5F6aYbp5FLSWR",
+                        "secretVersion": "v1",
+                        "secretKeyVersion": "v3",
+                        "status": null,
+                        "expiresTime": null,
+                        "lastUseTime": null,
+                        "createTime": null,
+                        "secret": "e504d9e708afea237fa83164fc5733eaf45fdfa52076444e1f68a8816b9efc6e67a7f93187fac39de52255bf744af7638270"
+                      },
+                      "additional": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -11597,6 +12015,24 @@
           "value"
         ]
       },
+      "AesProperties": {
+        "type": "object",
+        "properties": {
+          "iv": {
+            "type": "string",
+            "description": "初始化向量"
+          },
+          "keyVersion": {
+            "type": "string",
+            "description": "轮询Key版本"
+          }
+        },
+        "required": [
+          "iv",
+          "keyVersion"
+        ],
+        "description": "AES加密参数"
+      },
       "FunctionModule": {
         "type": "object",
         "properties": {
@@ -12683,7 +13119,78 @@
           "name"
         ]
       },
-      "DeviceAuthentication": {
+      "DepartmentTree": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "部门名称"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "标识符"
+          },
+          "pid": {
+            "type": "string",
+            "description": "上级ID",
+            "nullable": true
+          },
+          "sort": {
+            "type": "integer",
+            "description": "排序"
+          },
+          "level": {
+            "type": "integer",
+            "description": "等级"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          },
+          "createBy": {
+            "type": "string",
+            "description": "创建人ID",
+            "nullable": true
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string",
+            "description": "描述",
+            "nullable": true
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentTree"
+            },
+            "description": "子部门"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "identifier",
+          "sort",
+          "level",
+          "deleted",
+          "createTime",
+          "children",
+          "key"
+        ],
+        "title": ""
+      },
+      "DeviceCredentials": {
         "type": "object",
         "properties": {
           "id": {
@@ -12694,10 +13201,10 @@
             "type": "string",
             "description": "设备ID"
           },
-          "authenticationMethod": {
+          "credentialsType": {
             "type": "string",
             "description": "认证方式",
-            "const": "DeviceAuthenticationMethod"
+            "const": "DeviceCredentialsType"
           },
           "addition": {
             "properties": {
@@ -12758,7 +13265,7 @@
               "deviceCredential"
             ],
             "description": "附加信息",
-            "$ref": "#/components/schemas/DeviceAuthenticationAddition"
+            "$ref": "#/components/schemas/DeviceCredentialsAddition"
           },
           "expirationTime": {
             "type": "string",
@@ -12778,19 +13285,23 @@
         "required": [
           "id",
           "deviceId",
-          "authenticationMethod",
+          "credentialsType",
           "addition",
           "deleted",
           "createTime"
         ],
         "title": ""
       },
-      "DeviceAuthenticationAddition": {
+      "DeviceCredentialsAddition": {
         "type": "object",
         "properties": {
-          "staticToken": {
+          "token": {
             "type": "string",
-            "description": "请求令牌"
+            "description": "令牌（静态令牌、动态令牌）"
+          },
+          "tokenHash": {
+            "type": "string",
+            "description": "令牌哈希值"
           },
           "x509Pem": {
             "type": "string",
@@ -12819,42 +13330,29 @@
             ],
             "description": "mqtt基础认证"
           },
-          "dynamicToken": {
-            "type": "object",
-            "properties": {
-              "deviceSecret": {
-                "type": "string",
-                "description": "设备Secret"
-              },
-              "secretGenerateTime": {
-                "type": "string",
-                "description": "设备Secret生成时间",
-                "format": "date-time"
-              }
-            },
-            "required": [
-              "secretGenerateTime",
-              "deviceSecret"
-            ],
-            "description": "设备凭证"
+          "aes": {
+            "description": "AES加密算法参数",
+            "$ref": "#/components/schemas/AesProperties"
           }
         },
         "required": [
-          "staticToken",
+          "token",
           "x509Pem",
           "mqttBasic",
-          "dynamicToken"
+          "aes",
+          "tokenHash"
         ],
         "description": "附加信息"
       },
-      "UpdateDeviceAuthorizationRequest": {
+      "UpdateDeviceCredentialsRequest": {
         "type": "object",
         "properties": {
-          "authenticationMethod": {
+          "credentialsType": {
             "type": "string",
-            "description": "设备鉴权方式"
+            "description": "设备鉴权方式",
+            "const": "DeviceCredentialsType"
           },
-          "authenticationAddition": {
+          "credentialsAddition": {
             "properties": {
               "accessToken": {
                 "type": "string",
@@ -12913,12 +13411,12 @@
               "deviceCredential"
             ],
             "description": "附加信息",
-            "$ref": "#/components/schemas/DeviceAuthenticationAddition"
+            "$ref": "#/components/schemas/DeviceCredentialsAddition"
           }
         },
         "required": [
-          "authenticationMethod",
-          "authenticationAddition"
+          "credentialsType",
+          "credentialsAddition"
         ]
       },
       "Device": {
@@ -13036,6 +13534,10 @@
             "type": "string",
             "description": "部门ID"
           },
+          "profileId": {
+            "type": "string",
+            "description": "配置文件ID"
+          },
           "deviceType": {
             "type": "string",
             "description": "设备类型",
@@ -13065,12 +13567,12 @@
             "description": "备注",
             "nullable": true
           },
-          "authenticationMethod": {
+          "credentialsType": {
             "type": "string",
             "description": "鉴权方式",
-            "const": "DeviceAuthenticationMethod"
+            "const": "DeviceCredentialsType"
           },
-          "authenticationAddition": {
+          "credentialsAddition": {
             "properties": {
               "accessToken": {
                 "type": "string",
@@ -13129,7 +13631,7 @@
               "deviceCredential"
             ],
             "description": "附加信息",
-            "$ref": "#/components/schemas/DeviceAuthenticationAddition"
+            "$ref": "#/components/schemas/DeviceCredentialsAddition"
           }
         },
         "required": [
@@ -13137,13 +13639,18 @@
           "departmentId",
           "deviceType",
           "deviceName",
-          "authenticationMethod",
-          "authenticationAddition"
+          "credentialsType",
+          "credentialsAddition",
+          "profileId"
         ]
       },
       "UpdateDeviceRequest": {
         "type": "object",
         "properties": {
+          "profileId": {
+            "type": "string",
+            "description": "设备配置文件ID"
+          },
           "noteName": {
             "type": "string",
             "description": "设备备注名称",
@@ -13163,7 +13670,10 @@
             "description": "备注信息",
             "nullable": true
           }
-        }
+        },
+        "required": [
+          "profileId"
+        ]
       },
       "DeviceDTO": {
         "type": "object",
@@ -13254,10 +13764,10 @@
             "description": "备注",
             "nullable": true
           },
-          "authenticationMethod": {
+          "credentialsType": {
             "type": "string",
-            "const": "DeviceAuthenticationMethod",
-            "description": "认证方式"
+            "description": "认证方式",
+            "const": "DeviceCredentialsType"
           },
           "moduleVersion": {
             "type": "object",
@@ -13266,7 +13776,7 @@
           }
         },
         "required": [
-          "authenticationMethod",
+          "credentialsType",
           "moduleVersion",
           "id",
           "departmentId",
@@ -13520,11 +14030,6 @@
             "description": "数据格式",
             "const": "DataFormat"
           },
-          "authenticationMethod": {
-            "type": "string",
-            "description": "鉴权方式",
-            "const": "DeviceAuthenticationMethod"
-          },
           "dynamicRegistration": {
             "type": "boolean",
             "description": "是否开启动态注册（仅适用一型一密）"
@@ -13557,7 +14062,6 @@
           "name",
           "deviceType",
           "dataFormat",
-          "authenticationMethod",
           "id",
           "productKey",
           "productSecret",
@@ -13599,11 +14103,6 @@
             "const": "DataFormat",
             "description": "数据格式"
           },
-          "authenticationMethod": {
-            "type": "string",
-            "const": "DeviceAuthenticationMethod",
-            "description": "认证方式"
-          },
           "description": {
             "type": "string",
             "description": "描述",
@@ -13612,7 +14111,6 @@
         },
         "required": [
           "name",
-          "authenticationMethod",
           "dataFormat",
           "deviceType"
         ]
@@ -13647,11 +14145,6 @@
             "const": "DataFormat",
             "description": "数据格式"
           },
-          "authenticationMethod": {
-            "type": "string",
-            "const": "DeviceAuthenticationMethod",
-            "description": "认证方式"
-          },
           "description": {
             "type": "string",
             "description": "描述",
@@ -13660,7 +14153,6 @@
         },
         "required": [
           "name",
-          "authenticationMethod",
           "dataFormat",
           "deviceType"
         ]
@@ -14209,6 +14701,123 @@
         },
         "required": [
           "name"
+        ]
+      },
+      "DeviceSecret": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "密钥ID"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "设备ID"
+          },
+          "encryptedSecret": {
+            "type": "string",
+            "description": "加密后的DeviceSecret"
+          },
+          "encryptedSecretAddition": {
+            "description": "AES加密算法参数",
+            "$ref": "#/components/schemas/AesProperties"
+          },
+          "secretVersion": {
+            "type": "string",
+            "description": "密钥版本"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态",
+            "const": "DeviceSecretStatus"
+          },
+          "expiresTime": {
+            "type": "string",
+            "description": "过期时间",
+            "format": "date-time"
+          },
+          "lastUseTime": {
+            "type": "string",
+            "description": "最后使用时间",
+            "format": "date-time"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "lastUseTime",
+          "expiresTime",
+          "status",
+          "secretVersion",
+          "encryptedSecret",
+          "deviceId",
+          "createTime",
+          "encryptedSecretAddition"
+        ]
+      },
+      "DeviceSecretDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "密钥ID"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "设备ID"
+          },
+          "encryptedSecret": {
+            "type": "string",
+            "description": "加密后的DeviceSecret"
+          },
+          "encryptedSecretAddition": {
+            "description": "AES加密算法参数",
+            "$ref": "#/components/schemas/AesProperties"
+          },
+          "secretVersion": {
+            "type": "string",
+            "description": "密钥版本"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态",
+            "const": "DeviceSecretStatus"
+          },
+          "expiresTime": {
+            "type": "string",
+            "description": "过期时间",
+            "format": "date-time"
+          },
+          "lastUseTime": {
+            "type": "string",
+            "description": "最后使用时间",
+            "format": "date-time"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "secret": {
+            "type": "string",
+            "description": "解密后的DeviceSecret"
+          }
+        },
+        "required": [
+          "secret",
+          "id",
+          "deviceId",
+          "encryptedSecret",
+          "encryptedSecretAddition",
+          "secretVersion",
+          "status",
+          "expiresTime",
+          "lastUseTime",
+          "createTime"
         ]
       }
     },

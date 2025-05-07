@@ -81,39 +81,39 @@ export async function deleteApiDeviceDeviceId(
   });
 }
 
-/** 查询设备凭证 GET /api/device/${param0}/authorization */
-export async function getApiDeviceDeviceIdAuthorization(
+/** 查询设备凭证 GET /api/device/${param0}/credentials */
+export async function getApiDeviceDeviceIdCredentials(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getApiDeviceDeviceIdAuthorizationParams,
+  params: API.getApiDeviceDeviceIdCredentialsParams,
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, ...queryParams } = params;
   return request<{
     code: string;
     message: string;
-    data: API.DeviceAuthentication;
+    data: API.DeviceCredentials;
     additional: Record<string, any>;
-  }>(`/api/device/${param0}/authorization`, {
+  }>(`/api/device/${param0}/credentials`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 更新设备凭证 POST /api/device/${param0}/authorization */
-export async function postApiDeviceDeviceIdAuthorization(
+/** 更新设备凭证 POST /api/device/${param0}/credentials */
+export async function postApiDeviceDeviceIdCredentials(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.postApiDeviceDeviceIdAuthorizationParams,
-  body: API.UpdateDeviceAuthorizationRequest,
+  params: API.postApiDeviceDeviceIdCredentialsParams,
+  body: API.UpdateDeviceCredentialsRequest,
   options?: { [key: string]: any },
 ) {
   const { deviceId: param0, ...queryParams } = params;
   return request<{
     code: string;
     message: string;
-    data: API.DeviceAuthentication;
+    data: API.DeviceCredentials;
     additional: Record<string, any>;
-  }>(`/api/device/${param0}/authorization`, {
+  }>(`/api/device/${param0}/credentials`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -181,6 +181,46 @@ export async function postApiDeviceDeviceIdModuleModuleIdAttributeDesired(
     },
     params: { ...queryParams },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 查询设备密钥 GET /api/device/${param0}/secret */
+export async function getApiDeviceDeviceIdSecret(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getApiDeviceDeviceIdSecretParams,
+  options?: { [key: string]: any },
+) {
+  const { deviceId: param0, ...queryParams } = params;
+  return request<{
+    code: string;
+    message: string;
+    data: API.DeviceSecretDTO;
+    additional: Record<string, any>;
+    success?: boolean;
+  }>(`/api/device/${param0}/secret`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 重新生成设备密钥 POST /api/device/${param0}/secret-regenerate */
+export async function postApiDeviceDeviceIdSecretRegenerate(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postApiDeviceDeviceIdSecretRegenerateParams,
+  options?: { [key: string]: any },
+) {
+  const { deviceId: param0, ...queryParams } = params;
+  return request<{
+    code: string;
+    message: string;
+    data: API.DeviceSecretDTO;
+    additional: Record<string, any>;
+    success?: boolean;
+  }>(`/api/device/${param0}/secret-regenerate`, {
+    method: 'POST',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }

@@ -67,6 +67,17 @@ export default [
         ],
       },
       {
+        path: '/system/department',
+        name: '部门',
+        routes: [
+          { path: '/system/department', redirect: '/system/department/list' },
+          {
+            path: '/system/department/list',
+            component: './system/department/list',
+          },
+        ],
+      },
+      {
         path: '/system/user/profile',
         name: '用户详情',
         component: './system/user/profile',

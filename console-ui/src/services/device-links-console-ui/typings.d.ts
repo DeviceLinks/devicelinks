@@ -86,6 +86,8 @@ declare namespace API {
     productId: string;
     /** 部门ID */
     departmentId: string;
+    /** 配置文件ID */
+    profileId: string;
     /** 设备类型 */
     deviceType: string;
     /** 设备唯一名称 */
@@ -97,9 +99,9 @@ declare namespace API {
     /** 备注 */
     mark?: string;
     /** 鉴权方式 */
-    authenticationMethod: string;
+    credentialsType: string;
     /** 附加信息 */
-    authenticationAddition: DeviceAuthenticationAddition;
+    credentialsAddition: DeviceCredentialsAddition;
   };
 
   type AddDeviceTagRequest = {
@@ -136,8 +138,6 @@ declare namespace API {
     accessGatewayProtocol?: string;
     /** 数据格式 */
     dataFormat: string;
-    /** 认证方式 */
-    authenticationMethod: string;
     /** 描述 */
     description?: string;
   };
@@ -157,6 +157,13 @@ declare namespace API {
     departmentId: string;
     /** 描述 */
     mark: string;
+  };
+
+  type AesProperties = {
+    /** 初始化向量 */
+    iv: string;
+    /** 轮询Key版本 */
+    keyVersion: string;
   };
 
   type AlarmType = EnumItem[];
@@ -444,6 +451,32 @@ declare namespace API {
     description?: string;
   };
 
+  type DepartmentTree = {
+    /** ID */
+    id: string;
+    /** 部门名称 */
+    name: string;
+    /** 标识符 */
+    identifier: string;
+    /** 上级ID */
+    pid?: string;
+    /** 排序 */
+    sort: number;
+    /** 等级 */
+    level: number;
+    /** 是否删除 */
+    deleted: boolean;
+    /** 创建人ID */
+    createBy?: string;
+    /** 创建时间 */
+    createTime: string;
+    /** 描述 */
+    description?: string;
+    /** 子部门 */
+    children: DepartmentTree[];
+    key: string;
+  };
+
   type Device = {
     /** 设备ID */
     id: string;
@@ -603,15 +636,17 @@ declare namespace API {
     attributeDescription?: string;
   };
 
-  type DeviceAuthentication = {
+  type DeviceAuthenticationMethod = EnumItem[];
+
+  type DeviceCredentials = {
     /** 凭证ID */
     id: string;
     /** 设备ID */
     deviceId: string;
     /** 认证方式 */
-    authenticationMethod: string;
+    credentialsType: string;
     /** 附加信息 */
-    addition: DeviceAuthenticationAddition;
+    addition: DeviceCredentialsAddition;
     /** 过期时间 */
     expirationTime?: string;
     /** 是否删除 */
@@ -620,18 +655,18 @@ declare namespace API {
     createTime: string;
   };
 
-  type DeviceAuthenticationAddition = {
-    /** 请求令牌 */
-    staticToken: string;
+  type DeviceCredentialsAddition = {
+    /** 令牌（静态令牌、动态令牌） */
+    token: string;
+    /** 令牌哈希值 */
+    tokenHash: string;
     /** X.509 pem证书 */
     x509Pem: string;
     /** mqtt基础认证 */
     mqttBasic: { clientId: string; username: string; password: string };
-    /** 设备凭证 */
-    dynamicToken: { deviceSecret: string; secretGenerateTime: string };
+    /** AES加密算法参数 */
+    aes: AesProperties;
   };
-
-  type DeviceAuthenticationMethod = EnumItem[];
 
   type DeviceDTO = {
     /** 设备ID */
@@ -671,7 +706,7 @@ declare namespace API {
     /** 备注 */
     mark?: string;
     /** 认证方式 */
-    authenticationMethod: string;
+    credentialsType: string;
     /** 各个功能模块的版本 */
     moduleVersion: Record<string, any>;
   };
@@ -722,6 +757,50 @@ declare namespace API {
     provisionDeviceSecret: string;
     /** 动态令牌有效期时长，单位：秒 */
     dynamicTokenValidSeconds: number;
+  };
+
+  type DeviceSecret = {
+    /** 密钥ID */
+    id: string;
+    /** 设备ID */
+    deviceId: string;
+    /** 加密后的DeviceSecret */
+    encryptedSecret: string;
+    /** AES加密算法参数 */
+    encryptedSecretAddition: AesProperties;
+    /** 密钥版本 */
+    secretVersion: string;
+    /** 状态 */
+    status: string;
+    /** 过期时间 */
+    expiresTime: string;
+    /** 最后使用时间 */
+    lastUseTime: string;
+    /** 创建时间 */
+    createTime: string;
+  };
+
+  type DeviceSecretDTO = {
+    /** 密钥ID */
+    id: string;
+    /** 设备ID */
+    deviceId: string;
+    /** 加密后的DeviceSecret */
+    encryptedSecret: string;
+    /** AES加密算法参数 */
+    encryptedSecretAddition: AesProperties;
+    /** 密钥版本 */
+    secretVersion: string;
+    /** 状态 */
+    status: string;
+    /** 过期时间 */
+    expiresTime: string;
+    /** 最后使用时间 */
+    lastUseTime: string;
+    /** 创建时间 */
+    createTime: string;
+    /** 解密后的DeviceSecret */
+    secret: string;
   };
 
   type DeviceShadow = {
@@ -897,7 +976,7 @@ declare namespace API {
     deviceId: string;
   };
 
-  type getApiDeviceDeviceIdAuthorizationParams = {
+  type getApiDeviceDeviceIdCredentialsParams = {
     /** 设备ID */
     deviceId: string;
   };
@@ -914,6 +993,11 @@ declare namespace API {
   };
 
   type getApiDeviceDeviceIdParams = {
+    /** 设备ID */
+    deviceId: string;
+  };
+
+  type getApiDeviceDeviceIdSecretParams = {
     /** 设备ID */
     deviceId: string;
   };
@@ -1144,7 +1228,7 @@ declare namespace API {
     sortDirection?: string;
   };
 
-  type postApiDeviceDeviceIdAuthorizationParams = {
+  type postApiDeviceDeviceIdCredentialsParams = {
     /** 设备ID */
     deviceId: string;
   };
@@ -1164,6 +1248,11 @@ declare namespace API {
   };
 
   type postApiDeviceDeviceIdParams = {
+    deviceId: string;
+  };
+
+  type postApiDeviceDeviceIdSecretRegenerateParams = {
+    /** 设备ID */
     deviceId: string;
   };
 
@@ -1303,8 +1392,6 @@ declare namespace API {
     accessGatewayProtocol?: string;
     /** 数据格式 */
     dataFormat: string;
-    /** 鉴权方式 */
-    authenticationMethod: string;
     /** 是否开启动态注册（仅适用一型一密） */
     dynamicRegistration: boolean;
     /** 状态 */
@@ -1463,11 +1550,11 @@ declare namespace API {
     description?: string;
   };
 
-  type UpdateDeviceAuthorizationRequest = {
+  type UpdateDeviceCredentialsRequest = {
     /** 设备鉴权方式 */
-    authenticationMethod: string;
+    credentialsType: string;
     /** 附加信息 */
-    authenticationAddition: DeviceAuthenticationAddition;
+    credentialsAddition: DeviceCredentialsAddition;
   };
 
   type UpdateDeviceDesiredAttributeRequest = {
@@ -1525,6 +1612,8 @@ declare namespace API {
   };
 
   type UpdateDeviceRequest = {
+    /** 设备配置文件ID */
+    profileId: string;
     /** 设备备注名称 */
     noteName?: string;
     /** 设备标签列表 */
@@ -1551,8 +1640,6 @@ declare namespace API {
     accessGatewayProtocol?: string;
     /** 数据格式 */
     dataFormat: string;
-    /** 认证方式 */
-    authenticationMethod: string;
     /** 描述 */
     description?: string;
   };
