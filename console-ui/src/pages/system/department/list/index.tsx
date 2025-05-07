@@ -19,7 +19,7 @@ const DepartmentList: React.FC = () => {
   const [treeData, setTreeData] = React.useState<API.DepartmentTree[]>([]);
   const [treeLoading, setTreeLoading] = React.useState(true);
   const treeFieldNames = { title: 'name', key: 'id', children: 'children' };
-  const [selectedKey, setSelectedKey] = React.useState('');
+  const [selectedNode, setSelectedNode] = React.useState<API.DepartmentTree>();
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [editDepartmentInfo, setEditDepartmentInfo] = React.useState<API.DepartmentTree>();
 
@@ -94,6 +94,9 @@ const DepartmentList: React.FC = () => {
     if (key === 'add') {
       setEditDepartmentInfo(undefined);
       setOpenAddModal(true);
+    } else if (key === 'edit') {
+      setEditDepartmentInfo(selectedNode);
+      setOpenAddModal(true);
     }
   };
 
@@ -116,17 +119,15 @@ const DepartmentList: React.FC = () => {
    * @param data
    */
   const treeTitleRender = (data: API.DepartmentTree) => {
-    console.log(data);
-    console.log(selectedKey);
     return (
       <div className={style.departmentTreeNode}>
         <span>{data.name}</span>
-        {selectedKey === data.id && (
+        {selectedNode?.id === data.id && (
           <Popover
             content={moreBtn}
             rootClassName={'btn-popover'}
             placement={'bottom'}
-            overlayInnerStyle={{ padding: '0px' }}
+            styles={{ body: { padding: '0px' } }}
           >
             <EllipsisOutlined className={style.treeNodeIcon} />
           </Popover>
@@ -135,9 +136,8 @@ const DepartmentList: React.FC = () => {
     );
   };
 
-  const handleSelectNode = (keys: any[]) => {
-    console.log(keys);
-    setSelectedKey(keys?.[0]);
+  const handleSelectNode = (_keys: any[], { selectedNodes }: any) => {
+    setSelectedNode(selectedNodes?.[0]);
   };
 
   React.useEffect(() => {
