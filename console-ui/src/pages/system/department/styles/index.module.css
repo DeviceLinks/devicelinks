@@ -1,0 +1,36 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(100vh - 390px);
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.tree {
+  width: 350px;
+  padding: 10px;
+  height: calc(100vh - 390px);
+}
+
+.userList {
+  width: calc(100% - 360px);
+  padding: 10px;
+  border-left: 1px solid #f0f0f0;
+}
+
+.addDepartmentBtn {
+  position: absolute;
+  bottom: 12px;
+  text-align: center;
+  left: 130px;
+}
+
+.departmentTreeNode {
+  display: flex;
+  justify-content: space-between;
+}
+
+.treeNodeIcon:hover {
+  color: #0a91ff;
+}

@@ -74,3 +74,45 @@ export async function deleteApiDepartmentDepartmentId(
     ...(options || {}),
   });
 }
+
+/** 查询部门列表 POST /api/department/filter */
+export async function postApiDepartmentFilter(
+  body: API.SearchFieldQuery,
+  options?: { [key: string]: any },
+) {
+  return request<{
+    code: string;
+    message: string;
+    data: API.Department[];
+    additional: Record<string, any>;
+    success?: boolean;
+  }>('/api/department/filter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 查询部门树形结构 POST /api/department/tree/filter */
+export async function postApiDepartmentTreeFilter(
+  body: API.SearchFieldQuery,
+  options?: { [key: string]: any },
+) {
+  return request<{
+    code: string;
+    message: string;
+    data: API.DepartmentTree[];
+    additional: Record<string, any>;
+    success?: boolean;
+  }>('/api/department/tree/filter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
