@@ -37,7 +37,8 @@ devicelinks:
           key-store-password: fZjLaxFgt5Txs7qSF5od
           trust-store: classpath:ssl/truststore.jks
           trust-store-password: fZjLaxFgt5Txs7qSF5od
-
-logging:
-  level:
-    cn.devicelinks.jdbc: debug
+  # Cache
+  cache:
+    redis:
+      ttl: 300
+      ttl-time-unit: seconds
