@@ -15,13 +15,7 @@ import java.util.List;
  * @author 恒宇少年
  * @since 1.0
  */
-@Getter
-public class DepartmentTree extends SysDepartment {
-    private List<DepartmentTreeNode> nodeList;
-
-    public DepartmentTree(List<DepartmentTreeNode> nodeList) {
-        this.nodeList = nodeList;
-    }
+public record DepartmentTree(List<DepartmentTreeNode> nodeList) {
 
     public static DepartmentTreeBuilder with(List<SysDepartment> departmentList) {
         Assert.notEmpty(departmentList, "The department list cannot be empty.");
