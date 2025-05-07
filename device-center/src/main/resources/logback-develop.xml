@@ -32,6 +32,9 @@
     <logger name="cn.devicelinks.jdbc" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>
+    <logger name="cn.devicelinks.component" level="DEBUG" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
     <logger name="cn.devicelinks.service" level="DEBUG" additivity="false">
         <appender-ref ref="stdout"/>
     </logger>

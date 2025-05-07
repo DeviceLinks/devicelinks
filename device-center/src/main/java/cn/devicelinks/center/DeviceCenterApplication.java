@@ -17,9 +17,12 @@
 
 package cn.devicelinks.center;
 
+import cn.devicelinks.component.cache.CacheType;
+import cn.devicelinks.component.cache.annotation.EnableCache;
 import cn.devicelinks.component.web.annotation.DeviceLinksBeanScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
 /**
  * 设备中心启动类
@@ -27,8 +30,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 恒宇少年
  * @since 1.0
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = UserDetailsServiceAutoConfiguration.class)
 @DeviceLinksBeanScan
+@EnableCache(cacheType = CacheType.Composite)
 public class DeviceCenterApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeviceCenterApplication.class, args);

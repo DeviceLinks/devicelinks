@@ -1,5 +1,6 @@
 package cn.devicelinks.component.cache;
 
+import cn.devicelinks.component.cache.config.RedisCacheConfig;
 import cn.devicelinks.component.cache.core.Cache;
 import cn.devicelinks.component.cache.core.RedisCache;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import static cn.devicelinks.component.cache.CacheRedisTemplateConfiguration.RED
 @Slf4j
 @Import(CacheRedisTemplateConfiguration.class)
 public class RedisCacheConfiguration {
+
     public static final String REDIS_CACHE_BEAN_NAME = "redisCache";
 
     private final CacheProperties cacheProperties;
@@ -33,7 +35,7 @@ public class RedisCacheConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = REDIS_CACHE_BEAN_NAME)
     public Cache<String, Object> caffeineCache(@Qualifier(REDIS_TEMPLATE_FOR_CACHE_BEAN_NAME) RedisTemplate<String, Object> cacheRedisTemplate) {
-        CacheProperties.CacheRedisConfig redisConfig = cacheProperties.getRedis();
-        return new RedisCache<>(cacheRedisTemplate, redisConfig.getPrefix(), redisConfig.getTtlSeconds());
+        RedisCacheConfig redisConfig = cacheProperties.getRedis();
+        return new RedisCache<>(cacheRedisTemplate, redisConfig);
     }
 }

@@ -1,8 +1,7 @@
 package cn.devicelinks.component.cache.core;
 
+import cn.devicelinks.component.cache.config.CaffeineCacheConfig;
 import com.github.benmanes.caffeine.cache.Caffeine;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 基于{@link CaffeineCache}实现的本地L1级别缓存
@@ -12,27 +11,21 @@ import java.util.concurrent.TimeUnit;
  */
 public class CaffeineCache<K, V> implements Cache<K, V> {
 
-    private static final long DEFAULT_MAXIMUM_SIZE = 10_000L;
-
-    private static final long DEFAULT_L1_TTL_SECONDS = 60L;
-
     private static final int L1_ORDER = 1;
 
     private final com.github.benmanes.caffeine.cache.Cache<K, CacheValue<V>> cache;
 
+    private final CaffeineCacheConfig config;
+
     public CaffeineCache() {
-        this(DEFAULT_MAXIMUM_SIZE);
+        this(CaffeineCacheConfig.useDefault());
     }
 
-    public CaffeineCache(long maximumSize) {
-        this(maximumSize, DEFAULT_L1_TTL_SECONDS);
-    }
-
-    public CaffeineCache(long maximumSize, long ttlSeconds) {
+    public CaffeineCache(CaffeineCacheConfig config) {
+        this.config = config;
         // @formatter:off
         this.cache = Caffeine.newBuilder()
-                .maximumSize(maximumSize)
-                .expireAfterWrite(ttlSeconds, TimeUnit.SECONDS)
+                .expireAfterWrite(config.getTtl(), config.getTtlTimeUnit())
                 .build();
         // @formatter:on
     }
@@ -49,7 +42,7 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K key, CacheLoader<K, V> loader) {
-        return this.get(key, DEFAULT_L1_TTL_SECONDS, loader);
+        return this.get(key, config.getTtlTimeUnit().toSeconds(config.getTtl()), loader);
     }
 
     @Override
@@ -67,7 +60,7 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
 
     @Override
     public void put(K key, V value) {
-        this.put(key, value, DEFAULT_L1_TTL_SECONDS);
+        this.put(key, value, config.getTtlTimeUnit().toSeconds(config.getTtl()));
     }
 
     @Override

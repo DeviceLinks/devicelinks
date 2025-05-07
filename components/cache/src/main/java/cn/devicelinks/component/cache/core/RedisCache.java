@@ -1,6 +1,7 @@
 package cn.devicelinks.component.cache.core;
 
 import cn.devicelinks.common.Constants;
+import cn.devicelinks.component.cache.config.RedisCacheConfig;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 
@@ -25,23 +26,15 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
     private final RedisTemplate<String, V> redisTemplate;
 
-    private String cachePrefix;
-
-    private long ttlSeconds;
+    private final RedisCacheConfig config;
 
     public RedisCache(RedisTemplate<String, V> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+        this(redisTemplate, RedisCacheConfig.useDefault());
     }
 
-    public RedisCache(RedisTemplate<String, V> redisTemplate, String cachePrefix) {
+    public RedisCache(RedisTemplate<String, V> redisTemplate, RedisCacheConfig config) {
         this.redisTemplate = redisTemplate;
-        this.cachePrefix = cachePrefix;
-    }
-
-    public RedisCache(RedisTemplate<String, V> redisTemplate, String cachePrefix, long ttlSeconds) {
-        this.redisTemplate = redisTemplate;
-        this.cachePrefix = cachePrefix;
-        this.ttlSeconds = ttlSeconds;
+        this.config = config;
     }
 
     @Override
@@ -94,11 +87,11 @@ public class RedisCache<K, V> implements Cache<K, V> {
     }
 
     private String getCachePrefix() {
-        return !ObjectUtils.isEmpty(cachePrefix) ? cachePrefix : DEFAULT_REDIS_CACHE_KEY_PREFIX;
+        return !ObjectUtils.isEmpty(config.getPrefix()) ? config.getPrefix() : DEFAULT_REDIS_CACHE_KEY_PREFIX;
     }
 
     private long getTtlSeconds() {
-        return ttlSeconds <= Constants.ZERO ? DEFAULT_L2_TTL_SECONDS : ttlSeconds;
+        return config.getTtl() <= Constants.ZERO ? DEFAULT_L2_TTL_SECONDS : config.getTtl();
     }
 
     @Override

@@ -78,7 +78,7 @@ public class SysDepartmentController {
     public ApiResponse<List<DepartmentTree.DepartmentTreeNode>> getDepartmentTree(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
         List<SysDepartment> sysDepartmentList = this.departmentService.selectList(searchFieldQuery);
         DepartmentTree departmentTree = DepartmentTree.with(sysDepartmentList).buildTree();
-        return ApiResponse.success(departmentTree.getNodeList());
+        return ApiResponse.success(departmentTree.nodeList());
     }
 
 

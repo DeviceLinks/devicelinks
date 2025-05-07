@@ -22,7 +22,7 @@ public class EnableCacheImportSelector implements ImportSelector {
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
         Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(EnableCache.class.getName());
         CacheType cacheType = (CacheType) annotationAttributes.get(CACHE_TYPE_ATTRIBUTE_NAME);
-        log.info("Use the [{}] type to enable the cache.", cacheType);
+        log.info("Enable data caching, cache type: [{}].", cacheType);
         switch (cacheType) {
             case Caffeine:
                 return new String[]{CaffeineCacheConfiguration.class.getName()};
