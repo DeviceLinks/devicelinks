@@ -54,6 +54,10 @@ devicelinks:
           key-store-password: ${DEVICELINKS_DEVICE_CENTER_KEY_STORE_PASSWORD:fZjLaxFgt5Txs7qSF5od}
           trust-store: ${HOME_DIR}/conf/ssl/truststore.jks
           trust-store-password: ${DEVICELINKS_DEVICE_CENTER_TRUST_STORE_PASSWORD:fZjLaxFgt5Txs7qSF5od}
-
+  # Cache
+  cache:
+    redis:
+      ttl: 300
+      ttl-time-unit: seconds
 logging:
   config: ${HOME_DIR}/conf/logback.xml

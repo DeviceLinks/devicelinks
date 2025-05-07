@@ -54,5 +54,10 @@ devicelinks:
     token-setting:
       issued-dynamic-token-length: 64
       validity-seconds: 7200
+  # Cache
+  cache:
+    redis:
+      ttl: 300
+      ttl-time-unit: seconds
 logging:
   config: ${HOME_DIR}/conf/logback.xml
