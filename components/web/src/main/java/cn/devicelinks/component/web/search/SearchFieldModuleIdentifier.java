@@ -34,6 +34,10 @@ public enum SearchFieldModuleIdentifier {
      */
     User("用户模块"),
     /**
+     * 部门
+     */
+    Department("部门"),
+    /**
      * 设备
      */
     Device("设备模块"),

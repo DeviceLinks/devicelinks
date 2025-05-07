@@ -16,6 +16,8 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
 
     private static final long DEFAULT_L1_TTL_SECONDS = 60L;
 
+    private static final int L1_ORDER = 1;
+
     private final com.github.benmanes.caffeine.cache.Cache<K, CacheValue<V>> cache;
 
     public CaffeineCache() {
@@ -81,5 +83,10 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
     @Override
     public void clear() {
         cache.invalidateAll();
+    }
+
+    @Override
+    public int getOrder() {
+        return L1_ORDER;
     }
 }

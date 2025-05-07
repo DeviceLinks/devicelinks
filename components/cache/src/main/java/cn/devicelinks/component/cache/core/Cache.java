@@ -1,12 +1,14 @@
 package cn.devicelinks.component.cache.core;
 
+import org.springframework.core.Ordered;
+
 /**
  * 缓存接口，定义了缓存的基本操作。
  *
  * @param <K> 缓存键的类型
  * @param <V> 缓存值的类型
  */
-public interface Cache<K, V> {
+public interface Cache<K, V> extends Ordered {
     /**
      * 根据指定的键获取缓存中的值。
      *

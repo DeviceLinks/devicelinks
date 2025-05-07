@@ -17,23 +17,29 @@
 
 package cn.devicelinks.console.controller;
 
-import cn.devicelinks.console.authorization.UserDetailsContext;
-import cn.devicelinks.service.system.SysDepartmentService;
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.request.AddDepartmentRequest;
 import cn.devicelinks.api.model.request.UpdateDepartmentRequest;
+import cn.devicelinks.api.model.response.DepartmentTree;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.LogAction;
 import cn.devicelinks.common.LogObjectType;
-import cn.devicelinks.component.web.api.ApiResponse;
-import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.operate.log.annotation.OperationLog;
+import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.api.ApiResponse;
+import cn.devicelinks.component.web.search.SearchFieldModuleIdentifier;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.component.web.search.annotation.SearchModule;
+import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.entity.SysUser;
+import cn.devicelinks.service.system.SysDepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 部门相关接口
@@ -47,6 +53,34 @@ import org.springframework.web.bind.annotation.*;
 public class SysDepartmentController {
 
     private final SysDepartmentService departmentService;
+
+    /**
+     * 查询部门列表
+     *
+     * @return 返回未被删除的部门列表，不进行分页
+     * @throws ApiException 查询过程中遇到的异常
+     */
+    @PostMapping(value = "/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.Department)
+    public ApiResponse<List<SysDepartment>> getAllDepartments(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        List<SysDepartment> sysDepartmentList = this.departmentService.selectList(searchFieldQuery);
+        return ApiResponse.success(sysDepartmentList);
+    }
+
+    /**
+     * 查询部门列表，返回Tree结构
+     *
+     * @return 返回未被删除的部门列表，不进行分页
+     * @throws ApiException 查询过程中遇到的异常
+     */
+    @PostMapping(value = "/tree/filter")
+    @SearchModule(module = SearchFieldModuleIdentifier.Department)
+    public ApiResponse<List<DepartmentTree.DepartmentTreeNode>> getDepartmentTree(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        List<SysDepartment> sysDepartmentList = this.departmentService.selectList(searchFieldQuery);
+        DepartmentTree departmentTree = DepartmentTree.with(sysDepartmentList).buildTree();
+        return ApiResponse.success(departmentTree.getNodeList());
+    }
+
 
     /**
      * 获取部门信息

@@ -65,6 +65,16 @@ public class UserSearchFieldModule implements SearchFieldModule {
                     SearchFieldOperator.NotLike
             ));
 
+    SearchField USER_DEPARTMENT_ID = SearchField.of(SearchFieldVariable.DEPARTMENT_ID)
+            .setValueType(SearchFieldValueType.STRING)
+            .setComponentType(SearchFieldComponentType.INPUT)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo,
+                    SearchFieldOperator.Like,
+                    SearchFieldOperator.NotLike
+            ));
+
     SearchField USER_ACTIVATE_METHOD = SearchField.of(SearchFieldVariable.USER_ACTIVATE_METHOD)
             .setValueType(SearchFieldValueType.ENUM)
             .setComponentType(SearchFieldComponentType.SELECT)
@@ -87,6 +97,7 @@ public class UserSearchFieldModule implements SearchFieldModule {
                 USER_ACCOUNT,
                 USER_EMAIL,
                 USER_PHONE,
+                USER_DEPARTMENT_ID,
                 USER_ACTIVATE_METHOD
         );
     }

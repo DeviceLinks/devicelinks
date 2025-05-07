@@ -19,9 +19,12 @@ package cn.devicelinks.service.system;
 
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
+import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.jdbc.repository.SysDepartmentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +47,12 @@ import static cn.devicelinks.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
 public class SysDepartmentServiceImpl extends BaseServiceImpl<SysDepartment, String, SysDepartmentRepository> implements SysDepartmentService {
     public SysDepartmentServiceImpl(SysDepartmentRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public List<SysDepartment> selectList(SearchFieldQuery searchFieldQuery) {
+        List<SearchFieldCondition> searchFieldConditions = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        return this.repository.selectListWithSearchConditions(searchFieldConditions);
     }
 
     @Override
