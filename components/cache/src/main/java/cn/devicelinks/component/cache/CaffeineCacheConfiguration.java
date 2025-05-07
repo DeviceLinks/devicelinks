@@ -1,5 +1,6 @@
 package cn.devicelinks.component.cache;
 
+import cn.devicelinks.component.cache.config.CaffeineCacheConfig;
 import cn.devicelinks.component.cache.core.Cache;
 import cn.devicelinks.component.cache.core.CaffeineCache;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class CaffeineCacheConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = CAFFEINE_CACHE_BEAN_NAME)
     public Cache<String, Object> caffeineCache() {
-        CacheProperties.CacheCaffeineConfig caffeineConfig = cacheProperties.getCaffeine();
-        return new CaffeineCache<>(caffeineConfig.getMaximumSize(), caffeineConfig.getTtlSeconds());
+        CaffeineCacheConfig caffeineConfig = cacheProperties.getCaffeine();
+        return new CaffeineCache<>(caffeineConfig);
     }
 }

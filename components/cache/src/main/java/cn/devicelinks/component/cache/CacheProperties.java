@@ -1,7 +1,10 @@
 package cn.devicelinks.component.cache;
 
+import cn.devicelinks.component.cache.config.CaffeineCacheConfig;
+import cn.devicelinks.component.cache.config.RedisCacheConfig;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import static cn.devicelinks.component.cache.CacheProperties.CACHE_CONFIG_PREFIX;
 
@@ -17,19 +20,9 @@ public class CacheProperties {
 
     public static final String CACHE_CONFIG_PREFIX = "devicelinks.cache";
 
-    private CacheCaffeineConfig caffeine = new CacheCaffeineConfig();
+    @NestedConfigurationProperty
+    private CaffeineCacheConfig caffeine = new CaffeineCacheConfig();
 
-    private CacheRedisConfig redis = new CacheRedisConfig();
-
-    @Data
-    public static class CacheCaffeineConfig {
-        private long ttlSeconds = 60L;
-        private long maximumSize = 10_1000L;
-    }
-
-    @Data
-    public static class CacheRedisConfig {
-        private String prefix = "devicelinks:cache";
-        private long ttlSeconds = 60L;
-    }
+    @NestedConfigurationProperty
+    private RedisCacheConfig redis = new RedisCacheConfig();
 }

@@ -35,7 +35,7 @@ public class CompositeCache<K, V> implements Cache<K, V> {
 
     public CompositeCache(List<Cache<K, V>> caches, long ttlSeconds) {
         Assert.notEmpty(caches, "Pass at least one level of cache instance.");
-        this.caches = caches;
+        this.caches = new ArrayList<>(caches);
         this.caches.sort(Comparator.comparing(Cache::getOrder));
         this.ttlSeconds = ttlSeconds;
     }
@@ -80,7 +80,10 @@ public class CompositeCache<K, V> implements Cache<K, V> {
 
     @Override
     public void put(K key, V value) {
-        this.put(key, value, this.ttlSeconds);
+        // Update cache data in reverse order
+        List<Cache<K, V>> reversedList = new ArrayList<>(caches);
+        Collections.reverse(reversedList);
+        reversedList.forEach(cache -> cache.put(key, value));
     }
 
     @Override
@@ -105,8 +108,10 @@ public class CompositeCache<K, V> implements Cache<K, V> {
         for (int i = 0; i < caches.size(); i++) {
             V value = caches.get(i).get(key);
             if (value != null) {
+                log.debug("Use cache data, Key: {}, cache level: {}.", key, (i + 1));
                 // Backfill in reverse order
                 for (int j = 0; j < i; j++) {
+                    log.debug("Reverse update cache, Key: {}, get data level: {}, update target level: {}.", key, (i + 1), (j + 1));
                     caches.get(j).put(key, value, ttlSeconds);
                 }
                 return value;
