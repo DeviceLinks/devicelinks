@@ -22,6 +22,7 @@ const DepartmentList: React.FC = () => {
   const refreshData = () => {};
   const [treeData, setTreeData] = React.useState<API.DepartmentTree[]>([]);
   const [treeLoading, setTreeLoading] = React.useState(true);
+  const [defaultTreeSelectedKeys, setDefaultTreeSelectedKeys] = React.useState([]);
   const treeFieldNames = { title: 'name', key: 'id', children: 'children' };
   const [selectedNode, setSelectedNode] = React.useState<API.DepartmentTree>();
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -64,14 +65,28 @@ const DepartmentList: React.FC = () => {
         searchFields: inputValue
           ? [
               {
+                field: 'deleted',
+                operator: 'EqualTo',
+                value: 'false',
+              },
+              {
                 field: 'name',
                 operator: 'Like',
                 value: inputValue,
               },
             ]
-          : [],
+          : [
+              {
+                field: 'deleted',
+                operator: 'EqualTo',
+                value: false,
+              },
+            ],
       });
       setTreeData(data);
+      if (data && data.length > 0) {
+        setDefaultTreeSelectedKeys(data?.[0] ? [data?.[0]?.id] : []);
+      }
     } finally {
       setTreeLoading(false);
     }
@@ -185,6 +200,7 @@ const DepartmentList: React.FC = () => {
                 defaultExpandAll={true}
                 fieldNames={treeFieldNames}
                 blockNode
+                defaultSelectedKeys={defaultTreeSelectedKeys}
                 titleRender={treeTitleRender}
                 onSelect={handleSelectNode}
               />
