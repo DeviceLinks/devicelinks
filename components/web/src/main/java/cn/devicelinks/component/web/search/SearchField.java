@@ -48,6 +48,7 @@ public class SearchField {
     private Class<? extends Enum> enumClass;
     private List<SearchFieldOperator> operators;
     private boolean required;
+    private boolean valueAllowNull;
 
     public static SearchField of() {
         return new SearchField();

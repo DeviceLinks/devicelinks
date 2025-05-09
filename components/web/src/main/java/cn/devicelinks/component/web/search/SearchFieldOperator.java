@@ -70,7 +70,13 @@ public enum SearchFieldOperator {
     /**
      * 不模糊匹配
      */
-    NotLike("不模糊匹配", "NotLike");
+    NotLike("不模糊匹配", "NotLike"),
+    /**
+     * 是
+     * <p>
+     * is null、is not null
+     */
+    Is("是", "Is");
     private final String description;
     private final String value;
 
