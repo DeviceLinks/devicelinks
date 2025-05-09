@@ -1,6 +1,10 @@
 import CreateDepartment from '@/pages/system/department/modules/createDepartment';
+import UserContent from '@/pages/system/department/modules/userContent';
 import AddUser from '@/pages/system/user/modules/CreateUserForm';
-import { postApiDepartmentTreeFilter } from '@/services/device-links-console-ui/department';
+import {
+  deleteApiDepartmentDepartmentId,
+  postApiDepartmentTreeFilter,
+} from '@/services/device-links-console-ui/department';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -8,8 +12,8 @@ import {
   PlusOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-components';
-import { Button, Menu, Popover, Spin, Tree } from 'antd';
+import { PageContainer, ProCard } from '@ant-design/pro-components';
+import { Button, Menu, message, Modal, Popover, Spin, Tree } from 'antd';
 import Search from 'antd/es/input/Search';
 import React from 'react';
 import style from '../styles/index.module.css';
@@ -89,6 +93,20 @@ const DepartmentList: React.FC = () => {
     setOpenAddModal(true);
   };
 
+  const deleteDepartmentFunc = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '删除部门后不可恢复，确认删除该部门？',
+      onOk: async () => {
+        await deleteApiDepartmentDepartmentId({
+          departmentId: selectedNode?.id,
+        } as API.deleteApiDepartmentDepartmentIdParams);
+        message.success('删除成功');
+        getTreeData();
+      },
+    });
+  };
+
   const handleClickMenu = ({ key }: any) => {
     console.log(key);
     if (key === 'add') {
@@ -97,6 +115,9 @@ const DepartmentList: React.FC = () => {
     } else if (key === 'edit') {
       setEditDepartmentInfo(selectedNode);
       setOpenAddModal(true);
+    } else if (key === 'move') {
+    } else if (key === 'delete') {
+      deleteDepartmentFunc();
     }
   };
 
@@ -150,36 +171,37 @@ const DepartmentList: React.FC = () => {
       content={'维护组织内多层级部门，并管理成员的部门隶属关系。'}
       extra={[<AddUser key={'department'} refresh={refreshData} />]}
     >
-      <div className={style.content}>
-        <Spin spinning={treeLoading}>
-          <div className={style.tree}>
-            <Search
-              style={{ marginBottom: 8 }}
-              placeholder="请输入部门名称搜索"
-              onSearch={filterTreeData}
-            />
-            <Tree
-              treeData={treeData}
-              defaultExpandAll={true}
-              fieldNames={treeFieldNames}
-              blockNode
-              titleRender={treeTitleRender}
-              onSelect={handleSelectNode}
-            />
-            <Button
-              type={'primary'}
-              ghost={true}
-              icon={<PlusOutlined />}
-              className={style.addDepartmentBtn}
-              onClick={openAddDepartmentModal}
-            >
-              新建部门
-            </Button>
-          </div>
-        </Spin>
-
-        <div className={style.userList}></div>
-      </div>
+      <ProCard split="vertical">
+        <ProCard colSpan="20%">
+          <Spin spinning={treeLoading}>
+            <div className={style.tree}>
+              <Search
+                style={{ marginBottom: 8 }}
+                placeholder="请输入部门名称搜索"
+                onSearch={filterTreeData}
+              />
+              <Tree
+                treeData={treeData}
+                defaultExpandAll={true}
+                fieldNames={treeFieldNames}
+                blockNode
+                titleRender={treeTitleRender}
+                onSelect={handleSelectNode}
+              />
+              <Button
+                type={'primary'}
+                ghost={true}
+                icon={<PlusOutlined />}
+                className={style.addDepartmentBtn}
+                onClick={openAddDepartmentModal}
+              >
+                新建部门
+              </Button>
+            </div>
+          </Spin>
+        </ProCard>
+        <UserContent department={selectedNode} />
+      </ProCard>
       <CreateDepartment
         open={openAddModal}
         onCancel={() => setOpenAddModal(false)}

@@ -33,8 +33,11 @@ const CreateDepartmentModal: React.FC<ModalProps> = ({
   const formRef = React.useRef<ProFormInstance>();
   React.useEffect(() => {
     if (open && formRef.current) {
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', departmentInfo);
-      setFormInfo(JSON.parse(JSON.stringify(departmentInfo)));
+      if (!departmentInfo) {
+        setFormInfo(undefined);
+      } else {
+        setFormInfo(JSON.parse(JSON.stringify(departmentInfo)));
+      }
       formRef.current?.setFieldsValue(formInfo);
     }
   }, [open, departmentInfo]);
