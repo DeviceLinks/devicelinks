@@ -74,7 +74,11 @@ public enum SqlQueryOperator {
     /**
      * 结尾匹配
      */
-    Suffix("like");
+    Suffix("like"),
+    /**
+     * Is
+     */
+    Is("is");
 
     SqlQueryOperator(String value) {
         this.value = value;
