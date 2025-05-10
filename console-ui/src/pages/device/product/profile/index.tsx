@@ -115,7 +115,7 @@ const ProductProfile: React.FC = () => {
   ];
   const [responsive, setResponsive] = useState(false);
   if (loading) {
-    return <ProSkeleton type="descriptions" />;
+    return <ProSkeleton type="descriptions" pageHeader={false} />;
   }
   return (
     <RcResizeObserver

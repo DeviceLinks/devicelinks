@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { ActionType, ProCard, ProColumns, ProList, ProTable } from '@ant-design/pro-components';
+import {
+  ActionType,
+  ProCard,
+  ProColumns,
+  ProDescriptions,
+  ProList,
+  ProTable,
+} from '@ant-design/pro-components';
 import {
   deleteApiFunctionModuleModuleId,
   postApiFunctionModuleFilter,
 } from '@/services/device-links-console-ui/functionModule';
 import { useRequest } from '@@/exports';
 import { Button, message, Modal } from 'antd';
-import { postApiAttributeFilter } from '@/services/device-links-console-ui/attribute';
+import {
+  deleteApiAttributeAttributeId,
+  getApiAttributeUnit,
+  postApiAttributeFilter,
+} from '@/services/device-links-console-ui/attribute';
 import UpdateFunctionModuleForm from '@/pages/device/product/modules/UpdateFunctionModuleForm';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import CreateFunctionModuleForm from '@/pages/device/product/modules/CreateFunctionModuleForm';
 import CreateAttributeForm from '@/pages/device/product/modules/CreateAttributeForm';
 import { useModel } from '@umijs/max';
+import UpdateAttributeForm from '@/pages/device/product/modules/UpdateAttributeForm';
 type ProductFunctionModuleInfoProps = {
   productId: string | undefined;
   responsive: boolean;
@@ -26,10 +38,11 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
   productId,
   responsive,
 }) => {
-  const { enums } = useModel('enumModel');
+  const { enums, getEnumByValue } = useModel('enumModel');
   const { AttributeDataType } = enums;
   const [currentModel, setCurrentModel] = useState<API.FunctionModule>();
   const functionModuleActionRef = React.useRef<ActionType>();
+  const attributeActionRef = React.useRef<ActionType>();
   const [messageApi, contextHolder] = message.useMessage();
   /**
    * 获取功能模块列表
@@ -51,6 +64,8 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
     if (defaultModule && !currentModel) setCurrentModel(defaultModule);
     return res;
   };
+  /** 获取属性单位用于单位回显 */
+  const { data: attributeUnit } = useRequest(getApiAttributeUnit);
   /**
    * 删除功能模块API
    */
@@ -62,7 +77,17 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
     },
   });
   /**
-   * 处理删除功能模块
+   * 删除属性API
+   */
+  const { run: deleteAttribute } = useRequest(deleteApiAttributeAttributeId, {
+    manual: true,
+    onSuccess: () => {
+      messageApi?.success('删除属性成功');
+      attributeActionRef.current?.reload();
+    },
+  });
+  /**
+   * 删除功能模块
    * @param record
    */
   const handleDeleteFunctionModule = async (record: API.FunctionModule) => {
@@ -76,11 +101,28 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
       },
     });
   };
+
+  /**
+   * 删除属性
+   * @param record
+   */
+  const handleDeleteAttribute = async (record: API.Attribute) => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定要删除该属性吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: async () => {
+        deleteAttribute({ attributeId: record.id });
+      },
+    });
+  };
   const attributeColumns: ProColumns<API.Attribute>[] = [
     {
       title: '属性ID',
       dataIndex: 'id',
       key: 'id',
+      width: 250,
     },
     {
       title: '属性名称',
@@ -91,14 +133,79 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
       title: '数据类型',
       dataIndex: 'dataType',
       key: 'dataType',
+      valueType: 'select',
       fieldProps: {
         options: AttributeDataType,
       },
     },
     {
-      title: '附加信息',
+      title: '附加扩展',
       dataIndex: 'addition',
       key: 'addition',
+      width: 300,
+      render: (_, record) => {
+        const { addition, dataType } = record;
+        if (!addition) return '-';
+        const renderByType = () => {
+          switch (dataType) {
+            case 'INTEGER':
+            case 'DOUBLE':
+              return (
+                <>
+                  {addition.valueRange && (
+                    <ProDescriptions.Item
+                      label={'取值范围'}
+                    >{`${addition.valueRange.min} ~ ${addition.valueRange.max}`}</ProDescriptions.Item>
+                  )}
+                  <ProDescriptions.Item label={'步长'}>{addition.step}</ProDescriptions.Item>
+                </>
+              );
+            case 'STRING':
+              return (
+                <>
+                  {addition.dataLength && (
+                    <ProDescriptions.Item label={'数据长度'}>
+                      {addition.dataLength}
+                    </ProDescriptions.Item>
+                  )}
+                </>
+              );
+            case 'ENUM':
+              return (
+                <>
+                  <ProDescriptions.Item label={''} valueType={'jsonCode'}>
+                    {JSON.stringify(addition.valueMap)}
+                  </ProDescriptions.Item>
+                </>
+              );
+            case 'JSON':
+              return '-';
+            case 'ARRAY':
+              return (
+                <>
+                  <ProDescriptions.Item label={'元素类型'}>
+                    {getEnumByValue(AttributeDataType, addition.elementDataType)?.label}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label={'元素个数'}>
+                    {addition.elementCount}
+                  </ProDescriptions.Item>
+                </>
+              );
+            default:
+              return null;
+          }
+        };
+        return (
+          <ProDescriptions size={'small'} column={1}>
+            {renderByType()}
+            {addition.unitId && (
+              <ProDescriptions.Item label={'单位'}>
+                {attributeUnit?.find((item) => item.id === addition.unitId)?.name}
+              </ProDescriptions.Item>
+            )}
+          </ProDescriptions>
+        );
+      },
     },
     {
       title: '新增时间',
@@ -114,15 +221,27 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
       title: '操作',
       valueType: 'option',
       key: 'option',
+      align: 'center',
+      width: 100,
       render: (_, record) => [
-        <a
+        <UpdateAttributeForm
+          key="updateAttribute"
+          attributeId={record.id}
+          attributeUnit={attributeUnit}
+          reload={() => {
+            attributeActionRef.current?.reload();
+          }}
+        ></UpdateAttributeForm>,
+        <Button
+          type={'link'}
+          danger
           key="delete"
           onClick={() => {
-            handleDeleteFunctionModule(record);
+            handleDeleteAttribute(record);
           }}
         >
           删除
-        </a>,
+        </Button>,
       ],
     },
   ];
@@ -154,6 +273,11 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
             value: currentModel.id,
           },
           {
+            field: 'pid',
+            operator: 'Is',
+            value: null,
+          },
+          {
             field: 'productId',
             operator: 'EqualTo',
             value: currentModel.productId,
@@ -171,15 +295,12 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
     <>
       {contextHolder}
       <ProCard split={responsive ? 'horizontal' : 'vertical'}>
-        <ProCard
-          colSpan={{
-            md: 24,
-            xl: 8,
-          }}
-          ghost
-        >
+        <ProCard ghost colSpan={responsive ? '100%' : '400px'}>
           <ProList<API.FunctionModule>
             tableAlertRender={false}
+            className={'custom-right-pro-list'}
+            size={'small'}
+            key={'id'}
             actionRef={functionModuleActionRef}
             rowKey={'id'}
             onRow={(record) => {
@@ -261,8 +382,10 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
           <ProTable<API.Attribute & API.FunctionModule & API.postApiAttributeFilterParams>
             params={currentModel}
             rowKey={'id'}
+            key={'attributeTable'}
             search={false}
             columns={attributeColumns}
+            actionRef={attributeActionRef}
             request={fetchAttributeData}
             toolbar={{
               actions: [
@@ -271,6 +394,9 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
                     initialValues={{
                       productId: currentModel?.productId,
                       moduleId: currentModel?.id,
+                    }}
+                    reload={() => {
+                      attributeActionRef.current?.reload();
                     }}
                     key="createAttribute"
                   ></CreateAttributeForm>

@@ -31,7 +31,7 @@ export default function Page(): {
   ) => ProSchemaValueEnumMap;
   getEnumByValue: (
     list: API.EnumItem[],
-    value: string | number | boolean,
+    value: string | number | boolean | undefined,
   ) => API.EnumItem | undefined;
 } {
   const initEnums = {
@@ -123,7 +123,7 @@ export default function Page(): {
    * @param list
    * @param value
    */
-  const getEnumByValue = (list: API.EnumItem[], value: string | number | boolean) => {
+  const getEnumByValue = (list: API.EnumItem[], value: string | number | boolean | undefined) => {
     return list.find((item) => item.value === value);
   };
 
