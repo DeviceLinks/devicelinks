@@ -19,7 +19,6 @@ package cn.devicelinks.component.web.search;
 
 import cn.devicelinks.component.web.validator.EnumValid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -46,6 +45,5 @@ public class SearchFieldFilter {
     /**
      * 检索字段值
      */
-    @NotNull(message = "检索字段值不能为空")
     private Object value;
 }

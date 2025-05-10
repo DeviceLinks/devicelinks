@@ -1,4 +1,4 @@
-FROM devicelinks/openjdk:jre21.0.5_11-openj9-0.48.0
+FROM devicelinks/openjdk:jre21.0.7_6-openj9-0.51.0
 MAINTAINER hengboy
 
 # 环境变量

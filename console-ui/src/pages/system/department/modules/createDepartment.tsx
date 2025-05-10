@@ -1,5 +1,6 @@
 import {
   postApiDepartment,
+  postApiDepartmentDepartmentId,
   postApiDepartmentTreeFilter,
 } from '@/services/device-links-console-ui/department';
 import {
@@ -31,25 +32,49 @@ const CreateDepartmentModal: React.FC<ModalProps> = ({
   const [form] = Form.useForm<API.DepartmentTree>();
   const formRef = React.useRef<ProFormInstance>();
   React.useEffect(() => {
-    if (open) {
-      setFormInfo(JSON.parse(JSON.stringify(departmentInfo)));
+    if (open && formRef.current) {
+      if (!departmentInfo) {
+        setFormInfo(undefined);
+      } else {
+        setFormInfo(JSON.parse(JSON.stringify(departmentInfo)));
+      }
+      formRef.current?.setFieldsValue(formInfo);
     }
-  }, [open]);
+  }, [open, departmentInfo]);
   return (
-    <Modal title="新增部门" open={open} onCancel={onCancel} footer={false}>
+    <Modal
+      title={formInfo?.id ? '编辑部门' : '新增部门'}
+      open={open}
+      onCancel={onCancel}
+      footer={false}
+    >
       <ProForm<API.DepartmentTree>
-        title="新增部门"
         form={form}
         formRef={formRef}
+        key={formInfo?.id || ''}
         autoFocusFirstInput
-        initialValues={formInfo}
         onFinish={async (values: any) => {
-          await postApiDepartment(values);
-          message.success('新增成功');
-          formRef.current?.resetFields();
-          refresh();
-          onCancel();
-          return true;
+          console.log('formInfo', formInfo);
+          if (!formInfo?.id) {
+            console.log('+++++++++++++++');
+            await postApiDepartment(values);
+            message.success('新增成功');
+            refresh();
+            onCancel();
+            formRef.current?.resetFields();
+            return true;
+          } else {
+            console.log('--------------------');
+            await postApiDepartmentDepartmentId(
+              { departmentId: formInfo?.id ?? '' },
+              { ...values },
+            );
+            message.success('更新成功');
+            refresh();
+            onCancel();
+            formRef.current?.resetFields();
+            return true;
+          }
         }}
       >
         <ProFormTreeSelect
@@ -77,6 +102,7 @@ const CreateDepartmentModal: React.FC<ModalProps> = ({
           name="name"
           label="部门名称"
           allowClear
+          tooltip={'部门名称最长为30个字符'}
           placeholder="请输入部门名称"
           rules={[
             {

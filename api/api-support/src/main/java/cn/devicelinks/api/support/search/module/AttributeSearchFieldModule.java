@@ -39,12 +39,14 @@ public class AttributeSearchFieldModule implements SearchFieldModule {
 
     SearchField ATTRIBUTE_PARENT_ID = SearchField.of(SearchFieldVariable.ATTRIBUTE_PARENT_ID)
             .setValueType(SearchFieldValueType.STRING)
+            .setValueAllowNull(Boolean.TRUE)
             .setComponentType(SearchFieldComponentType.INPUT)
             .setOperators(List.of(
                     SearchFieldOperator.EqualTo,
                     SearchFieldOperator.NotEqualTo,
                     SearchFieldOperator.In,
-                    SearchFieldOperator.NotIn
+                    SearchFieldOperator.NotIn,
+                    SearchFieldOperator.Is
             ));
 
     SearchField ATTRIBUTE_IDENTIFIER = SearchField.of(SearchFieldVariable.ATTRIBUTE_IDENTIFIER)

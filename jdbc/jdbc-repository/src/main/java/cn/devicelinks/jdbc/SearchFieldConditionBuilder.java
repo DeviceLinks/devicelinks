@@ -30,6 +30,7 @@ public class SearchFieldConditionBuilder {
     private final StatusCode SEARCH_FIELD_OPERATOR_NOT_SUPPORT = StatusCode.build("SEARCH_FIELD_OPERATOR_NOT_SUPPORT", "检索字段：[%s]，不支持运算符：[%s].");
     private final StatusCode SEARCH_FIELD_ENUM_VALUE_ILLEGAL = StatusCode.build("SEARCH_FIELD_ENUM_VALUE_ILLEGAL", "检索字段：[%s]，枚举值：[%s]，并未定义，请检查是否有效.");
     private final StatusCode SEARCH_FIELD_REQUIRED_NOT_PRESENT = StatusCode.build("SEARCH_FIELD_REQUIRED_NOT_PRESENT", "检索字段：[%s]，必须全部传递.");
+    private final StatusCode SEARCH_FIELD_VALUE_CANNOT_BE_NULL = StatusCode.build("SEARCH_FIELD_VALUE_CANNOT_BE_NULL", "检索字段：[%s]，值不允许为空.");
 
     private String searchFieldModule;
     private String searchMatch;
@@ -64,8 +65,6 @@ public class SearchFieldConditionBuilder {
             }
             // @formatter:off
             this.searchFields.stream()
-                    // ignore empty value
-                    .filter(f -> !ObjectUtils.isEmpty(f.getValue()))
                     .map(filter -> {
                         // check field is in module
                         if (!moduleSearchFieldMap.containsKey(filter.getField())) {
@@ -81,7 +80,11 @@ public class SearchFieldConditionBuilder {
                         // if value type is enum, convert value to enum object
                         SearchField searchField = moduleSearchFieldMap.get(filter.getField());
                         Object filterValue = filter.getValue();
-                        if (SearchFieldValueType.ENUM == searchField.getValueType() && searchField.getEnumClass() != null) {
+                        // When the value is not allowed to be null, an exception is thrown
+                        if(!searchField.isValueAllowNull() && filterValue == null) {
+                            throw new ApiException(SEARCH_FIELD_VALUE_CANNOT_BE_NULL, searchField.getField());
+                        }
+                        if (filterValue != null && SearchFieldValueType.ENUM == searchField.getValueType() && searchField.getEnumClass() != null) {
                             try {
                                 // If an enum array is passed
                                 if (filterValue instanceof List &&
