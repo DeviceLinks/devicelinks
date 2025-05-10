@@ -19,7 +19,7 @@ import {
   postApiAttributeFilter,
 } from '@/services/device-links-console-ui/attribute';
 import UpdateFunctionModuleForm from '@/pages/device/product/modules/UpdateFunctionModuleForm';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import CreateFunctionModuleForm from '@/pages/device/product/modules/CreateFunctionModuleForm';
 import CreateAttributeForm from '@/pages/device/product/modules/CreateAttributeForm';
 import { useModel } from '@umijs/max';
@@ -179,7 +179,7 @@ const ProductFunctionModuleInfo: React.FC<ProductFunctionModuleInfoProps> = ({
                 </>
               );
             case 'JSON':
-              return '-';
+              return null;
             case 'ARRAY':
               return (
                 <>
