@@ -100,7 +100,7 @@ declare namespace API {
     mark?: string;
     /** 鉴权方式 */
     credentialsType: string;
-    /** 附加信息 */
+    /** 鉴权附加信息 */
     credentialsAddition: DeviceCredentialsAddition;
   };
 
@@ -212,6 +212,8 @@ declare namespace API {
     createTime: string;
     /** 描述 */
     description?: string;
+    /** 子属性列表 */
+    childAttributes: Attribute[];
   };
 
   type AttributeAddition = {
@@ -224,7 +226,7 @@ declare namespace API {
     /** 数据范围 */
     valueRange?: { min?: number; max?: number };
     /** 数据值映射集合 */
-    valueMap?: string;
+    valueMap?: Record<string, any> | { label: string; value: string }[] | null;
     /** 数组、集合元素的数量 */
     elementCount?: number;
     /** 单个元素的数据类型 */
@@ -266,6 +268,7 @@ declare namespace API {
     createTime: string;
     /** 描述 */
     description?: string;
+    /** 子属性 */
     childAttributes: Attribute;
   };
 
@@ -645,7 +648,7 @@ declare namespace API {
     deviceId: string;
     /** 认证方式 */
     credentialsType: string;
-    /** 附加信息 */
+    /** 鉴权附加信息 */
     addition: DeviceCredentialsAddition;
     /** 过期时间 */
     expirationTime?: string;
@@ -872,7 +875,7 @@ declare namespace API {
     NotificationPushAway: NotificationPushAway;
     NotificationType: NotificationType;
     AlarmType: AlarmType;
-    SearchFieldOperator: SearchFieldOperator;
+    SearchFieldOperator: SearchFieldOperator2;
     OtaUpgradeBatchMethod: OtaUpgradeBatchMethod;
     UserActivateMethod: UserActivateMethod;
     DeviceType: DeviceType;
@@ -1455,9 +1458,11 @@ declare namespace API {
     optionStaticData?: SearchFieldOptionData[];
     enumClass?: string;
     /** 运算符列表 */
-    operators: SearchFieldOperator1[];
+    operators: SearchFieldOperator[];
     /** 是否必须传递 */
     required?: boolean;
+    /** 值是否允许为null */
+    valueAllowNull?: boolean;
   };
 
   type SearchFieldComponentType = EnumItem[];
@@ -1485,9 +1490,7 @@ declare namespace API {
 
   type SearchFieldModuleIdentifier = EnumItem[];
 
-  type SearchFieldOperator = EnumItem[];
-
-  type SearchFieldOperator1 = {
+  type SearchFieldOperator = {
     /** 描述 */
     description: string;
     /** 运算符标识符ß */
@@ -1503,6 +1506,8 @@ declare namespace API {
       | 'Like'
       | 'NotLike';
   };
+
+  type SearchFieldOperator2 = EnumItem[];
 
   type SearchFieldOptionData = {
     /** 字段选项描述 */
@@ -1553,7 +1558,7 @@ declare namespace API {
   type UpdateDeviceCredentialsRequest = {
     /** 设备鉴权方式 */
     credentialsType: string;
-    /** 附加信息 */
+    /** 鉴权附加信息 */
     credentialsAddition: DeviceCredentialsAddition;
   };
 

@@ -75,6 +75,7 @@ const ProductDeviceInfo: React.FC<ProductDeviceInfoProps> = ({ productId }) => {
     {
       dataIndex: 'id',
       title: '设备ID',
+      width: 250,
     },
     {
       dataIndex: 'deviceName',

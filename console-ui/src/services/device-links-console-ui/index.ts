@@ -2,19 +2,19 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
-import * as attribute from './attribute';
-import * as chart from './chart';
-import * as common from './common';
-import * as department from './department';
+import * as login from './login';
+import * as user from './user';
 import * as device from './device';
+import * as product from './product';
+import * as department from './department';
+import * as common from './common';
+import * as functionModule from './functionModule';
+import * as attribute from './attribute';
+import * as log from './log';
+import * as telemetry from './telemetry';
+import * as chart from './chart';
 import * as deviceProfile from './deviceProfile';
 import * as deviceTag from './deviceTag';
-import * as functionModule from './functionModule';
-import * as log from './log';
-import * as login from './login';
-import * as product from './product';
-import * as telemetry from './telemetry';
-import * as user from './user';
 export default {
   login,
   user,

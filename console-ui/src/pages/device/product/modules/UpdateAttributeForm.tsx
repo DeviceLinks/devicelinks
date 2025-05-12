@@ -13,11 +13,12 @@ import {
 } from '@ant-design/pro-components';
 import { useModel, useRequest } from '@umijs/max';
 import {
-  getApiAttributeUnit,
-  postApiAttribute,
+  getApiAttributeAttributeId,
+  postApiAttributeAttributeId,
 } from '@/services/device-links-console-ui/attribute';
 import React, { useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
+import { cloneDeep } from 'lodash';
 type WriteChildAttributeModalFormProps = {
   trigger?: JSX.Element;
   submitter?: (formData: API.AttributeInfoRequest) => Promise<void>;
@@ -35,6 +36,22 @@ const WriteChildAttributeModalForm: React.FC<WriteChildAttributeModalFormProps> 
   const formRef = useRef<ProFormInstance>();
   //antPro存在bug ProFormList 在第一次提交时没有触发transform
   const firstSubmit = useRef(true);
+  const fetchData = async () => {
+    if (!initialValues) return {} as API.AttributeInfoRequest;
+    const data = cloneDeep(initialValues);
+    const { dataType, addition } = data;
+    if (dataType === 'ENUM' && addition?.valueMap) {
+      const valueMap: Record<string, string> = addition.valueMap as Record<string, string>;
+      addition.valueMap = Object.keys(valueMap).map((key) => {
+        return {
+          label: valueMap[key],
+          value: key,
+        };
+      });
+    }
+    console.log(data, 'data');
+    return data;
+  };
   return (
     <ModalForm<API.AttributeInfoRequest>
       trigger={trigger}
@@ -44,6 +61,7 @@ const WriteChildAttributeModalForm: React.FC<WriteChildAttributeModalFormProps> 
       modalProps={{
         destroyOnClose: true,
       }}
+      request={fetchData}
       onFinish={async (values) => {
         if (firstSubmit.current) {
           firstSubmit.current = false;
@@ -53,10 +71,6 @@ const WriteChildAttributeModalForm: React.FC<WriteChildAttributeModalFormProps> 
         firstSubmit.current = true;
         submitter?.(values);
         return true;
-      }}
-      initialValues={{
-        writable: true,
-        ...initialValues,
       }}
     >
       <ProFormText
@@ -205,12 +219,6 @@ const WriteChildAttributeModalForm: React.FC<WriteChildAttributeModalFormProps> 
                           },
                         };
                       }}
-                      initialValue={[
-                        {
-                          value: '',
-                          label: '',
-                        },
-                      ]}
                       creatorButtonProps={{
                         creatorButtonText: '添加枚举项',
                       }}
@@ -284,46 +292,62 @@ const WriteChildAttributeModalForm: React.FC<WriteChildAttributeModalFormProps> 
     </ModalForm>
   );
 };
-type CreateAttributeFormProps = {
+type UpdateAttributeFormProps = {
   reload?: () => void;
-  initialValues?: {
-    productId?: string;
-    moduleId?: string;
-  };
-  trigger?: JSX.Element;
+  attributeId: string;
+  attributeUnit?: API.AttributeUnit[];
 };
-const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initialValues }) => {
+const UpdateAttributeForm: React.FC<UpdateAttributeFormProps> = ({
+  reload,
+  attributeId,
+  attributeUnit,
+}) => {
   const { enums } = useModel('enumModel');
   const { AttributeDataType } = enums;
   const [messageApi, contextHolder] = message.useMessage();
-  const { run: addAttribute, loading } = useRequest(postApiAttribute, {
+  const { run: updateAttribute, loading } = useRequest(postApiAttributeAttributeId, {
     manual: true,
     onSuccess: () => {
-      messageApi?.success('新增属性成功');
+      messageApi?.success('更新属性成功');
       reload?.();
     },
   });
   const formRef = useRef<ProFormInstance>();
-  const { data: attributeUnit } = useRequest(getApiAttributeUnit);
   //antPro存在bug ProFormList 在第一次提交时没有触发transform
   const firstSubmit = useRef(true);
+  //获取属性详情
+  const fetchData = async () => {
+    const { data } = await getApiAttributeAttributeId({
+      attributeId,
+    });
+    if (data?.dataType === 'ENUM' && data?.addition?.valueMap) {
+      const valueMap: Record<string, string> = data.addition.valueMap as Record<string, string>;
+      data.addition.valueMap = Object.keys(valueMap).map((key) => {
+        return {
+          label: valueMap[key],
+          value: key,
+        };
+      });
+    }
+    return {
+      info: {
+        ...data,
+      },
+      childAttributes: data?.childAttributes || [],
+    } as API.UpdateAttributeRequest;
+  };
   return (
     <>
       {contextHolder}
-      <ModalForm<API.AddAttributeRequest>
-        title={'新增属性'}
+      <ModalForm<API.UpdateAttributeRequest>
+        title={'编辑属性'}
         formRef={formRef}
+        request={fetchData}
         width="520px"
         modalProps={{ okButtonProps: { loading }, destroyOnClose: true }}
-        initialValues={{
-          ...initialValues,
-          info: {
-            writable: true,
-          },
-        }}
         trigger={
-          <Button type="primary" icon={<PlusOutlined />}>
-            新增属性
+          <Button type={'link'} key="edit">
+            编辑
           </Button>
         }
         onFinish={async (values) => {
@@ -333,7 +357,12 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
             return false;
           }
           firstSubmit.current = true;
-          await addAttribute(values);
+          await updateAttribute(
+            {
+              attributeId,
+            },
+            values,
+          );
           return true;
         }}
       >
@@ -378,7 +407,12 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
           options={AttributeDataType}
           required
         ></ProFormSelect>
-        <ProFormDependency name={[['info', 'dataType']]}>
+        <ProFormDependency
+          name={[
+            ['info', 'dataType'],
+            ['info', 'addition', 'valueMap'],
+          ]}
+        >
           {({ info }) => {
             const dataType = info?.dataType;
             const renderFields = () => {
@@ -508,37 +542,45 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
                 case 'ENUM':
                   return (
                     <>
+                      {/* <ProFormItem
+                        required
+                        label={'枚举项'}
+                        name={['info', 'addition', 'valueMap']}
+                        convertValue={(value?: Record<string, string>) => {
+                          if (!value) return [];
+                          return Object.keys(value).map((key) => {
+                            return {
+                              label: value[key],
+                              value: key,
+                            };
+                          });
+                        }}
+                      ></ProFormItem>*/}
+                      {/* ProFormList 不支持 convertValue  数据回显 需要在convertValue之后*/}
                       <ProFormList
                         label={'枚举项'}
                         name={['info', 'addition', 'valueMap']}
                         required
                         copyIconProps={false}
-                        min={1}
                         transform={(
                           value: Array<{
                             value: string;
                             label: string;
                           }>,
-                          namePath,
                         ) => {
                           const res: Record<string, string> = {};
-                          value.forEach((item: any) => {
+                          value?.forEach((item: any) => {
                             res[item.value] = item.label;
                           });
                           return {
                             info: {
                               addition: {
-                                [namePath]: res,
+                                valueMap: res,
                               },
                             },
                           };
                         }}
-                        initialValue={[
-                          {
-                            value: '',
-                            label: '',
-                          },
-                        ]}
+                        min={1}
                         creatorButtonProps={{
                           creatorButtonText: '添加枚举项',
                         }}
@@ -609,12 +651,12 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
                                 <Space align={'center'}>
                                   <WriteChildAttributeModalForm
                                     initialValues={childAttributes[field.name]}
-                                    attributeUnit={attributeUnit}
                                     trigger={
                                       <Button type={'link'} size={'small'}>
                                         编辑
                                       </Button>
                                     }
+                                    attributeUnit={attributeUnit}
                                     submitter={async (values) => {
                                       formRef.current?.setFieldsValue({
                                         childAttributes: {
@@ -696,4 +738,4 @@ const CreateAttributeForm: React.FC<CreateAttributeFormProps> = ({ reload, initi
     </>
   );
 };
-export default CreateAttributeForm;
+export default UpdateAttributeForm;

@@ -115,7 +115,6 @@ export const errorConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       const responseData = response.data as API.ApiResponse;
-      console.log(responseData.success);
       const { code } = responseData;
       if (responseData.code === ResponseCodeType.TOKEN_JWT_PARSING_FAILED) {
         responseData.success = false;

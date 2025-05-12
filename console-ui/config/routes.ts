@@ -33,7 +33,10 @@ export default [
         name: '产品',
         flatMenu: true,
         routes: [
-          { path: '/device/product', redirect: '/device/product/list' },
+          {
+            path: '/device/product',
+            redirect: '/device/product/list',
+          },
           {
             path: '/device/product/list',
             name: '产品',
