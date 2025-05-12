@@ -208,7 +208,7 @@ const UserInfo: React.FC = () => {
     <PageContainer
       title={'用户管理'}
       content={'当前用户池的所有用户，在这里你可以对用户进行统一管理'}
-      extra={<Add refresh={() => tableRef.current?.reload()} />}
+      extra={<Add refresh={() => tableRef.current?.reload()} btnType={'primary'} />}
     >
       <ProTable<API.User, API.postApiUserFilterParams & API.SearchField>
         actionRef={tableRef}

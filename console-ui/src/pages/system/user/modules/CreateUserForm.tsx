@@ -12,9 +12,11 @@ import {
 } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { Button, Form, message } from 'antd';
+import { ButtonType } from 'antd/es/button';
 
 interface Props {
   refresh: () => void;
+  btnType?: ButtonType;
 }
 
 export default (prop: Props) => {
@@ -26,7 +28,7 @@ export default (prop: Props) => {
     <ModalForm<API.User>
       title="成员入职"
       trigger={
-        <Button type="primary">
+        <Button type={prop.btnType}>
           <PlusOutlined />
           成员入职
         </Button>

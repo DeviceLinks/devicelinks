@@ -14,7 +14,6 @@ import {
 import { Form, message, Modal } from 'antd';
 import React from 'react';
 
-// 1. 定义独立弹窗组件props类型
 interface ModalProps {
   open: boolean;
   onCancel: () => void;

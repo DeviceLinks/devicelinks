@@ -1,3 +1,4 @@
+import BatchAddUser from '@/pages/system/department/modules/batchAddUser';
 import {
   deleteApiUserUserId,
   postApiUserFilter,
@@ -19,6 +20,7 @@ const UserContent: React.FC<Props> = ({ department }) => {
   const { enums } = useModel('enumModel');
   const { UserActivateMethod } = enums!;
   const [loading, setLoading] = useState<boolean>(true);
+  const [addUserModalVisible, setAddUserModalVisible] = useState<boolean>(false);
   const [total, setTotal] = useState(0);
   const tableRef = useRef<ActionType>();
   const title = (
@@ -30,6 +32,15 @@ const UserContent: React.FC<Props> = ({ department }) => {
       </span>
     </div>
   );
+
+  const cancelAddUser = () => {
+    setAddUserModalVisible(false);
+  };
+
+  const handleAddUser = () => {
+    setAddUserModalVisible(true);
+  };
+
   /**启用/禁用 */
   const handleEnabled = async (record: API.User) => {
     const res: any = await postApiUserStatusUserId({
@@ -176,26 +187,39 @@ const UserContent: React.FC<Props> = ({ department }) => {
     tableRef.current?.reload();
   }, [department]);
   return (
-    <ProCard
-      title={title}
-      extra={
-        <Button type={'link'} icon={<PlusOutlined />}>
-          添加成员
-        </Button>
-      }
-      headerBordered
-    >
-      <ProTable<API.User, API.postApiUserFilterParams & API.SearchField>
-        loading={loading}
-        actionRef={tableRef}
-        columns={TABLE_COLUMNS}
-        manualRequest={true}
-        rowKey={(record) => record.id}
-        search={false}
-        request={fetchData}
-        toolBarRender={false}
+    <>
+      <ProCard
+        title={title}
+        extra={
+          <Button
+            type={'link'}
+            icon={<PlusOutlined />}
+            onClick={() => handleAddUser()}
+            disabled={department?.id ? false : true}
+          >
+            添加成员
+          </Button>
+        }
+        headerBordered
+      >
+        <ProTable<API.User, API.postApiUserFilterParams & API.SearchField>
+          loading={loading}
+          actionRef={tableRef}
+          columns={TABLE_COLUMNS}
+          manualRequest={true}
+          rowKey={(record) => record.id}
+          search={false}
+          request={fetchData}
+          toolBarRender={false}
+        />
+      </ProCard>
+      <BatchAddUser
+        open={addUserModalVisible}
+        onCancel={cancelAddUser}
+        departmentInfo={department}
+        refresh={() => tableRef.current?.reload()}
       />
-    </ProCard>
+    </>
   );
 };
 export default UserContent;

@@ -10,6 +10,7 @@ import {
   DownOutlined,
   EditOutlined,
   EllipsisOutlined,
+  ImportOutlined,
   PlusOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
@@ -184,7 +185,17 @@ const DepartmentList: React.FC = () => {
     <PageContainer
       title={'部门管理'}
       content={'维护组织内多层级部门，并管理成员的部门隶属关系。'}
-      extra={[<AddUser key={'department'} refresh={refreshData} />]}
+      extra={[
+        <AddUser key={'department'} refresh={refreshData} />,
+        <Button
+          type={'primary'}
+          icon={<ImportOutlined />}
+          key={'import'}
+          onClick={() => message.warning('该功能正在开发中...')}
+        >
+          导入组织机构
+        </Button>,
+      ]}
     >
       <ProCard split="vertical">
         <ProCard colSpan="20%">
