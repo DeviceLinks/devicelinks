@@ -25,9 +25,18 @@
   width: calc(100% - 20px);
 }
 
+.selectDepartmentTreeNode {
+  display: flex;
+  justify-content: space-between;
+  height: 24px;
+  line-height: 24px;
+}
+
 .departmentTreeNode {
   display: flex;
   justify-content: space-between;
+  height: 24px;
+  line-height: 24px;
 }
 
 .treeNodeIcon:hover {

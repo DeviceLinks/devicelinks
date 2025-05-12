@@ -93,7 +93,13 @@ const CreateDepartmentModal: React.FC<ModalProps> = ({
             const { data } = await postApiDepartmentTreeFilter({
               searchFieldModule: 'Department',
               searchMatch: 'ALL',
-              searchFields: [],
+              searchFields: [
+                {
+                  field: 'deleted',
+                  operator: 'EqualTo',
+                  value: 'false',
+                },
+              ],
             });
             return data;
           }}

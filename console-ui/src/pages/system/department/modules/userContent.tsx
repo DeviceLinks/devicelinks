@@ -1,11 +1,15 @@
-import { postApiUserFilter } from '@/services/device-links-console-ui/user';
+import {
+  deleteApiUserUserId,
+  postApiUserFilter,
+  postApiUserStatusUserId,
+} from '@/services/device-links-console-ui/user';
 import { history, useModel } from '@@/exports';
 import { PlusOutlined, TeamOutlined } from '@ant-design/icons';
 import { ActionType, ProCard, ProTable } from '@ant-design/pro-components';
-import { Button } from 'antd';
+import { Button, message, Modal } from 'antd';
 import { SortOrder } from 'antd/es/table/interface';
 import _ from 'lodash';
-import React, { useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 interface Props {
   department: API.DepartmentTree | undefined;
@@ -15,13 +19,80 @@ const UserContent: React.FC<Props> = ({ department }) => {
   const { enums } = useModel('enumModel');
   const { UserActivateMethod } = enums!;
   const [loading, setLoading] = useState<boolean>(true);
+  const [total, setTotal] = useState(0);
   const tableRef = useRef<ActionType>();
   const title = (
     <div>
-      {department?.name}
-      <TeamOutlined style={{ color: '#979797', marginLeft: '10px' }} />
+      {department?.id ? department?.name : '所有成员'}
+      <span style={{ color: '#979797', marginLeft: '10px', fontSize: '12px' }}>
+        <TeamOutlined style={{ marginRight: '5px' }} />
+        {total}人
+      </span>
     </div>
   );
+  /**启用/禁用 */
+  const handleEnabled = async (record: API.User) => {
+    const res: any = await postApiUserStatusUserId({
+      userId: record.id,
+      enabled: String(!record.enabled),
+    });
+    if (res.code === 'SUCCESS') {
+      message.success(record.enabled ? '禁用成功' : '启用成功');
+      tableRef.current?.reload();
+    }
+  };
+
+  /**删除用户 */
+  const handleDel = (record: API.User) => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定要删除该用户吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve: any, reject: any) => {
+          try {
+            deleteApiUserUserId({ userId: record.id })
+              .then((result: any) => {
+                if (result.code === 'SUCCESS') {
+                  message.success('删除成功');
+                  resolve();
+                  tableRef.current?.reload();
+                }
+              })
+              .catch(() => {
+                reject();
+              });
+          } catch (error) {}
+        });
+      },
+    });
+    console.log(record);
+  };
+  /**
+   * 表格操作按钮
+   * @param _text
+   * @param record
+   */
+  const operationBtnGroup = (_text: ReactNode, record: API.User) => {
+    return (
+      <>
+        <Button type="link" danger onClick={() => handleDel(record)}>
+          删除
+        </Button>
+        {record.enabled ? (
+          <Button type="link" danger onClick={() => handleEnabled(record)}>
+            禁用
+          </Button>
+        ) : (
+          <Button type="link" onClick={() => handleEnabled(record)}>
+            启用
+          </Button>
+        )}
+      </>
+    );
+  };
+
   /**
    * 表格列设置
    */
@@ -54,7 +125,13 @@ const UserContent: React.FC<Props> = ({ department }) => {
       },
     },
     { title: '邮箱', dataIndex: 'email', ellipsis: true, sorter: true },
-    // { title: '操作', dataIndex: 'operation', ellipsis: true, render: operationBtnGroup },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      width: 140,
+      ellipsis: true,
+      render: operationBtnGroup,
+    },
   ];
   /**
    * 查询数据
@@ -78,16 +155,26 @@ const UserContent: React.FC<Props> = ({ department }) => {
       {
         searchFieldModule: 'User',
         searchMatch: 'ANY',
-        searchFields: [],
+        searchFields: [
+          {
+            field: 'departmentId',
+            operator: 'EqualTo',
+            value: department?.id ? department?.id : '',
+          },
+        ],
       },
     );
     setLoading(false);
+    setTotal(result.data.totalRows);
     return {
       data: result.data.result,
       success: true,
       total: result.data.totalRows,
     };
   };
+  React.useEffect(() => {
+    tableRef.current?.reload();
+  }, [department]);
   return (
     <ProCard
       title={title}
@@ -102,9 +189,11 @@ const UserContent: React.FC<Props> = ({ department }) => {
         loading={loading}
         actionRef={tableRef}
         columns={TABLE_COLUMNS}
+        manualRequest={true}
         rowKey={(record) => record.id}
         search={false}
         request={fetchData}
+        toolBarRender={false}
       />
     </ProCard>
   );

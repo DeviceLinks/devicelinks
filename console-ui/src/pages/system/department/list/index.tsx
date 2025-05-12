@@ -7,6 +7,7 @@ import {
 } from '@/services/device-links-console-ui/department';
 import {
   DeleteOutlined,
+  DownOutlined,
   EditOutlined,
   EllipsisOutlined,
   PlusOutlined,
@@ -22,7 +23,6 @@ const DepartmentList: React.FC = () => {
   const refreshData = () => {};
   const [treeData, setTreeData] = React.useState<API.DepartmentTree[]>([]);
   const [treeLoading, setTreeLoading] = React.useState(true);
-  const [defaultTreeSelectedKeys, setDefaultTreeSelectedKeys] = React.useState([]);
   const treeFieldNames = { title: 'name', key: 'id', children: 'children' };
   const [selectedNode, setSelectedNode] = React.useState<API.DepartmentTree>();
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -85,7 +85,7 @@ const DepartmentList: React.FC = () => {
       });
       setTreeData(data);
       if (data && data.length > 0) {
-        setDefaultTreeSelectedKeys(data?.[0] ? [data?.[0]?.id] : []);
+        setSelectedNode(data?.[0]);
       }
     } finally {
       setTreeLoading(false);
@@ -200,8 +200,10 @@ const DepartmentList: React.FC = () => {
                 defaultExpandAll={true}
                 fieldNames={treeFieldNames}
                 blockNode
-                defaultSelectedKeys={defaultTreeSelectedKeys}
+                showLine
+                switcherIcon={<DownOutlined />}
                 titleRender={treeTitleRender}
+                selectedKeys={[selectedNode?.id ?? '']}
                 onSelect={handleSelectNode}
               />
               <Button
