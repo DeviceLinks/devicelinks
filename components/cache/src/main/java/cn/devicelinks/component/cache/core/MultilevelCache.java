@@ -1,8 +1,8 @@
-package cn.devicelinks.component.cache.spring;
+package cn.devicelinks.component.cache.core;
 
-import cn.devicelinks.component.cache.core.Cache;
+import cn.devicelinks.component.cache.config.MultilevelCacheConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,26 +14,30 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 复合多级缓存Spring支持
- * <p>
- * 为支持Spring提供的缓存注解（{@link Cacheable}）而适配
+ * 多级缓存
  *
  * @author 恒宇少年
  * @since 1.0
  */
-
 @Slf4j
-public class SpringCompositeCache implements org.springframework.cache.Cache {
+public class MultilevelCache implements org.springframework.cache.Cache {
 
+    protected final String cacheName;
+    protected List<Cache<String, Object>> caches;
     private final ConcurrentMap<String, ReentrantLock> keyLocks = new ConcurrentHashMap<>();
 
-    private final String cacheName;
-
-    private final List<Cache<String, Object>> caches;
-
-    public SpringCompositeCache(String cacheName, List<Cache<String, Object>> caches) {
+    public MultilevelCache(MultilevelCacheConfig cacheConfig, String cacheName, RedisTemplate<String, Object> cacheRedisTemplate) {
         this.cacheName = cacheName;
-        this.caches = new ArrayList<>(caches);
+        // @formatter:off
+        this.caches = new ArrayList<>() {
+            {
+                // Caffeine => L1
+                add(new CaffeineCache<>(cacheConfig.getCaffeineConfig(), cacheName));
+                // Redis => L2
+                add(new RedisCache<>(cacheConfig.getRedisConfig(), cacheName, cacheRedisTemplate));
+            }
+        };
+        // @formatter:on
         this.caches.sort(Comparator.comparing(Cache::getOrder));
     }
 
@@ -101,7 +105,7 @@ public class SpringCompositeCache implements org.springframework.cache.Cache {
 
     @Override
     public void evict(Object key) {
-        caches.forEach(cache -> cache.remove(this.convertKey(key)));
+        caches.forEach(cache -> cache.evict(this.convertKey(key)));
     }
 
     @Override

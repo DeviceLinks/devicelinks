@@ -4,13 +4,11 @@ import cn.devicelinks.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 
 /**
  * 复合多级数据缓存
@@ -21,23 +19,25 @@ import java.util.concurrent.locks.ReentrantLock;
 @Slf4j
 public class CompositeCache<K, V> implements Cache<K, V> {
 
-    private static final long DEFAULT_TTL_SECONDS = 300;
-
+    private static final String DEFAULT_CACHE_NAME = "default";
+    protected final String cacheName;
     private final ConcurrentMap<K, ReentrantLock> keyLocks = new ConcurrentHashMap<>();
-
     private final List<Cache<K, V>> caches;
 
-    private final long ttlSeconds;
-
-    public CompositeCache(List<Cache<K, V>> cacheLevels) {
-        this(cacheLevels, DEFAULT_TTL_SECONDS);
+    public CompositeCache(List<Cache<K, V>> caches) {
+        this(caches, DEFAULT_CACHE_NAME);
     }
 
-    public CompositeCache(List<Cache<K, V>> caches, long ttlSeconds) {
+    public CompositeCache(List<Cache<K, V>> caches, String cacheName) {
         Assert.notEmpty(caches, "Pass at least one level of cache instance.");
+        this.cacheName = cacheName;
         this.caches = new ArrayList<>(caches);
         this.caches.sort(Comparator.comparing(Cache::getOrder));
-        this.ttlSeconds = ttlSeconds;
+    }
+
+    @Override
+    public String getCacheName() {
+        return this.cacheName;
     }
 
     @Override
@@ -46,12 +46,7 @@ public class CompositeCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public V get(K key, CacheLoader<K, V> loader) {
-        return this.get(key, this.ttlSeconds, loader);
-    }
-
-    @Override
-    public V get(K key, long ttlSeconds, CacheLoader<K, V> loader) {
+    public V get(K key, Supplier<V> supplier, boolean putToCache) {
         V value = this.getCacheLevelByLevel(key);
         if (value != null) {
             return value;
@@ -65,10 +60,10 @@ public class CompositeCache<K, V> implements Cache<K, V> {
             }
             // All cache misses, get from cache loader
             V loadedValue = null;
-            if (loader != null) {
-                loadedValue = loader.load(key);
-                if (loadedValue != null) {
-                    this.put(key, loadedValue, ttlSeconds);
+            if (supplier != null) {
+                loadedValue = supplier.get();
+                if (loadedValue != null && putToCache) {
+                    this.put(key, loadedValue);
                 }
             }
             return loadedValue;
@@ -87,16 +82,21 @@ public class CompositeCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public void put(K key, V value, long ttlSeconds) {
-        // Update cache data in reverse order
-        List<Cache<K, V>> reversedList = new ArrayList<>(caches);
-        Collections.reverse(reversedList);
-        reversedList.forEach(cache -> cache.put(key, value, ttlSeconds));
+    public void putIfAbsent(K key, V value) {
+        V v = get(key);
+        if (v == null) {
+            put(key, value);
+        }
     }
 
     @Override
-    public void remove(K key) {
-        caches.forEach(cache -> cache.remove(key));
+    public void evict(K key) {
+        caches.forEach(cache -> cache.evict(key));
+    }
+
+    @Override
+    public void evict(Collection<K> keys) {
+
     }
 
     @Override
@@ -112,7 +112,7 @@ public class CompositeCache<K, V> implements Cache<K, V> {
                 // Backfill in reverse order
                 for (int j = 0; j < i; j++) {
                     log.debug("Reverse update cache, Key: {}, get data level: {}, update target level: {}.", key, (i + 1), (j + 1));
-                    caches.get(j).put(key, value, ttlSeconds);
+                    caches.get(j).put(key, value);
                 }
                 return value;
             }

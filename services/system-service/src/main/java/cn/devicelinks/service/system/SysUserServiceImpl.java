@@ -17,23 +17,27 @@
 
 package cn.devicelinks.service.system;
 
-import cn.devicelinks.api.support.StatusCodeConstants;
+import cn.devicelinks.api.model.dto.UserDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.jdbc.PaginationQueryConverter;
-import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.UserActivateMethod;
 import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.SysUser;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.cache.SysUserCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.SysUserCacheKey;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
-import cn.devicelinks.api.model.dto.UserDTO;
 import cn.devicelinks.jdbc.repository.SysUserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,10 +53,29 @@ import static cn.devicelinks.jdbc.tables.TSysUser.SYS_USER;
  */
 @Service
 @Slf4j
-public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUserRepository> implements SysUserService {
+public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, SysUserRepository, SysUserCacheKey, SysUserCacheEvictEvent> implements SysUserService {
 
     public SysUserServiceImpl(SysUserRepository repository) {
         super(repository);
+    }
+
+    @Override
+    @EventListener(classes = SysUserCacheEvictEvent.class)
+    public void handleCacheEvictEvent(SysUserCacheEvictEvent event) {
+        List<SysUserCacheKey> toEvict = new ArrayList<>(2);
+        SysUser savedUser = event.getSavedUser();
+        if (savedUser != null) {
+            cache.put(SysUserCacheKey.builder().userId(savedUser.getId()).build(), savedUser);
+            cache.put(SysUserCacheKey.builder().account(savedUser.getAccount()).build(), savedUser);
+        } else {
+            if (!ObjectUtils.isEmpty(event.getUserId())) {
+                toEvict.add(SysUserCacheKey.builder().userId(event.getUserId()).build());
+            }
+            if (!ObjectUtils.isEmpty(event.getAccount())) {
+                toEvict.add(SysUserCacheKey.builder().account(event.getAccount()).build());
+            }
+            cache.evict(toEvict);
+        }
     }
 
     @Override
@@ -66,6 +89,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
         if (UserActivateMethod.SendUrlToEmail == userActivateMethod) {
             // TODO 通过发送邮件方式激活时，需要向邮箱发送账号激活邮件
         }
+        publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(sysUser.getId()).account(sysUser.getAccount()).savedUser(sysUser).build());
         return sysUser;
     }
 
@@ -76,21 +100,27 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
             throw new ApiException(StatusCodeConstants.USER_ALREADY_EXISTS);
         }
         this.update(sysUser);
+        publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(sysUser.getId()).account(sysUser.getAccount()).build());
         return sysUser;
     }
 
     @Override
     public SysUser selectByAccount(String account) {
-        return this.repository.selectByAccount(account);
+        return cache.get(SysUserCacheKey.builder().account(account).build(),
+                () -> this.repository.selectByAccount(account));
     }
 
     @Override
     public void updateLastLoginTime(String userId, LocalDateTime lastLoginTime) {
-        // @formatter:off
-        this.repository.update(
-                List.of(SYS_USER.LAST_LOGIN_TIME.set(lastLoginTime)),
-                SYS_USER.ID.eq(userId));
-        // @formatter:on
+        SysUser storedUser = selectById(userId);
+        if (storedUser != null) {
+            // @formatter:off
+            this.repository.update(
+                    List.of(SYS_USER.LAST_LOGIN_TIME.set(lastLoginTime)),
+                    SYS_USER.ID.eq(userId));
+            // @formatter:on
+            publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(storedUser.getId()).account(storedUser.getAccount()).build());
+        }
     }
 
     @Override
@@ -102,16 +132,24 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String, SysUser
 
     @Override
     public void deleteUser(String userId) {
-        this.repository.update(
-                List.of(SYS_USER.DELETED.set(true)),
-                SYS_USER.ID.eq(userId));
+        SysUser storedUser = selectById(userId);
+        if (storedUser != null) {
+            this.repository.update(
+                    List.of(SYS_USER.DELETED.set(true)),
+                    SYS_USER.ID.eq(userId));
+            publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(storedUser.getId()).account(storedUser.getAccount()).build());
+        }
     }
 
     @Override
     public void updateEnabled(String userId, boolean enabled) {
-        this.repository.update(
-                List.of(SYS_USER.ENABLED.set(enabled)),
-                SYS_USER.ID.eq(userId));
+        SysUser storedUser = selectById(userId);
+        if (storedUser != null) {
+            this.repository.update(
+                    List.of(SYS_USER.ENABLED.set(enabled)),
+                    SYS_USER.ID.eq(userId));
+            publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(storedUser.getId()).account(storedUser.getAccount()).build());
+        }
     }
 
     private SysUser checkUserAlreadyExists(SysUser sysUser, boolean doUpdate) {
