@@ -21,14 +21,17 @@ import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.SysDepartment;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
 import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.cache.SysDepartmentCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.SysDepartmentCacheKey;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.jdbc.repository.SysDepartmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -44,9 +47,24 @@ import static cn.devicelinks.jdbc.tables.TSysDepartment.SYS_DEPARTMENT;
  */
 @Service
 @Slf4j
-public class SysDepartmentServiceImpl extends BaseServiceImpl<SysDepartment, String, SysDepartmentRepository> implements SysDepartmentService {
+public class SysDepartmentServiceImpl extends CacheBaseServiceImpl<SysDepartment, String, SysDepartmentRepository, SysDepartmentCacheKey, SysDepartmentCacheEvictEvent> implements SysDepartmentService {
     public SysDepartmentServiceImpl(SysDepartmentRepository repository) {
         super(repository);
+    }
+
+    @Override
+    @TransactionalEventListener(classes = SysDepartmentCacheEvictEvent.class)
+    public void handleCacheEvictEvent(SysDepartmentCacheEvictEvent event) {
+        SysDepartment savedDepartment = event.getSavedDepartment();
+        if (savedDepartment != null) {
+            cache.put(SysDepartmentCacheKey.builder().departmentId(savedDepartment.getId()).build(), savedDepartment);
+        } else {
+            List<SysDepartmentCacheKey> toEvict = new ArrayList<>(1);
+            if (!ObjectUtils.isEmpty(event.getDepartmentId())) {
+                toEvict.add(SysDepartmentCacheKey.builder().departmentId(event.getDepartmentId()).build());
+            }
+            cache.evict(toEvict);
+        }
     }
 
     @Override
@@ -72,6 +90,7 @@ public class SysDepartmentServiceImpl extends BaseServiceImpl<SysDepartment, Str
             throw new ApiException(StatusCodeConstants.DEPARTMENT_ALREADY_EXISTS);
         }
         this.repository.update(department);
+        publishCacheEvictEvent(SysDepartmentCacheEvictEvent.builder().departmentId(department.getId()).build());
         return department;
     }
 
@@ -81,6 +100,7 @@ public class SysDepartmentServiceImpl extends BaseServiceImpl<SysDepartment, Str
                 List.of(SYS_DEPARTMENT.DELETED.set(true)),
                 SYS_DEPARTMENT.ID.eq(departmentId)
         );
+        publishCacheEvictEvent(SysDepartmentCacheEvictEvent.builder().departmentId(departmentId).build());
     }
 
     private SysDepartment check(SysDepartment department, boolean doUpdate) {
