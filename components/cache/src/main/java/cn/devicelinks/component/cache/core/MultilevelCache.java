@@ -97,6 +97,7 @@ public class MultilevelCache implements org.springframework.cache.Cache {
 
     @Override
     public void put(Object key, Object value) {
+        log.debug("Put new cache, cacheName: {}, key: {}, value: {}.", cacheName, key, value);
         // Update cache data in reverse order
         List<Cache<String, Object>> reversedList = new ArrayList<>(caches);
         Collections.reverse(reversedList);
@@ -105,11 +106,13 @@ public class MultilevelCache implements org.springframework.cache.Cache {
 
     @Override
     public void evict(Object key) {
+        log.debug("Evict cache, cacheName: {}, key: {}.", cacheName, key);
         caches.forEach(cache -> cache.evict(this.convertKey(key)));
     }
 
     @Override
     public void clear() {
+        log.debug("Clear all cache, cacheName: {}.", cacheName);
         caches.forEach(Cache::clear);
     }
 
@@ -121,10 +124,10 @@ public class MultilevelCache implements org.springframework.cache.Cache {
         for (int i = 0; i < caches.size(); i++) {
             Object value = caches.get(i).get(key);
             if (value != null) {
-                log.debug("Use cache data, Key: {}, cache level: {}.", key, (i + 1));
+                log.debug("Get cache data, cacheName: {}, key: {}, cache level: {}.", cacheName, key, (i + 1));
                 // Backfill in reverse order
                 for (int j = 0; j < i; j++) {
-                    log.debug("Reverse update cache, Key: {}, get data level: {}, update target level: {}.", key, (i + 1), (j + 1));
+                    log.debug("Reverse update cache, cacheName: {}, key: {}, get data level: {}, update target level: {}.", cacheName, key, (i + 1), (j + 1));
                     caches.get(j).put(key, value);
                 }
                 return value;

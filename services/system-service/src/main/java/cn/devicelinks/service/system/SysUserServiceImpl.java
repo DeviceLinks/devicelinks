@@ -35,8 +35,8 @@ import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.jdbc.repository.SysUserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
@@ -60,7 +60,7 @@ public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, Sy
     }
 
     @Override
-    @EventListener(classes = SysUserCacheEvictEvent.class)
+    @TransactionalEventListener(classes = SysUserCacheEvictEvent.class)
     public void handleCacheEvictEvent(SysUserCacheEvictEvent event) {
         List<SysUserCacheKey> toEvict = new ArrayList<>(2);
         SysUser savedUser = event.getSavedUser();
@@ -89,7 +89,7 @@ public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, Sy
         if (UserActivateMethod.SendUrlToEmail == userActivateMethod) {
             // TODO 通过发送邮件方式激活时，需要向邮箱发送账号激活邮件
         }
-        publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(sysUser.getId()).account(sysUser.getAccount()).savedUser(sysUser).build());
+        publishCacheEvictEvent(SysUserCacheEvictEvent.builder().savedUser(sysUser).build());
         return sysUser;
     }
 
