@@ -20,12 +20,14 @@ package cn.devicelinks.service.system;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.common.UserActivateMethod;
+import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.entity.SysUser;
 import cn.devicelinks.jdbc.BaseService;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.api.model.dto.UserDTO;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户业务逻辑接口定义
@@ -71,9 +73,17 @@ public interface SysUserService extends BaseService<SysUser, String> {
      * 分页获取用户列表
      *
      * @param query {@link SearchFieldQuery}
-     * @return {@link SysUser}
+     * @return {@link UserDTO}
      */
-    PageResult<UserDTO> getUsers(SearchFieldQuery query, PaginationQuery pageRequest);
+    PageResult<UserDTO> getUsersWithPage(SearchFieldQuery query, PaginationQuery pageRequest);
+
+    /**
+     * 获取用户列表
+     *
+     * @param query 检索字段查询对象 {@link SearchFieldQuery}
+     * @return {@link UserDTO}
+     */
+    List<UserDTO> getUsers(SearchFieldQuery query);
 
     /**
      * 删除用户
@@ -89,4 +99,12 @@ public interface SysUserService extends BaseService<SysUser, String> {
      * @param enabled 是否启用
      */
     void updateEnabled(String userId, boolean enabled);
+
+    /**
+     * 批量更新用户列表的部门ID
+     *
+     * @param userIds      用户ID列表 {@link SysUser#getId()}
+     * @param departmentId 部门ID {@link SysDepartment#getId()}
+     */
+    void batchUpdateDepartmentId(List<String> userIds, String departmentId);
 }

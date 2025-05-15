@@ -124,10 +124,16 @@ public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, Sy
     }
 
     @Override
-    public PageResult<UserDTO> getUsers(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
+    public PageResult<UserDTO> getUsersWithPage(SearchFieldQuery searchFieldQuery, PaginationQuery paginationQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
         PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
         return this.repository.selectByPage(searchFieldConditionList, converter.toPageQuery(), converter.toSortCondition());
+    }
+
+    @Override
+    public List<UserDTO> getUsers(SearchFieldQuery searchFieldQuery) {
+        List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
+        return this.repository.selectUsers(searchFieldConditionList);
     }
 
     @Override
@@ -150,6 +156,11 @@ public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, Sy
                     SYS_USER.ID.eq(userId));
             publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(storedUser.getId()).account(storedUser.getAccount()).build());
         }
+    }
+
+    @Override
+    public void batchUpdateDepartmentId(List<String> userIds, String departmentId) {
+        // TODO xxx
     }
 
     private SysUser checkUserAlreadyExists(SysUser sysUser, boolean doUpdate) {

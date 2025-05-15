@@ -74,4 +74,20 @@ public class SysUserJdbcRepository extends JdbcRepository<SysUser, String> imple
         Dynamic dynamic = wrapper.dynamic();
         return this.page(dynamic, pageQuery, wrapper.parameters());
     }
+
+    @Override
+    public List<UserDTO> selectUsers(List<SearchFieldCondition> searchFieldConditions) {
+        // @formatter:off
+        DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(SELECT_USER_DTO_SQL)
+                .resultColumns(resultColumns -> {
+                    resultColumns.addAll(SYS_USER.getColumns());
+                    resultColumns.add(DynamicColumn.withColumn(TSysDepartment.SYS_DEPARTMENT.NAME).alias("department_name").build());
+                })
+                .appendSearchFieldCondition(SYS_USER, searchFieldConditions, consumer -> consumer.tableAlias("su"));
+        // @formatter:on
+
+        DynamicWrapper wrapper = selectBuilder.resultType(UserDTO.class).build();
+        Dynamic dynamic = wrapper.dynamic();
+        return this.dynamicSelect(dynamic, wrapper.parameters());
+    }
 }
