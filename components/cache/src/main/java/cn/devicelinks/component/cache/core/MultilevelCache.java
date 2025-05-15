@@ -97,11 +97,13 @@ public class MultilevelCache implements org.springframework.cache.Cache {
 
     @Override
     public void put(Object key, Object value) {
-        log.debug("Put new cache, cacheName: {}, key: {}, value: {}.", cacheName, key, value);
-        // Update cache data in reverse order
-        List<Cache<String, Object>> reversedList = new ArrayList<>(caches);
-        Collections.reverse(reversedList);
-        reversedList.forEach(cache -> cache.put(this.convertKey(key), value));
+        if (value != null) {
+            log.debug("Put new cache, cacheName: {}, key: {}, value: {}.", cacheName, key, value);
+            // Update cache data in reverse order
+            List<Cache<String, Object>> reversedList = new ArrayList<>(caches);
+            Collections.reverse(reversedList);
+            reversedList.forEach(cache -> cache.put(this.convertKey(key), value));
+        }
     }
 
     @Override
