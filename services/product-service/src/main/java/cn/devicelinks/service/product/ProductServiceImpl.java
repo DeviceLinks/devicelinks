@@ -1,18 +1,20 @@
 package cn.devicelinks.service.product;
 
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.jdbc.PaginationQueryConverter;
-import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.response.RegenerateKeySecretResponse;
-import cn.devicelinks.common.ProductStatus;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.common.ProductStatus;
+import cn.devicelinks.common.utils.SecureRandomUtils;
 import cn.devicelinks.component.web.api.ApiException;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.Product;
-import cn.devicelinks.common.utils.SecureRandomUtils;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.cache.ProductCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.ProductCacheKey;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
@@ -36,7 +38,7 @@ import static cn.devicelinks.jdbc.tables.TProduct.PRODUCT;
  */
 @Service
 @Slf4j
-public class ProductServiceImpl extends BaseServiceImpl<Product, String, ProductRepository> implements ProductService {
+public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, ProductRepository, ProductCacheKey, ProductCacheEvictEvent> implements ProductService {
     private final int PRODUCT_KEY_LENGTH = 32;
     private final int PRODUCT_SECRET_LENGTH = 64;
     private final DeviceRepository deviceRepository;
@@ -46,6 +48,16 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
         super(repository);
         this.deviceRepository = deviceRepository;
         this.functionModuleService = functionModuleService;
+    }
+
+    @Override
+    public void handleCacheEvictEvent(ProductCacheEvictEvent event) {
+        Product savedProduct = event.getSavedProduct();
+        if (savedProduct != null) {
+            cache.put(ProductCacheKey.builder().productId(event.getProductId()).build(), savedProduct);
+        } else {
+            cache.evict(ProductCacheKey.builder().productId(event.getProductId()).build());
+        }
     }
 
     @Override
@@ -68,6 +80,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
         this.repository.insert(product);
         // add default function module
         this.functionModuleService.addProductDefaultFunctionModule(product.getId(), authorizedAddition);
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().savedProduct(product).build());
         return product;
     }
 
@@ -87,6 +100,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
             throw new ApiException(StatusCodeConstants.PRODUCT_ALREADY_EXISTS, product.getName());
         }
         this.repository.update(product);
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
         return product;
     }
 
@@ -105,6 +119,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
         }
         product.setDeleted(Boolean.TRUE);
         this.repository.update(product);
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
         return product;
     }
 
@@ -119,6 +134,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
         }
         product.setStatus(ProductStatus.Published);
         this.repository.update(product);
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
         return product;
     }
 
@@ -132,6 +148,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, String, Product
         String productSecret = SecureRandomUtils.generateRandomHex(PRODUCT_SECRET_LENGTH);
         product.setProductKey(productKey).setProductSecret(productSecret);
         this.repository.update(product);
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
         // @formatter:off
         return new RegenerateKeySecretResponse()
                 .setProductId(productId)

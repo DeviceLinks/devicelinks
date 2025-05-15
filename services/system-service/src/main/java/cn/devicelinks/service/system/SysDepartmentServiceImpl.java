@@ -80,6 +80,7 @@ public class SysDepartmentServiceImpl extends CacheBaseServiceImpl<SysDepartment
             throw new ApiException(StatusCodeConstants.DEPARTMENT_ALREADY_EXISTS);
         }
         this.repository.insert(department);
+        publishCacheEvictEvent(SysDepartmentCacheEvictEvent.builder().savedDepartment(department).build());
         return department;
     }
 
