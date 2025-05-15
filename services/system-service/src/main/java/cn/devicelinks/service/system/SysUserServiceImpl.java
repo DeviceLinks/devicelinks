@@ -160,7 +160,18 @@ public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, Sy
 
     @Override
     public void batchUpdateDepartmentId(List<String> userIds, String departmentId) {
-        // TODO xxx
+        // @formatter:off
+        // Update all user departmentId
+        repository.update(
+                List.of(SYS_USER.DEPARTMENT_ID.set(departmentId)),
+                SYS_USER.ID.in(userIds.stream().map(userId -> (Object) userId).toList()),
+                SYS_USER.DELETED.isFalse()
+        );
+        // @formatter:on
+        // Evict Caches
+        List<SysUser> userList = repository.select(SYS_USER.ID.in(userIds.stream().map(userId -> (Object) userId).toList()));
+        userList.forEach(user ->
+                publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(user.getId()).account(user.getAccount()).build()));
     }
 
     private SysUser checkUserAlreadyExists(SysUser sysUser, boolean doUpdate) {
