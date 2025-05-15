@@ -243,6 +243,24 @@ public class Column {
     }
 
     /**
+     * Creates a condition where the column is equal to true.
+     *
+     * @return a {@link Condition} representing the "is true" condition
+     */
+    public Condition isTrue() {
+        return condition(SqlQueryOperator.EqualTo, Boolean.TRUE);
+    }
+
+    /**
+     * Creates a condition where the column is equal to false.
+     *
+     * @return a {@link Condition} representing the "is false" condition
+     */
+    public Condition isFalse() {
+        return condition(SqlQueryOperator.EqualTo, Boolean.FALSE);
+    }
+
+    /**
      * Use this column add to condition collection
      *
      * @param operator Comparison operator
