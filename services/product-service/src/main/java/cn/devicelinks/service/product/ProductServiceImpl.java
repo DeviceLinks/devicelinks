@@ -54,7 +54,7 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
     public void handleCacheEvictEvent(ProductCacheEvictEvent event) {
         Product savedProduct = event.getSavedProduct();
         if (savedProduct != null) {
-            cache.put(ProductCacheKey.builder().productId(event.getProductId()).build(), savedProduct);
+            cache.put(ProductCacheKey.builder().productId(savedProduct.getId()).build(), savedProduct);
         } else {
             cache.evict(ProductCacheKey.builder().productId(event.getProductId()).build());
         }
