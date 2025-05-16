@@ -8,6 +8,7 @@ package cn.devicelinks.jdbc.cache;
  */
 public class CacheConstants {
     public static final String DEVICE_CACHE = "devices";
+    public static final String DEVICE_PROFILE_CACHE = "deviceProfiles";
     public static final String USER_CACHE = "users";
     public static final String DEPARTMENT_CACHE = "departments";
     public static final String PRODUCT_CACHE = "products";

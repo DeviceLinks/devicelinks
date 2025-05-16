@@ -1,24 +1,26 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DeviceProfileConverter;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.jdbc.PaginationQueryConverter;
-import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
-import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.model.request.AddDeviceProfileRequest;
 import cn.devicelinks.api.model.request.BatchSetDeviceProfileRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceProfileBasicInfoRequest;
+import cn.devicelinks.api.support.StatusCodeConstants;
+import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.common.Constants;
 import cn.devicelinks.common.DeviceProfileBatchSetAway;
 import cn.devicelinks.common.DeviceType;
-import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.component.web.api.ApiException;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
+import cn.devicelinks.entity.*;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
+import cn.devicelinks.jdbc.PaginationQueryConverter;
+import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.cache.DeviceProfileCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.DeviceProfileCacheKey;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.entity.*;
 import cn.devicelinks.jdbc.repository.DeviceProfileRepository;
 import cn.devicelinks.jdbc.repository.DeviceRepository;
 import cn.devicelinks.jdbc.repository.FunctionModuleRepository;
@@ -28,6 +30,7 @@ import cn.devicelinks.service.product.FunctionModuleServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ import static cn.devicelinks.jdbc.tables.TFunctionModule.FUNCTION_MODULE;
  */
 @Service
 @Slf4j
-public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, String, DeviceProfileRepository> implements DeviceProfileService {
+public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile, String, DeviceProfileRepository, DeviceProfileCacheKey, DeviceProfileCacheEvictEvent> implements DeviceProfileService {
 
     @Autowired
     private OtaService otaService;
@@ -66,6 +69,19 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     }
 
     @Override
+    @TransactionalEventListener(classes = DeviceProfileCacheEvictEvent.class)
+    public void handleCacheEvictEvent(DeviceProfileCacheEvictEvent event) {
+        DeviceProfile savedDeviceProfile = event.getSavedDeviceProfile();
+        if (savedDeviceProfile != null) {
+            cache.put(DeviceProfileCacheKey.builder().deviceProfileId(savedDeviceProfile.getId()).build(), savedDeviceProfile);
+        } else {
+            if (!ObjectUtils.isEmpty(event.getDeviceProfileId())) {
+                cache.evict(DeviceProfileCacheKey.builder().deviceProfileId(event.getDeviceProfileId()).build());
+            }
+        }
+    }
+
+    @Override
     public PageResult<DeviceProfile> getDeviceProfileListByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
         PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
@@ -81,6 +97,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         deviceProfile
                 .setCreateBy(authorizedAddition.getUserId());
         this.repository.insert(deviceProfile);
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().savedDeviceProfile(deviceProfile).build());
         return deviceProfile;
     }
 
@@ -88,6 +105,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
     public DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile) {
         this.checkData(deviceProfile, true);
         this.repository.update(deviceProfile);
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
         return deviceProfile;
     }
 
@@ -103,7 +121,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         this.checkBasicInfo(deviceProfile, true);
 
         this.repository.update(deviceProfile);
-
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
         return deviceProfile;
     }
 
@@ -114,6 +132,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
         }
         this.repository.update(List.of(DEVICE_PROFILE.EXTENSION.set(extension)), DEVICE_PROFILE.ID.eq(profileId));
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
         return extension;
     }
 
@@ -129,6 +148,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         this.checkLogAdditionData(deviceProfile);
 
         this.repository.update(List.of(DEVICE_PROFILE.LOG_ADDITION.set(logAddition)), DEVICE_PROFILE.ID.eq(profileId));
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
         return logAddition;
     }
 
@@ -144,6 +164,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         this.checkProvisionAddition(deviceProfile);
 
         this.repository.update(List.of(DEVICE_PROFILE.PROVISION_ADDITION.set(provisionAddition)), DEVICE_PROFILE.ID.eq(profileId));
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
         return provisionAddition;
     }
 
@@ -153,10 +174,10 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
         if (deviceProfile == null) {
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
         }
-        if (Boolean.TRUE.equals(deviceProfile.isDefaultProfile())) {
+        if (deviceProfile.isDefaultProfile()) {
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_DEFAULT_CANNOT_DELETE, profileId);
         }
-        if (Boolean.FALSE.equals(deviceProfile.isDeleted())) {
+        if (!deviceProfile.isDeleted()) {
             // Update is deleted
             deviceProfile.setDeleted(Boolean.TRUE);
             this.update(deviceProfile);
@@ -165,6 +186,7 @@ public class DeviceProfileServiceImpl extends BaseServiceImpl<DeviceProfile, Str
             this.deviceRepository.clearDeviceProfileId(profileId);
             this.productRepository.clearDeviceProfileId(profileId);
         }
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
         return deviceProfile;
     }
 
