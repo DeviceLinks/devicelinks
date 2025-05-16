@@ -12,9 +12,11 @@ import cn.devicelinks.common.AttributeDataType;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Attribute;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
 import cn.devicelinks.jdbc.PaginationQueryConverter;
 import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.cache.AttributeCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.AttributeCacheKey;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.repository.AttributeRepository;
@@ -35,9 +37,27 @@ import static cn.devicelinks.jdbc.tables.TAttribute.ATTRIBUTE;
  */
 @Service
 @Slf4j
-public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, AttributeRepository> implements AttributeService {
+public class AttributeServiceImpl extends CacheBaseServiceImpl<Attribute, String, AttributeRepository, AttributeCacheKey, AttributeCacheEvictEvent> implements AttributeService {
     public AttributeServiceImpl(AttributeRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public void handleCacheEvictEvent(AttributeCacheEvictEvent event) {
+        Attribute savedAttribute = event.getSavedAttribute();
+        if (savedAttribute != null) {
+            cache.put(AttributeCacheKey.builder().attributeId(savedAttribute.getId()).build(), savedAttribute);
+            cache.put(AttributeCacheKey.builder().identifier(savedAttribute.getIdentifier()).build(), savedAttribute);
+        } else {
+            List<AttributeCacheKey> toEvict = new ArrayList<>();
+            if (!ObjectUtils.isEmpty(event.getAttributeId())) {
+                toEvict.add(AttributeCacheKey.builder().attributeId(event.getAttributeId()).build());
+            }
+            if (!ObjectUtils.isEmpty(event.getIdentifier())) {
+                toEvict.add(AttributeCacheKey.builder().identifier(event.getIdentifier()).build());
+            }
+            cache.evict(toEvict);
+        }
     }
 
     @Override
@@ -58,6 +78,7 @@ public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, Att
         // Convert to DTO and return
         AttributeDTO attributeDTO = AttributeConverter.INSTANCE.fromEntity(attribute);
         attributeDTO.setChildAttributes(childAttributeList);
+        publishCacheEvictEvent(AttributeCacheEvictEvent.builder().savedAttribute(attribute).build());
         return attributeDTO;
     }
 
@@ -91,6 +112,7 @@ public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, Att
         }
         AttributeDTO attributeDTO = AttributeConverter.INSTANCE.fromEntity(attribute);
         attributeDTO.setChildAttributes(savedChildAttributeList);
+        publishCacheEvictEvent(AttributeCacheEvictEvent.builder().attributeId(attribute.getId()).identifier(attribute.getIdentifier()).build());
         return attributeDTO;
     }
 
@@ -132,6 +154,7 @@ public class AttributeServiceImpl extends BaseServiceImpl<Attribute, String, Att
         }
         attribute.setDeleted(Boolean.TRUE);
         this.update(attribute);
+        publishCacheEvictEvent(AttributeCacheEvictEvent.builder().attributeId(attribute.getId()).identifier(attribute.getIdentifier()).build());
         return attribute;
     }
 }

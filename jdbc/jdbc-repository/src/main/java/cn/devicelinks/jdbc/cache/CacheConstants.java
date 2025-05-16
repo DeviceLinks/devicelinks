@@ -13,4 +13,5 @@ public class CacheConstants {
     public static final String DEPARTMENT_CACHE = "departments";
     public static final String PRODUCT_CACHE = "products";
     public static final String FUNCTION_MODULE_CACHE = "functionModules";
+    public static final String ATTRIBUTE_CACHE = "attributes";
 }
