@@ -2,6 +2,7 @@ package cn.devicelinks.component.cache.core;
 
 import cn.devicelinks.common.Constants;
 import org.springframework.cache.CacheManager;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -52,7 +53,9 @@ public class CacheSupport<K extends CacheKey, V extends Serializable> implements
 
     @Override
     public void evict(Collection<K> keys) {
-        keys.forEach(this.cache::evict);
+        if (!ObjectUtils.isEmpty(keys)) {
+            keys.forEach(this.cache::evict);
+        }
     }
 
     @Override
