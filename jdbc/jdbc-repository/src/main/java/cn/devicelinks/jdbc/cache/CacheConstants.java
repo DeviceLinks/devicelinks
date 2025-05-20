@@ -17,4 +17,5 @@ public class CacheConstants {
     public static final String DEVICE_SECRET_CACHE = "deviceSecrets";
     public static final String DEVICE_CREDENTIALS_CACHE = "deviceCredentials";
     public static final String DEVICE_TAG_CACHE = "deviceTags";
+    public static final String OTA = "ota";
 }
