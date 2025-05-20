@@ -11,13 +11,16 @@ import cn.devicelinks.common.utils.X509Utils;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.entity.DeviceCredentials;
 import cn.devicelinks.entity.DeviceCredentialsAddition;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
+import cn.devicelinks.jdbc.cache.DeviceCredentialsCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.DeviceCredentialsCacheKey;
 import cn.devicelinks.jdbc.repository.DeviceCredentialsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.devicelinks.jdbc.tables.TDeviceCredentials.DEVICE_CREDENTIALS;
@@ -29,15 +32,35 @@ import static cn.devicelinks.jdbc.tables.TDeviceCredentials.DEVICE_CREDENTIALS;
  * @since 1.0
  */
 @Service
-public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredentials, String, DeviceCredentialsRepository> implements DeviceCredentialsService {
+public class DeviceCredentialsServiceImpl extends CacheBaseServiceImpl<DeviceCredentials, String, DeviceCredentialsRepository, DeviceCredentialsCacheKey, DeviceCredentialsCacheEvictEvent>
+        implements DeviceCredentialsService {
 
     public DeviceCredentialsServiceImpl(DeviceCredentialsRepository repository) {
         super(repository);
     }
 
     @Override
+    public void handleCacheEvictEvent(DeviceCredentialsCacheEvictEvent event) {
+        DeviceCredentials savedDeviceCredentials = event.getSavedDeviceCredentials();
+        if (savedDeviceCredentials != null) {
+            cache.put(DeviceCredentialsCacheKey.builder().deviceCredentialId(savedDeviceCredentials.getId()).build(), savedDeviceCredentials);
+            cache.put(DeviceCredentialsCacheKey.builder().deviceId(savedDeviceCredentials.getDeviceId()).build(), savedDeviceCredentials);
+        } else {
+            List<DeviceCredentialsCacheKey> toEvict = new ArrayList<>();
+            if (!ObjectUtils.isEmpty(event.getDeviceCredentialsId())) {
+                toEvict.add(DeviceCredentialsCacheKey.builder().deviceCredentialId(event.getDeviceCredentialsId()).build());
+            }
+            if (!ObjectUtils.isEmpty(event.getDeviceId())) {
+                toEvict.add(DeviceCredentialsCacheKey.builder().deviceId(event.getDeviceId()).build());
+            }
+            cache.evict(toEvict);
+        }
+    }
+
+    @Override
     public DeviceCredentials selectByDeviceId(String deviceId) {
-        return this.repository.selectByDeviceId(deviceId);
+        return cache.get(DeviceCredentialsCacheKey.builder().deviceId(deviceId).build(),
+                () -> this.repository.selectByDeviceId(deviceId));
     }
 
     @Override
@@ -52,12 +75,14 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
 
     @Override
     public DeviceCredentials selectByToken(String staticToken) {
-        return this.repository.selectByToken(staticToken);
+        return cache.get(DeviceCredentialsCacheKey.builder().token(staticToken).build(),
+                () -> this.repository.selectByToken(staticToken));
     }
 
     @Override
     public DeviceCredentials selectByTokenHash(String tokenHash) {
-        return repository.selectByTokenHash(tokenHash);
+        return cache.get(DeviceCredentialsCacheKey.builder().tokenHash(tokenHash).build(),
+                () -> repository.selectByTokenHash(tokenHash));
     }
 
     @Override
@@ -104,6 +129,7 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
         this.encrypt(deviceCredentialsType, credentialsAddition, aesSecretKeySet);
 
         this.repository.insert(credentials);
+        publishCacheEvictEvent(DeviceCredentialsCacheEvictEvent.builder().savedDeviceCredentials(credentials).build());
         return credentials;
     }
 
@@ -131,16 +157,29 @@ public class DeviceCredentialsServiceImpl extends BaseServiceImpl<DeviceCredenti
         // validate authentication
         this.validateAuthentication(deviceId, deviceCredentialsType, credentialsAddition, true);
 
-        DeviceCredentials deviceAuthentication = selectByDeviceId(deviceId);
-        if (deviceAuthentication == null || deviceAuthentication.isDeleted()) {
+        DeviceCredentials deviceCredentials = selectByDeviceId(deviceId);
+        if (deviceCredentials == null || deviceCredentials.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_CREDENTIALS_NO_VALID_EXISTS, deviceId);
         }
-        deviceAuthentication.setCredentialsType(deviceCredentialsType).setAddition(credentialsAddition);
+        DeviceCredentialsAddition beforeUpdateDeviceCredentials = deviceCredentials.getAddition();
+        deviceCredentials.setCredentialsType(deviceCredentialsType).setAddition(credentialsAddition);
 
         this.encrypt(deviceCredentialsType, credentialsAddition, aesSecretKeySet);
 
-        this.repository.update(deviceAuthentication);
-        return deviceAuthentication;
+        this.repository.update(deviceCredentials);
+        // @formatter:off
+        DeviceCredentialsCacheEvictEvent.DeviceCredentialsCacheEvictEventBuilder builder =
+                DeviceCredentialsCacheEvictEvent.builder()
+                        .deviceCredentialsId(deviceCredentials.getId())
+                        .deviceId(deviceCredentials.getDeviceId());
+        // Clear Token Cache
+        if (DeviceCredentialsType.StaticToken == deviceCredentialsType || DeviceCredentialsType.DynamicToken == deviceCredentialsType) {
+            builder.token(beforeUpdateDeviceCredentials.getToken())
+                    .tokenHash(beforeUpdateDeviceCredentials.getTokenHash());
+        }
+        // @formatter:on
+        publishCacheEvictEvent(builder.build());
+        return deviceCredentials;
     }
 
 

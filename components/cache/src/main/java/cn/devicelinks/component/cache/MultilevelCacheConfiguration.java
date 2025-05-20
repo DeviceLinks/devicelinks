@@ -1,13 +1,9 @@
 package cn.devicelinks.component.cache;
 
 import cn.devicelinks.component.cache.config.CaffeineCacheConfig;
+import cn.devicelinks.component.cache.config.MultilevelCacheConfig;
 import cn.devicelinks.component.cache.config.RedisCacheConfig;
-import cn.devicelinks.component.cache.core.Cache;
-import cn.devicelinks.component.cache.core.CaffeineCache;
-import cn.devicelinks.component.cache.core.CompositeCache;
-import cn.devicelinks.component.cache.core.RedisCache;
-import cn.devicelinks.component.cache.spring.SpringCompositeCache;
-import cn.devicelinks.component.cache.spring.SpringCompositeCacheManager;
+import cn.devicelinks.component.cache.core.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,13 +31,13 @@ import static cn.devicelinks.component.cache.CacheRedisTemplateConfiguration.RED
 @Slf4j
 @Import(CacheRedisTemplateConfiguration.class)
 @EnableCaching // 启用Spring缓存
-public class CompositeCacheConfiguration {
+public class MultilevelCacheConfiguration {
 
-    public static final String COMPOSITE_CACHE_BEAN_NAME = "compositeCache";
+    public static final String COMPOSITE_CACHE_BEAN_NAME = "multilevelCache";
 
     private final CacheProperties cacheProperties;
 
-    public CompositeCacheConfiguration(CacheProperties cacheProperties) {
+    public MultilevelCacheConfiguration(CacheProperties cacheProperties) {
         this.cacheProperties = cacheProperties;
     }
 
@@ -54,7 +50,7 @@ public class CompositeCacheConfiguration {
                 // L1 Cache
                 new CaffeineCache<>(caffeineConfig),
                 // L2 Cache
-                new RedisCache<>(cacheRedisTemplate, redisConfig)
+                new RedisCache<>(redisConfig, cacheRedisTemplate)
         ));
     }
 
@@ -62,15 +58,16 @@ public class CompositeCacheConfiguration {
      * 创建{@link CacheManager}对象实例
      * <p>
      * {@link CacheManager}是Spring来管理缓存的管理器，
-     * 而{@link SpringCompositeCacheManager}允许根据cacheName动态创建{@link SpringCompositeCache}缓存对象实例
+     * 而{@link MultilevelCacheManager}允许根据cacheName动态创建{@link MultilevelCache}缓存对象实例
      * 注册后可通过{@link Cacheable}、{@link CacheEvict}等原生注解来使用缓存
      *
      * @param cacheRedisTemplate {@link RedisTemplate}
-     * @return {@link SpringCompositeCacheManager}
+     * @return {@link MultilevelCacheManager}
      */
     @Bean
     @Primary
-    public CacheManager springCompositeCacheManager(@Qualifier(REDIS_TEMPLATE_FOR_CACHE_BEAN_NAME) RedisTemplate<String, Object> cacheRedisTemplate) {
-        return new SpringCompositeCacheManager(cacheProperties, cacheRedisTemplate);
+    public CacheManager multilevelCacheManager(@Qualifier(REDIS_TEMPLATE_FOR_CACHE_BEAN_NAME) RedisTemplate<String, Object> cacheRedisTemplate) {
+        MultilevelCacheConfig multilevelCacheConfig = new MultilevelCacheConfig(cacheProperties.getCaffeine(), cacheProperties.getRedis());
+        return new MultilevelCacheManager(multilevelCacheConfig, cacheRedisTemplate);
     }
 }

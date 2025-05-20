@@ -1,8 +1,8 @@
-package cn.devicelinks.component.cache.spring;
+package cn.devicelinks.component.cache.core;
 
-import cn.devicelinks.component.cache.core.Cache;
+import cn.devicelinks.component.cache.config.MultilevelCacheConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,26 +14,30 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 复合多级缓存Spring支持
- * <p>
- * 为支持Spring提供的缓存注解（{@link Cacheable}）而适配
+ * 多级缓存
  *
  * @author 恒宇少年
  * @since 1.0
  */
-
 @Slf4j
-public class SpringCompositeCache implements org.springframework.cache.Cache {
+public class MultilevelCache implements org.springframework.cache.Cache {
 
+    protected final String cacheName;
+    protected List<Cache<String, Object>> caches;
     private final ConcurrentMap<String, ReentrantLock> keyLocks = new ConcurrentHashMap<>();
 
-    private final String cacheName;
-
-    private final List<Cache<String, Object>> caches;
-
-    public SpringCompositeCache(String cacheName, List<Cache<String, Object>> caches) {
+    public MultilevelCache(MultilevelCacheConfig cacheConfig, String cacheName, RedisTemplate<String, Object> cacheRedisTemplate) {
         this.cacheName = cacheName;
-        this.caches = new ArrayList<>(caches);
+        // @formatter:off
+        this.caches = new ArrayList<>() {
+            {
+                // Caffeine => L1
+                add(new CaffeineCache<>(cacheConfig.getCaffeineConfig(), cacheName));
+                // Redis => L2
+                add(new RedisCache<>(cacheConfig.getRedisConfig(), cacheName, cacheRedisTemplate));
+            }
+        };
+        // @formatter:on
         this.caches.sort(Comparator.comparing(Cache::getOrder));
     }
 
@@ -93,19 +97,24 @@ public class SpringCompositeCache implements org.springframework.cache.Cache {
 
     @Override
     public void put(Object key, Object value) {
-        // Update cache data in reverse order
-        List<Cache<String, Object>> reversedList = new ArrayList<>(caches);
-        Collections.reverse(reversedList);
-        reversedList.forEach(cache -> cache.put(this.convertKey(key), value));
+        if (value != null) {
+            log.debug("Put new cache, cacheName: {}, key: {}, value: {}.", cacheName, key, value);
+            // Update cache data in reverse order
+            List<Cache<String, Object>> reversedList = new ArrayList<>(caches);
+            Collections.reverse(reversedList);
+            reversedList.forEach(cache -> cache.put(this.convertKey(key), value));
+        }
     }
 
     @Override
     public void evict(Object key) {
-        caches.forEach(cache -> cache.remove(this.convertKey(key)));
+        log.debug("Evict cache, cacheName: {}, key: {}.", cacheName, key);
+        caches.forEach(cache -> cache.evict(this.convertKey(key)));
     }
 
     @Override
     public void clear() {
+        log.debug("Clear all cache, cacheName: {}.", cacheName);
         caches.forEach(Cache::clear);
     }
 
@@ -117,10 +126,10 @@ public class SpringCompositeCache implements org.springframework.cache.Cache {
         for (int i = 0; i < caches.size(); i++) {
             Object value = caches.get(i).get(key);
             if (value != null) {
-                log.debug("Use cache data, Key: {}, cache level: {}.", key, (i + 1));
+                log.debug("Get cache data, cacheName: {}, key: {}, cache level: {}.", cacheName, key, (i + 1));
                 // Backfill in reverse order
                 for (int j = 0; j < i; j++) {
-                    log.debug("Reverse update cache, Key: {}, get data level: {}, update target level: {}.", key, (i + 1), (j + 1));
+                    log.debug("Reverse update cache, cacheName: {}, key: {}, get data level: {}, update target level: {}.", cacheName, key, (i + 1), (j + 1));
                     caches.get(j).put(key, value);
                 }
                 return value;

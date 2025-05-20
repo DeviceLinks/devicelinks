@@ -7,8 +7,10 @@ import {
 } from '@/services/device-links-console-ui/department';
 import {
   DeleteOutlined,
+  DownOutlined,
   EditOutlined,
   EllipsisOutlined,
+  ImportOutlined,
   PlusOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
@@ -64,14 +66,28 @@ const DepartmentList: React.FC = () => {
         searchFields: inputValue
           ? [
               {
+                field: 'deleted',
+                operator: 'EqualTo',
+                value: 'false',
+              },
+              {
                 field: 'name',
                 operator: 'Like',
                 value: inputValue,
               },
             ]
-          : [],
+          : [
+              {
+                field: 'deleted',
+                operator: 'EqualTo',
+                value: false,
+              },
+            ],
       });
       setTreeData(data);
+      if (data && data.length > 0) {
+        setSelectedNode(data?.[0]);
+      }
     } finally {
       setTreeLoading(false);
     }
@@ -169,7 +185,17 @@ const DepartmentList: React.FC = () => {
     <PageContainer
       title={'部门管理'}
       content={'维护组织内多层级部门，并管理成员的部门隶属关系。'}
-      extra={[<AddUser key={'department'} refresh={refreshData} />]}
+      extra={[
+        <AddUser key={'department'} refresh={refreshData} />,
+        <Button
+          type={'primary'}
+          icon={<ImportOutlined />}
+          key={'import'}
+          onClick={() => message.warning('该功能正在开发中...')}
+        >
+          导入组织机构
+        </Button>,
+      ]}
     >
       <ProCard split="vertical">
         <ProCard colSpan="20%">
@@ -185,7 +211,10 @@ const DepartmentList: React.FC = () => {
                 defaultExpandAll={true}
                 fieldNames={treeFieldNames}
                 blockNode
+                showLine
+                switcherIcon={<DownOutlined />}
                 titleRender={treeTitleRender}
+                selectedKeys={[selectedNode?.id ?? '']}
                 onSelect={handleSelectNode}
               />
               <Button

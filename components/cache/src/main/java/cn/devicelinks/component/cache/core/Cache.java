@@ -2,67 +2,44 @@ package cn.devicelinks.component.cache.core;
 
 import org.springframework.core.Ordered;
 
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 /**
- * 缓存接口，定义了缓存的基本操作。
+ * 缓存接口定义
  *
- * @param <K> 缓存键的类型
- * @param <V> 缓存值的类型
+ * @author 恒宇少年
+ * @since 1.0
  */
 public interface Cache<K, V> extends Ordered {
-    /**
-     * 根据指定的键获取缓存中的值。
-     *
-     * @param key 要查找的键
-     * @return 返回与键关联的值，如果键不存在则返回null
-     */
+
+    String getCacheName();
+
     V get(K key);
 
-    /**
-     * 根据指定的键获取缓存中的值。如果键不存在，则使用提供的{@link CacheLoader}加载值并存入缓存。
-     *
-     * @param key    要查找的键
-     * @param loader 用于加载值的{@link CacheLoader}
-     * @return 返回与键关联的值，如果键不存在则通过{@link CacheLoader}加载并返回
-     */
-    V get(K key, CacheLoader<K, V> loader);
+    default V get(K key, Supplier<V> supplier) {
+        return get(key, supplier, true);
+    }
 
-    /**
-     * 根据指定的键获取缓存中的值。如果键不存在，则使用提供的{@link CacheLoader}加载值并存入缓存，并设置缓存的生存时间（TTL）。
-     *
-     * @param key        要查找的键
-     * @param ttlSeconds 缓存的生存时间（以秒为单位）
-     * @param loader     用于加载值的{@link CacheLoader}
-     * @return 返回与键关联的值，如果键不存在则通过{@link CacheLoader}加载并返回
-     */
-    V get(K key, long ttlSeconds, CacheLoader<K, V> loader);
+    default V get(K key, Supplier<V> supplier, boolean putToCache) {
+        return Optional.ofNullable(get(key))
+                .orElseGet(() -> {
+                    V value = supplier.get();
+                    if (putToCache) {
+                        put(key, value);
+                    }
+                    return value;
+                });
+    }
 
-    /**
-     * 将指定的键值对存入缓存。
-     *
-     * @param key   要存入的键
-     * @param value 要存入的值
-     */
     void put(K key, V value);
 
-    /**
-     * 将指定的键值对存入缓存，并设置缓存的生存时间（TTL）。
-     *
-     * @param key        要存入的键
-     * @param value      要存入的值
-     * @param ttlSeconds 缓存的生存时间（以秒为单位）
-     */
-    void put(K key, V value, long ttlSeconds);
+    void putIfAbsent(K key, V value);
 
-    /**
-     * 从缓存中移除指定的键及其关联的值。
-     *
-     * @param key 要移除的键
-     */
-    void remove(K key);
+    void evict(K key);
 
-    /**
-     * 清空缓存中的所有键值对。
-     */
+    void evict(Collection<K> keys);
+
     void clear();
 }
-

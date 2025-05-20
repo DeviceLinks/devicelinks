@@ -32,7 +32,7 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
  */
 @SpringBootApplication(exclude = UserDetailsServiceAutoConfiguration.class)
 @DeviceLinksBeanScan
-@EnableCache(cacheType = CacheType.Composite)
+@EnableCache(cacheType = CacheType.Multilevel)
 public class DeviceCenterApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeviceCenterApplication.class, args);

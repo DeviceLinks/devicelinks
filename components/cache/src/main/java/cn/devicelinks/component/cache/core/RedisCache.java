@@ -2,39 +2,39 @@ package cn.devicelinks.component.cache.core;
 
 import cn.devicelinks.common.Constants;
 import cn.devicelinks.component.cache.config.RedisCacheConfig;
+import lombok.Getter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Collection;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
- * 基于Redis实现的分布式L2级别缓存
+ * Redis L2 分布式缓存
  *
  * @author 恒宇少年
  * @since 1.0
  */
 public class RedisCache<K, V> implements Cache<K, V> {
 
-    private static final String DEFAULT_REDIS_CACHE_KEY_PREFIX = "devicelinks:cache:";
-
+    private static final String DEFAULT_CACHE_NAME = "default";
+    private static final String DEFAULT_REDIS_CACHE_KEY_PREFIX = "devicelinks:cache";
     private static final String KEY_MATCH_IDENTIFIER = "*";
+    private static final int REDIS_CACHE_LEVEL = 2;
 
-    private static final long DEFAULT_L2_TTL_SECONDS = 10 * 60L;
-
-    private static final int L2_ORDER = 2;
-
+    @Getter
+    protected final String cacheName;
+    private final RedisCacheConfig config;
     private final RedisTemplate<String, V> redisTemplate;
 
-    private final RedisCacheConfig config;
-
-    public RedisCache(RedisTemplate<String, V> redisTemplate) {
-        this(redisTemplate, RedisCacheConfig.useDefault());
+    public RedisCache(RedisCacheConfig config, RedisTemplate<String, V> redisTemplate) {
+        this(config, DEFAULT_CACHE_NAME, redisTemplate);
     }
 
-    public RedisCache(RedisTemplate<String, V> redisTemplate, RedisCacheConfig config) {
-        this.redisTemplate = redisTemplate;
+    public RedisCache(RedisCacheConfig config, String cacheName, RedisTemplate<String, V> redisTemplate) {
+        this.cacheName = cacheName;
         this.config = config;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -43,35 +43,28 @@ public class RedisCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public V get(K key, CacheLoader<K, V> loader) {
-        return this.get(key, getTtlSeconds(), loader);
-    }
-
-    @Override
-    public V get(K key, long ttlSeconds, CacheLoader<K, V> loader) {
-        String formatKey = this.formatCacheKey(key);
-        V value = redisTemplate.opsForValue().get(formatKey);
-        if (value == null && loader != null) {
-            V loadedValue = loader.load(key);
-            redisTemplate.opsForValue().set(formatKey, loadedValue, ttlSeconds, TimeUnit.SECONDS);
-            return loadedValue;
-        }
-        return value;
-    }
-
-    @Override
     public void put(K key, V value) {
-        this.put(key, value, getTtlSeconds());
+        if (value != null) {
+            redisTemplate.opsForValue().set(formatCacheKey(key), value, config.getTtl(), config.getTtlTimeUnit());
+        }
     }
 
     @Override
-    public void put(K key, V value, long ttlSeconds) {
-        redisTemplate.opsForValue().set(formatCacheKey(key), value, ttlSeconds, TimeUnit.SECONDS);
+    public void putIfAbsent(K key, V value) {
+        V v = get(key);
+        if (v == null && value != null) {
+            put(key, value);
+        }
     }
 
     @Override
-    public void remove(K key) {
+    public void evict(K key) {
         redisTemplate.delete(formatCacheKey(key));
+    }
+
+    @Override
+    public void evict(Collection<K> keys) {
+        redisTemplate.delete(keys.stream().map(this::formatCacheKey).toList());
     }
 
     @Override
@@ -82,20 +75,16 @@ public class RedisCache<K, V> implements Cache<K, V> {
         }
     }
 
+    @Override
+    public int getOrder() {
+        return REDIS_CACHE_LEVEL;
+    }
+
     private String formatCacheKey(K key) {
-        return getCachePrefix() + Constants.RISK + key;
+        return getCachePrefix() + Constants.RISK + cacheName + Constants.RISK + key;
     }
 
     private String getCachePrefix() {
         return !ObjectUtils.isEmpty(config.getPrefix()) ? config.getPrefix() : DEFAULT_REDIS_CACHE_KEY_PREFIX;
-    }
-
-    private long getTtlSeconds() {
-        return config.getTtl() <= Constants.ZERO ? DEFAULT_L2_TTL_SECONDS : config.getTtl();
-    }
-
-    @Override
-    public int getOrder() {
-        return L2_ORDER;
     }
 }

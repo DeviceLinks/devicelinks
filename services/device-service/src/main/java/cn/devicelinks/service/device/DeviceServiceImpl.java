@@ -28,9 +28,11 @@ import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.*;
-import cn.devicelinks.jdbc.BaseServiceImpl;
+import cn.devicelinks.jdbc.CacheBaseServiceImpl;
 import cn.devicelinks.jdbc.PaginationQueryConverter;
 import cn.devicelinks.jdbc.SearchFieldConditionBuilder;
+import cn.devicelinks.jdbc.cache.DeviceCacheEvictEvent;
+import cn.devicelinks.jdbc.cache.DeviceCacheKey;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
@@ -41,6 +43,7 @@ import cn.devicelinks.service.system.SysDepartmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -59,7 +62,7 @@ import static cn.devicelinks.jdbc.tables.TDevice.DEVICE;
  */
 @Service
 @Slf4j
-public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRepository> implements DeviceService {
+public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, DeviceRepository, DeviceCacheKey, DeviceCacheEvictEvent> implements DeviceService {
     @Autowired
     private ProductService productService;
     @Autowired
@@ -82,6 +85,25 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     }
 
     @Override
+    @TransactionalEventListener(classes = DeviceCacheEvictEvent.class)
+    public void handleCacheEvictEvent(DeviceCacheEvictEvent event) {
+        Device savedDevice = event.getSavedDevice();
+        if (savedDevice != null) {
+            cache.put(DeviceCacheKey.builder().deviceId(savedDevice.getId()).build(), savedDevice);
+            cache.put(DeviceCacheKey.builder().deviceName(savedDevice.getDeviceName()).build(), savedDevice);
+        } else {
+            List<DeviceCacheKey> toEvict = new ArrayList<>();
+            if (!ObjectUtils.isEmpty(event.getDeviceId())) {
+                toEvict.add(DeviceCacheKey.builder().deviceId(event.getDeviceId()).build());
+            }
+            if (!ObjectUtils.isEmpty(event.getDeviceName())) {
+                toEvict.add(DeviceCacheKey.builder().deviceName(event.getDeviceName()).build());
+            }
+            cache.evict(toEvict);
+        }
+    }
+
+    @Override
     public PageResult<Device> selectByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery) {
         List<SearchFieldCondition> searchFieldConditionList = SearchFieldConditionBuilder.from(searchFieldQuery).build();
         PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
@@ -90,7 +112,9 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
     @Override
     public Device selectByName(String deviceName) {
-        return this.repository.selectOne(DEVICE.DEVICE_NAME.eq(deviceName));
+        Assert.hasText(deviceName, "The DeviceName cannot be empty string.");
+        return cache.get(DeviceCacheKey.builder().deviceName(deviceName).build(),
+                () -> this.repository.selectOne(DEVICE.DEVICE_NAME.eq(deviceName)));
     }
 
     @Override
@@ -146,6 +170,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
 
         // init device shadow data
         this.deviceShadowService.initialShadow(device.getId());
+        publishCacheEvictEvent(DeviceCacheEvictEvent.builder().savedDevice(device).build());
         return device;
     }
 
@@ -154,6 +179,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
     public Device updateDevice(Device device) {
         this.checkData(device, true);
         this.repository.update(device);
+        publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
         return device;
     }
 
@@ -167,6 +193,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
             throw new ApiException(StatusCodeConstants.DEVICE_IS_ENABLE_NOT_ALLOWED_DELETE, device.getDeviceName());
         }
         this.repository.update(List.of(DEVICE.DELETED.set(Boolean.TRUE)), DEVICE.ID.eq(device.getId()));
+        publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
         return device;
     }
 
@@ -177,13 +204,19 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, String, DeviceRep
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
         }
         this.repository.update(List.of(DEVICE.ENABLED.set(enabled)), DEVICE.ID.eq(device.getId()));
+        publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
     }
 
     @Override
     public void activateDevice(String deviceId) {
+        Device device = this.selectById(deviceId);
+        if (device == null) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
         this.repository.update(List.of(DEVICE.STATUS.set(DeviceStatus.Activated),
                         DEVICE.ACTIVATION_TIME.set(LocalDateTime.now())),
                 DEVICE.ID.eq(deviceId));
+        publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
     }
 
     private void checkData(Device device, boolean doUpdate) {

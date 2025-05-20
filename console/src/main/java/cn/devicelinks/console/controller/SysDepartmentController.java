@@ -18,6 +18,7 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.api.model.request.AddDepartmentRequest;
+import cn.devicelinks.api.model.request.BatchChangeUserDepartmentRequest;
 import cn.devicelinks.api.model.request.UpdateDepartmentRequest;
 import cn.devicelinks.api.model.response.DepartmentTree;
 import cn.devicelinks.api.support.StatusCodeConstants;
@@ -33,6 +34,7 @@ import cn.devicelinks.console.authorization.UserDetailsContext;
 import cn.devicelinks.entity.SysDepartment;
 import cn.devicelinks.entity.SysUser;
 import cn.devicelinks.service.system.SysDepartmentService;
+import cn.devicelinks.service.system.SysUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -53,6 +55,7 @@ import java.util.List;
 public class SysDepartmentController {
 
     private final SysDepartmentService departmentService;
+    private final SysUserService userService;
 
     /**
      * 查询部门列表
@@ -173,5 +176,29 @@ public class SysDepartmentController {
         }
         this.departmentService.deleteDepartment(departmentId);
         return ApiResponse.success(storedDepartment);
+    }
+
+    /**
+     * 以部门为视角批量更新多个用户的所属部门ID
+     *
+     * @param departmentId 部门ID {@link SysDepartment#getId()}
+     * @param request      批量更新请求实体 {@link BatchChangeUserDepartmentRequest}
+     * @throws ApiException 执行过程中遇到的异常
+     */
+    @PostMapping(value = "/{departmentId}/batch-change-user")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.Department,
+            objectId = "{#p0}",
+            msg = "{#executionSucceed ? '批量更新成功' : '批量更新失败'}",
+            activateData = "{#p1}")
+    public ApiResponse<Object> batchChangeUserDepartment(@PathVariable String departmentId,
+                                                         @RequestBody BatchChangeUserDepartmentRequest request) throws ApiException {
+        SysDepartment department = departmentService.selectById(departmentId);
+        if (department == null || department.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEPARTMENT_NOT_FOUND, departmentId);
+        }
+        userService.batchUpdateDepartmentId(request.getUserIds(), departmentId);
+        return ApiResponse.success();
     }
 }

@@ -16,10 +16,10 @@ public enum CacheType {
      */
     Redis,
     /**
-     * 开启复合多级缓存
+     * 开启多级缓存
      * <p>
      * Caffeine => L1
      * Redis => L2
      */
-    Composite
+    Multilevel
 }

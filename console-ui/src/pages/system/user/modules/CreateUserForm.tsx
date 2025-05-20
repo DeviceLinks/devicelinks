@@ -1,3 +1,4 @@
+import { postApiDepartmentTreeFilter } from '@/services/device-links-console-ui/department';
 import { postApiUser } from '@/services/device-links-console-ui/user';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -7,12 +8,15 @@ import {
   ProFormSwitch,
   ProFormText,
   ProFormTextArea,
+  ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { Button, Form, message } from 'antd';
+import { ButtonType } from 'antd/es/button';
 
 interface Props {
   refresh: () => void;
+  btnType?: ButtonType;
 }
 
 export default (prop: Props) => {
@@ -24,7 +28,7 @@ export default (prop: Props) => {
     <ModalForm<API.User>
       title="成员入职"
       trigger={
-        <Button type="primary">
+        <Button type={prop.btnType}>
           <PlusOutlined />
           成员入职
         </Button>
@@ -101,12 +105,40 @@ export default (prop: Props) => {
           label="邮箱地址"
           placeholder="请输入邮箱地址"
         />
-        <ProFormText
+        {/*<ProFormText*/}
+        {/*  allowClear*/}
+        {/*  width="md"*/}
+        {/*  name="departmentId"*/}
+        {/*  label="所属部门"*/}
+        {/*  placeholder="请选择所属部门"*/}
+        {/*/>*/}
+        <ProFormTreeSelect
           allowClear
-          width="md"
           name="departmentId"
           label="所属部门"
+          width="md"
+          rules={[{ required: true, message: '请选择部门' }]}
           placeholder="请选择所属部门"
+          fieldProps={{
+            fieldNames: {
+              label: 'name',
+              value: 'id',
+            },
+          }}
+          request={async () => {
+            const { data } = await postApiDepartmentTreeFilter({
+              searchFieldModule: 'Department',
+              searchMatch: 'ALL',
+              searchFields: [
+                {
+                  field: 'deleted',
+                  operator: 'EqualTo',
+                  value: false,
+                },
+              ],
+            });
+            return data;
+          }}
         />
       </ProForm.Group>
       <ProFormSwitch name="switch" label="强制用户在首次登陆时修改密码" />

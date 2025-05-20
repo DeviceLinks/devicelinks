@@ -14,7 +14,6 @@ import {
 import { Form, message, Modal } from 'antd';
 import React from 'react';
 
-// 1. 定义独立弹窗组件props类型
 interface ModalProps {
   open: boolean;
   onCancel: () => void;
@@ -93,7 +92,13 @@ const CreateDepartmentModal: React.FC<ModalProps> = ({
             const { data } = await postApiDepartmentTreeFilter({
               searchFieldModule: 'Department',
               searchMatch: 'ALL',
-              searchFields: [],
+              searchFields: [
+                {
+                  field: 'deleted',
+                  operator: 'EqualTo',
+                  value: 'false',
+                },
+              ],
             });
             return data;
           }}

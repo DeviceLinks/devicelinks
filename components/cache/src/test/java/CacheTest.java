@@ -39,7 +39,7 @@ public class CacheTest {
         String key = "test";
         cache.put(key, System.currentTimeMillis());
         for (int i = 0; i < 10; i++) {
-            System.out.println("cache value：" + cache.get(key, key1 -> System.currentTimeMillis()));
+            System.out.println("cache value：" + cache.get(key, System::currentTimeMillis));
             Thread.sleep(10 * 1000);
         }
     }

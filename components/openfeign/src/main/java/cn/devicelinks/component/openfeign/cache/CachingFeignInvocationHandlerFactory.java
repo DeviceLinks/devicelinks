@@ -31,7 +31,7 @@ public class CachingFeignInvocationHandlerFactory implements InvocationHandlerFa
             FeignCacheable cacheable = method.getAnnotation(FeignCacheable.class);
             if (cacheable != null) {
                 String key = FeignCacheKeyBuilder.build(method, args);
-                return cache.get(key, cacheable.ttlSeconds(), k -> {
+                return cache.get(key, () -> {
                     try {
                         return handler.invoke(proxy, method, args);
                     } catch (Throwable e) {

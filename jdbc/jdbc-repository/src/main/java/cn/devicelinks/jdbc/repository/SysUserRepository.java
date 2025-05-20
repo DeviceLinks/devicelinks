@@ -38,4 +38,6 @@ public interface SysUserRepository extends Repository<SysUser, String> {
     SysUser selectByAccount(String account);
 
     PageResult<UserDTO> selectByPage(List<SearchFieldCondition> searchFieldConditions, PageQuery pageQuery, SortCondition sortCondition);
+
+    List<UserDTO> selectUsers(List<SearchFieldCondition> searchFieldConditions);
 }

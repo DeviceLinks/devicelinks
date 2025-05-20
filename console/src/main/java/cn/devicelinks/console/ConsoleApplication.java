@@ -33,7 +33,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @DeviceLinksBeanScan
 @EnableOpenFeignClients
-@EnableCache(cacheType = CacheType.Composite)
+@EnableCache(cacheType = CacheType.Multilevel)
 public class ConsoleApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConsoleApplication.class, args);

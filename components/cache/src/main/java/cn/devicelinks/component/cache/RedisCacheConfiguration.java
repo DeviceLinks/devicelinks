@@ -36,6 +36,6 @@ public class RedisCacheConfiguration {
     @ConditionalOnMissingBean(name = REDIS_CACHE_BEAN_NAME)
     public Cache<String, Object> caffeineCache(@Qualifier(REDIS_TEMPLATE_FOR_CACHE_BEAN_NAME) RedisTemplate<String, Object> cacheRedisTemplate) {
         RedisCacheConfig redisConfig = cacheProperties.getRedis();
-        return new RedisCache<>(cacheRedisTemplate, redisConfig);
+        return new RedisCache<>(redisConfig, cacheRedisTemplate);
     }
 }

@@ -44,6 +44,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 系统用户接口控制器
  *
@@ -67,8 +69,22 @@ public class SysUserController {
     @PostMapping(value = "/filter")
     @PreAuthorize("hasAuthority('SystemAdmin')")
     @SearchModule(module = SearchFieldModuleIdentifier.User)
-    public ApiResponse<PageResult<UserDTO>> getUsers(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
-        return ApiResponse.success(this.userService.getUsers(searchFieldQuery, paginationQuery));
+    public ApiResponse<PageResult<UserDTO>> getUsersWithPage(@Valid PaginationQuery paginationQuery, @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        return ApiResponse.success(this.userService.getUsersWithPage(searchFieldQuery, paginationQuery));
+    }
+
+    /**
+     * 获取用户列表
+     *
+     * @param searchFieldQuery 检索字段查询参数 {@link SearchFieldQuery}
+     * @return 用户列表 {@link UserDTO}
+     * @throws ApiException 查询过程中遇到的异常
+     */
+    @PostMapping(value = "/filter/no-page")
+    @PreAuthorize("hasAuthority('SystemAdmin')")
+    @SearchModule(module = SearchFieldModuleIdentifier.User)
+    public ApiResponse<List<UserDTO>> getUsers(@Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
+        return ApiResponse.success(this.userService.getUsers(searchFieldQuery));
     }
 
     /**
