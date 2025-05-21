@@ -17,17 +17,18 @@
 
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
-import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceCredentialsAddition;
-import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.jdbc.BaseService;
 import cn.devicelinks.jdbc.core.page.PageResult;
-import cn.devicelinks.api.model.dto.DeviceDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 设备业务逻辑接口定义
@@ -95,6 +96,14 @@ public interface DeviceService extends BaseService<Device, String> {
      * @return 已删除的设备信息 {@link Device}
      */
     Device deleteDevice(String deviceId);
+
+    /**
+     * 批量删除设备
+     *
+     * @param deviceIds 设备ID列表 {@link Device#getId()}
+     * @return 删除失败的设备名称 {@link Device#getId()} 以及失败原因
+     */
+    Map<String, String> batchDeleteDevices(List<String> deviceIds);
 
     /**
      * 更新设备启用状态

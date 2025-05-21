@@ -49,7 +49,9 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static cn.devicelinks.jdbc.tables.TDevice.DEVICE;
@@ -195,6 +197,25 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
         this.repository.update(List.of(DEVICE.DELETED.set(Boolean.TRUE)), DEVICE.ID.eq(device.getId()));
         publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
         return device;
+    }
+
+    @Override
+    public Map<String, String> batchDeleteDevices(List<String> deviceIds) {
+        Map<String, String> failureReasonMap = new LinkedHashMap<>();
+        deviceIds.forEach(deviceId -> {
+            try {
+                this.deleteDevice(deviceId);
+            } catch (Exception e) {
+                if (e instanceof ApiException apiException) {
+                    String errorMsg = apiException.getStatusCode().formatMessage(apiException.getMessageVariables());
+                    failureReasonMap.put(deviceId, errorMsg);
+                } else {
+                    log.error("删除设备时遇到未知的异常，设备ID：" + deviceId, e);
+                    failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.getMessage());
+                }
+            }
+        });
+        return failureReasonMap;
     }
 
     @Override

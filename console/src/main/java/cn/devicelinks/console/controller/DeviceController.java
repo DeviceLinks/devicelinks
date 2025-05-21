@@ -1,28 +1,30 @@
 package cn.devicelinks.console.controller;
 
 import cn.devicelinks.api.device.center.CommonFeignClient;
-import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.model.converter.DeviceConverter;
+import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.model.request.AddDeviceRequest;
+import cn.devicelinks.api.model.request.BatchDeleteDeviceRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceRequest;
-import cn.devicelinks.console.authorization.UserDetailsContext;
+import cn.devicelinks.api.model.response.BatchDeleteDeviceResponse;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.LogAction;
 import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.operate.log.annotation.OperationLog;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
-import cn.devicelinks.component.web.api.ApiException;
-import cn.devicelinks.component.operate.log.annotation.OperationLog;
-import cn.devicelinks.entity.Device;
-import cn.devicelinks.entity.FunctionModule;
-import cn.devicelinks.entity.SysUser;
-import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.component.web.search.SearchFieldModuleIdentifier;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.component.web.search.annotation.SearchModule;
+import cn.devicelinks.console.authorization.UserDetailsContext;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.entity.SysUser;
 import cn.devicelinks.jdbc.core.page.PageResult;
-import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.service.device.DeviceService;
 import cn.devicelinks.service.product.FunctionModuleService;
 import jakarta.validation.Valid;
@@ -31,6 +33,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 设备接口控制器
@@ -183,5 +186,20 @@ public class DeviceController {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
         }
         return ApiResponse.success(this.functionModuleService.getProductFunctionModule(device.getProductId()));
+    }
+
+    /**
+     * 批量删除设备
+     * <p>
+     * 如果设备删除时遇到问题，则通过{@link BatchDeleteDeviceResponse}进行返回
+     *
+     * @param request 批量删除设备的请求实体 {@link BatchDeleteDeviceRequest}
+     * @return {@link BatchDeleteDeviceResponse}
+     * @throws ApiException 删除过程中遇到的业务逻辑异常
+     */
+    @DeleteMapping(value = "/batch")
+    public ApiResponse<BatchDeleteDeviceResponse> batchDeleteDevices(@Valid @RequestBody BatchDeleteDeviceRequest request) throws ApiException {
+        Map<String, String> failureReasonMap = this.deviceService.batchDeleteDevices(request.getDeviceIds());
+        return ApiResponse.success(BatchDeleteDeviceResponse.builder().failureReasonMap(failureReasonMap).build());
     }
 }
