@@ -20,6 +20,7 @@ package cn.devicelinks.service.device;
 import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.common.DeviceCredentialsType;
+import cn.devicelinks.common.UpdateDeviceEnabledAction;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Device;
@@ -101,7 +102,7 @@ public interface DeviceService extends BaseService<Device, String> {
      * 批量删除设备
      *
      * @param deviceIds 设备ID列表 {@link Device#getId()}
-     * @return 删除失败的设备名称 {@link Device#getId()} 以及失败原因
+     * @return 删除失败的设备ID {@link Device#getId()} 以及失败原因
      */
     Map<String, String> batchDeleteDevices(List<String> deviceIds);
 
@@ -112,6 +113,15 @@ public interface DeviceService extends BaseService<Device, String> {
      * @param enabled  启用状态 {@link Device#isEnabled()}
      */
     void updateEnabled(String deviceId, boolean enabled);
+
+    /**
+     * 批量更新设备启用状态
+     *
+     * @param updateEnabledAction 更新启用动作
+     * @param deviceIds           设备ID列表 {@link Device#getId()}
+     * @return 更新失败的设备ID {@link Device#getId()} 以及失败原因
+     */
+    Map<String, String> batchUpdateEnabled(UpdateDeviceEnabledAction updateEnabledAction, List<String> deviceIds);
 
     /**
      * 激活设备

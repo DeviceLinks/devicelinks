@@ -6,12 +6,15 @@ import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.model.request.AddDeviceRequest;
 import cn.devicelinks.api.model.request.BatchDeleteDeviceRequest;
+import cn.devicelinks.api.model.request.BatchUpdateDeviceEnabledRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceRequest;
 import cn.devicelinks.api.model.response.BatchDeleteDeviceResponse;
+import cn.devicelinks.api.model.response.BatchUpdateDeviceEnabledResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.LogAction;
 import cn.devicelinks.common.LogObjectType;
+import cn.devicelinks.common.UpdateDeviceEnabledAction;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.component.operate.log.annotation.OperationLog;
 import cn.devicelinks.component.web.api.ApiException;
@@ -201,5 +204,19 @@ public class DeviceController {
     public ApiResponse<BatchDeleteDeviceResponse> batchDeleteDevices(@Valid @RequestBody BatchDeleteDeviceRequest request) throws ApiException {
         Map<String, String> failureReasonMap = this.deviceService.batchDeleteDevices(request.getDeviceIds());
         return ApiResponse.success(BatchDeleteDeviceResponse.builder().failureReasonMap(failureReasonMap).build());
+    }
+
+    /**
+     * 批量更新更新设备启用状态
+     *
+     * @param request 批量更新设备启用状态的请求实体 {@link BatchUpdateDeviceEnabledRequest}
+     * @return {@link BatchUpdateDeviceEnabledResponse}
+     * @throws ApiException 更新状态过程中遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/enabled-batch")
+    public ApiResponse<BatchUpdateDeviceEnabledResponse> batchUpdateDeviceStatus(@Valid @RequestBody BatchUpdateDeviceEnabledRequest request) throws ApiException {
+        UpdateDeviceEnabledAction updateEnabledAction = UpdateDeviceEnabledAction.valueOf(request.getAction());
+        Map<String, String> failureReasonMap = this.deviceService.batchUpdateEnabled(updateEnabledAction, request.getDeviceIds());
+        return ApiResponse.success(BatchUpdateDeviceEnabledResponse.builder().failureReasonMap(failureReasonMap).build());
     }
 }

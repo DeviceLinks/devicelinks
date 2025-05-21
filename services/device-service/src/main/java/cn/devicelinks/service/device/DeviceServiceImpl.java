@@ -24,6 +24,7 @@ import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.DeviceStatus;
+import cn.devicelinks.common.UpdateDeviceEnabledAction;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
@@ -226,6 +227,25 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
         }
         this.repository.update(List.of(DEVICE.ENABLED.set(enabled)), DEVICE.ID.eq(device.getId()));
         publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
+    }
+
+    @Override
+    public Map<String, String> batchUpdateEnabled(UpdateDeviceEnabledAction updateEnabledAction, List<String> deviceIds) {
+        Map<String, String> failureReasonMap = new LinkedHashMap<>();
+        deviceIds.forEach(deviceId -> {
+            try {
+                this.updateEnabled(deviceId, UpdateDeviceEnabledAction.Enable == updateEnabledAction);
+            } catch (Exception e) {
+                if (e instanceof ApiException apiException) {
+                    String errorMsg = apiException.getStatusCode().formatMessage(apiException.getMessageVariables());
+                    failureReasonMap.put(deviceId, errorMsg);
+                } else {
+                    log.error("更新设备启用状态时遇到未知的异常，设备ID：" + deviceId, e);
+                    failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.getMessage());
+                }
+            }
+        });
+        return failureReasonMap;
     }
 
     @Override
