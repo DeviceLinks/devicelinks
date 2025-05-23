@@ -33,9 +33,9 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minbox-framework.version>1.0.8</minbox-framework.version>
-        <spring-boot.version>3.4.5</spring-boot.version>
-        <spring-framework.version>6.2.6</spring-framework.version>
-        <spring-security.version>6.4.5</spring-security.version>
+        <spring-boot.version>3.5.0</spring-boot.version>
+        <spring-framework.version>6.2.7</spring-framework.version>
+        <spring-security.version>6.5.0</spring-security.version>
         <guava.version>33.2.1-jre</guava.version>
         <mysql-connector-j.version>9.3.0</mysql-connector-j.version>
         <ssh-agent.version>1.0.4</ssh-agent.version>
