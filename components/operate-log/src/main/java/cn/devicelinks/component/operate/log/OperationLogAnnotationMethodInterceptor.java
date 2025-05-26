@@ -100,21 +100,23 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                 variables.addVariables(parameterValues);
             }
             evaluationContext = new ExpressionEvaluationContext(variables, beanFactoryResolver);
-            // Load all additional data at target method invoke before
-            this.loadAdditionalData(evaluator, evaluationContext, extractor.getPreAdditionDataList(), AdditionalDataLoadTime.OperationBefore);
-            try {
-                // get object before value
-                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) &&
-                        (LogAction.Update == extractor.getAction() || LogAction.Delete == extractor.getAction())) {
-                    targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
-                    if (targetBeforeObject != null) {
-                        evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
-                    } else {
-                        log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
+            if (!extractor.isBatch()) {
+                // Load all additional data at target method invoke before
+                this.loadAdditionalData(evaluator, evaluationContext, extractor.getPreAdditionDataList(), AdditionalDataLoadTime.OperationBefore);
+                try {
+                    // get object before value
+                    if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) &&
+                            (LogAction.Update == extractor.getAction() || LogAction.Delete == extractor.getAction())) {
+                        targetBeforeObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
+                        if (targetBeforeObject != null) {
+                            evaluationContext.addVariable(BEFORE_VARIABLE_KEY, targetBeforeObject);
+                        } else {
+                            log.error("[操作日志], 当前操作为[{}], 并未获取到操作之前的对象详情, 无法存储操作日志.", extractor.getAction());
+                        }
                     }
+                } catch (Exception e) {
+                    log.error("[操作日志], 获取操作之前对象详情遇到异常.", e);
                 }
-            } catch (Exception e) {
-                log.error("[操作日志], 获取操作之前对象详情遇到异常.", e);
             }
             // invoke target method
             result = invocation.proceed();
@@ -122,20 +124,22 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
             if (result != null) {
                 evaluationContext.addVariable(RESULT_VARIABLE_KEY, result);
             }
-            try {
-                // Load all additional data at target method invoke after
-                this.loadAdditionalData(evaluator, evaluationContext, extractor.getPreAdditionDataList(), AdditionalDataLoadTime.OperationAfter);
-                // get object after value
-                if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && LogAction.Update == extractor.getAction()) {
-                    targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
-                    if (targetAfterObject != null) {
-                        evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
-                    } else {
-                        log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
+            if (!extractor.isBatch()) {
+                try {
+                    // Load all additional data at target method invoke after
+                    this.loadAdditionalData(evaluator, evaluationContext, extractor.getPreAdditionDataList(), AdditionalDataLoadTime.OperationAfter);
+                    // get object after value
+                    if (!ObjectUtils.isEmpty(extractor.getObjectTemplate()) && LogAction.Update == extractor.getAction()) {
+                        targetAfterObject = evaluator.parseExpression(evaluationContext, Object.class, extractor.getObjectTemplate());
+                        if (targetAfterObject != null) {
+                            evaluationContext.addVariable(AFTER_VARIABLE_KEY, targetAfterObject);
+                        } else {
+                            log.error("[操作日志], 当前操作为[{}], 并未获取到操作之后的对象详情, 无法存储操作日志.", extractor.getAction());
+                        }
                     }
+                } catch (Exception e) {
+                    log.error("[操作日志], 获取操作之后对象详情遇到异常.", e);
                 }
-            } catch (Exception e) {
-                log.error("[操作日志], 获取操作之后对象详情遇到异常.", e);
             }
             return result;
         } catch (Exception e) {
@@ -155,27 +159,58 @@ public class OperationLogAnnotationMethodInterceptor implements MethodIntercepto
                     condition = evaluator.parseExpression(evaluationContext, Boolean.class, extractor.getConditionTemplate());
                 }
                 if (condition) {
-                    OperationLogResolveProcessor resolveProcessor =
-                            new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
-                    OperationLogObject operationLogObject = resolveProcessor.processing();
-                    operationLogObject.setFailureReason(failureReason);
-                    operationLogObject.setFailureCause(failureCause);
-                    if (this.operatorIdsProvider != null) {
-                        if (!ObjectUtils.isEmpty(this.operatorIdsProvider.getUserId())) {
-                            operationLogObject.setOperatorId(this.operatorIdsProvider.getUserId());
-                        }
-                        if (!ObjectUtils.isEmpty(this.operatorIdsProvider.getSessionId())) {
-                            operationLogObject.setSessionId(this.operatorIdsProvider.getSessionId());
+                    if (!extractor.isBatch()) {
+                        OperationLogResolveProcessor resolveProcessor =
+                                new OperationLogResolveProcessor(extractor, evaluator, evaluationContext, executionSucceed, targetBeforeObject, targetAfterObject);
+                        OperationLogObject operationLogObject = resolveProcessor.processing();
+                        operationLogObject.setFailureReason(failureReason);
+                        operationLogObject.setFailureCause(failureCause);
+                        this.setOperatorInfos(operationLogObject);
+                        if (this.operationLogStorage != null) {
+                            this.operationLogStorage.storage(operationLogObject);
+                        } else {
+                            log.error("未找到[OperationLogStorage]实现类实例, 跳过存储操作日志.");
                         }
                     }
-                    if (this.operationLogStorage != null) {
-                        this.operationLogStorage.storage(operationLogObject);
-                    } else {
-                        log.error("未找到[OperationLogStorage]实现类实例, 跳过存储操作日志.");
+                    // Batch Operation
+                    else {
+                        // Save OperationLogRecorder Logs
+                        List<OperationLogObject> operationLogObjects = OperationLogRecorder.getLocalOperationLogList();
+                        if (!ObjectUtils.isEmpty(operationLogObjects)) {
+                            ExpressionEvaluationContext finalEvaluationContext = evaluationContext;
+                            operationLogObjects.forEach(logObject -> {
+                                finalEvaluationContext.addVariable(EXECUTION_SUCCEED_VARIABLE_KEY, logObject.isExecutionSucceed());
+                                this.setOperatorInfos(logObject);
+                                logObject.setAction(extractor.getAction())
+                                        .setObjectType(extractor.getObjectType());
+                                if (ObjectUtils.isEmpty(logObject.getMsg()) && !ObjectUtils.isEmpty(extractor.getMsgTemplate())) {
+                                    logObject.setMsg(evaluator.parseExpression(finalEvaluationContext, String.class, extractor.getMsgTemplate()));
+                                }
+                                if (this.operationLogStorage != null) {
+                                    this.operationLogStorage.storage(logObject);
+                                } else {
+                                    log.error("未找到[OperationLogStorage]实现类实例, 跳过批量存储操作日志.");
+                                }
+                            });
+                        }
                     }
                 }
             } catch (Exception e) {
                 log.error("[操作日志], 内容解析或存储操作日志时遇到异常.", e);
+            } finally {
+                // Clear OperationLogRecorder Logs
+                OperationLogRecorder.clear();
+            }
+        }
+    }
+
+    private void setOperatorInfos(OperationLogObject operationLogObject) {
+        if (this.operatorIdsProvider != null) {
+            if (!ObjectUtils.isEmpty(this.operatorIdsProvider.getUserId())) {
+                operationLogObject.setOperatorId(this.operatorIdsProvider.getUserId());
+            }
+            if (!ObjectUtils.isEmpty(this.operatorIdsProvider.getSessionId())) {
+                operationLogObject.setSessionId(this.operatorIdsProvider.getSessionId());
             }
         }
     }

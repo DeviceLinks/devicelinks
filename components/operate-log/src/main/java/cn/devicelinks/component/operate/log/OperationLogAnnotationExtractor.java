@@ -20,6 +20,7 @@ package cn.devicelinks.component.operate.log;
 import cn.devicelinks.common.LogAction;
 import cn.devicelinks.common.LogObjectType;
 import cn.devicelinks.common.Variables;
+import cn.devicelinks.common.exception.DeviceLinksException;
 import cn.devicelinks.component.operate.log.annotation.AdditionalData;
 import cn.devicelinks.component.operate.log.annotation.OperationLog;
 import lombok.Getter;
@@ -47,6 +48,7 @@ public class OperationLogAnnotationExtractor {
     public static final String PARAMETER_INDEX_VALUE_FORMAT = "p%d";
     private final Class<?> targetClass;
     private final Method specificMethod;
+    private boolean batch;
     private String conditionTemplate;
     private LogAction action;
     private LogObjectType objectType;
@@ -63,6 +65,7 @@ public class OperationLogAnnotationExtractor {
         this.specificMethod = ClassUtils.getMostSpecificMethod(invocation.getMethod(), targetClass);
         OperationLog operationLog = AnnotationUtils.getAnnotation(invocation.getMethod(), OperationLog.class);
         if (operationLog != null) {
+            this.batch = operationLog.batch();
             this.conditionTemplate = operationLog.condition();
             this.action = operationLog.action();
             this.objectType = operationLog.objectType();
@@ -72,6 +75,10 @@ public class OperationLogAnnotationExtractor {
             this.msgTemplate = operationLog.msg();
             this.arguments = invocation.getArguments();
             this.parameters = this.specificMethod.getParameters();
+
+            if (!operationLog.batch() && (ObjectUtils.isEmpty(operationLog.activateData()) || ObjectUtils.isEmpty(operationLog.objectId()))) {
+                throw new DeviceLinksException("非批量的操作日志，@OperationLog(activateData、objectId)参数是必填项.");
+            }
 
             AdditionalData[] additionFields = operationLog.additional();
             if (!ObjectUtils.isEmpty(additionFields)) {

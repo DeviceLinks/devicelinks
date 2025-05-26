@@ -35,5 +35,9 @@
             <groupId>cn.devicelinks</groupId>
             <artifactId>devicelinks-system-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.devicelinks</groupId>
+            <artifactId>devicelinks-component-operate-log</artifactId>
+        </dependency>
     </dependencies>
 </project>

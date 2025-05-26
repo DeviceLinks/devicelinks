@@ -75,7 +75,7 @@ public @interface OperationLog {
      *
      * @return 获取操作对象值的SpEL表达式，解析后获取操作对象详情中用户可读的唯一标识字段值
      */
-    String objectId();
+    String objectId() default Constants.EMPTY_STRING;
 
     /**
      * 获取操作目标对象
@@ -128,5 +128,14 @@ public @interface OperationLog {
      *
      * @return 获取当前操作活动数据SpEL表达式
      */
-    String activateData();
+    String activateData() default Constants.EMPTY_STRING;
+
+    /**
+     * 是否为批量操作
+     * <p>
+     * 批量操作只需要配置{@link #action()}、{@link #objectType()}
+     *
+     * @return 返回true时为批量操作，默认为false
+     */
+    boolean batch() default false;
 }

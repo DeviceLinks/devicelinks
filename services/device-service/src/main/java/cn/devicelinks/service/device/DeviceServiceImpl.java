@@ -26,6 +26,7 @@ import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.common.DeviceStatus;
 import cn.devicelinks.common.UpdateDeviceEnabledAction;
 import cn.devicelinks.common.secret.AesSecretKeySet;
+import cn.devicelinks.component.operate.log.OperationLogRecorder;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.*;
@@ -205,7 +206,8 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
         Map<String, String> failureReasonMap = new LinkedHashMap<>();
         deviceIds.forEach(deviceId -> {
             try {
-                this.deleteDevice(deviceId);
+                Device deletedDevice = this.deleteDevice(deviceId);
+                OperationLogRecorder.success(deviceId, deletedDevice);
             } catch (Exception e) {
                 if (e instanceof ApiException apiException) {
                     String errorMsg = apiException.getStatusCode().formatMessage(apiException.getMessageVariables());
@@ -214,6 +216,7 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
                     log.error("删除设备时遇到未知的异常，设备ID：" + deviceId, e);
                     failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.getMessage());
                 }
+                OperationLogRecorder.error(deviceId, deviceId, e);
             }
         });
         return failureReasonMap;
@@ -235,6 +238,7 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
         deviceIds.forEach(deviceId -> {
             try {
                 this.updateEnabled(deviceId, UpdateDeviceEnabledAction.Enable == updateEnabledAction);
+                OperationLogRecorder.success(deviceId, updateEnabledAction);
             } catch (Exception e) {
                 if (e instanceof ApiException apiException) {
                     String errorMsg = apiException.getStatusCode().formatMessage(apiException.getMessageVariables());
@@ -243,6 +247,7 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
                     log.error("更新设备启用状态时遇到未知的异常，设备ID：" + deviceId, e);
                     failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.getMessage());
                 }
+                OperationLogRecorder.error(deviceId, deviceId, e);
             }
         });
         return failureReasonMap;

@@ -201,6 +201,10 @@ public class DeviceController {
      * @throws ApiException 删除过程中遇到的业务逻辑异常
      */
     @DeleteMapping(value = "/batch")
+    @OperationLog(action = LogAction.Delete,
+            objectType = LogObjectType.Device,
+            msg = "{#executionSucceed ? '设备删除成功' : '设备删除失败'}",
+            batch = true)
     public ApiResponse<BatchDeleteDeviceResponse> batchDeleteDevices(@Valid @RequestBody BatchDeleteDeviceRequest request) throws ApiException {
         Map<String, String> failureReasonMap = this.deviceService.batchDeleteDevices(request.getDeviceIds());
         return ApiResponse.success(BatchDeleteDeviceResponse.builder().failureReasonMap(failureReasonMap).build());
@@ -214,6 +218,10 @@ public class DeviceController {
      * @throws ApiException 更新状态过程中遇到的业务逻辑异常
      */
     @PostMapping(value = "/enabled-batch")
+    @OperationLog(action = LogAction.UpdateStatus,
+            objectType = LogObjectType.Device,
+            msg = "{#executionSucceed ? '设备启用状态更新成功' : '设备启用状态更新失败'}",
+            batch = true)
     public ApiResponse<BatchUpdateDeviceEnabledResponse> batchUpdateDeviceStatus(@Valid @RequestBody BatchUpdateDeviceEnabledRequest request) throws ApiException {
         UpdateDeviceEnabledAction updateEnabledAction = UpdateDeviceEnabledAction.valueOf(request.getAction());
         Map<String, String> failureReasonMap = this.deviceService.batchUpdateEnabled(updateEnabledAction, request.getDeviceIds());
