@@ -21,6 +21,7 @@ import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointCo
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
 import cn.devicelinks.service.system.SysLogService;
+import cn.devicelinks.service.system.SysUserService;
 import cn.devicelinks.service.system.SysUserSessionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
@@ -58,11 +59,12 @@ public class UsernamePasswordLoginAuthenticationConfigurer extends DeviceLinksAu
         UserDetailsService userDetailsService = applicationContext.getBean(UserDetailsService.class);
         SysUserSessionService userSessionService = applicationContext.getBean(SysUserSessionService.class);
         SysLogService sysLogService = applicationContext.getBean(SysLogService.class);
+        SysUserService sysUserService = applicationContext.getBean(SysUserService.class);
         TokenRepository tokenRepository = applicationContext.getBean(TokenRepository.class);
         JwtEncoder jwtEncoder = applicationContext.getBean(JwtEncoder.class);
         UsernamePasswordLoginAuthenticationProvider loginAuthenticationProvider =
                 new UsernamePasswordLoginAuthenticationProvider(passwordEncoder, userDetailsService, userSessionService,
-                        sysLogService, tokenRepository, jwtEncoder);
+                        sysLogService, sysUserService, tokenRepository, jwtEncoder);
         httpSecurity.authenticationProvider(loginAuthenticationProvider);
     }
 

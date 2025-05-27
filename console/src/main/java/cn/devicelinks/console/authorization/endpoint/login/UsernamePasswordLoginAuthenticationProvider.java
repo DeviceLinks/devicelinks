@@ -32,6 +32,7 @@ import cn.devicelinks.component.web.utils.HttpRequestUtils;
 import cn.devicelinks.component.jackson.utils.JacksonUtils;
 import cn.devicelinks.common.utils.ObjectIdUtils;
 import cn.devicelinks.service.system.SysLogService;
+import cn.devicelinks.service.system.SysUserService;
 import cn.devicelinks.service.system.SysUserSessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -47,6 +48,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Objects;
@@ -68,14 +70,17 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
     private final UserDetailsService userDetailsService;
     private final SysUserSessionService userSessionService;
     private final SysLogService logService;
+    private final SysUserService sysUserService;
     private final TokenRepository tokenRepository;
     private final JwtEncoder jwtEncoder;
 
     public UsernamePasswordLoginAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService,
                                                        SysUserSessionService userSessionService, SysLogService logService,
+                                                       SysUserService sysUserService,
                                                        TokenRepository tokenRepository, JwtEncoder jwtEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
+        this.sysUserService = sysUserService;
         this.userSessionService = userSessionService;
         this.logService = logService;
         this.tokenRepository = tokenRepository;
@@ -108,7 +113,6 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
 
         // erase credentials
         loginAuthenticationToken.eraseCredentials();
-        deviceLinksUserDetails.eraseCredentials();
 
         String sessionId = ObjectIdUtils.generateId();
         deviceLinksUserDetails.setSessionId(sessionId);
@@ -126,6 +130,8 @@ public class UsernamePasswordLoginAuthenticationProvider implements Authenticati
         String ipAddress = HttpRequestUtils.getIp(request);
         SysUser user = deviceLinksUserDetails.getAuthorizedUserAddition().getUser();
         // @formatter:off
+        // update user last login time
+        sysUserService.updateLastLoginTime(user.getId(),LocalDateTime.now());
         // save user session
         SysUserSession userSession = new SysUserSession()
                 .setId(sessionId)
