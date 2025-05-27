@@ -30,7 +30,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
@@ -48,7 +48,7 @@ public class UsernamePasswordLoginAuthenticationConfigurer extends DeviceLinksAu
     private final RequestMatcher loginRequestMatcher;
 
     public UsernamePasswordLoginAuthenticationConfigurer() {
-        this.loginRequestMatcher = new AntPathRequestMatcher(LOGIN_ENDPOINT_URI, HttpMethod.POST.name());
+        this.loginRequestMatcher = PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, LOGIN_ENDPOINT_URI);
     }
 
     @Override

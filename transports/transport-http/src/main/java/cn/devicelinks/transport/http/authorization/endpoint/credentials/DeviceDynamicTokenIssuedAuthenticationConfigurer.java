@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
@@ -28,7 +28,7 @@ public class DeviceDynamicTokenIssuedAuthenticationConfigurer extends DeviceLink
     private final RequestMatcher requestMatcher;
 
     public DeviceDynamicTokenIssuedAuthenticationConfigurer() {
-        this.requestMatcher = new AntPathRequestMatcher(ISSUED_DYNAMIC_TOKEN_ENDPOINT_URI, HttpMethod.POST.name());
+        this.requestMatcher = PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST,ISSUED_DYNAMIC_TOKEN_ENDPOINT_URI);
     }
 
     @Override

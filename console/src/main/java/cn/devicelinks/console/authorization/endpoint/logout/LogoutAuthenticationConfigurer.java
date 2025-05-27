@@ -17,9 +17,9 @@
 
 package cn.devicelinks.console.authorization.endpoint.logout;
 
+import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.console.authorization.HttpSecuritySharedObjectUtils;
 import cn.devicelinks.console.authorization.TokenRepository;
-import cn.devicelinks.component.authorization.DeviceLinksAuthorizationEndpointConfigurer;
 import cn.devicelinks.service.system.SysLogService;
 import cn.devicelinks.service.system.SysUserSessionService;
 import org.springframework.context.ApplicationContext;
@@ -28,7 +28,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
@@ -46,7 +46,7 @@ public class LogoutAuthenticationConfigurer extends DeviceLinksAuthorizationEndp
     private final RequestMatcher loginRequestMatcher;
 
     public LogoutAuthenticationConfigurer() {
-        this.loginRequestMatcher = new AntPathRequestMatcher(LOGOUT_ENDPOINT_URI, HttpMethod.POST.name());
+        this.loginRequestMatcher = PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, LOGOUT_ENDPOINT_URI);
     }
 
     @Override
