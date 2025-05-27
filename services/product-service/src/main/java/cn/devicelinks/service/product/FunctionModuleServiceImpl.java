@@ -14,6 +14,7 @@ import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import cn.devicelinks.jdbc.repository.FunctionModuleRepository;
+import cn.devicelinks.jdbc.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class FunctionModuleServiceImpl extends CacheBaseServiceImpl<FunctionModu
     public static final String DEFAULT_FUNCTION_MODULE_IDENTIFIER = "default";
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     public FunctionModuleServiceImpl(FunctionModuleRepository repository) {
         super(repository);
@@ -103,7 +104,7 @@ public class FunctionModuleServiceImpl extends CacheBaseServiceImpl<FunctionModu
         if (stored != null) {
             throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_ALREADY_EXISTS);
         }
-        Product product = productService.selectById(functionModule.getProductId());
+        Product product = productRepository.selectOne(functionModule.getProductId());
         if (product == null) {
             throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, functionModule.getProductId());
         }

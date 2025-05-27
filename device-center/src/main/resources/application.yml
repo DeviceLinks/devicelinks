@@ -13,9 +13,10 @@ server:
     client-auth: need
     trust-store-type: JKS
 spring:
+  main:
+    allow-circular-references: true
   profiles:
     active: develop
-
 devicelinks:
   center:
     version: @project.version@
