@@ -21,6 +21,7 @@ import cn.devicelinks.api.model.dto.UserDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.UserActivateMethod;
+import cn.devicelinks.component.operate.log.OperationLogRecorder;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.SysUser;
@@ -170,8 +171,10 @@ public class SysUserServiceImpl extends CacheBaseServiceImpl<SysUser, String, Sy
         // @formatter:on
         // Evict Caches
         List<SysUser> userList = repository.select(SYS_USER.ID.in(userIds.stream().map(userId -> (Object) userId).toList()));
-        userList.forEach(user ->
-                publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(user.getId()).account(user.getAccount()).build()));
+        userList.forEach(user -> {
+            OperationLogRecorder.success(user.getId(), departmentId);
+            publishCacheEvictEvent(SysUserCacheEvictEvent.builder().userId(user.getId()).account(user.getAccount()).build());
+        });
     }
 
     private SysUser checkUserAlreadyExists(SysUser sysUser, boolean doUpdate) {
