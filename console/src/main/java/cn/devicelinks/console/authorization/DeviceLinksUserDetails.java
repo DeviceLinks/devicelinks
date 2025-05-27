@@ -21,7 +21,6 @@ import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.common.DeviceLinksVersion;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +37,7 @@ import java.util.Collection;
  * @since 1.0
  */
 @Getter
-public class DeviceLinksUserDetails implements UserDetails, CredentialsContainer {
+public class DeviceLinksUserDetails implements UserDetails {
     @Serial
     private static final long serialVersionUID = DeviceLinksVersion.SERIAL_VERSION_UID;
 
@@ -76,10 +75,5 @@ public class DeviceLinksUserDetails implements UserDetails, CredentialsContainer
     @Override
     public boolean isEnabled() {
         return authorizedUserAddition.getUser().isEnabled();
-    }
-
-    @Override
-    public void eraseCredentials() {
-        this.authorizedUserAddition.getUser().setPwd(null);
     }
 }
