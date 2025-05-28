@@ -2,7 +2,7 @@ package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
-import cn.devicelinks.common.Constants;
+import cn.devicelinks.common.utils.TimeUtils;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.openfeign.OpenFeignClientSignUtils;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
@@ -48,9 +48,7 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         if (!authenticationToken.getDeviceName().equals(device.getDeviceName())) {
             throw new DeviceLinksAuthorizationException(DEVICE_NAME_NOT_MATCH);
         }
-        long requestTimestamp = Long.parseLong(authenticationToken.getTimestamp());
-        long currentTimestamp = System.currentTimeMillis();
-        if (requestTimestamp <= Constants.ZERO || currentTimestamp - requestTimestamp > EFFECTIVE_SECONDS * 1000) {
+        if (!TimeUtils.validateTimestamp(Long.parseLong(authenticationToken.getTimestamp()), EFFECTIVE_SECONDS * 1000)) {
             throw new DeviceLinksAuthorizationException(REQUEST_EXPIRED);
         }
         try {
