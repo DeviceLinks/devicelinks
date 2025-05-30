@@ -137,9 +137,12 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     ColumnValueMapper<List<String>, String> STRING_JOINER = new ColumnValueMapper<>() {
         @Override
         public String toColumn(List<String> originalValue, String columnName) {
-            StringJoiner joiner = new StringJoiner(Constants.SEPARATOR);
-            originalValue.forEach(joiner::add);
-            return joiner.toString();
+            if (!ObjectUtils.isEmpty(originalValue)) {
+                StringJoiner joiner = new StringJoiner(Constants.SEPARATOR);
+                originalValue.forEach(joiner::add);
+                return joiner.toString();
+            }
+            return null;
         }
 
         @Override
