@@ -81,6 +81,9 @@ public abstract class CacheBaseServiceImpl<T extends Serializable, PK, R extends
 
     @Override
     public T selectById(PK pk) {
+        if (pk == null) {
+            return null;
+        }
         K cacheKey = buildPkCacheKey(pk);
         return cache.get(cacheKey, () -> repository.selectOne(pk));
     }
