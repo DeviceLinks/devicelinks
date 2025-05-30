@@ -31,6 +31,14 @@ public interface DeviceProfileService extends BaseService<DeviceProfile, String>
     PageResult<DeviceProfile> getDeviceProfileListByPageable(PaginationQuery paginationQuery, SearchFieldQuery searchFieldQuery);
 
     /**
+     * 根据预配置Key查询配置文件
+     *
+     * @param provisionKey {@link DeviceProfileProvisionAddition#getProvisionDeviceKey()}
+     * @return {@link DeviceProfile}
+     */
+    DeviceProfile getByProvisionKey(String provisionKey);
+
+    /**
      * 添加设备配置文件
      *
      * @param request            添加设备配置文件请求参数实体 {@link AddDeviceProfileRequest}

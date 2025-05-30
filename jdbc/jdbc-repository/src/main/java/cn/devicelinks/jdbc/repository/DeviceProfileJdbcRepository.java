@@ -5,10 +5,7 @@ import cn.devicelinks.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.jdbc.core.JdbcRepository;
 import cn.devicelinks.jdbc.core.page.PageQuery;
 import cn.devicelinks.jdbc.core.page.PageResult;
-import cn.devicelinks.jdbc.core.sql.Condition;
-import cn.devicelinks.jdbc.core.sql.FusionCondition;
-import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.jdbc.core.sql.SortCondition;
+import cn.devicelinks.jdbc.core.sql.*;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
@@ -37,5 +34,18 @@ public class DeviceProfileJdbcRepository extends JdbcRepository<DeviceProfile, S
                 .build();
         // @formatter:on
         return this.page(fusionCondition, pageQuery);
+    }
+
+    @Override
+    public DeviceProfile getByProvisionKey(String provisionKey) {
+        // @formatter:off
+        DynamicWrapper wrapper = DynamicWrapper.select(DEVICE_PROFILE.getQuerySql())
+                .appendCondition(Boolean.TRUE, "json_extract(" + DEVICE_PROFILE.PROVISION_ADDITION.getName() + ", '$.provisionDeviceKey') = ?", provisionKey)
+                .resultColumns(columns -> columns.addAll(DEVICE_PROFILE.getColumns()))
+                .resultType(DeviceProfile.class)
+                .build();
+        // @formatter:on
+        List<DeviceProfile> deviceProfileList = this.dynamicSelect(wrapper.dynamic(), wrapper.parameters());
+        return deviceProfileList.isEmpty() ? null : deviceProfileList.getFirst();
     }
 }

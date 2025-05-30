@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -78,6 +79,9 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
             if (!ObjectUtils.isEmpty(event.getDeviceProfileId())) {
                 cache.evict(DeviceProfileCacheKey.builder().deviceProfileId(event.getDeviceProfileId()).build());
             }
+            if (!ObjectUtils.isEmpty(event.getProvisionKey())) {
+                cache.evict(DeviceProfileCacheKey.builder().provisionKey(event.getProvisionKey()).build());
+            }
         }
     }
 
@@ -87,6 +91,13 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
         PaginationQueryConverter converter = PaginationQueryConverter.from(paginationQuery);
         return this.repository.getDeviceProfileListByPageable(searchFieldConditionList,
                 converter.toPageQuery(), converter.toSortCondition());
+    }
+
+    @Override
+    public DeviceProfile getByProvisionKey(String provisionKey) {
+        Assert.hasText(provisionKey, "The provision key cannot be null or empty");
+        return this.cache.get(DeviceProfileCacheKey.builder().provisionKey(provisionKey).build(),
+                () -> this.repository.getByProvisionKey(provisionKey));
     }
 
     @Override
@@ -105,7 +116,12 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
     public DeviceProfile updateDeviceProfile(DeviceProfile deviceProfile) {
         this.checkData(deviceProfile, true);
         this.repository.update(deviceProfile);
-        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
+        // @formatter:off
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder()
+                .deviceProfileId(deviceProfile.getId())
+                .provisionKey(deviceProfile.getProvisionAddition() != null ? deviceProfile.getProvisionAddition().getProvisionDeviceKey() : null)
+                .build());
+        // @formatter:on
         return deviceProfile;
     }
 
@@ -121,7 +137,12 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
         this.checkBasicInfo(deviceProfile, true);
 
         this.repository.update(deviceProfile);
-        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
+        // @formatter:off
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder()
+                .deviceProfileId(deviceProfile.getId())
+                .provisionKey(deviceProfile.getProvisionAddition() != null ? deviceProfile.getProvisionAddition().getProvisionDeviceKey() : null)
+                .build());
+        // @formatter:on
         return deviceProfile;
     }
 
@@ -132,7 +153,12 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
             throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, profileId);
         }
         this.repository.update(List.of(DEVICE_PROFILE.EXTENSION.set(extension)), DEVICE_PROFILE.ID.eq(profileId));
-        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
+        // @formatter:off
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder()
+                .deviceProfileId(deviceProfile.getId())
+                .provisionKey(deviceProfile.getProvisionAddition() != null ? deviceProfile.getProvisionAddition().getProvisionDeviceKey() : null)
+                .build());
+        // @formatter:on
         return extension;
     }
 
@@ -148,7 +174,12 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
         this.checkLogAdditionData(deviceProfile);
 
         this.repository.update(List.of(DEVICE_PROFILE.LOG_ADDITION.set(logAddition)), DEVICE_PROFILE.ID.eq(profileId));
-        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
+        // @formatter:off
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder()
+                .deviceProfileId(deviceProfile.getId())
+                .provisionKey(deviceProfile.getProvisionAddition() != null ? deviceProfile.getProvisionAddition().getProvisionDeviceKey() : null)
+                .build());
+        // @formatter:on
         return logAddition;
     }
 
@@ -164,7 +195,12 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
         this.checkProvisionAddition(deviceProfile);
 
         this.repository.update(List.of(DEVICE_PROFILE.PROVISION_ADDITION.set(provisionAddition)), DEVICE_PROFILE.ID.eq(profileId));
-        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
+        // @formatter:off
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder()
+                .deviceProfileId(deviceProfile.getId())
+                .provisionKey(deviceProfile.getProvisionAddition() != null ? deviceProfile.getProvisionAddition().getProvisionDeviceKey() : null)
+                .build());
+        // @formatter:on
         return provisionAddition;
     }
 
@@ -186,7 +222,12 @@ public class DeviceProfileServiceImpl extends CacheBaseServiceImpl<DeviceProfile
             this.deviceRepository.clearDeviceProfileId(profileId);
             this.productRepository.clearDeviceProfileId(profileId);
         }
-        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder().deviceProfileId(deviceProfile.getId()).build());
+        // @formatter:off
+        publishCacheEvictEvent(DeviceProfileCacheEvictEvent.builder()
+                .deviceProfileId(deviceProfile.getId())
+                .provisionKey(deviceProfile.getProvisionAddition() != null ? deviceProfile.getProvisionAddition().getProvisionDeviceKey() : null)
+                .build());
+        // @formatter:on
         return deviceProfile;
     }
 

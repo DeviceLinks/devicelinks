@@ -106,8 +106,8 @@ public class DeviceSecretServiceImpl extends CacheBaseServiceImpl<DeviceSecret, 
     }
 
     @Override
-    public void initializeSecret(String deviceId, AesSecretKeySet aesSecretKeySet) {
-        this.saveDeviceSecret(deviceId, aesSecretKeySet);
+    public DeviceSecretDTO initializeSecret(String deviceId, AesSecretKeySet aesSecretKeySet) {
+        return this.saveDeviceSecret(deviceId, aesSecretKeySet);
     }
 
     private DeviceSecretDTO saveDeviceSecret(String deviceId, AesSecretKeySet aesSecretKeySet) {

@@ -57,5 +57,5 @@ public interface DeviceSecretService extends BaseService<DeviceSecret, String> {
      * @param deviceId        设备ID {@link DeviceSecret#getDeviceId()}
      * @param aesSecretKeySet 设备密钥Key列表
      */
-    void initializeSecret(String deviceId, AesSecretKeySet aesSecretKeySet);
+    DeviceSecretDTO initializeSecret(String deviceId, AesSecretKeySet aesSecretKeySet);
 }

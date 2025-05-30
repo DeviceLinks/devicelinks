@@ -17,14 +17,15 @@
 
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.device.center.model.request.DynamicRegistrationRequest;
+import cn.devicelinks.api.device.center.model.response.DynamicRegistrationResponse;
 import cn.devicelinks.api.model.converter.DeviceConverter;
 import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.dto.DeviceFunctionModuleOtaDTO;
+import cn.devicelinks.api.model.dto.DeviceSecretDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.common.DeviceCredentialsType;
-import cn.devicelinks.common.DeviceStatus;
-import cn.devicelinks.common.UpdateDeviceEnabledAction;
+import cn.devicelinks.common.*;
 import cn.devicelinks.common.secret.AesSecretKeySet;
 import cn.devicelinks.component.operate.log.OperationLogRecorder;
 import cn.devicelinks.component.web.api.ApiException;
@@ -39,6 +40,7 @@ import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.jdbc.core.sql.ConditionGroup;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.repository.DeviceRepository;
+import cn.devicelinks.jdbc.repository.SysUserRepository;
 import cn.devicelinks.service.ota.DeviceOtaService;
 import cn.devicelinks.service.product.ProductService;
 import cn.devicelinks.service.system.SysDepartmentService;
@@ -57,6 +59,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static cn.devicelinks.jdbc.tables.TDevice.DEVICE;
+import static cn.devicelinks.jdbc.tables.TSysUser.SYS_USER;
 
 /**
  * 设备业务逻辑接口实现类
@@ -83,6 +86,8 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
     private DeviceProfileService deviceProfileService;
     @Autowired
     private DeviceTagService deviceTagService;
+    @Autowired
+    private SysUserRepository sysUserRepository;
 
     public DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
@@ -265,6 +270,41 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
         publishCacheEvictEvent(DeviceCacheEvictEvent.builder().deviceId(device.getId()).deviceName(device.getDeviceName()).build());
     }
 
+    @Override
+    public DynamicRegistrationResponse dynamicRegistration(DynamicRegistrationRequest request, AesSecretKeySet aesSecretKeySet) {
+        SysUser systemAdmin = sysUserRepository.selectOne(SYS_USER.IDENTITY.eq(UserIdentity.SystemAdmin));
+        // @formatter:off
+        Device device = new Device()
+                .setDeviceName(request.getDeviceName())
+                .setDeviceType(DeviceType.valueOf(request.getDeviceType()))
+                .setProductId(request.getProductId())
+                .setProfileId(request.getProfileId())
+                .setDepartmentId(systemAdmin.getDepartmentId())
+                .setCreateBy(systemAdmin.getId())
+                .setMark(request.getMark());
+        // @formatter:on
+        // check request data
+        this.checkData(device, false);
+
+        // Save device data
+        this.repository.insert(device);
+
+        // Save Device Secret
+        DeviceSecretDTO deviceSecretDTO = this.deviceSecretService.initializeSecret(device.getId(), aesSecretKeySet);
+
+        // init device shadow data
+        this.deviceShadowService.initialShadow(device.getId());
+
+        publishCacheEvictEvent(DeviceCacheEvictEvent.builder().savedDevice(device).build());
+
+        // @formatter:off
+        return new DynamicRegistrationResponse()
+                .setDeviceId(device.getId())
+                .setDeviceName(request.getDeviceName())
+                .setDeviceSecret(deviceSecretDTO.getSecret());
+        // @formatter:on
+    }
+
     private void checkData(Device device, boolean doUpdate) {
         // check product exists
         Product product = this.productService.selectById(device.getProductId());
@@ -279,9 +319,11 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
         }
 
         // check device profile exists
-        DeviceProfile deviceProfile = this.deviceProfileService.selectById(device.getProfileId());
-        if (deviceProfile == null || deviceProfile.isDeleted()) {
-            throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, device.getProfileId());
+        if (!ObjectUtils.isEmpty(device.getProfileId())) {
+            DeviceProfile deviceProfile = this.deviceProfileService.selectById(device.getProfileId());
+            if (deviceProfile == null || deviceProfile.isDeleted()) {
+                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, device.getProfileId());
+            }
         }
 
         // check already exists

@@ -23,6 +23,7 @@ import cn.devicelinks.jdbc.repository.DeviceRepository;
 import cn.devicelinks.jdbc.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -56,7 +57,12 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
         if (savedProduct != null) {
             cache.put(ProductCacheKey.builder().productId(savedProduct.getId()).build(), savedProduct);
         } else {
-            cache.evict(ProductCacheKey.builder().productId(event.getProductId()).build());
+            if (!ObjectUtils.isEmpty(event.getProductId())) {
+                cache.evict(ProductCacheKey.builder().productId(event.getProductId()).build());
+            }
+            if (!ObjectUtils.isEmpty(event.getProductKey())) {
+                cache.evict(ProductCacheKey.builder().productKey(event.getProductKey()).build());
+            }
         }
     }
 
@@ -100,7 +106,7 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
             throw new ApiException(StatusCodeConstants.PRODUCT_ALREADY_EXISTS, product.getName());
         }
         this.repository.update(product);
-        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).productKey(product.getProductKey()).build());
         return product;
     }
 
@@ -119,7 +125,7 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
         }
         product.setDeleted(Boolean.TRUE);
         this.repository.update(product);
-        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).productKey(product.getProductKey()).build());
         return product;
     }
 
@@ -134,7 +140,7 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
         }
         product.setStatus(ProductStatus.Published);
         this.repository.update(product);
-        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).productKey(product.getProductKey()).build());
         return product;
     }
 
@@ -144,11 +150,12 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
         if (product == null) {
             throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, productId);
         }
+        String oldProductKey = product.getProductKey();
         String productKey = SecureRandomUtils.generateRandomHex(PRODUCT_KEY_LENGTH);
         String productSecret = SecureRandomUtils.generateRandomHex(PRODUCT_SECRET_LENGTH);
         product.setProductKey(productKey).setProductSecret(productSecret);
         this.repository.update(product);
-        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).build());
+        publishCacheEvictEvent(ProductCacheEvictEvent.builder().productId(product.getId()).productKey(oldProductKey).build());
         // @formatter:off
         return new RegenerateKeySecretResponse()
                 .setProductId(productId)
@@ -156,5 +163,12 @@ public class ProductServiceImpl extends CacheBaseServiceImpl<Product, String, Pr
                 .setProductKey(productKey)
                 .setProductSecret(productSecret);
         // @formatter:on
+    }
+
+    @Override
+    public Product selectByKey(String productKey) {
+        Assert.hasText(productKey, "Product key cannot be null or empty");
+        return this.cache.get(ProductCacheKey.builder().productKey(productKey).build(),
+                () -> this.repository.selectOne(PRODUCT.PRODUCT_KEY.eq(productKey)));
     }
 }

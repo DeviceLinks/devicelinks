@@ -71,6 +71,7 @@ public interface StatusCodeConstants {
     StatusCode FUNCTION_MODULE_NOT_FOUND = StatusCode.build("FUNCTION_MODULE_NOT_FOUND", "功能模块：%s，不存在.");
     StatusCode FUNCTION_MODULE_ALREADY_EXISTS = StatusCode.build("FUNCTION_MODULE_ALREADY_EXISTS", "功能模块已经存在，请检查名称、标识符是否重复.");
     StatusCode FUNCTION_MODULE_NOT_BELONG_PRODUCT = StatusCode.build("FUNCTION_MODULE_NOT_BELONG_PRODUCT", "功能模块：%s，不属于产品：%s.");
+    StatusCode PRODUCT_NOT_SUPPORTED_DYNAMIC_REGISTER = StatusCode.build("PRODUCT_NOT_SUPPORTED_DYNAMIC_REGISTER", "产品：%s，不支持动态注册.");
 
     /**
      * 部门
@@ -105,6 +106,8 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_PROFILE_LOG_LEVELS_INVALID = StatusCode.build("DEVICE_PROFILE_LOG_LEVELS_INVALID", "设备配置日志等级附加信息验证失败，如果选择了产品请检查功能模块是否所属该产品，如果并未选择产品仅允许传递[default]功能模块的日志配置.");
     StatusCode DEVICE_PROFILE_DEFAULT_CANNOT_DELETE = StatusCode.build("DEVICE_PROFILE_DEFAULT_CANNOT_DELETE", "默认的设备配置文件不允许删除.");
     StatusCode DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID = StatusCode.build("DEVICE_PROFILE_BATCH_SET_PARAMETER_INVALID", "将设备配置文件批量设置给设备时，设置方式与参数验证失败，设置方式：%s.");
+    StatusCode DEVICE_PROFILE_CREATION_NOT_ALLOWED = StatusCode.build("DEVICE_PROFILE_CREATION_NOT_ALLOWED", "设备配置文件：%s，预配置策略不允许动态创建设备.");
+    StatusCode DEVICE_PROFILE_NOT_HAVE_PRODUCT_ID = StatusCode.build("DEVICE_PROFILE_NOT_HAVE_PRODUCT_ID", "设备配置文件：%s，不属于任何产品，无法动态创建设备.");
 
     /**
      * 设备密钥

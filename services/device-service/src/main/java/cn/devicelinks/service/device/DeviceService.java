@@ -17,6 +17,8 @@
 
 package cn.devicelinks.service.device;
 
+import cn.devicelinks.api.device.center.model.request.DynamicRegistrationRequest;
+import cn.devicelinks.api.device.center.model.response.DynamicRegistrationResponse;
 import cn.devicelinks.api.model.dto.DeviceDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.common.DeviceCredentialsType;
@@ -77,6 +79,7 @@ public interface DeviceService extends BaseService<Device, String> {
      * @param device              要添加的设备 {@link Device}
      * @param credentialsType     认证方法 {@link DeviceCredentialsType}
      * @param credentialsAddition 认证附加信息 {@link DeviceCredentialsAddition}
+     * @param deviceSecretKeySet  设备密钥Set
      * @return 返回添加的设备 {@link Device}
      */
     Device addDevice(Device device, DeviceCredentialsType credentialsType,
@@ -129,4 +132,15 @@ public interface DeviceService extends BaseService<Device, String> {
      * @param deviceId 设备ID {@link Device#getId()}
      */
     void activateDevice(String deviceId);
+
+    /**
+     * 动态注册设备
+     * <p>
+     * 动态注册的设备会归到系统管理员{@link cn.devicelinks.common.UserIdentity#SystemAdmin}的名下
+     *
+     * @param request         动态注册设备请求实体 {@link DynamicRegistrationRequest}
+     * @param aesSecretKeySet 设备密钥Set
+     * @return {@link DynamicRegistrationResponse}
+     */
+    DynamicRegistrationResponse dynamicRegistration(DynamicRegistrationRequest request, AesSecretKeySet aesSecretKeySet);
 }

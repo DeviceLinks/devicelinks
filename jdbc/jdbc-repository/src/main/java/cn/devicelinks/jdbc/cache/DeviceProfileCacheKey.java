@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.ObjectUtils;
 
 /**
  * The {@link DeviceProfile} Cache Key
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeviceProfileCacheKey implements CacheKey {
     private String deviceProfileId;
+    private String provisionKey;
 
     @Override
     public void setId(String id) {
@@ -27,6 +29,9 @@ public class DeviceProfileCacheKey implements CacheKey {
 
     @Override
     public String toString() {
+        if (!ObjectUtils.isEmpty(provisionKey)) {
+            return provisionKey;
+        }
         return deviceProfileId;
     }
 }

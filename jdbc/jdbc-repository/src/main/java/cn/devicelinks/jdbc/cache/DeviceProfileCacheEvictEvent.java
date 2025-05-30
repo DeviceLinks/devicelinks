@@ -14,5 +14,6 @@ import lombok.Data;
 @Builder
 public class DeviceProfileCacheEvictEvent {
     private String deviceProfileId;
+    private String provisionKey;
     private DeviceProfile savedDeviceProfile;
 }

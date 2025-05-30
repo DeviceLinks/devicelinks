@@ -14,5 +14,6 @@ import lombok.Data;
 @Builder
 public class ProductCacheEvictEvent {
     private String productId;
+    private String productKey;
     private Product savedProduct;
 }

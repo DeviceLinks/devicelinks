@@ -1,6 +1,7 @@
 package cn.devicelinks.jdbc.repository;
 
 import cn.devicelinks.entity.DeviceProfile;
+import cn.devicelinks.entity.DeviceProfileProvisionAddition;
 import cn.devicelinks.jdbc.core.Repository;
 import cn.devicelinks.jdbc.core.page.PageQuery;
 import cn.devicelinks.jdbc.core.page.PageResult;
@@ -25,4 +26,12 @@ public interface DeviceProfileRepository extends Repository<DeviceProfile, Strin
      * @return {@link DeviceProfile}
      */
     PageResult<DeviceProfile> getDeviceProfileListByPageable(List<SearchFieldCondition> searchFieldConditionList, PageQuery pageQuery, SortCondition sortCondition);
+
+    /**
+     * 根据预配置Key查询设备配置文件
+     *
+     * @param provisionKey {@link DeviceProfileProvisionAddition#getProvisionDeviceKey()}
+     * @return {@link DeviceProfile}
+     */
+    DeviceProfile getByProvisionKey(String provisionKey);
 }

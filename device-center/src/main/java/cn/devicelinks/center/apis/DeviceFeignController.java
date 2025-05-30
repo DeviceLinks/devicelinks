@@ -1,6 +1,8 @@
 package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.api.device.center.model.request.DynamicRegistrationRequest;
+import cn.devicelinks.api.device.center.model.response.DynamicRegistrationResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.common.secret.AesProperties;
@@ -11,6 +13,7 @@ import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceSecret;
 import cn.devicelinks.service.device.DeviceSecretService;
 import cn.devicelinks.service.device.DeviceService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -75,5 +78,11 @@ public class DeviceFeignController implements DeviceFeignClient {
             return ApiResponse.success(Boolean.FALSE);
         }
         return ApiResponse.success(Boolean.TRUE);
+    }
+
+    @Override
+    @PostMapping
+    public ApiResponse<DynamicRegistrationResponse> dynamicRegistration(@Valid @RequestBody DynamicRegistrationRequest request) {
+        return ApiResponse.success(this.deviceService.dynamicRegistration(request, deviceCenterProperties.getDeviceSecretKeySet()));
     }
 }

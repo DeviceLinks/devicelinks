@@ -1,5 +1,7 @@
 package cn.devicelinks.api.device.center;
 
+import cn.devicelinks.api.device.center.model.request.DynamicRegistrationRequest;
+import cn.devicelinks.api.device.center.model.response.DynamicRegistrationResponse;
 import cn.devicelinks.component.openfeign.OpenFeignConstants;
 import cn.devicelinks.component.openfeign.annotation.OpenFeignClient;
 import cn.devicelinks.component.openfeign.cache.FeignCacheable;
@@ -59,4 +61,14 @@ public interface DeviceFeignClient {
     @RequestLine("POST /api/devices/{deviceId}/activate")
     @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     ApiResponse<Boolean> activateDevice(@Param("deviceId") String deviceId);
+
+    /**
+     * 动态注册
+     *
+     * @param request 动态注册请求对象
+     * @return {@link DynamicRegistrationResponse}
+     */
+    @RequestLine("POST /api/devices")
+    @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
+    ApiResponse<DynamicRegistrationResponse> dynamicRegistration(DynamicRegistrationRequest request);
 }

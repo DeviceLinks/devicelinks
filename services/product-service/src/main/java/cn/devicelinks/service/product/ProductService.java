@@ -72,4 +72,12 @@ public interface ProductService extends BaseService<Product, String> {
      * @return 已重新生成的 KeySecret {@link Product}
      */
     RegenerateKeySecretResponse regenerateKeySecret(String productId);
+
+    /**
+     * 根据产品Key查询产品基本信息
+     *
+     * @param productKey {@link Product#getProductKey()}
+     * @return {@link Product}
+     */
+    Product selectByKey(String productKey);
 }
