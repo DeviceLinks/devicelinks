@@ -13,21 +13,20 @@ import java.util.Optional;
  */
 public class ApiResponseUnwrapper {
     public static <T> T unwrap(ApiResponse<T> response) {
-        return tryUnwrap(response)
-                .orElseThrow(() -> new ApiException(StatusCode.build(response.getCode(), response.getMessage())));
+        return tryUnwrap(response, null).orElse(null);
     }
 
     public static <T> T unwrap(ApiResponse<T> response, String errorMsg) {
-        return tryUnwrap(response)
-                .orElseThrow(() -> new ApiException(StatusCode.build(response.getCode(),
-                        (!ObjectUtils.isEmpty(errorMsg) ? errorMsg : response.getMessage()))));
+        return tryUnwrap(response, errorMsg).orElse(null);
     }
 
-    public static <T> Optional<T> tryUnwrap(ApiResponse<T> response) {
+    public static <T> Optional<T> tryUnwrap(ApiResponse<T> response, String errorMsg) {
         Assert.notNull(response, "ApiResponse实例为空，无法解析.");
         if (ApiResponse.SUCCESS.getCode().equals(response.getCode())) {
             return Optional.ofNullable(response.getData());
+        } else {
+            throw new ApiException(StatusCode.build(response.getCode(),
+                    (!ObjectUtils.isEmpty(errorMsg) ? errorMsg : response.getMessage())));
         }
-        return Optional.empty();
     }
 }
