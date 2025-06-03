@@ -11,12 +11,13 @@ import cn.devicelinks.common.DeviceType;
 import cn.devicelinks.common.DynamicRegistrationMethod;
 import cn.devicelinks.common.utils.TimeUtils;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.component.openfeign.OpenFeignClientSignUtils;
+import cn.devicelinks.component.web.utils.SignUtils;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceProfile;
 import cn.devicelinks.entity.DeviceProfileProvisionAddition;
 import cn.devicelinks.entity.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,6 +32,7 @@ import static cn.devicelinks.api.support.StatusCodeConstants.SIGN_VERIFICATION_F
  * @author 恒宇少年
  * @since 1.0
  */
+@Slf4j
 public class DeviceDynamicRegistrationAuthenticationProvider implements AuthenticationProvider {
     private static final Long EFFECTIVE_SECONDS = 10L;
     private final DeviceFeignClient deviceFeignClient;
@@ -118,8 +120,9 @@ public class DeviceDynamicRegistrationAuthenticationProvider implements Authenti
             throw new DeviceLinksAuthorizationException(REQUEST_EXPIRED);
         }
         try {
-            String sign = OpenFeignClientSignUtils.sign(secret,
+            String sign = SignUtils.sign(secret,
                     String.valueOf(authenticationRequestToken.getTimestamp()), authenticationRequestToken.getRequest());
+            log.debug("Signature Verification, request sign：{}, sign：{}.", authenticationRequestToken.getSign(), sign);
             if (ObjectUtils.isEmpty(authenticationRequestToken.getSign()) || !sign.equals(authenticationRequestToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
             }

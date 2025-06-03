@@ -4,7 +4,7 @@ import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.common.utils.TimeUtils;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.component.openfeign.OpenFeignClientSignUtils;
+import cn.devicelinks.component.web.utils.SignUtils;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceCredentials;
@@ -53,7 +53,7 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         }
         try {
             String decryptedSecret = ApiResponseUnwrapper.unwrap(deviceFeignClient.decryptDeviceSecret(device.getId()));
-            String sign = OpenFeignClientSignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
+            String sign = SignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
             if (ObjectUtils.isEmpty(authenticationToken.getSign()) || !sign.equals(authenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
             }
