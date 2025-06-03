@@ -209,8 +209,9 @@ public class HttpRequestUtils {
      * @param request HttpServletRequest对象
      * @return 查询字符串，格式为"key1=value1&key2=value2"
      */
-    public static String getQueryString(HttpServletRequest request) {
+    public static String getQueryString(HttpServletRequest request, List<String> ignoreParameters) {
         return new TreeMap<>(request.getParameterMap()).entrySet().stream()
+                .filter(entry -> !ignoreParameters.contains(entry.getKey()))
                 .flatMap(e -> Arrays.stream(e.getValue()).map(v -> e.getKey() + "=" + v))
                 .collect(Collectors.joining("&"));
     }
