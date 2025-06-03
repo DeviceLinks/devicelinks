@@ -4,6 +4,7 @@ import cn.devicelinks.common.DynamicRegistrationMethod;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.component.web.api.StatusCode;
 import jakarta.servlet.FilterChain;
@@ -24,6 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static cn.devicelinks.api.support.StatusCodeConstants.BUSINESS_EXCEPTION;
 import static cn.devicelinks.api.support.StatusCodeConstants.UNKNOWN_ERROR;
 
 /**
@@ -96,8 +98,11 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, deviceLinksAuthorizationException);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(UNKNOWN_ERROR));
+            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(UNKNOWN_ERROR);
+            if (e instanceof ApiException apiException) {
+                deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(BUSINESS_EXCEPTION, apiException.getMessage());
+            }
+            this.authenticationFailureHandler.onAuthenticationFailure(request, response, deviceLinksAuthorizationException);
         }
     }
 

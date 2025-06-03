@@ -81,7 +81,7 @@ public class DeviceFeignController implements DeviceFeignClient {
     }
 
     @Override
-    @PostMapping
+    @PostMapping("/dynamic-registration")
     public ApiResponse<DynamicRegistrationResponse> dynamicRegistration(@Valid @RequestBody DynamicRegistrationRequest request) {
         return ApiResponse.success(this.deviceService.dynamicRegistration(request, deviceCenterProperties.getDeviceSecretKeySet()));
     }

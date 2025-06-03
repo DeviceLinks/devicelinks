@@ -272,16 +272,36 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
 
     @Override
     public DynamicRegistrationResponse dynamicRegistration(DynamicRegistrationRequest request, AesSecretKeySet aesSecretKeySet) {
+        Product product = productService.selectById(request.getProductId());
+        if (product == null || product.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.PRODUCT_NOT_EXISTS, request.getProductId());
+        }
+        if (!product.isDynamicRegistration()) {
+            throw new ApiException(StatusCodeConstants.PRODUCT_NOT_SUPPORTED_DYNAMIC_REGISTER, request.getProductId());
+        }
+        if (DynamicRegistrationMethod.ProvisionKey.toString().equals(request.getRegistrationMethod())) {
+            DeviceProfile deviceProfile = deviceProfileService.selectById(request.getProfileId());
+            if (deviceProfile == null || deviceProfile.isDeleted()) {
+                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_NOT_EXISTS, request.getProfileId());
+            }
+            DeviceProfileProvisionAddition profileProvisionAddition = deviceProfile.getProvisionAddition();
+            if (profileProvisionAddition == null || profileProvisionAddition.getStrategy() == null || DeviceProvisionStrategy.AllowCreateDevice != profileProvisionAddition.getStrategy()) {
+                throw new ApiException(StatusCodeConstants.DEVICE_PROFILE_CREATION_NOT_ALLOWED, request.getProfileId());
+            }
+        }
+        Device device = selectByName(request.getDeviceName());
+        if (device != null && (device.isEnabled() || !device.isDeleted())) {
+            throw new ApiException(StatusCodeConstants.DEVICE_ALREADY_EXISTS, request.getDeviceName());
+        }
         SysUser systemAdmin = sysUserRepository.selectOne(SYS_USER.IDENTITY.eq(UserIdentity.SystemAdmin));
         // @formatter:off
-        Device device = new Device()
+        device = new Device()
                 .setDeviceName(request.getDeviceName())
-                .setDeviceType(DeviceType.valueOf(request.getDeviceType()))
+                .setDeviceType(DeviceType.Direct)
                 .setProductId(request.getProductId())
                 .setProfileId(request.getProfileId())
                 .setDepartmentId(systemAdmin.getDepartmentId())
-                .setCreateBy(systemAdmin.getId())
-                .setMark(request.getMark());
+                .setCreateBy(systemAdmin.getId());
         // @formatter:on
         // check request data
         this.checkData(device, false);

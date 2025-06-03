@@ -68,7 +68,7 @@ public interface DeviceFeignClient {
      * @param request 动态注册请求对象
      * @return {@link DynamicRegistrationResponse}
      */
-    @RequestLine("POST /api/devices")
+    @RequestLine("POST /api/devices/dynamic-registration")
     @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     ApiResponse<DynamicRegistrationResponse> dynamicRegistration(DynamicRegistrationRequest request);
 }

@@ -30,7 +30,7 @@ public class DeviceDynamicRegistrationTest {
         String timestamp = String.valueOf(System.currentTimeMillis());
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("registrationMethod", DynamicRegistrationMethod.ProvisionKey.toString());
-        multiValueMap.add("deviceName", "test0003");
+        multiValueMap.add("deviceName", "test0004");
         multiValueMap.add("timestamp", timestamp);
         multiValueMap.add("provisionKey", provisionKey);
 

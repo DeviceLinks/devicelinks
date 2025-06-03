@@ -35,6 +35,7 @@ public interface StatusCodeConstants {
     StatusCode SIGN_VERIFICATION_FAILED = StatusCode.build("SIGN_VERIFICATION_FAILED", "签名校验失败.");
     StatusCode PASSWORD_VERIFICATION_FAILED = StatusCode.build("PASSWORD_VERIFICATION_FAILED", "密码校验失败.");
     StatusCode AES_DECRYPTION_ERROR = StatusCode.build("AES_DECRYPTION_ERROR", "AES算法解密失败.");
+    StatusCode BUSINESS_EXCEPTION = StatusCode.build("BUSINESS_EXCEPTION", "遇到业务异常：[%s].");
 
     /**
      * Api相关
@@ -96,6 +97,7 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS = StatusCode.build("DEVICE_MQTT_BASIC_AUTH_CLIENT_ID_ALREADY_EXISTS", "MQTT客户端ID已经存在.");
     StatusCode INVALID_DEVICE_X509_PEM = StatusCode.build("INVALID_DEVICE_X509_PEM", "无效的X509 Pem证书.");
     StatusCode DEVICE_CREDENTIALS_NO_VALID_EXISTS = StatusCode.build("DEVICE_CREDENTIALS_NOT_EXISTS", "设备：%s，不存在有效的凭证.");
+    StatusCode DEVICE_DYNAMIC_REGISTRATION_METHOD_NOT_SUPPORT = StatusCode.build("DEVICE_DYNAMIC_REGISTRATION_METHOD_NOT_SUPPORT", "不支持的设备动态注册方式：[%s].");
 
     /**
      * 设备配置文件
