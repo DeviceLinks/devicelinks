@@ -2,6 +2,7 @@ package cn.devicelinks.transport.http.authorization.endpoint.access;
 
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
+import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.resolver.BearerTokenResolver;
 import cn.devicelinks.component.web.resolver.DefaultBearerTokenResolver;
 import jakarta.servlet.FilterChain;
@@ -18,8 +19,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static cn.devicelinks.api.support.StatusCodeConstants.INVALID_TOKEN;
-import static cn.devicelinks.api.support.StatusCodeConstants.SYSTEM_EXCEPTION;
+import static cn.devicelinks.api.support.StatusCodeConstants.*;
+import static cn.devicelinks.api.support.StatusCodeConstants.BUSINESS_EXCEPTION;
 
 /**
  * 设备携带令牌访问的过滤器
@@ -60,8 +61,11 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
         } catch (DeviceLinksAuthorizationException invalid) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
         } catch (Exception e) {
-            this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION));
+            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION);
+            if (e instanceof ApiException apiException) {
+                deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(BUSINESS_EXCEPTION, apiException.getMessage());
+            }
+            this.authenticationFailureHandler.onAuthenticationFailure(request, response, deviceLinksAuthorizationException);
         }
     }
 }
