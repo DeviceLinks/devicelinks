@@ -1,6 +1,7 @@
 package cn.devicelinks.api.device.center;
 
 import cn.devicelinks.api.device.center.model.response.DecryptTokenResponse;
+import cn.devicelinks.api.device.center.model.response.GenerateDynamicTokenResponse;
 import cn.devicelinks.common.DeviceCredentialsType;
 import cn.devicelinks.component.openfeign.OpenFeignConstants;
 import cn.devicelinks.component.openfeign.annotation.OpenFeignClient;
@@ -50,5 +51,5 @@ public interface DeviceCredentialsFeignClient {
      */
     @RequestLine("POST /api/device/credentials/generate-dynamic-token?deviceId={deviceId}")
     @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
-    ApiResponse<DeviceCredentials> generateDynamicToken(@Param("deviceId") String deviceId);
+    ApiResponse<GenerateDynamicTokenResponse> generateDynamicToken(@Param("deviceId") String deviceId);
 }

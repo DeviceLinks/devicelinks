@@ -2,12 +2,12 @@ package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.api.device.center.model.response.GenerateDynamicTokenResponse;
 import cn.devicelinks.common.utils.TimeUtils;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
-import cn.devicelinks.component.web.utils.SignUtils;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
+import cn.devicelinks.component.web.utils.SignUtils;
 import cn.devicelinks.entity.Device;
-import cn.devicelinks.entity.DeviceCredentials;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -60,11 +60,11 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         } catch (Exception e) {
             throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
         }
-        DeviceCredentials deviceCredentials = ApiResponseUnwrapper.unwrap(deviceCredentialsFeignClient.generateDynamicToken(device.getId()));
+        GenerateDynamicTokenResponse generateDynamicTokenResponse = ApiResponseUnwrapper.unwrap(deviceCredentialsFeignClient.generateDynamicToken(device.getId()));
         // @formatter:off
-        return DeviceDynamicTokenIssuedAuthenticationToken.authenticated(deviceCredentials.getDeviceId(),
-                deviceCredentials.getAddition().getToken(),
-                deviceCredentials.getExpirationTime()
+        return DeviceDynamicTokenIssuedAuthenticationToken.authenticated(generateDynamicTokenResponse.getDeviceId(),
+                generateDynamicTokenResponse.getPlainTextDynamicToken(),
+                generateDynamicTokenResponse.getExpirationTime()
         );
         // @formatter:on
     }

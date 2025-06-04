@@ -135,9 +135,9 @@ public class DeviceCredentialsServiceImpl extends CacheBaseServiceImpl<DeviceCre
 
     @Override
     public DeviceCredentials addDynamicToken(String deviceId,
-                                             String dynamicToken,
-                                             LocalDateTime expirationTime,
-                                             AesSecretKeySet aesSecretKeySet) {
+                                                        String dynamicToken,
+                                                        LocalDateTime expirationTime,
+                                                        AesSecretKeySet aesSecretKeySet) {
         // @formatter:off
         LocalDateTime currentTime = LocalDateTime.now();
         this.repository.update(List.of(DEVICE_CREDENTIALS.EXPIRATION_TIME.set(currentTime)),

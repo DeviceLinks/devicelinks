@@ -2,6 +2,7 @@ package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.model.response.DecryptTokenResponse;
+import cn.devicelinks.api.device.center.model.response.GenerateDynamicTokenResponse;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.common.utils.SecureRandomUtils;
@@ -49,7 +50,7 @@ public class DeviceCredentialsFeignController implements DeviceCredentialsFeignC
 
     @Override
     @PostMapping("/generate-dynamic-token")
-    public ApiResponse<DeviceCredentials> generateDynamicToken(@RequestParam("deviceId") String deviceId) {
+    public ApiResponse<GenerateDynamicTokenResponse> generateDynamicToken(@RequestParam("deviceId") String deviceId) {
         Device device = this.deviceService.selectById(deviceId);
         if (device == null || device.isDeleted()) {
             throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
@@ -57,8 +58,15 @@ public class DeviceCredentialsFeignController implements DeviceCredentialsFeignC
         DeviceCenterProperties.TokenSetting tokenSetting = deviceCenterProperties.getTokenSetting();
         String dynamicToken = SecureRandomUtils.generateRandomHex(tokenSetting.getIssuedDynamicTokenLength());
         LocalDateTime tokenExpirationTime = LocalDateTime.now().plusSeconds(tokenSetting.getValiditySeconds());
-        DeviceCredentials deviceCredentials = deviceCredentialsService.addDynamicToken(deviceId, dynamicToken,
+        deviceCredentialsService.addDynamicToken(deviceId, dynamicToken,
                 tokenExpirationTime, deviceCenterProperties.getDeviceSecretKeySet());
-        return ApiResponse.success(deviceCredentials);
+        // @formatter:off
+        GenerateDynamicTokenResponse generateDynamicTokenResponse =
+                new GenerateDynamicTokenResponse()
+                        .setDeviceId(deviceId)
+                        .setPlainTextDynamicToken(dynamicToken)
+                        .setExpirationTime(tokenExpirationTime);
+        // @formatter:on
+        return ApiResponse.success(generateDynamicTokenResponse);
     }
 }
