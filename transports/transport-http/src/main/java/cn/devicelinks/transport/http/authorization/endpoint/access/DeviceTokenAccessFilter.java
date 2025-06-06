@@ -5,6 +5,8 @@ import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionF
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.resolver.BearerTokenResolver;
 import cn.devicelinks.component.web.resolver.DefaultBearerTokenResolver;
+import cn.devicelinks.transport.support.context.DeviceContext;
+import cn.devicelinks.transport.support.context.DeviceContextHolder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,6 +59,9 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
 
             deviceTokenAccessAuthenticationToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(deviceTokenAccessAuthenticationToken);
+            // Set DeviceContext to threadLocal
+            DeviceContext deviceContext = DeviceContext.instance(deviceTokenAccessAuthenticationToken.getDevice());
+            DeviceContextHolder.setContext(deviceContext);
             filterChain.doFilter(request, response);
         } catch (DeviceLinksAuthorizationException invalid) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
@@ -66,6 +71,8 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
                 deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(BUSINESS_EXCEPTION, apiException.getMessage());
             }
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, deviceLinksAuthorizationException);
+        } finally {
+            DeviceContextHolder.removeContext();
         }
     }
 }
