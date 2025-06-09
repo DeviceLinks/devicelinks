@@ -66,7 +66,8 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
         } catch (DeviceLinksAuthorizationException invalid) {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
         } catch (Exception e) {
-            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(SYSTEM_EXCEPTION);
+            logger.error(e.getMessage(), e);
+            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(UNKNOWN_ERROR, e.getMessage());
             if (e instanceof ApiException apiException) {
                 deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(BUSINESS_EXCEPTION, apiException.getMessage());
             }

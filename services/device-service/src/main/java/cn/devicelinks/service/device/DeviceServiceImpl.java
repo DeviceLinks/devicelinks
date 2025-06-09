@@ -219,7 +219,7 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
                     failureReasonMap.put(deviceId, errorMsg);
                 } else {
                     log.error("删除设备时遇到未知的异常，设备ID：" + deviceId, e);
-                    failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.getMessage());
+                    failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.formatMessage(e.getMessage()));
                 }
                 OperationLogRecorder.error(deviceId, deviceId, e);
             }
@@ -250,7 +250,7 @@ public class DeviceServiceImpl extends CacheBaseServiceImpl<Device, String, Devi
                     failureReasonMap.put(deviceId, errorMsg);
                 } else {
                     log.error("更新设备启用状态时遇到未知的异常，设备ID：" + deviceId, e);
-                    failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.getMessage());
+                    failureReasonMap.put(deviceId, StatusCodeConstants.UNKNOWN_ERROR.formatMessage(e.getMessage()));
                 }
                 OperationLogRecorder.error(deviceId, deviceId, e);
             }

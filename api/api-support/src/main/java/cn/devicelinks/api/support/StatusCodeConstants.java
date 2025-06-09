@@ -30,7 +30,7 @@ public interface StatusCodeConstants {
      * 通用
      */
     StatusCode SYSTEM_EXCEPTION = StatusCode.build("SYSTEM_EXCEPTION", "系统异常.");
-    StatusCode UNKNOWN_ERROR = StatusCode.build("UNKNOWN_ERROR", "遇到未知异常");
+    StatusCode UNKNOWN_ERROR = StatusCode.build("UNKNOWN_ERROR", "遇到未知异常，描述：%s.");
     StatusCode REQUEST_EXPIRED = StatusCode.build("REQUEST_EXPIRED", "请求已过期");
     StatusCode SIGN_VERIFICATION_FAILED = StatusCode.build("SIGN_VERIFICATION_FAILED", "签名校验失败.");
     StatusCode PASSWORD_VERIFICATION_FAILED = StatusCode.build("PASSWORD_VERIFICATION_FAILED", "密码校验失败.");

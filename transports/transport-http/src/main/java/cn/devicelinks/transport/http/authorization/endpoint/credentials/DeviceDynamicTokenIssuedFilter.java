@@ -91,7 +91,7 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, deviceLinksAuthorizationException);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(UNKNOWN_ERROR);
+            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(UNKNOWN_ERROR, e.getMessage());
             if (e instanceof ApiException apiException) {
                 deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(BUSINESS_EXCEPTION, apiException.getMessage());
             }
