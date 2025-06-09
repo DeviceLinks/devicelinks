@@ -8,6 +8,7 @@ import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.component.web.api.StatusCode;
+import cn.devicelinks.transport.support.TransportStatusCodes;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,15 +54,11 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
 
     private final StatusCode REGISTRATION_METHOD_CANNOT_EMPTY = StatusCode.build("REGISTRATION_METHOD_CANNOT_EMPTY", "[" + PARAMETER_REGISTRATION_METHOD + "]不可以为空.");
 
-    private final StatusCode REGISTRATION_METHOD_NOT_SUPPORT = StatusCode.build("REGISTRATION_METHOD_NOT_SUPPORT", "[" + PARAMETER_REGISTRATION_METHOD + "]不支持的动态注册方式.");
-
     private final StatusCode DEVICE_NAME_CANNOT_EMPTY = StatusCode.build("DEVICE_NAME_CANNOT_EMPTY", "[" + PARAMETER_DEVICE_NAME + "]不可以为空.");
 
     private final StatusCode TIMESTAMP_CANNOT_EMPTY = StatusCode.build("TIMESTAMP_CANNOT_EMPTY", "[" + PARAMETER_TIMESTAMP + "]不可以为空.");
 
     private final StatusCode SIGN_CANNOT_EMPTY = StatusCode.build("SIGN_CANNOT_EMPTY", "[" + PARAMETER_SIGN + "]不可以为空.");
-
-    private final StatusCode SIGN_ALGORITHM_NOT_SUPPORT = StatusCode.build("SIGN_ALGORITHM_NOT_SUPPORT", "[" + PARAMETER_SIGN_ALGORITHM + "]不支持的签名算法.");
 
     private final StatusCode PROVISION_KEY_CANNOT_EMPTY = StatusCode.build("PROVISION_KEY_CANNOT_EMPTY", "[" + PARAMETER_PROVISION_KEY + "]不可以为空.");
 
@@ -118,7 +115,7 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
         }
         DynamicRegistrationMethod dynamicRegistrationMethod = DynamicRegistrationMethod.fromName(registrationMethod);
         if (dynamicRegistrationMethod == null) {
-            throw new DeviceLinksAuthorizationException(REGISTRATION_METHOD_NOT_SUPPORT);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.REGISTRATION_METHOD_NOT_SUPPORT);
         }
         String deviceName = request.getParameter(PARAMETER_DEVICE_NAME);
         if (ObjectUtils.isEmpty(deviceName)) {
@@ -134,7 +131,7 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
             try {
                 hmacSignatureAlgorithm = HmacSignatureAlgorithm.valueOf(signAlgorithm);
             } catch (Exception e) {
-                throw new DeviceLinksAuthorizationException(SIGN_ALGORITHM_NOT_SUPPORT);
+                throw new DeviceLinksAuthorizationException(TransportStatusCodes.SIGN_ALGORITHM_NOT_SUPPORT);
             }
         } else {
             hmacSignatureAlgorithm = HmacSignatureAlgorithm.HmacSHA256;

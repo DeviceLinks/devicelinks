@@ -1,5 +1,6 @@
 package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -20,16 +21,19 @@ public class DeviceDynamicTokenIssuedAuthenticationToken extends AbstractAuthent
     private final String deviceId;
     private String deviceName;
     private String timestamp;
+    private HmacSignatureAlgorithm signatureAlgorithm;
     private String sign;
     private String token;
     private LocalDateTime expiresAt;
 
-    public DeviceDynamicTokenIssuedAuthenticationToken(HttpServletRequest request, String deviceId, String deviceName, String timestamp, String sign) {
+    public DeviceDynamicTokenIssuedAuthenticationToken(HttpServletRequest request, String deviceId, String deviceName,
+                                                       String timestamp, HmacSignatureAlgorithm signatureAlgorithm, String sign) {
         super(Collections.emptyList());
         this.request = request;
         this.deviceId = deviceId;
         this.deviceName = deviceName;
         this.timestamp = timestamp;
+        this.signatureAlgorithm = signatureAlgorithm;
         this.sign = sign;
         this.setAuthenticated(false);
     }
@@ -42,8 +46,9 @@ public class DeviceDynamicTokenIssuedAuthenticationToken extends AbstractAuthent
         super.setAuthenticated(true);
     }
 
-    public static DeviceDynamicTokenIssuedAuthenticationToken unauthenticated(HttpServletRequest request, String deviceId, String deviceName, String timestamp, String sign) {
-        return new DeviceDynamicTokenIssuedAuthenticationToken(request, deviceId, deviceName, timestamp, sign);
+    public static DeviceDynamicTokenIssuedAuthenticationToken unauthenticated(HttpServletRequest request, String deviceId,
+                                                                              String deviceName, String timestamp, HmacSignatureAlgorithm signatureAlgorithm, String sign) {
+        return new DeviceDynamicTokenIssuedAuthenticationToken(request, deviceId, deviceName, timestamp, signatureAlgorithm, sign);
     }
 
     public static DeviceDynamicTokenIssuedAuthenticationToken authenticated(String deviceId, String token, LocalDateTime expiresAt) {

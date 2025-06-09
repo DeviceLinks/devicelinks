@@ -1,11 +1,13 @@
 package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.component.web.api.StatusCode;
+import cn.devicelinks.transport.support.TransportStatusCodes;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,6 +42,8 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
     private static final String PARAMETER_DEVICE_NAME = "deviceName";
 
     private static final String PARAMETER_TIMESTAMP = "timestamp";
+
+    private static final String PARAMETER_SIGN_ALGORITHM = "signAlgorithm";
 
     private static final String PARAMETER_SIGN = "sign";
 
@@ -108,11 +112,22 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
         if (ObjectUtils.isEmpty(timestamp)) {
             throw new DeviceLinksAuthorizationException(TIMESTAMP_CANNOT_EMPTY);
         }
+        String signAlgorithm = request.getParameter(PARAMETER_SIGN_ALGORITHM);
+        HmacSignatureAlgorithm hmacSignatureAlgorithm;
+        if (!ObjectUtils.isEmpty(signAlgorithm)) {
+            try {
+                hmacSignatureAlgorithm = HmacSignatureAlgorithm.valueOf(signAlgorithm);
+            } catch (Exception e) {
+                throw new DeviceLinksAuthorizationException(TransportStatusCodes.SIGN_ALGORITHM_NOT_SUPPORT);
+            }
+        } else {
+            hmacSignatureAlgorithm = HmacSignatureAlgorithm.HmacSHA256;
+        }
         String sign = request.getParameter(PARAMETER_SIGN);
         if (ObjectUtils.isEmpty(sign)) {
             throw new DeviceLinksAuthorizationException(SIGN_CANNOT_EMPTY);
         }
-        return DeviceDynamicTokenIssuedAuthenticationToken.unauthenticated(request, deviceId, deviceName, timestamp, sign);
+        return DeviceDynamicTokenIssuedAuthenticationToken.unauthenticated(request, deviceId, deviceName, timestamp, hmacSignatureAlgorithm, sign);
     }
 
     private void sendDynamicTokenResponse(HttpServletRequest request, HttpServletResponse response,

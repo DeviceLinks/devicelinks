@@ -39,7 +39,8 @@ public class GenerateDeviceDynamicTokenTest {
         parameters.add("deviceId", deviceId);
         parameters.add("deviceName", "test0003");
         parameters.add("timestamp", timestamp);
-        parameters.add("sign", SignUtils.sign(HmacSignatureAlgorithm.HmacSHA256, deviceSecret, timestamp, parameters));
+        parameters.add("signAlgorithm", HmacSignatureAlgorithm.HmacSHA1.toString());
+        parameters.add("sign", SignUtils.sign(HmacSignatureAlgorithm.HmacSHA1, deviceSecret, timestamp, parameters));
         MvcResult mvcResult = mockMvc.perform(
                         post("/authenticate/dynamic-token-credentials")
                                 .params(parameters))

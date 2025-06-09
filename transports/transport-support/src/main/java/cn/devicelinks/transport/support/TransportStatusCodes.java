@@ -11,5 +11,8 @@ import cn.devicelinks.component.web.api.StatusCode;
 public interface TransportStatusCodes {
     StatusCode SUCCESS_STATUS_CODE = StatusCode.build("0", "Success");
     StatusCode UNKNOWN_ERROR_STATUS_CODE = StatusCode.build("-1", "Unknown Error.");
+    StatusCode SIGN_ALGORITHM_NOT_SUPPORT = StatusCode.build("SIGN_ALGORITHM_NOT_SUPPORT", "不支持的签名算法.");
+    StatusCode REGISTRATION_METHOD_NOT_SUPPORT = StatusCode.build("REGISTRATION_METHOD_NOT_SUPPORT", "不支持的设备动态注册方式.");
+
     StatusCode REPORT_ATTRIBUTES_ERROR_STATUS_CODE = StatusCode.build("100001", "Report Attributes Error.");
 }
