@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import static cn.devicelinks.api.support.StatusCodeConstants.*;
 import static cn.devicelinks.api.support.StatusCodeConstants.BUSINESS_EXCEPTION;
+import static cn.devicelinks.transport.support.TransportStatusCodes.UNKNOWN_ERROR_STATUS_CODE;
 
 /**
  * 设备携带令牌访问的过滤器
@@ -67,7 +68,7 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
             this.authenticationFailureHandler.onAuthenticationFailure(request, response, invalid);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(UNKNOWN_ERROR, e.getMessage());
+            DeviceLinksAuthorizationException deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(UNKNOWN_ERROR_STATUS_CODE);
             if (e instanceof ApiException apiException) {
                 deviceLinksAuthorizationException = new DeviceLinksAuthorizationException(BUSINESS_EXCEPTION, apiException.getMessage());
             }

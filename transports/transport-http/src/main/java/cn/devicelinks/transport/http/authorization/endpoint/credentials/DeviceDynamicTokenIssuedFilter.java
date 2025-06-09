@@ -6,7 +6,6 @@ import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionF
 import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
-import cn.devicelinks.component.web.api.StatusCode;
 import cn.devicelinks.transport.support.TransportStatusCodes;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -46,14 +45,6 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
     private static final String PARAMETER_SIGN_ALGORITHM = "signAlgorithm";
 
     private static final String PARAMETER_SIGN = "sign";
-
-    private final StatusCode DEVICE_ID_CANNOT_EMPTY = StatusCode.build("DEVICE_ID_CANNOT_EMPTY", "[" + PARAMETER_DEVICE_ID + "]不可以为空.");
-
-    private final StatusCode DEVICE_NAME_CANNOT_EMPTY = StatusCode.build("DEVICE_NAME_CANNOT_EMPTY", "[" + PARAMETER_DEVICE_NAME + "]不可以为空.");
-
-    private final StatusCode TIMESTAMP_CANNOT_EMPTY = StatusCode.build("TIMESTAMP_CANNOT_EMPTY", "[" + PARAMETER_TIMESTAMP + "]不可以为空.");
-
-    private final StatusCode SIGN_CANNOT_EMPTY = StatusCode.build("SIGN_CANNOT_EMPTY", "[" + PARAMETER_SIGN + "]不可以为空.");
 
     private final AuthenticationManager authenticationManager;
 
@@ -102,15 +93,15 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(HttpServletRequest request) throws AuthenticationException {
         String deviceId = request.getParameter(PARAMETER_DEVICE_ID);
         if (ObjectUtils.isEmpty(deviceId)) {
-            throw new DeviceLinksAuthorizationException(DEVICE_ID_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.DEVICE_ID_CANNOT_EMPTY);
         }
         String deviceName = request.getParameter(PARAMETER_DEVICE_NAME);
         if (ObjectUtils.isEmpty(deviceName)) {
-            throw new DeviceLinksAuthorizationException(DEVICE_NAME_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.DEVICE_NAME_CANNOT_EMPTY);
         }
         String timestamp = request.getParameter(PARAMETER_TIMESTAMP);
         if (ObjectUtils.isEmpty(timestamp)) {
-            throw new DeviceLinksAuthorizationException(TIMESTAMP_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.REQUEST_TIMESTAMP_CANNOT_EMPTY);
         }
         String signAlgorithm = request.getParameter(PARAMETER_SIGN_ALGORITHM);
         HmacSignatureAlgorithm hmacSignatureAlgorithm;
@@ -120,12 +111,14 @@ public class DeviceDynamicTokenIssuedFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 throw new DeviceLinksAuthorizationException(TransportStatusCodes.SIGN_ALGORITHM_NOT_SUPPORT);
             }
-        } else {
+        }
+        // Default use HmacSHA256
+        else {
             hmacSignatureAlgorithm = HmacSignatureAlgorithm.HmacSHA256;
         }
         String sign = request.getParameter(PARAMETER_SIGN);
         if (ObjectUtils.isEmpty(sign)) {
-            throw new DeviceLinksAuthorizationException(SIGN_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.SIGN_CANNOT_EMPTY);
         }
         return DeviceDynamicTokenIssuedAuthenticationToken.unauthenticated(request, deviceId, deviceName, timestamp, hmacSignatureAlgorithm, sign);
     }

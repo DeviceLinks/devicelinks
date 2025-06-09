@@ -7,7 +7,6 @@ import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionF
 import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
-import cn.devicelinks.component.web.api.StatusCode;
 import cn.devicelinks.transport.support.TransportStatusCodes;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -51,18 +50,6 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
     private static final String PARAMETER_SIGN_ALGORITHM = "signAlgorithm";
 
     private static final String PARAMETER_SIGN = "sign";
-
-    private final StatusCode REGISTRATION_METHOD_CANNOT_EMPTY = StatusCode.build("REGISTRATION_METHOD_CANNOT_EMPTY", "[" + PARAMETER_REGISTRATION_METHOD + "]不可以为空.");
-
-    private final StatusCode DEVICE_NAME_CANNOT_EMPTY = StatusCode.build("DEVICE_NAME_CANNOT_EMPTY", "[" + PARAMETER_DEVICE_NAME + "]不可以为空.");
-
-    private final StatusCode TIMESTAMP_CANNOT_EMPTY = StatusCode.build("TIMESTAMP_CANNOT_EMPTY", "[" + PARAMETER_TIMESTAMP + "]不可以为空.");
-
-    private final StatusCode SIGN_CANNOT_EMPTY = StatusCode.build("SIGN_CANNOT_EMPTY", "[" + PARAMETER_SIGN + "]不可以为空.");
-
-    private final StatusCode PROVISION_KEY_CANNOT_EMPTY = StatusCode.build("PROVISION_KEY_CANNOT_EMPTY", "[" + PARAMETER_PROVISION_KEY + "]不可以为空.");
-
-    private final StatusCode PRODUCT_KEY_CANNOT_EMPTY = StatusCode.build("PRODUCT_KEY_CANNOT_EMPTY", "[" + PARAMETER_PRODUCT_KEY + "]不可以为空.");
 
     private final AuthenticationManager authenticationManager;
 
@@ -111,7 +98,7 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(HttpServletRequest request) throws AuthenticationException {
         String registrationMethod = request.getParameter(PARAMETER_REGISTRATION_METHOD);
         if (ObjectUtils.isEmpty(registrationMethod)) {
-            throw new DeviceLinksAuthorizationException(REGISTRATION_METHOD_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.REGISTRATION_METHOD_CANNOT_EMPTY);
         }
         DynamicRegistrationMethod dynamicRegistrationMethod = DynamicRegistrationMethod.fromName(registrationMethod);
         if (dynamicRegistrationMethod == null) {
@@ -119,11 +106,11 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
         }
         String deviceName = request.getParameter(PARAMETER_DEVICE_NAME);
         if (ObjectUtils.isEmpty(deviceName)) {
-            throw new DeviceLinksAuthorizationException(DEVICE_NAME_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.DEVICE_NAME_CANNOT_EMPTY);
         }
         String timestamp = request.getParameter(PARAMETER_TIMESTAMP);
         if (ObjectUtils.isEmpty(timestamp)) {
-            throw new DeviceLinksAuthorizationException(TIMESTAMP_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.REQUEST_TIMESTAMP_CANNOT_EMPTY);
         }
         String signAlgorithm = request.getParameter(PARAMETER_SIGN_ALGORITHM);
         HmacSignatureAlgorithm hmacSignatureAlgorithm;
@@ -133,20 +120,22 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 throw new DeviceLinksAuthorizationException(TransportStatusCodes.SIGN_ALGORITHM_NOT_SUPPORT);
             }
-        } else {
+        }
+        // Default use HmacSHA256
+        else {
             hmacSignatureAlgorithm = HmacSignatureAlgorithm.HmacSHA256;
         }
         String sign = request.getParameter(PARAMETER_SIGN);
         if (ObjectUtils.isEmpty(sign)) {
-            throw new DeviceLinksAuthorizationException(SIGN_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.SIGN_CANNOT_EMPTY);
         }
         String provisionKey = request.getParameter(PARAMETER_PROVISION_KEY);
         if (DynamicRegistrationMethod.ProvisionKey == dynamicRegistrationMethod && ObjectUtils.isEmpty(provisionKey)) {
-            throw new DeviceLinksAuthorizationException(PROVISION_KEY_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.PROVISION_KEY_CANNOT_EMPTY);
         }
         String productKey = request.getParameter(PARAMETER_PRODUCT_KEY);
         if (DynamicRegistrationMethod.ProductKey == dynamicRegistrationMethod && ObjectUtils.isEmpty(productKey)) {
-            throw new DeviceLinksAuthorizationException(PRODUCT_KEY_CANNOT_EMPTY);
+            throw new DeviceLinksAuthorizationException(TransportStatusCodes.PRODUCT_KEY_CANNOT_EMPTY);
         }
         return DeviceDynamicRegistrationAuthenticationToken.unauthenticated(request, dynamicRegistrationMethod, provisionKey,
                 productKey, deviceName, Long.parseLong(timestamp), hmacSignatureAlgorithm, sign);
