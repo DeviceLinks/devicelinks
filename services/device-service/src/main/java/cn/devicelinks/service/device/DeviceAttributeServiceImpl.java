@@ -10,6 +10,7 @@ import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.common.AttributeDataType;
+import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Attribute;
@@ -122,5 +123,29 @@ public class DeviceAttributeServiceImpl extends BaseServiceImpl<DeviceAttribute,
             throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DATA_TYPE_CANNOT_ADD_CHART, deviceAttribute.getIdentifier());
         }
         return deviceAttribute;
+    }
+
+    @Override
+    public void saveOrUpdateDeviceAttribute(List<DeviceAttribute> deviceAttributeList) {
+        for (DeviceAttribute deviceAttribute : deviceAttributeList) {
+            // Insert
+            if (ObjectUtils.isEmpty(deviceAttribute.getId())) {
+                this.insert(deviceAttribute);
+            }
+            // Update
+            else {
+                this.update(deviceAttribute);
+            }
+        }
+    }
+
+    @Override
+    public DeviceAttribute selectByIdentifier(String deviceId, String moduleId, AttributeValueSource valueSource, String identifier) {
+        // @formatter:off
+        return this.repository.selectOne(DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId),
+                DEVICE_ATTRIBUTE.MODULE_ID.eq(moduleId),
+                DEVICE_ATTRIBUTE.VALUE_SOURCE.eq(valueSource),
+                DEVICE_ATTRIBUTE.IDENTIFIER.eq(identifier));
+        // @formatter:on
     }
 }

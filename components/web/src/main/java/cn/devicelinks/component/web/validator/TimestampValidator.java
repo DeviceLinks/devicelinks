@@ -1,5 +1,6 @@
 package cn.devicelinks.component.web.validator;
 
+import cn.devicelinks.common.Constants;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class TimestampValidator implements ConstraintValidator<TimestampValid, O
         }
         try {
             long ts = Long.parseLong(timestamp.toString());
-            if (ts < System.currentTimeMillis()) {
+            if (ts > Constants.ZERO && ts < System.currentTimeMillis() && String.valueOf(ts).matches("^\\\\d{13}$")) {
                 return true;
             }
         } catch (Exception e) {

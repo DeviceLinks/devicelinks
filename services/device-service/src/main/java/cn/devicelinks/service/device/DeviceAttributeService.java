@@ -5,6 +5,7 @@ import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Attribute;
@@ -59,4 +60,22 @@ public interface DeviceAttributeService extends BaseService<DeviceAttribute, Str
      * @return 如果允许则返回{@link DeviceAttribute}，否者抛出{@link ApiException}异常
      */
     DeviceAttribute checkAttributeIdChartField(String deviceId, String deviceAttributeId);
+
+    /**
+     * 新增或更新设备属性列表
+     *
+     * @param deviceAttributeList 设备属性列表{@link DeviceAttribute}
+     */
+    void saveOrUpdateDeviceAttribute(List<DeviceAttribute> deviceAttributeList);
+
+    /**
+     * 根据标识符查询设备属性
+     *
+     * @param deviceId    设备ID {@link DeviceAttribute#getDeviceId()}
+     * @param moduleId    属性所属的功能模块 {@link DeviceAttribute#getModuleId()}
+     * @param valueSource 值来源 {@link AttributeValueSource}
+     * @param identifier  属性标识符 {@link DeviceAttribute#getIdentifier()}
+     * @return {@link DeviceAttribute}
+     */
+    DeviceAttribute selectByIdentifier(String deviceId, String moduleId, AttributeValueSource valueSource, String identifier);
 }

@@ -139,6 +139,7 @@ public interface StatusCodeConstants {
     StatusCode DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_VALUE_INVALID", "无效的期望属性值，请检查与数据类型是否匹配.");
     StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_FOUND", "设备期望属性：%s，不存在.");
     StatusCode DEVICE_ATTRIBUTE_NOT_FOUND = StatusCode.build("DEVICE_ATTRIBUTE_NOT_FOUND", "设备上报属性：%s，不存在.");
+    StatusCode DEVICE_ATTRIBUTE_VERSION_INVALID = StatusCode.build("DEVICE_ATTRIBUTE_VERSION_INVALID", "设备属性：%s，版本值验证失败，现有版本值：%d.");
     StatusCode DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_DESIRED_ATTRIBUTE_NOT_UNKNOWN", "设备期望属性：%s，不是未知属性，无法提取.");
     StatusCode DEVICE_ATTRIBUTE_NOT_UNKNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_UNKNOWN", "设备属性：%s，不是未知属性.");
     StatusCode DEVICE_ATTRIBUTE_NOT_KNOWN = StatusCode.build("DEVICE_ATTRIBUTE_NOT_KNOWN", "设备属性：%s，不是已知属性.");

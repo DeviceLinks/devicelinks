@@ -3,6 +3,7 @@ package cn.devicelinks.service.product;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.entity.Product;
 import cn.devicelinks.jdbc.BaseService;
 
 import java.util.List;
@@ -65,8 +66,9 @@ public interface FunctionModuleService extends BaseService<FunctionModule, Strin
     /**
      * 根据标识符查询功能模块
      *
+     * @param productId  产品ID {@link Product#getId()}
      * @param identifier 功能模块标识符 {@link FunctionModule#getIdentifier()}
      * @return {@link FunctionModule}
      */
-    FunctionModule selectByIdentifier(String identifier);
+    FunctionModule selectByIdentifier(String productId, String identifier);
 }

@@ -2,6 +2,10 @@ package cn.devicelinks.common.utils;
 
 import cn.devicelinks.common.Constants;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 /**
  * 时间工具类
  *
@@ -19,5 +23,11 @@ public class TimeUtils {
     public static boolean validateTimestamp(long timestamp, long effectiveTimestamp) {
         long currentTimestamp = System.currentTimeMillis();
         return timestamp > Constants.ZERO && currentTimestamp - timestamp <= effectiveTimestamp;
+    }
+
+    public static LocalDateTime timestampToLocalDateTime(long timestamp) {
+        return Instant.ofEpochMilli(timestamp)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 }

@@ -158,8 +158,8 @@ public class FunctionModuleServiceImpl extends CacheBaseServiceImpl<FunctionModu
     }
 
     @Override
-    public FunctionModule selectByIdentifier(String identifier) {
+    public FunctionModule selectByIdentifier(String productId, String identifier) {
         return cache.get(FunctionModuleCacheKey.builder().identifier(identifier).build(),
-                () -> this.repository.selectOne(FUNCTION_MODULE.IDENTIFIER.eq(identifier)));
+                () -> this.repository.selectOne(FUNCTION_MODULE.IDENTIFIER.eq(identifier), FUNCTION_MODULE.PRODUCT_ID.eq(productId)));
     }
 }
