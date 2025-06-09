@@ -83,7 +83,7 @@ public class DeviceDynamicRegistrationAuthenticationProvider implements Authenti
         }
         // Check the signature
         try {
-            String sign = SignUtils.sign(secret,
+            String sign = SignUtils.sign(authenticationRequestToken.getSignAlgorithm(), secret,
                     String.valueOf(authenticationRequestToken.getTimestamp()), authenticationRequestToken.getRequest());
             log.debug("Signature Verification, request sign：{}, sign：{}.", authenticationRequestToken.getSign(), sign);
             if (ObjectUtils.isEmpty(authenticationRequestToken.getSign()) || !sign.equals(authenticationRequestToken.getSign())) {

@@ -17,7 +17,7 @@ public final class HmacSignature {
     private final String secret;
     private Mac mac;
 
-    private HmacSignature(HmacSignatureAlgorithm algorithm, String secret) {
+    public HmacSignature(HmacSignatureAlgorithm algorithm, String secret) {
         this.algorithm = algorithm;
         this.secret = secret;
         this.initMac();

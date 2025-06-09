@@ -1,6 +1,7 @@
 package cn.devicelinks.transport.http.authorization.endpoint.registration;
 
 import cn.devicelinks.common.DynamicRegistrationMethod;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -21,6 +22,7 @@ public class DeviceDynamicRegistrationAuthenticationToken extends AbstractAuthen
     private String productKey;
     private final String deviceName;
     private long timestamp;
+    private HmacSignatureAlgorithm signAlgorithm;
     private String sign;
 
     private String deviceId;
@@ -29,7 +31,7 @@ public class DeviceDynamicRegistrationAuthenticationToken extends AbstractAuthen
     private DeviceDynamicRegistrationAuthenticationToken(HttpServletRequest request, DynamicRegistrationMethod registrationMethod,
                                                          String provisionKey,
                                                          String productKey,
-                                                         String deviceName, long timestamp, String sign) {
+                                                         String deviceName, long timestamp, HmacSignatureAlgorithm signAlgorithm, String sign) {
         super(Collections.emptyList());
         this.request = request;
         this.registrationMethod = registrationMethod;
@@ -37,6 +39,7 @@ public class DeviceDynamicRegistrationAuthenticationToken extends AbstractAuthen
         this.productKey = productKey;
         this.deviceName = deviceName;
         this.timestamp = timestamp;
+        this.signAlgorithm = signAlgorithm;
         this.sign = sign;
         super.setAuthenticated(false);
     }
@@ -51,8 +54,8 @@ public class DeviceDynamicRegistrationAuthenticationToken extends AbstractAuthen
 
     public static DeviceDynamicRegistrationAuthenticationToken unauthenticated(HttpServletRequest request, DynamicRegistrationMethod registrationMethod,
                                                                                String provisionKey, String productKey,
-                                                                               String deviceName, long timestamp, String sign) {
-        return new DeviceDynamicRegistrationAuthenticationToken(request, registrationMethod, provisionKey, productKey, deviceName, timestamp, sign);
+                                                                               String deviceName, long timestamp, HmacSignatureAlgorithm signAlgorithm, String sign) {
+        return new DeviceDynamicRegistrationAuthenticationToken(request, registrationMethod, provisionKey, productKey, deviceName, timestamp, signAlgorithm, sign);
     }
 
     public static DeviceDynamicRegistrationAuthenticationToken authenticated(String deviceId, String deviceName, String deviceSecret) {

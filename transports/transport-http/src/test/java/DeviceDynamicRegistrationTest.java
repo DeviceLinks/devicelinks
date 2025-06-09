@@ -1,4 +1,5 @@
 import cn.devicelinks.common.DynamicRegistrationMethod;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.component.web.utils.SignUtils;
 import cn.devicelinks.transport.http.TransportHttpApplication;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,9 @@ public class DeviceDynamicRegistrationTest {
         multiValueMap.add("deviceName", "test0004");
         multiValueMap.add("timestamp", timestamp);
         multiValueMap.add("provisionKey", provisionKey);
+        multiValueMap.add("signAlgorithm", HmacSignatureAlgorithm.HmacSHA1.toString());
 
-        String sign = SignUtils.sign(provisionSecret, timestamp, multiValueMap);
+        String sign = SignUtils.sign(HmacSignatureAlgorithm.HmacSHA1, provisionSecret, timestamp, multiValueMap);
         multiValueMap.add("sign", sign);
         MvcResult mvcResult = mockMvc.perform(post("/authenticate/dynamic-registration")
                         .params(multiValueMap)
@@ -54,7 +56,7 @@ public class DeviceDynamicRegistrationTest {
         multiValueMap.add("timestamp", timestamp);
         multiValueMap.add("productKey", productKey);
 
-        String sign = SignUtils.sign(productSecret, timestamp, multiValueMap);
+        String sign = SignUtils.sign(HmacSignatureAlgorithm.HmacSHA256, productSecret, timestamp, multiValueMap);
         multiValueMap.add("sign", sign);
         MvcResult mvcResult = mockMvc.perform(post("/authenticate/dynamic-registration")
                         .params(multiValueMap)

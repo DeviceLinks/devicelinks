@@ -1,6 +1,7 @@
 package cn.devicelinks.transport.http.authorization.endpoint.registration;
 
 import cn.devicelinks.common.DynamicRegistrationMethod;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.component.web.ApiResponseHttpMessageConverter;
@@ -46,6 +47,8 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
 
     private static final String PARAMETER_TIMESTAMP = "timestamp";
 
+    private static final String PARAMETER_SIGN_ALGORITHM = "signAlgorithm";
+
     private static final String PARAMETER_SIGN = "sign";
 
     private final StatusCode REGISTRATION_METHOD_CANNOT_EMPTY = StatusCode.build("REGISTRATION_METHOD_CANNOT_EMPTY", "[" + PARAMETER_REGISTRATION_METHOD + "]不可以为空.");
@@ -57,6 +60,8 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
     private final StatusCode TIMESTAMP_CANNOT_EMPTY = StatusCode.build("TIMESTAMP_CANNOT_EMPTY", "[" + PARAMETER_TIMESTAMP + "]不可以为空.");
 
     private final StatusCode SIGN_CANNOT_EMPTY = StatusCode.build("SIGN_CANNOT_EMPTY", "[" + PARAMETER_SIGN + "]不可以为空.");
+
+    private final StatusCode SIGN_ALGORITHM_NOT_SUPPORT = StatusCode.build("SIGN_ALGORITHM_NOT_SUPPORT", "[" + PARAMETER_SIGN_ALGORITHM + "]不支持的签名算法.");
 
     private final StatusCode PROVISION_KEY_CANNOT_EMPTY = StatusCode.build("PROVISION_KEY_CANNOT_EMPTY", "[" + PARAMETER_PROVISION_KEY + "]不可以为空.");
 
@@ -123,6 +128,17 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
         if (ObjectUtils.isEmpty(timestamp)) {
             throw new DeviceLinksAuthorizationException(TIMESTAMP_CANNOT_EMPTY);
         }
+        String signAlgorithm = request.getParameter(PARAMETER_SIGN_ALGORITHM);
+        HmacSignatureAlgorithm hmacSignatureAlgorithm;
+        if (!ObjectUtils.isEmpty(signAlgorithm)) {
+            try {
+                hmacSignatureAlgorithm = HmacSignatureAlgorithm.valueOf(signAlgorithm);
+            } catch (Exception e) {
+                throw new DeviceLinksAuthorizationException(SIGN_ALGORITHM_NOT_SUPPORT);
+            }
+        } else {
+            hmacSignatureAlgorithm = HmacSignatureAlgorithm.HmacSHA256;
+        }
         String sign = request.getParameter(PARAMETER_SIGN);
         if (ObjectUtils.isEmpty(sign)) {
             throw new DeviceLinksAuthorizationException(SIGN_CANNOT_EMPTY);
@@ -136,7 +152,7 @@ public class DeviceDynamicRegistrationFilter extends OncePerRequestFilter {
             throw new DeviceLinksAuthorizationException(PRODUCT_KEY_CANNOT_EMPTY);
         }
         return DeviceDynamicRegistrationAuthenticationToken.unauthenticated(request, dynamicRegistrationMethod, provisionKey,
-                productKey, deviceName, Long.parseLong(timestamp), sign);
+                productKey, deviceName, Long.parseLong(timestamp), hmacSignatureAlgorithm, sign);
     }
 
     private void sendIssuedDeviceSecretResponse(HttpServletRequest request, HttpServletResponse response,

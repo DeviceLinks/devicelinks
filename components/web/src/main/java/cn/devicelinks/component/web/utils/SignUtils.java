@@ -2,6 +2,7 @@ package cn.devicelinks.component.web.utils;
 
 import cn.devicelinks.common.Constants;
 import cn.devicelinks.common.utils.HmacSignature;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
@@ -54,10 +55,10 @@ public class SignUtils {
      * @return 生成的签名字符串
      * @throws IOException 请求体读取失败时抛出
      */
-    public static String sign(String secret, String timestamp, HttpServletRequest request) throws IOException {
+    public static String sign(HmacSignatureAlgorithm signatureAlgorithm, String secret, String timestamp, HttpServletRequest request) throws IOException {
         String queryString = HttpRequestUtils.getQueryString(request, List.of(PARAMETER_SIGN));
         String bodyString = HttpRequestUtils.getBodyString(request);
-        return sign(secret, timestamp, queryString, bodyString);
+        return sign(signatureAlgorithm, secret, timestamp, queryString, bodyString);
     }
 
     /**
@@ -69,10 +70,10 @@ public class SignUtils {
      * @param bodyBytes       请求体字节数组
      * @return 生成的签名字符串
      */
-    public static String sign(String secret, String timestamp, Map<String, Collection<String>> queryParameters, byte[] bodyBytes) {
+    public static String sign(HmacSignatureAlgorithm signatureAlgorithm, String secret, String timestamp, Map<String, Collection<String>> queryParameters, byte[] bodyBytes) {
         String queryString = getQueryString(queryParameters);
         String bodyString = getBodyString(bodyBytes);
-        return sign(secret, timestamp, queryString, bodyString);
+        return sign(signatureAlgorithm, secret, timestamp, queryString, bodyString);
     }
 
     /**
@@ -83,12 +84,12 @@ public class SignUtils {
      * @param params    参数 map
      * @return 生成的签名字符串
      */
-    public static String sign(String secret, String timestamp, MultiValueMap<String, String> params) {
+    public static String sign(HmacSignatureAlgorithm signatureAlgorithm, String secret, String timestamp, MultiValueMap<String, String> params) {
         String paramString = params.entrySet().stream().sorted(Map.Entry.comparingByKey()) // 按参数名正序排序
                 .filter(e -> !e.getKey().equals(PARAMETER_SIGN))
                 .flatMap(e -> e.getValue().stream().map(v -> e.getKey() + "=" + v))
                 .collect(Collectors.joining("&"));
-        return sign(secret, timestamp, paramString, null);
+        return sign(signatureAlgorithm, secret, timestamp, paramString, null);
     }
 
     /**
@@ -100,7 +101,7 @@ public class SignUtils {
      * @param bodyString  请求体字符串（可为空）
      * @return 生成的签名 hex 字符串
      */
-    public static String sign(String secret, String timestamp, String queryString, String bodyString) {
+    public static String sign(HmacSignatureAlgorithm signatureAlgorithm, String secret, String timestamp, String queryString, String bodyString) {
         // raw string
         // @formatter:off
         String raw = (!ObjectUtils.isEmpty(queryString) ? queryString : Constants.EMPTY_STRING) +
@@ -108,6 +109,6 @@ public class SignUtils {
                 timestamp;
         // @formatter:on
         // generate hex sign
-        return HmacSignature.hmacSha256(secret).toHex(raw);
+        return new HmacSignature(signatureAlgorithm, secret).toHex(raw);
     }
 }

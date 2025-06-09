@@ -1,4 +1,5 @@
 import cn.devicelinks.api.device.center.DeviceFeignClient;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.component.web.utils.SignUtils;
 import cn.devicelinks.transport.http.TransportHttpApplication;
@@ -38,7 +39,7 @@ public class GenerateDeviceDynamicTokenTest {
         parameters.add("deviceId", deviceId);
         parameters.add("deviceName", "test0003");
         parameters.add("timestamp", timestamp);
-        parameters.add("sign", SignUtils.sign(deviceSecret, timestamp, parameters));
+        parameters.add("sign", SignUtils.sign(HmacSignatureAlgorithm.HmacSHA256, deviceSecret, timestamp, parameters));
         MvcResult mvcResult = mockMvc.perform(
                         post("/authenticate/dynamic-token-credentials")
                                 .params(parameters))

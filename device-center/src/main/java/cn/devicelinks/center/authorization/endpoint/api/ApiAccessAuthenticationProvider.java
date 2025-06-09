@@ -2,6 +2,7 @@ package cn.devicelinks.center.authorization.endpoint.api;
 
 import cn.devicelinks.center.configuration.DeviceCenterProperties;
 import cn.devicelinks.common.Constants;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.web.utils.SignUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class ApiAccessAuthenticationProvider implements AuthenticationProvider {
         }
         DeviceCenterProperties.InternalServiceApiKey internalServiceApiKey = this.apiKeyMap.get(apiAccessAuthenticationToken.getApiKey());
         try {
-            String sign = SignUtils.sign(internalServiceApiKey.getApiSecret(), String.valueOf(apiAccessAuthenticationToken.getTimestamp()),
+            String sign = SignUtils.sign(HmacSignatureAlgorithm.HmacSHA256, internalServiceApiKey.getApiSecret(), String.valueOf(apiAccessAuthenticationToken.getTimestamp()),
                     apiAccessAuthenticationToken.getRequest());
             if (ObjectUtils.isEmpty(apiAccessAuthenticationToken.getSign()) || !sign.equals(apiAccessAuthenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(API_KEY_SIGN_ERROR);

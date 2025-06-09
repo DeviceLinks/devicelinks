@@ -1,5 +1,6 @@
 package cn.devicelinks.component.openfeign;
 
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.component.web.utils.SignUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -26,6 +27,6 @@ public class OpenFeignClientSignRequestInterceptor implements RequestInterceptor
         requestTemplate.header(OpenFeignConstants.API_KEY_HEADER_NAME, apiKey);
         requestTemplate.header(OpenFeignConstants.API_TIMESTAMP_HEADER_NAME, timestamp);
         requestTemplate.header(OpenFeignConstants.API_SIGN_HEADER_NAME,
-                SignUtils.sign(apiSecret, timestamp, requestTemplate.queries(), requestTemplate.body()));
+                SignUtils.sign(HmacSignatureAlgorithm.HmacSHA256, apiSecret, timestamp, requestTemplate.queries(), requestTemplate.body()));
     }
 }

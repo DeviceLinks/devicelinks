@@ -3,6 +3,7 @@ package cn.devicelinks.transport.http.authorization.endpoint.credentials;
 import cn.devicelinks.api.device.center.DeviceCredentialsFeignClient;
 import cn.devicelinks.api.device.center.DeviceFeignClient;
 import cn.devicelinks.api.device.center.model.response.GenerateDynamicTokenResponse;
+import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
 import cn.devicelinks.common.utils.TimeUtils;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
@@ -53,7 +54,7 @@ public class DeviceDynamicTokenIssuedAuthenticationProvider implements Authentic
         }
         try {
             String decryptedSecret = ApiResponseUnwrapper.unwrap(deviceFeignClient.decryptDeviceSecret(device.getId()));
-            String sign = SignUtils.sign(decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
+            String sign = SignUtils.sign(HmacSignatureAlgorithm.HmacSHA256, decryptedSecret, authenticationToken.getTimestamp(), authenticationToken.getRequest());
             if (ObjectUtils.isEmpty(authenticationToken.getSign()) || !sign.equals(authenticationToken.getSign())) {
                 throw new DeviceLinksAuthorizationException(SIGN_VERIFICATION_FAILED);
             }
