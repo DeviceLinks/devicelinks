@@ -79,7 +79,11 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
                         Attribute attribute = attributeService.selectAttributeByIdentifier(deviceAttribute.getIdentifier(), device.getProductId(),
                                 deviceAttribute.getModuleId(), List.of(AttributeScope.Device, AttributeScope.Common));
                         if (attribute != null && !attribute.isDeleted() && attribute.isEnabled()) {
-                            deviceAttribute.setAttributeId(attribute.getId());
+                            if (attribute.getDataType().validate(deviceAttribute.getValue())) {
+                                deviceAttribute.setAttributeId(attribute.getId());
+                            } else {
+                                throw new ApiException(StatusCodeConstants.DEVICE_ATTRIBUTE_DATA_TYPE_NOT_MATCH, deviceAttribute.getIdentifier());
+                            }
                         }
                     }
                     // Update

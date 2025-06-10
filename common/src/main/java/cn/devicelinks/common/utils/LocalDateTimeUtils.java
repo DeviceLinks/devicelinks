@@ -17,6 +17,7 @@
 
 package cn.devicelinks.common.utils;
 
+import cn.devicelinks.common.Constants;
 import org.springframework.util.ObjectUtils;
 
 import java.time.*;
@@ -30,9 +31,9 @@ import java.time.temporal.TemporalAdjusters;
  * @since 1.0
  */
 public class LocalDateTimeUtils {
-    public static final DateTimeFormatter FORMATTER_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static final DateTimeFormatter FORMATTER_YYYY_MM_DD_HH_MM_SS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    public static final DateTimeFormatter FORMATTER_HH_MM_SS = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter FORMATTER_YYYY_MM_DD = DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMAT_YYYY_MM_DD);
+    public static final DateTimeFormatter FORMATTER_YYYY_MM_DD_HH_MM_SS = DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMAT_YYYY_MM_DD_HH_MM_SS);
+    public static final DateTimeFormatter FORMATTER_HH_MM_SS = DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMAT_HH_MM_SS);
 
     /**
      * 将时间戳转换为指定格式的时间字符串
@@ -67,8 +68,28 @@ public class LocalDateTimeUtils {
      * @param localDateTime {@link LocalDateTime}
      * @return 时间字符串
      */
-    public static String convertDateToString(LocalDateTime localDateTime) {
+    public static String convertLocalDateTimeToString(LocalDateTime localDateTime) {
         return FORMATTER_YYYY_MM_DD_HH_MM_SS.format(localDateTime);
+    }
+
+    /**
+     * 将时间字符串转换为{@link LocalDate}
+     *
+     * @param localDate 日期字符串
+     * @return {@link LocalDateTime}
+     */
+    public static LocalDate convertStringToLocalDate(String localDate) {
+        return LocalDate.parse(localDate, FORMATTER_YYYY_MM_DD);
+    }
+
+    /**
+     * 将{@link LocalDate}转换为指定格式的字符串
+     *
+     * @param localDate {@link LocalDate}
+     * @return 时间字符串
+     */
+    public static String convertLocalDateToString(LocalDate localDate) {
+        return FORMATTER_YYYY_MM_DD.format(localDate);
     }
 
     /**
