@@ -22,7 +22,6 @@ import cn.devicelinks.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.jdbc.core.JdbcRepository;
 import cn.devicelinks.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
-import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class FunctionModuleJdbcRepository extends JdbcRepository<FunctionModule,
     public List<FunctionModule> selectBySearchField(List<SearchFieldCondition> searchFieldConditions) {
         // @formatter:off
         DynamicWrapper wrapper = DynamicWrapper.select(FUNCTION_MODULE.getQuerySql())
-                .appendCondition(true, SqlFederationAway.AND, FUNCTION_MODULE.DELETED.eq(false))
+                .and(FUNCTION_MODULE.DELETED.eq(false))
                 .appendSearchFieldCondition(FUNCTION_MODULE, searchFieldConditions, DynamicWrapper.SelectBuilder.NONE_CONDITION_CONSUMER)
                 .sort(FUNCTION_MODULE.CREATE_TIME.desc())
                 .resultColumns(columns -> columns.addAll(FUNCTION_MODULE.getColumns()))

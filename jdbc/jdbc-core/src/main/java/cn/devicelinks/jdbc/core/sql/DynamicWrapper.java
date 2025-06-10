@@ -129,6 +129,17 @@ public record DynamicWrapper(Dynamic dynamic, Object[] parameters) {
             return this;
         }
 
+        public SelectBuilder and(Condition condition) {
+            return this.and(Boolean.TRUE, condition);
+        }
+
+        public SelectBuilder and(boolean allowAppend, Condition condition) {
+            if (allowAppend) {
+                this.whereConditionList.add(DynamicWhereCondition.create(SqlFederationAway.AND, condition.getSql(), condition.getParameterValue()));
+            }
+            return this;
+        }
+
         public SelectBuilder appendCondition(boolean allowAppend, SqlFederationAway federationAway, Condition condition) {
             if (allowAppend) {
                 this.whereConditionList.add(DynamicWhereCondition.create(federationAway, condition.getSql(), condition.getParameterValue()));

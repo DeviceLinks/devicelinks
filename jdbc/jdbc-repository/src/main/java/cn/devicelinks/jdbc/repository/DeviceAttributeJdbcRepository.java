@@ -13,7 +13,6 @@ import cn.devicelinks.jdbc.core.sql.Dynamic;
 import cn.devicelinks.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.SortCondition;
-import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -118,10 +117,10 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
     public List<DeviceAttribute> selectDeviceAttributes(String deviceId, AttributeValueSource valueSource, String[] identifiers) {
         // @formatter:off
         DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(DEVICE_ATTRIBUTE.getQuerySql())
-                .appendCondition(Boolean.TRUE, SqlFederationAway.AND, DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId))
-                .appendCondition(Boolean.TRUE, SqlFederationAway.AND, DEVICE_ATTRIBUTE.VALUE_SOURCE.eq(valueSource));
+                .and(DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId))
+                .and(DEVICE_ATTRIBUTE.VALUE_SOURCE.eq(valueSource));
         if(!ObjectUtils.isEmpty(identifiers)) {
-            selectBuilder.appendCondition(!ObjectUtils.isEmpty(identifiers), SqlFederationAway.AND,
+            selectBuilder.and(!ObjectUtils.isEmpty(identifiers),
                     DEVICE_ATTRIBUTE.IDENTIFIER.in(Arrays.stream(identifiers).map(identifier -> (Object) identifier).toList()));
         }
         DynamicWrapper wrapper = selectBuilder
