@@ -1,5 +1,6 @@
 package cn.devicelinks.transport.support.context;
 
+import cn.devicelinks.common.RequestSource;
 import cn.devicelinks.common.context.Context;
 import cn.devicelinks.entity.Device;
 import lombok.AccessLevel;
@@ -18,9 +19,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DeviceContext implements Context {
     private Device device;
+    private RequestSource requestSource;
 
-    public static DeviceContext instance(Device device) {
-        return new DeviceContext(device);
+    public static DeviceContext instance(Device device, RequestSource requestSource) {
+        return new DeviceContext(device, requestSource);
     }
 
     public String getDeviceId() {

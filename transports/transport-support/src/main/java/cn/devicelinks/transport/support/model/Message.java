@@ -1,12 +1,11 @@
 package cn.devicelinks.transport.support.model;
 
-import cn.devicelinks.common.utils.HmacSignatureAlgorithm;
-import cn.devicelinks.component.web.validator.EnumValid;
+import cn.devicelinks.api.device.center.model.request.BaseDeviceRequest;
 import cn.devicelinks.component.web.validator.TimestampValid;
-import jakarta.validation.Valid;
+import cn.devicelinks.transport.support.context.DeviceContext;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -18,7 +17,8 @@ import org.hibernate.validator.constraints.Length;
  * @since 1.0
  */
 @Data
-public class Message<T> {
+@Accessors(chain = true)
+public class Message {
     /**
      * 消息唯一ID，设备端生成，用于响应匹配和去重
      */
@@ -35,22 +35,20 @@ public class Message<T> {
      */
     @TimestampValid(message = "请求时间戳值无效.")
     private long timestamp;
+
     /**
-     * 签名算法，如 HmacSHA256、HmacMD5 等
+     * 转换为{@link BaseDeviceRequest}
      *
-     * @see HmacSignatureAlgorithm
+     * @param context 当前设备上下文 {@link DeviceContext}
+     * @param request 具体请求对象实例，需要继承{@link BaseDeviceRequest}
+     * @param <R>     具体请求对象类型
+     * @return 具体请求对象实例
      */
-    @EnumValid(target = HmacSignatureAlgorithm.class, message = "签名算法值无效.")
-    private String signAlgorithm;
-    /**
-     * 签名值（对除sign外的字段签名）
-     */
-    @NotBlank(message = "签名不可以为空.")
-    private String sign;
-    /**
-     * 业务参数对象实例，类型不固定
-     */
-    @Valid
-    @NotNull
-    private T param;
+    public <R extends BaseDeviceRequest<R>> R toRequest(DeviceContext context, R request) {
+        return request
+                .setDeviceId(context.getDeviceId())
+                .setMessageId(this.messageId)
+                .setSource(context.getRequestSource())
+                .setTimestamp(this.timestamp);
+    }
 }

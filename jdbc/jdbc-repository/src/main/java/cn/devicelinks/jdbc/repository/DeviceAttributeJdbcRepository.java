@@ -2,6 +2,7 @@ package cn.devicelinks.jdbc.repository;
 
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
+import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.entity.DeviceAttribute;
 import cn.devicelinks.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.jdbc.core.JdbcRepository;
@@ -12,10 +13,12 @@ import cn.devicelinks.jdbc.core.sql.Dynamic;
 import cn.devicelinks.jdbc.core.sql.DynamicWrapper;
 import cn.devicelinks.jdbc.core.sql.SearchFieldCondition;
 import cn.devicelinks.jdbc.core.sql.SortCondition;
+import cn.devicelinks.jdbc.core.sql.operator.SqlFederationAway;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static cn.devicelinks.jdbc.tables.TAttribute.ATTRIBUTE;
@@ -105,6 +108,25 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
                     columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE_DESIRED.LAST_UPDATE_TIME).alias("last_desired_time").build());
                 })
                 .resultType(DeviceAttributeLatestDTO.class)
+                .build();
+        // @formatter:on
+        Dynamic dynamic = wrapper.dynamic();
+        return this.dynamicSelect(dynamic, wrapper.parameters());
+    }
+
+    @Override
+    public List<DeviceAttribute> selectDeviceAttributes(String deviceId, AttributeValueSource valueSource, String[] identifiers) {
+        // @formatter:off
+        DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(DEVICE_ATTRIBUTE.getQuerySql())
+                .appendCondition(Boolean.TRUE, SqlFederationAway.AND, DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId))
+                .appendCondition(Boolean.TRUE, SqlFederationAway.AND, DEVICE_ATTRIBUTE.VALUE_SOURCE.eq(valueSource));
+        if(!ObjectUtils.isEmpty(identifiers)) {
+            selectBuilder.appendCondition(!ObjectUtils.isEmpty(identifiers), SqlFederationAway.AND,
+                    DEVICE_ATTRIBUTE.IDENTIFIER.in(Arrays.stream(identifiers).map(identifier -> (Object) identifier).toList()));
+        }
+        DynamicWrapper wrapper = selectBuilder
+                .resultColumns(columns -> columns.addAll(DEVICE_ATTRIBUTE.getColumns()))
+                .resultType(DeviceAttribute.class)
                 .build();
         // @formatter:on
         Dynamic dynamic = wrapper.dynamic();

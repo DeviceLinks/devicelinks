@@ -148,4 +148,9 @@ public class DeviceAttributeServiceImpl extends BaseServiceImpl<DeviceAttribute,
                 DEVICE_ATTRIBUTE.IDENTIFIER.eq(identifier));
         // @formatter:on
     }
+
+    @Override
+    public List<DeviceAttribute> selectDeviceAttributes(String deviceId, AttributeValueSource valueSource, String[] identifiers) {
+        return this.repository.selectDeviceAttributes(deviceId, valueSource, identifiers);
+    }
 }

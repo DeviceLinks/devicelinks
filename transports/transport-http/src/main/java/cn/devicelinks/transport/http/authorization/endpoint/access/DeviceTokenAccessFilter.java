@@ -1,5 +1,6 @@
 package cn.devicelinks.transport.http.authorization.endpoint.access;
 
+import cn.devicelinks.common.RequestSource;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationException;
 import cn.devicelinks.component.authorization.DeviceLinksAuthorizationExceptionFailureHandler;
 import cn.devicelinks.component.web.api.ApiException;
@@ -61,7 +62,7 @@ public class DeviceTokenAccessFilter extends OncePerRequestFilter {
             deviceTokenAccessAuthenticationToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(deviceTokenAccessAuthenticationToken);
             // Set DeviceContext to threadLocal
-            DeviceContext deviceContext = DeviceContext.instance(deviceTokenAccessAuthenticationToken.getDevice());
+            DeviceContext deviceContext = DeviceContext.instance(deviceTokenAccessAuthenticationToken.getDevice(), RequestSource.TransportHttp);
             DeviceContextHolder.setContext(deviceContext);
             filterChain.doFilter(request, response);
         } catch (DeviceLinksAuthorizationException invalid) {

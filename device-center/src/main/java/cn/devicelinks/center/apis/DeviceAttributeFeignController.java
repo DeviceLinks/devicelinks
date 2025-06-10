@@ -1,6 +1,7 @@
 package cn.devicelinks.center.apis;
 
 import cn.devicelinks.api.device.center.DeviceAttributeFeignClient;
+import cn.devicelinks.api.device.center.model.request.QueryDeviceAttributeRequest;
 import cn.devicelinks.api.device.center.model.request.SaveOrUpdateDeviceAttributeRequest;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.common.AttributeScope;
@@ -18,16 +19,16 @@ import cn.devicelinks.service.product.FunctionModuleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 设备属性Feign客户端实现接口
+ * {@link DeviceAttributeFeignClient} 的服务端实现。
+ *
+ * <p>处理设备属性上报相关业务，包括属性的插入与基于版本的更新。
+ * 本控制器通常由远程服务通过 OpenFeign 调用。
  *
  * @author 恒宇少年
  * @since 1.0
@@ -100,5 +101,17 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
         // @formatter:on
         deviceAttributeService.saveOrUpdateDeviceAttribute(deviceAttributeList);
         return ApiResponse.success(Boolean.TRUE);
+    }
+
+    @Override
+    @PostMapping("/query")
+    public ApiResponse<List<DeviceAttribute>> getAttributes(@RequestBody @Valid QueryDeviceAttributeRequest request) {
+        // @formatter:off
+        return ApiResponse.success(deviceAttributeService.selectDeviceAttributes(
+                request.getDeviceId(),
+                AttributeValueSource.DeviceReport,
+                request.getIdentifiers())
+        );
+        // @formatter:on
     }
 }

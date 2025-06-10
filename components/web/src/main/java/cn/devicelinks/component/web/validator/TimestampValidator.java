@@ -22,7 +22,8 @@ public class TimestampValidator implements ConstraintValidator<TimestampValid, O
         }
         try {
             long ts = Long.parseLong(timestamp.toString());
-            if (ts > Constants.ZERO && ts < System.currentTimeMillis() && String.valueOf(ts).matches("^\\\\d{13}$")) {
+            long currentTime = System.currentTimeMillis();
+            if (ts > Constants.ZERO && ts < currentTime && String.valueOf(ts).matches("^\\d{13}$")) {
                 return true;
             }
         } catch (Exception e) {

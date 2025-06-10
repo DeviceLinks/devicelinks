@@ -1,4 +1,4 @@
-package cn.devicelinks.transport.support.model.params;
+package cn.devicelinks.transport.support.model.body;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -16,7 +16,7 @@ import java.util.List;
  * @since 1.0
  */
 @Data
-public class DeviceAttributeParam {
+public class ReportDeviceAttributeBody {
 
     @Valid
     @NotEmpty(message = "属性集合不可以为空, 至少上报一个属性.")

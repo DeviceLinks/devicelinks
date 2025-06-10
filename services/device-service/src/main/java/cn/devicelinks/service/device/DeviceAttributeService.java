@@ -78,4 +78,14 @@ public interface DeviceAttributeService extends BaseService<DeviceAttribute, Str
      * @return {@link DeviceAttribute}
      */
     DeviceAttribute selectByIdentifier(String deviceId, String moduleId, AttributeValueSource valueSource, String identifier);
+
+    /**
+     * 查询设备上报的属性值列表
+     *
+     * @param deviceId    设备ID {@link DeviceAttribute#getDeviceId()}
+     * @param valueSource 属性值来源 {@link AttributeValueSource}
+     * @param identifiers 属性标识符列表，如果不传递则查询全部的属性 {@link DeviceAttribute#getIdentifier()}
+     * @return 设备属性列表 {@link DeviceAttribute}
+     */
+    List<DeviceAttribute> selectDeviceAttributes(String deviceId, AttributeValueSource valueSource, String[] identifiers);
 }
