@@ -50,6 +50,7 @@ public class WebSecurityConfiguration {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
                 .with(new DeviceTokenAccessAuthenticationConfigurer(), Customizer.withDefaults())
+                .securityContext(context -> context.requireExplicitSave(false)) // 启用异步请求时需要保持认证上下文
                 .build();
         // @formatter:on
     }
