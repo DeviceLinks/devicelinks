@@ -1,13 +1,15 @@
 package cn.devicelinks.transport.http.apis;
 
-import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.common.Constants;
 import cn.devicelinks.entity.DeviceAttributeDesired;
+import cn.devicelinks.transport.http.DeferredQueryManager;
 import cn.devicelinks.transport.support.context.DeviceContext;
 import cn.devicelinks.transport.support.context.DeviceContextHolder;
 import cn.devicelinks.transport.support.model.BodyMessage;
 import cn.devicelinks.transport.support.model.MessageResponse;
 import cn.devicelinks.transport.support.model.body.ReportDeviceAttributeBody;
 import cn.devicelinks.transport.support.model.converter.DeviceAttributeConverter;
+import cn.devicelinks.transport.support.model.converter.DeviceAttributeDesiredConverter;
 import cn.devicelinks.transport.support.model.query.QueryDeviceAttributeParam;
 import cn.devicelinks.transport.support.model.query.SubscribeDeviceAttributeDesiredParam;
 import cn.devicelinks.transport.support.model.response.QueryDeviceAttributeResponse;
@@ -16,13 +18,11 @@ import cn.devicelinks.transport.support.service.DeviceAttributeApiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 设备属性接口
@@ -34,7 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RequestMapping(value = "/api/attributes")
 @RequiredArgsConstructor
 public class DeviceAttributeApi {
-    private final ConcurrentMap<String, List<DeferredResult<MessageResponse<SubscribeDeviceAttributeDesiredResponse>>>> subscribeWaitingMap = new ConcurrentHashMap<>();
+    private final DeferredQueryManager deferredQueryManager = new DeferredQueryManager();
     private final DeviceAttributeApiService deviceAttributeService;
 
     /**
@@ -63,16 +63,19 @@ public class DeviceAttributeApi {
      * @return 查询设备属性响应实体 {@link QueryDeviceAttributeResponse}
      */
     @GetMapping
-    public MessageResponse<QueryDeviceAttributeResponse> queryAttributes(@Valid QueryDeviceAttributeParam param) {
-        // @formatter:off
-        List<DeviceAttribute> deviceAttributeList = deviceAttributeService.getAttributes(DeviceContextHolder.getContext(), param);
-        List<QueryDeviceAttributeResponse.AttributeVersionValue> attributeVersionValueList =
-                DeviceAttributeConverter.INSTANCE.fromDeviceAttribute(deviceAttributeList);
-        QueryDeviceAttributeResponse response =
-                new QueryDeviceAttributeResponse()
-                        .setAttributes(attributeVersionValueList);
-        // @formatter:on
-        return MessageResponse.success(param.getMessageId(), response);
+    public DeferredResult<MessageResponse> queryAttributes(@Valid QueryDeviceAttributeParam param) {
+        DeviceContext deviceContext = DeviceContextHolder.getContext();
+        return deferredQueryManager.process(deviceContext.getDeviceId(),
+                Constants.ZERO,
+                param.getMessageId(),
+                deviceId -> deviceAttributeService.getAttributes(DeviceContextHolder.getContext(), param),
+                deviceAttributes -> !ObjectUtils.isEmpty(deviceAttributes),
+                deviceAttributes -> {
+                    List<QueryDeviceAttributeResponse.AttributeVersionValue> attributeVersionValueList =
+                            DeviceAttributeConverter.INSTANCE.fromDeviceAttribute(deviceAttributes);
+                    return new QueryDeviceAttributeResponse()
+                            .setAttributes(attributeVersionValueList);
+                });
     }
 
     /**
@@ -87,16 +90,18 @@ public class DeviceAttributeApi {
      * @return 查询设备属性期望值响应实体 {@link SubscribeDeviceAttributeDesiredResponse}
      */
     @GetMapping(value = "/subscribe/desired", produces = MediaType.APPLICATION_JSON_VALUE)
-    public DeferredResult<MessageResponse<SubscribeDeviceAttributeDesiredResponse>> subscribeAttributesDesired(@Valid SubscribeDeviceAttributeDesiredParam param) {
-        DeferredResult<MessageResponse<SubscribeDeviceAttributeDesiredResponse>> deferredResult = new DeferredResult<>(param.getTimeout());
+    public DeferredResult<MessageResponse> subscribeAttributesDesired(@Valid SubscribeDeviceAttributeDesiredParam param) {
         DeviceContext deviceContext = DeviceContextHolder.getContext();
-
-        subscribeWaitingMap.computeIfAbsent(deviceContext.getDeviceId(), k -> new CopyOnWriteArrayList<>()).add(deferredResult);
-        deferredResult.onTimeout(() -> deferredResult.setResult(MessageResponse.success(param.getMessageId(), new SubscribeDeviceAttributeDesiredResponse())));
-        deferredResult.onCompletion(() -> subscribeWaitingMap.get(deviceContext.getDeviceId()).remove(deferredResult));
-
-        deviceAttributeService.subscribeAttributesDesired(deferredResult, deviceContext, param);
-
-        return deferredResult;
+        return deferredQueryManager.process(
+                deviceContext.getDeviceId(),
+                param.getTimeout(),
+                param.getMessageId(),
+                deviceId -> deviceAttributeService.subscribeAttributesDesired(deviceContext, param),
+                deviceAttributeDesiredList -> !ObjectUtils.isEmpty(deviceAttributeDesiredList),
+                deviceAttributeDesiredList -> {
+                    List<SubscribeDeviceAttributeDesiredResponse.AttributeDesiredVersionValue> desiredVersionValueList =
+                            DeviceAttributeDesiredConverter.INSTANCE.fromDeviceAttributeDesired(deviceAttributeDesiredList);
+                    return new SubscribeDeviceAttributeDesiredResponse().setAttributes(desiredVersionValueList);
+                });
     }
 }

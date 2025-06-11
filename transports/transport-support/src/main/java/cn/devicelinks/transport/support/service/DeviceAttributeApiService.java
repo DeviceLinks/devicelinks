@@ -12,18 +12,13 @@ import cn.devicelinks.entity.DeviceAttributeDesired;
 import cn.devicelinks.transport.support.TransportStatusCodes;
 import cn.devicelinks.transport.support.context.DeviceContext;
 import cn.devicelinks.transport.support.model.BodyMessage;
-import cn.devicelinks.transport.support.model.MessageResponse;
 import cn.devicelinks.transport.support.model.body.ReportDeviceAttributeBody;
 import cn.devicelinks.transport.support.model.converter.DeviceAttributeConverter;
-import cn.devicelinks.transport.support.model.converter.DeviceAttributeDesiredConverter;
 import cn.devicelinks.transport.support.model.query.QueryDeviceAttributeParam;
 import cn.devicelinks.transport.support.model.query.SubscribeDeviceAttributeDesiredParam;
-import cn.devicelinks.transport.support.model.response.SubscribeDeviceAttributeDesiredResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
 
@@ -91,26 +86,12 @@ public class DeviceAttributeApiService {
      * @param context 当前设备上下文 {@link DeviceContext}
      * @param param   查询参数消息封装对象
      */
-    public void subscribeAttributesDesired(DeferredResult<MessageResponse<SubscribeDeviceAttributeDesiredResponse>> deferredResult,
-                                           DeviceContext context,
-                                           SubscribeDeviceAttributeDesiredParam param) {
+    public List<DeviceAttributeDesired> subscribeAttributesDesired(DeviceContext context, SubscribeDeviceAttributeDesiredParam param) {
         // @formatter:off
         QueryDeviceAttributeRequest request = param.toRequest(context,
                 new QueryDeviceAttributeRequest()
                         .setIdentifiers(param.getIdentifiers()));
-
-        List<DeviceAttributeDesired> deviceAttributeDesiredList =
-                ApiResponseUnwrapper.unwrap(deviceAttributeFeignClient.subscribeAttributesDesired(request));
-
-        if (!ObjectUtils.isEmpty(deviceAttributeDesiredList)) {
-            List<SubscribeDeviceAttributeDesiredResponse.AttributeDesiredVersionValue> desiredVersionValueList =
-                    DeviceAttributeDesiredConverter.INSTANCE.fromDeviceAttributeDesired(deviceAttributeDesiredList);
-            SubscribeDeviceAttributeDesiredResponse response =
-                    new SubscribeDeviceAttributeDesiredResponse()
-                            .setAttributes(desiredVersionValueList);
-            // Set result
-            deferredResult.setResult(MessageResponse.success(param.getMessageId(), response));
-        }
         // @formatter:on
+        return ApiResponseUnwrapper.unwrap(deviceAttributeFeignClient.subscribeAttributesDesired(request));
     }
 }
