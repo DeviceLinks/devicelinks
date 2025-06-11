@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 /**
- * {@link SaveOrUpdateDeviceAttributeRequest.ReportedAttribute} MapStruct Converter
+ * {@link DeviceAttribute} MapStruct Converter
  *
  * @author 恒宇少年
  * @since 1.0

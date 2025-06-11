@@ -6,12 +6,16 @@ import cn.devicelinks.api.model.request.AddDeviceDesiredAttributeRequest;
 import cn.devicelinks.api.model.request.ExtractUnknownDesiredAttributeRequest;
 import cn.devicelinks.api.model.request.UpdateDeviceDesiredAttributeRequest;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
+import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Attribute;
 import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceAttributeDesired;
 import cn.devicelinks.jdbc.BaseService;
 import cn.devicelinks.jdbc.core.page.PageResult;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 设备期望属性业务逻辑接口
@@ -74,4 +78,14 @@ public interface DeviceAttributeDesiredService extends BaseService<DeviceAttribu
      * @return 期望属性 {@link DeviceAttributeDesired}
      */
     DeviceAttributeDesired deleteDesiredAttribute(String desiredAttributeId);
+
+    /**
+     * 查询设备晚于查询时间更新的属性期望值列表
+     *
+     * @param deviceId       设备ID {@link DeviceAttributeDesired#getDeviceId()}
+     * @param attributeScope 属性范围 {@link Attribute#getScope()}
+     * @param queryTime      查询时间
+     * @return 属性期望值列表
+     */
+    List<DeviceAttributeDesired> selectNewlyDesiredAttributes(String deviceId, AttributeScope attributeScope, LocalDateTime queryTime);
 }

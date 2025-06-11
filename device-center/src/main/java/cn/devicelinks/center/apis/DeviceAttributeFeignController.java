@@ -8,18 +8,19 @@ import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
-import cn.devicelinks.entity.Attribute;
-import cn.devicelinks.entity.Device;
-import cn.devicelinks.entity.DeviceAttribute;
-import cn.devicelinks.entity.FunctionModule;
+import cn.devicelinks.entity.*;
 import cn.devicelinks.service.attribute.AttributeService;
+import cn.devicelinks.service.device.DeviceAttributeDesiredService;
 import cn.devicelinks.service.device.DeviceAttributeService;
 import cn.devicelinks.service.device.DeviceService;
 import cn.devicelinks.service.product.FunctionModuleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +41,8 @@ import java.util.List;
 public class DeviceAttributeFeignController implements DeviceAttributeFeignClient {
 
     private final DeviceAttributeService deviceAttributeService;
+
+    private final DeviceAttributeDesiredService deviceAttributeDesiredService;
 
     private final FunctionModuleService functionModuleService;
 
@@ -116,6 +119,19 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
                 AttributeValueSource.DeviceReport,
                 request.getIdentifiers())
         );
+        // @formatter:on
+    }
+
+    @Override
+    @PostMapping("/subscribe/desired")
+    public ApiResponse<List<DeviceAttributeDesired>> subscribeAttributesDesired(@RequestBody @Valid QueryDeviceAttributeRequest request) {
+        // @formatter:off
+        List<DeviceAttributeDesired> newlyAttributeList =
+                deviceAttributeDesiredService.selectNewlyDesiredAttributes(
+                        request.getDeviceId(),
+                        AttributeScope.Common,
+                        LocalDateTime.now());
+        return ApiResponse.success(newlyAttributeList);
         // @formatter:on
     }
 }

@@ -225,6 +225,16 @@ public class DeviceAttributeDesiredServiceImpl extends BaseServiceImpl<DeviceAtt
         return desiredAttribute;
     }
 
+    @Override
+    public List<DeviceAttributeDesired> selectNewlyDesiredAttributes(String deviceId, AttributeScope attributeScope, LocalDateTime queryTime) {
+        // @formatter:off
+        return this.repository.select(
+                DEVICE_ATTRIBUTE_DESIRED.DEVICE_ID.eq(deviceId),
+                DEVICE_ATTRIBUTE_DESIRED.LAST_UPDATE_TIME.gte(queryTime)
+        );
+        // @formatter:on
+    }
+
     /**
      * 验证关联数据是否有效
      *

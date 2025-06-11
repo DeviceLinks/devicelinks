@@ -6,6 +6,7 @@ import cn.devicelinks.component.openfeign.OpenFeignConstants;
 import cn.devicelinks.component.openfeign.annotation.OpenFeignClient;
 import cn.devicelinks.component.web.api.ApiResponse;
 import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.entity.DeviceAttributeDesired;
 import feign.Headers;
 import feign.RequestLine;
 
@@ -44,4 +45,14 @@ public interface DeviceAttributeFeignClient {
     @RequestLine("POST /api/device/attributes/query")
     @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
     ApiResponse<List<DeviceAttribute>> getAttributes(QueryDeviceAttributeRequest request);
+
+    /**
+     * 订阅设备属性期望值变动
+     *
+     * @param request 属性查询参数封装实体 {@link QueryDeviceAttributeRequest}
+     * @return 设备属性期望值列表 {@link DeviceAttributeDesired}
+     */
+    @RequestLine("POST /api/device/attributes/subscribe/desired")
+    @Headers(OpenFeignConstants.JSON_CONTENT_TYPE_HEADER)
+    ApiResponse<List<DeviceAttributeDesired>> subscribeAttributesDesired(QueryDeviceAttributeRequest request);
 }
