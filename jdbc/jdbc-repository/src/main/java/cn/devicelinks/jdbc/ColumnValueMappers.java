@@ -83,6 +83,7 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper DATA_CHART_FIELD_TYPE = new EnumColumnValueMapper(DataChartFieldType.class);
     EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceAuthenticationMethod.class);
     EnumColumnValueMapper DEVICE_SECRET_STATUS = new EnumColumnValueMapper(DeviceSecretStatus.class);
+    EnumColumnValueMapper ATTRIBUTE_CREATE_MODE =  new EnumColumnValueMapper(AttributeCreateMode.class);
 
 
     JSONObjectValueMapper ATTRIBUTE_ADDITION = new JSONObjectValueMapper(AttributeAddition.class);

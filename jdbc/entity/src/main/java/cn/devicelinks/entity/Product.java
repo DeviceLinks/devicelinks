@@ -47,6 +47,7 @@ public class Product implements Serializable {
     private DataFormat dataFormat;
     private boolean dynamicRegistration;
     private DynamicRegistrationAddition dynamicRegistrationAddition;
+    private AttributeCreateMode attributeCreateMode;
     private ProductStatus status;
     private boolean deleted;
     private String description;
