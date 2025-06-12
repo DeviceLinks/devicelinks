@@ -18,7 +18,6 @@
 package cn.devicelinks.entity;
 
 import cn.devicelinks.common.AttributeDataType;
-import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.common.DeviceLinksVersion;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -48,7 +47,6 @@ public class Attribute implements Serializable {
     private AttributeAddition addition;
     private boolean writable;
     private boolean system;
-    private AttributeScope scope;
     private boolean enabled;
     private boolean deleted;
     private String createBy;

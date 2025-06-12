@@ -46,7 +46,6 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
             " a.name attribute_name," +
             " a.identifier," +
             " a.data_type attribute_data_type," +
-            " a.scope," +
             " au.name unit_name," +
             " da.value last_report_value," +
             " da.value_source," +
@@ -98,7 +97,6 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE.NAME).alias("attribute_name").build());
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE.IDENTIFIER).build());
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE.DATA_TYPE).alias("attribute_data_type").build());
-                    columns.add(DynamicColumn.withColumn(ATTRIBUTE.SCOPE).build());
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE_UNIT.NAME).alias("unit_name").build());
                     columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.VALUE_SOURCE).build());
                     columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.VALUE).alias("last_report_value").build());

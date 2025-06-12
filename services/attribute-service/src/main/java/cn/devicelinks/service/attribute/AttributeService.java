@@ -5,13 +5,10 @@ import cn.devicelinks.api.model.query.PaginationQuery;
 import cn.devicelinks.api.model.request.AddAttributeRequest;
 import cn.devicelinks.api.model.request.UpdateAttributeRequest;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
-import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Attribute;
 import cn.devicelinks.jdbc.BaseService;
 import cn.devicelinks.jdbc.core.page.PageResult;
-
-import java.util.List;
 
 /**
  * 属性业务逻辑接口
@@ -83,8 +80,7 @@ public interface AttributeService extends BaseService<Attribute, String> {
      * @param identifier 属性标识符
      * @param productId  属性所属产品ID
      * @param moduleId   属性所属功能模块ID
-     * @param scopes     属性范围列表
      * @return 属性对象实例 {@link Attribute}
      */
-    Attribute selectAttributeByIdentifier(String identifier, String productId, String moduleId, List<AttributeScope> scopes);
+    Attribute selectAttributeByIdentifier(String identifier, String productId, String moduleId);
 }

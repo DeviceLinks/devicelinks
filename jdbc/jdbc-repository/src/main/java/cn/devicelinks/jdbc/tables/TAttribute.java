@@ -17,7 +17,6 @@
 
 package cn.devicelinks.jdbc.tables;
 
-import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.common.DeviceLinksVersion;
 import cn.devicelinks.entity.Attribute;
 import cn.devicelinks.jdbc.ColumnValueMappers;
@@ -53,7 +52,6 @@ public class TAttribute extends TableImpl {
     public final Column ADDITION = Column.withName("addition").typeMapper(ColumnValueMappers.ATTRIBUTE_ADDITION).build();
     public final Column WRITABLE = Column.withName("writable").booleanValue().defaultValue(() -> Boolean.TRUE).build();
     public final Column SYSTEM = Column.withName("`system`").booleanValue().defaultValue(() -> Boolean.FALSE).build();
-    public final Column SCOPE = Column.withName("scope").typeMapper(ColumnValueMappers.ATTRIBUTE_SCOPE).defaultValue(() -> AttributeScope.Common).build();
     public final Column ENABLED = Column.withName("enabled").booleanValue().defaultValue(() -> Boolean.TRUE).build();
     public final Column DELETED = Column.withName("deleted").booleanValue().defaultValue(() -> Boolean.FALSE).build();
     public final Column CREATE_BY = Column.withName("create_by").build();
@@ -62,6 +60,6 @@ public class TAttribute extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, PRODUCT_ID, MODULE_ID, PID, NAME, IDENTIFIER, DATA_TYPE, ADDITION, WRITABLE, SYSTEM, SCOPE, ENABLED, DELETED, CREATE_BY, CREATE_TIME, DESCRIPTION);
+        return List.of(ID, PRODUCT_ID, MODULE_ID, PID, NAME, IDENTIFIER, DATA_TYPE, ADDITION, WRITABLE, SYSTEM, ENABLED, DELETED, CREATE_BY, CREATE_TIME, DESCRIPTION);
     }
 }

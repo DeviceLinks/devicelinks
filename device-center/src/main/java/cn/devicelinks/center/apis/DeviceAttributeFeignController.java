@@ -80,7 +80,7 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
                                 .setVersion(attributeRequest.getVersion());
                         // Associated Attributes
                         Attribute attribute = attributeService.selectAttributeByIdentifier(deviceAttribute.getIdentifier(), device.getProductId(),
-                                deviceAttribute.getModuleId(), List.of(AttributeScope.Device, AttributeScope.Common));
+                                deviceAttribute.getModuleId());
                         if (attribute != null && !attribute.isDeleted() && attribute.isEnabled()) {
                             if (attribute.getDataType().validate(deviceAttribute.getValue())) {
                                 deviceAttribute.setAttributeId(attribute.getId());

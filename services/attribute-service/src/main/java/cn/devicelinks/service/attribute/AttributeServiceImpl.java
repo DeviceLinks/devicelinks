@@ -9,7 +9,6 @@ import cn.devicelinks.api.model.request.UpdateAttributeRequest;
 import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.common.AttributeDataType;
-import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.search.SearchFieldQuery;
 import cn.devicelinks.entity.Attribute;
@@ -160,8 +159,8 @@ public class AttributeServiceImpl extends CacheBaseServiceImpl<Attribute, String
     }
 
     @Override
-    public Attribute selectAttributeByIdentifier(String identifier, String productId, String moduleId, List<AttributeScope> scopes) {
+    public Attribute selectAttributeByIdentifier(String identifier, String productId, String moduleId) {
         return this.repository.selectOne(ATTRIBUTE.IDENTIFIER.eq(identifier), ATTRIBUTE.PRODUCT_ID.eq(productId),
-                ATTRIBUTE.MODULE_ID.eq(moduleId), ATTRIBUTE.SCOPE.in(scopes.stream().map(scope -> (Object) scope).toList()));
+                ATTRIBUTE.MODULE_ID.eq(moduleId));
     }
 }
