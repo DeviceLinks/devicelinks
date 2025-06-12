@@ -1,5 +1,6 @@
 package cn.devicelinks.jdbc.tables;
 
+import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.common.Constants;
 import cn.devicelinks.common.DeviceLinksVersion;
 import cn.devicelinks.entity.DeviceAttribute;
@@ -31,7 +32,9 @@ public class TDeviceAttribute extends TableImpl {
     public final Column MODULE_ID = Column.withName("module_id").build();
     public final Column ATTRIBUTE_ID = Column.withName("attribute_id").build();
     public final Column IDENTIFIER = Column.withName("identifier").build();
+    public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.ATTRIBUTE_DATA_TYPE).build();
     public final Column VALUE = Column.withName("value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
+    public final Column SCOPE = Column.withName("scope").typeMapper(ColumnValueMappers.ATTRIBUTE_SCOPE).defaultValue(() -> AttributeScope.Device).build();
     public final Column VALUE_SOURCE = Column.withName("value_source").typeMapper(ColumnValueMappers.ATTRIBUTE_VALUE_SOURCE).build();
     public final Column VERSION = Column.withName("version").intValue().defaultValue(() -> Constants.ZERO).build();
     public final Column LAST_UPDATE_TIME = Column.withName("last_update_time").localDateTimeValue().build();
@@ -39,6 +42,6 @@ public class TDeviceAttribute extends TableImpl {
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, VALUE, VALUE_SOURCE, VERSION, LAST_UPDATE_TIME, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, DATA_TYPE, VALUE, SCOPE, VALUE_SOURCE, VERSION, LAST_UPDATE_TIME, CREATE_TIME);
     }
 }
