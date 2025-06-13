@@ -1,6 +1,6 @@
 package cn.devicelinks.service.device;
 
-import cn.devicelinks.entity.DeviceAttributeDesired;
+import cn.devicelinks.entity.DeviceAttribute;
 import cn.devicelinks.entity.DeviceShadow;
 import cn.devicelinks.jdbc.BaseService;
 
@@ -30,15 +30,15 @@ public interface DeviceShadowService extends BaseService<DeviceShadow, String> {
     /**
      * 更新期望属性影子数据
      *
-     * @param attributeDesired 需要更新的期望属性
+     * @param attribute 需要更新的期望属性
      * @return 设备影子数据 {@link DeviceShadow}
      */
-    DeviceShadow updateDesired(DeviceAttributeDesired attributeDesired);
+    DeviceShadow updateDesired(DeviceAttribute attribute);
 
     /**
      * 删除影子中期望属性
      *
-     * @param attributeDesired 期望属性 {@link DeviceAttributeDesired}
+     * @param attribute 期望属性 {@link DeviceAttribute}
      */
-    void removeDesired(DeviceAttributeDesired attributeDesired);
+    void removeDesired(DeviceAttribute attribute);
 }

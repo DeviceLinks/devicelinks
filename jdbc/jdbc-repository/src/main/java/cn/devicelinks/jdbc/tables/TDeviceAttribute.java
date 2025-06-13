@@ -35,13 +35,12 @@ public class TDeviceAttribute extends TableImpl {
     public final Column DATA_TYPE = Column.withName("data_type").typeMapper(ColumnValueMappers.ATTRIBUTE_DATA_TYPE).build();
     public final Column VALUE = Column.withName("value").typeMapper(ColumnValueMappers.JSON_OBJECT).build();
     public final Column SCOPE = Column.withName("scope").typeMapper(ColumnValueMappers.ATTRIBUTE_SCOPE).defaultValue(() -> AttributeScope.Device).build();
-    public final Column VALUE_SOURCE = Column.withName("value_source").typeMapper(ColumnValueMappers.ATTRIBUTE_VALUE_SOURCE).build();
     public final Column VERSION = Column.withName("version").intValue().defaultValue(() -> Constants.ZERO).build();
     public final Column LAST_UPDATE_TIME = Column.withName("last_update_time").localDateTimeValue().build();
     public final Column CREATE_TIME = Column.withName("create_time").localDateTimeValue().defaultValue(LocalDateTime::now).build();
 
     @Override
     public List<Column> getColumns() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, DATA_TYPE, VALUE, SCOPE, VALUE_SOURCE, VERSION, LAST_UPDATE_TIME, CREATE_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, DATA_TYPE, VALUE, SCOPE, VERSION, LAST_UPDATE_TIME, CREATE_TIME);
     }
 }

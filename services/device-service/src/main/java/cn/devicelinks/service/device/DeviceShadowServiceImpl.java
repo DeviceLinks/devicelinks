@@ -54,7 +54,7 @@ public class DeviceShadowServiceImpl extends BaseServiceImpl<DeviceShadow, Strin
     }
 
     @Override
-    public DeviceShadow updateDesired(DeviceAttributeDesired attributeDesired) {
+    public DeviceShadow updateDesired(DeviceAttribute attributeDesired) {
         FunctionModule functionModule = this.functionModuleService.selectById(attributeDesired.getModuleId());
         if (functionModule == null || functionModule.isDeleted()) {
             throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, attributeDesired.getModuleId());
@@ -79,7 +79,7 @@ public class DeviceShadowServiceImpl extends BaseServiceImpl<DeviceShadow, Strin
             // Update desired attribute value
             addition.getDesired()
                     .getState()
-                    .put(attributeDesired.getIdentifier(), attributeDesired.getDesiredValue());
+                    .put(attributeDesired.getIdentifier(), attributeDesired.getValue());
             // Update metadata
             addition.getDesired()
                     .getMetadata()
@@ -94,7 +94,7 @@ public class DeviceShadowServiceImpl extends BaseServiceImpl<DeviceShadow, Strin
             addition.getDesired()
                     .getState()
                     .put(attributeDesired.getIdentifier(),
-                            attributeDesired.getDesiredValue());
+                            attributeDesired.getValue());
             // Update metadata
             addition.getDesired()
                     .getMetadata()
@@ -112,7 +112,7 @@ public class DeviceShadowServiceImpl extends BaseServiceImpl<DeviceShadow, Strin
     }
 
     @Override
-    public void removeDesired(DeviceAttributeDesired attributeDesired) {
+    public void removeDesired(DeviceAttribute attributeDesired) {
         FunctionModule functionModule = this.functionModuleService.selectById(attributeDesired.getModuleId());
         if (functionModule == null || functionModule.isDeleted()) {
             throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, attributeDesired.getModuleId());

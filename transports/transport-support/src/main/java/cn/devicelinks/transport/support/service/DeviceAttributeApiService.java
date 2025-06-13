@@ -3,23 +3,23 @@ package cn.devicelinks.transport.support.service;
 import cn.devicelinks.api.device.center.DeviceAttributeFeignClient;
 import cn.devicelinks.api.device.center.model.request.QueryDeviceAttributeRequest;
 import cn.devicelinks.api.device.center.model.request.SaveOrUpdateDeviceAttributeRequest;
+import cn.devicelinks.api.device.center.model.request.SubscribeDeviceAttributeUpdateRequest;
 import cn.devicelinks.common.AttributeScope;
-import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponseUnwrapper;
 import cn.devicelinks.entity.DeviceAttribute;
-import cn.devicelinks.entity.DeviceAttributeDesired;
 import cn.devicelinks.transport.support.TransportStatusCodes;
 import cn.devicelinks.transport.support.context.DeviceContext;
 import cn.devicelinks.transport.support.model.BodyMessage;
 import cn.devicelinks.transport.support.model.body.ReportDeviceAttributeBody;
 import cn.devicelinks.transport.support.model.converter.DeviceAttributeConverter;
 import cn.devicelinks.transport.support.model.query.QueryDeviceAttributeParam;
-import cn.devicelinks.transport.support.model.query.SubscribeDeviceAttributeDesiredParam;
+import cn.devicelinks.transport.support.model.query.SubscribeDeviceAttributeUpdateParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -62,7 +62,7 @@ public class DeviceAttributeApiService {
      * <p>返回范围为 {@link AttributeScope#Device} 和 {@link AttributeScope#Common} 的属性值，
      * 包括属性值版本 {@link DeviceAttribute#getVersion()} 和最后上报时间 {@link DeviceAttribute#getLastUpdateTime()}。
      *
-     * <p>若属性未定义（即为未知属性）但来源为 {@link AttributeValueSource#DeviceReport}，也将包含在结果中。
+     * <p>若属性未定义（即为未知属性）也将包含在结果中。
      *
      * @param context 当前设备上下文 {@link DeviceContext}
      * @param param   查询参数消息封装对象
@@ -86,12 +86,12 @@ public class DeviceAttributeApiService {
      * @param context 当前设备上下文 {@link DeviceContext}
      * @param param   查询参数消息封装对象
      */
-    public List<DeviceAttributeDesired> subscribeAttributesDesired(DeviceContext context, SubscribeDeviceAttributeDesiredParam param) {
+    public List<DeviceAttribute> subscribeAttributesDesired(DeviceContext context, SubscribeDeviceAttributeUpdateParam param) {
         // @formatter:off
-        QueryDeviceAttributeRequest request = param.toRequest(context,
-                new QueryDeviceAttributeRequest()
-                        .setIdentifiers(param.getIdentifiers()));
+        SubscribeDeviceAttributeUpdateRequest request = param.toRequest(context,
+                new SubscribeDeviceAttributeUpdateRequest()
+                        .setSubscribeTime(LocalDateTime.now()));
         // @formatter:on
-        return ApiResponseUnwrapper.unwrap(deviceAttributeFeignClient.subscribeAttributesDesired(request));
+        return ApiResponseUnwrapper.unwrap(deviceAttributeFeignClient.subscribeAttributesUpdate(request));
     }
 }

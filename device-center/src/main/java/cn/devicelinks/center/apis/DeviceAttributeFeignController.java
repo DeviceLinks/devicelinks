@@ -3,14 +3,15 @@ package cn.devicelinks.center.apis;
 import cn.devicelinks.api.device.center.DeviceAttributeFeignClient;
 import cn.devicelinks.api.device.center.model.request.QueryDeviceAttributeRequest;
 import cn.devicelinks.api.device.center.model.request.SaveOrUpdateDeviceAttributeRequest;
+import cn.devicelinks.api.device.center.model.request.SubscribeDeviceAttributeUpdateRequest;
 import cn.devicelinks.api.support.StatusCodeConstants;
-import cn.devicelinks.common.AttributeScope;
-import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.component.web.api.ApiException;
 import cn.devicelinks.component.web.api.ApiResponse;
-import cn.devicelinks.entity.*;
+import cn.devicelinks.entity.Attribute;
+import cn.devicelinks.entity.Device;
+import cn.devicelinks.entity.DeviceAttribute;
+import cn.devicelinks.entity.FunctionModule;
 import cn.devicelinks.service.attribute.AttributeService;
-import cn.devicelinks.service.device.DeviceAttributeDesiredService;
 import cn.devicelinks.service.device.DeviceAttributeService;
 import cn.devicelinks.service.device.DeviceService;
 import cn.devicelinks.service.product.FunctionModuleService;
@@ -42,8 +43,6 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
 
     private final DeviceAttributeService deviceAttributeService;
 
-    private final DeviceAttributeDesiredService deviceAttributeDesiredService;
-
     private final FunctionModuleService functionModuleService;
 
     private final DeviceService deviceService;
@@ -65,8 +64,9 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
                     if (functionModule == null || functionModule.isDeleted()) {
                         throw new ApiException(StatusCodeConstants.FUNCTION_MODULE_NOT_FOUND, attributeRequest.getModule());
                     }
-                    DeviceAttribute deviceAttribute = deviceAttributeService.selectByIdentifier(device.getId(), functionModule.getId(),
-                            AttributeValueSource.DeviceReport,
+                    DeviceAttribute deviceAttribute = deviceAttributeService.selectByIdentifier(
+                            device.getId(),
+                            functionModule.getId(),
                             attributeRequest.getIdentifier());
                     // Insert
                     if (deviceAttribute == null) {
@@ -74,7 +74,6 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
                                 .setModuleId(functionModule.getId())
                                 .setDeviceId(request.getDeviceId())
                                 .setIdentifier(attributeRequest.getIdentifier())
-                                .setValueSource(AttributeValueSource.DeviceReport)
                                 .setValue(attributeRequest.getValue())
                                 .setLastUpdateTime(LocalDateTime.now())
                                 .setVersion(attributeRequest.getVersion());
@@ -113,25 +112,19 @@ public class DeviceAttributeFeignController implements DeviceAttributeFeignClien
     @Override
     @PostMapping("/query")
     public ApiResponse<List<DeviceAttribute>> getAttributes(@RequestBody @Valid QueryDeviceAttributeRequest request) {
-        // @formatter:off
-        return ApiResponse.success(deviceAttributeService.selectDeviceAttributes(
-                request.getDeviceId(),
-                AttributeValueSource.DeviceReport,
-                request.getIdentifiers())
-        );
-        // @formatter:on
+        return ApiResponse.success(deviceAttributeService.selectDeviceAttributes(request.getDeviceId(), request.getIdentifiers()));
     }
 
     @Override
-    @PostMapping("/subscribe/desired")
-    public ApiResponse<List<DeviceAttributeDesired>> subscribeAttributesDesired(@RequestBody @Valid QueryDeviceAttributeRequest request) {
+    @PostMapping("/update/subscribe")
+    public ApiResponse<List<DeviceAttribute>> subscribeAttributesUpdate(@RequestBody @Valid SubscribeDeviceAttributeUpdateRequest request) {
         // @formatter:off
-        List<DeviceAttributeDesired> newlyAttributeList =
-                deviceAttributeDesiredService.selectNewlyDesiredAttributes(
+        List<DeviceAttribute> attributeUpdatedList =
+                deviceAttributeService.subscribeAttributesUpdate(
                         request.getDeviceId(),
-                        AttributeScope.Common,
-                        LocalDateTime.now());
-        return ApiResponse.success(newlyAttributeList);
+                        request.getSubscribeTime()
+                );
         // @formatter:on
+        return ApiResponse.success(attributeUpdatedList);
     }
 }

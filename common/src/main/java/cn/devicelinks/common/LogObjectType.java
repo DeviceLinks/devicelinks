@@ -37,7 +37,6 @@ public enum LogObjectType {
     FunctionModule("功能模块"),
     GlobalSetting("系统参数"),
     Attribute("属性"),
-    DeviceDesiredAttribute("设备期望属性"),
     DeviceAttribute("设备属性"),
     DeviceTelemetry("设备遥测数据"),
     Chart("数据图表"),

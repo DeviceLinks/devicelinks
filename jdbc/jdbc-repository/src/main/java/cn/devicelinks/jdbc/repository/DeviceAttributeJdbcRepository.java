@@ -2,7 +2,6 @@ package cn.devicelinks.jdbc.repository;
 
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
-import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.entity.DeviceAttribute;
 import cn.devicelinks.jdbc.annotation.DeviceLinksRepository;
 import cn.devicelinks.jdbc.core.JdbcRepository;
@@ -23,7 +22,6 @@ import java.util.List;
 import static cn.devicelinks.jdbc.tables.TAttribute.ATTRIBUTE;
 import static cn.devicelinks.jdbc.tables.TAttributeUnit.ATTRIBUTE_UNIT;
 import static cn.devicelinks.jdbc.tables.TDeviceAttribute.DEVICE_ATTRIBUTE;
-import static cn.devicelinks.jdbc.tables.TDeviceAttributeDesired.DEVICE_ATTRIBUTE_DESIRED;
 
 /**
  * 设备属性数据接口实现类
@@ -47,14 +45,10 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
             " a.identifier," +
             " a.data_type attribute_data_type," +
             " au.name unit_name," +
-            " da.value last_report_value," +
-            " da.value_source," +
-            " da.last_update_time last_report_time," +
-            " dad.desired_value last_desired_value," +
-            " dad.last_update_time last_desired_time" +
+            " da.value last_report_value, da.scope," +
+            " da.last_update_time last_report_time" +
             " from attribute a" +
             " left join device_attribute da on da.attribute_id = a.id" +
-            " left join device_attribute_desired dad on dad.attribute_id = a.id" +
             " left join attribute_unit au on au.id = json_unquote(json_extract(a.addition, '$.unitId'))";
     // @formatter:on
 
@@ -97,12 +91,10 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE.NAME).alias("attribute_name").build());
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE.IDENTIFIER).build());
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE.DATA_TYPE).alias("attribute_data_type").build());
+                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.SCOPE).build());
                     columns.add(DynamicColumn.withColumn(ATTRIBUTE_UNIT.NAME).alias("unit_name").build());
-                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.VALUE_SOURCE).build());
                     columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.VALUE).alias("last_report_value").build());
                     columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE.LAST_UPDATE_TIME).alias("last_report_time").build());
-                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE_DESIRED.DESIRED_VALUE).alias("last_desired_value").build());
-                    columns.add(DynamicColumn.withColumn(DEVICE_ATTRIBUTE_DESIRED.LAST_UPDATE_TIME).alias("last_desired_time").build());
                 })
                 .resultType(DeviceAttributeLatestDTO.class)
                 .build();
@@ -112,11 +104,10 @@ public class DeviceAttributeJdbcRepository extends JdbcRepository<DeviceAttribut
     }
 
     @Override
-    public List<DeviceAttribute> selectDeviceAttributes(String deviceId, AttributeValueSource valueSource, String[] identifiers) {
+    public List<DeviceAttribute> selectDeviceAttributes(String deviceId, String[] identifiers) {
         // @formatter:off
         DynamicWrapper.SelectBuilder selectBuilder = DynamicWrapper.select(DEVICE_ATTRIBUTE.getQuerySql())
-                .and(DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId))
-                .and(DEVICE_ATTRIBUTE.VALUE_SOURCE.eq(valueSource));
+                .and(DEVICE_ATTRIBUTE.DEVICE_ID.eq(deviceId));
         if(!ObjectUtils.isEmpty(identifiers)) {
             selectBuilder.and(!ObjectUtils.isEmpty(identifiers),
                     DEVICE_ATTRIBUTE.IDENTIFIER.in(Arrays.stream(identifiers).map(identifier -> (Object) identifier).toList()));

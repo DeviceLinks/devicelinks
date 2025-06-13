@@ -6,17 +6,17 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * 更新期望属性请求参数
+ * 更新属性值请求参数
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
-public class UpdateDeviceDesiredAttributeRequest {
+public class UpdateDeviceAttributeRequest {
 
     @EnumValid(target = AttributeDataType.class, message = "属性数据类型参数值非法")
     private String dataType;
 
-    @NotBlank(message = "期望属性值不可以为空")
-    private String desiredValue;
+    @NotBlank(message = "属性值不可以为空")
+    private String value;
 }

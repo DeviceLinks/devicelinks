@@ -2,7 +2,6 @@ package cn.devicelinks.entity;
 
 import cn.devicelinks.common.AttributeDataType;
 import cn.devicelinks.common.AttributeScope;
-import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.common.DeviceLinksVersion;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -31,7 +30,6 @@ public class DeviceAttribute implements Serializable {
     private AttributeDataType dataType;
     private AttributeScope scope;
     private Object value;
-    private AttributeValueSource valueSource;
     private int version;
     private LocalDateTime lastUpdateTime;
     private LocalDateTime createTime;

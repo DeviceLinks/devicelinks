@@ -1,5 +1,6 @@
 package cn.devicelinks.api.support.search.module;
 
+import cn.devicelinks.common.AttributeScope;
 import cn.devicelinks.component.web.search.*;
 import org.springframework.stereotype.Component;
 
@@ -75,6 +76,15 @@ public class DeviceAttributeFieldModule implements SearchFieldModule {
                     SearchFieldOperator.LessThanOrEqualTo
             ));
 
+    SearchField SCOPE = SearchField.of(SearchFieldVariable.DEVICE_ATTRIBUTE_SCOPE)
+            .setValueType(SearchFieldValueType.ENUM)
+            .setComponentType(SearchFieldComponentType.SELECT)
+            .setEnumClass(AttributeScope.class)
+            .setOperators(List.of(
+                    SearchFieldOperator.EqualTo,
+                    SearchFieldOperator.NotEqualTo
+            ));
+
     @Override
     public SearchFieldModuleIdentifier supportIdentifier() {
         return SearchFieldModuleIdentifier.DeviceAttribute;
@@ -82,6 +92,6 @@ public class DeviceAttributeFieldModule implements SearchFieldModule {
 
     @Override
     public List<SearchField> getSearchFields() {
-        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, LAST_REPORT_TIME);
+        return List.of(ID, DEVICE_ID, MODULE_ID, ATTRIBUTE_ID, IDENTIFIER, LAST_REPORT_TIME, SCOPE);
     }
 }

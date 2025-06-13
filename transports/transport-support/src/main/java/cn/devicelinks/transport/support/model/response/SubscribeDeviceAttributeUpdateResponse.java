@@ -9,22 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 查询设备属性期望值响应实体
+ * 查询设备属性值响应实体
  *
  * @author 恒宇少年
  * @since 1.0
  */
 @Data
 @Accessors(chain = true)
-public class SubscribeDeviceAttributeDesiredResponse {
+public class SubscribeDeviceAttributeUpdateResponse {
 
-    private List<AttributeDesiredVersionValue> attributes = new ArrayList<>();
+    private List<AttributeUpdateVersionValue> attributes = new ArrayList<>();
 
     @Data
     @Accessors(chain = true)
-    public static class AttributeDesiredVersionValue {
+    public static class AttributeUpdateVersionValue {
         private String identifier;
-        private Object desiredValue;
+        private Object value;
         private AttributeDataType dataType;
         private int version;
         private LocalDateTime expiredTime;

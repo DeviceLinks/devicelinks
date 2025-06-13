@@ -3,7 +3,10 @@ package cn.devicelinks.console.controller;
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
 import cn.devicelinks.api.model.query.PaginationQuery;
+import cn.devicelinks.api.model.request.AddDeviceAttributeRequest;
 import cn.devicelinks.api.model.request.ExtractUnknownDeviceAttributeRequest;
+import cn.devicelinks.api.model.request.UpdateDeviceAttributeRequest;
+import cn.devicelinks.api.support.StatusCodeConstants;
 import cn.devicelinks.api.support.authorization.UserAuthorizedAddition;
 import cn.devicelinks.common.LogAction;
 import cn.devicelinks.common.LogObjectType;
@@ -19,8 +22,9 @@ import cn.devicelinks.entity.Device;
 import cn.devicelinks.entity.DeviceAttribute;
 import cn.devicelinks.jdbc.core.page.PageResult;
 import cn.devicelinks.service.device.DeviceAttributeService;
+import cn.devicelinks.service.device.DeviceService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,14 +36,14 @@ import java.util.List;
  * @since 1.0
  */
 @RestController
-@RequestMapping(value = "/api/device")
-@AllArgsConstructor
+@RequestMapping(value = "/api/devices")
+@RequiredArgsConstructor
 public class DeviceAttributeController {
-
-    private DeviceAttributeService deviceAttributeService;
+    private final DeviceService deviceService;
+    private final DeviceAttributeService deviceAttributeService;
 
     /**
-     * 查询设备属性的最新值
+     * 查询设备功能模块下所有属性的最新值
      *
      * @param deviceId            设备ID {@link Device#getId()}
      * @param moduleId            功能模块ID {@link Attribute#getModuleId()}
@@ -48,7 +52,7 @@ public class DeviceAttributeController {
      * @return 设备属性最新值列表
      * @throws ApiException 查询过程中遇到的业务逻辑异常
      */
-    @GetMapping(value = "/{deviceId}/module/{moduleId}/attribute/latest")
+    @GetMapping(value = "/{deviceId}/modules/{moduleId}/attributes/latest")
     public ApiResponse<List<DeviceAttributeLatestDTO>> getDeviceLatestAttribute(@PathVariable("deviceId") String deviceId,
                                                                                 @PathVariable("moduleId") String moduleId,
                                                                                 @RequestParam(value = "attributeName", required = false) String attributeName,
@@ -64,7 +68,7 @@ public class DeviceAttributeController {
      * @return 设备的属性列表
      * @throws ApiException 查询过程中遇到的业务异常
      */
-    @PostMapping(value = "/attribute/filter")
+    @PostMapping(value = "/attributes/filter")
     @SearchModule(module = SearchFieldModuleIdentifier.DeviceAttribute)
     public ApiResponse<PageResult<DeviceAttributeDTO>> getReportedAttributeByPageable(@Valid PaginationQuery paginationQuery,
                                                                                       @Valid @RequestBody SearchFieldQuery searchFieldQuery) throws ApiException {
@@ -79,7 +83,7 @@ public class DeviceAttributeController {
      * @return 提取后的属性 {@link Attribute}
      * @throws ApiException 遇到的业务逻辑异常
      */
-    @PostMapping(value = "/attribute/{deviceAttributeId}/extract")
+    @PostMapping(value = "/attributes/{deviceAttributeId}/extract")
     @OperationLog(action = LogAction.Extract,
             objectType = LogObjectType.DeviceAttribute,
             objectId = "{#p0}",
@@ -89,5 +93,52 @@ public class DeviceAttributeController {
                                                                   @Valid @RequestBody ExtractUnknownDeviceAttributeRequest request) throws ApiException {
         UserAuthorizedAddition authorizedAddition = UserDetailsContext.getUserAddition();
         return ApiResponse.success(this.deviceAttributeService.extractUnknownAttribute(deviceAttributeId, request, authorizedAddition));
+    }
+
+    /**
+     * 添加设备属性
+     *
+     * @param request 添加设备属性请求参数 {@link AddDeviceAttributeRequest}
+     * @return 新增的属性
+     * @throws ApiException 遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/{deviceId}/attributes")
+    @OperationLog(action = LogAction.Add,
+            objectType = LogObjectType.DeviceAttribute,
+            objectId = "{#executionSucceed ? #result.data.id : #p1.identifier}",
+            msg = "{#executionSucceed ? '添加属性成功' : '添加属性失败'}",
+            activateData = "{#p1}")
+    public ApiResponse<DeviceAttribute> addDeviceAttribute(@PathVariable("deviceId") String deviceId,
+                                                           @Valid @RequestBody AddDeviceAttributeRequest request) throws ApiException {
+        Device device = this.deviceService.selectById(deviceId);
+        if (device == null || device.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        return ApiResponse.success(this.deviceAttributeService.addDeviceAttribute(device, request));
+    }
+
+    /**
+     * 更新设备属性
+     *
+     * @param deviceAttributeId 设备属性ID {@link DeviceAttribute#getId()}
+     * @param request           更新设备属性请求参数 {@link UpdateDeviceAttributeRequest}
+     * @return 更新后的设备属性
+     * @throws ApiException 遇到的业务逻辑异常
+     */
+    @PostMapping(value = "/{deviceId}/attributes/{attributeId}")
+    @OperationLog(action = LogAction.Update,
+            objectType = LogObjectType.DeviceAttribute,
+            objectId = "{#executionSucceed ? #result.data.id : #p1}",
+            object = "{@deviceAttributeServiceImpl.selectById(#p1)}",
+            msg = "{#executionSucceed ? '更新属性值成功' : '更新属性值失败'}",
+            activateData = "{#p2}")
+    public ApiResponse<DeviceAttribute> updateDeviceAttribute(@PathVariable("deviceId") String deviceId,
+                                                              @PathVariable("attributeId") String deviceAttributeId,
+                                                              @Valid @RequestBody UpdateDeviceAttributeRequest request) throws ApiException {
+        Device device = this.deviceService.selectById(deviceId);
+        if (device == null || device.isDeleted()) {
+            throw new ApiException(StatusCodeConstants.DEVICE_NOT_EXISTS, deviceId);
+        }
+        return ApiResponse.success(this.deviceAttributeService.updateDeviceAttribute(deviceAttributeId, request));
     }
 }

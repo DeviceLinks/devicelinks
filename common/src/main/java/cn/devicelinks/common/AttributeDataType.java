@@ -18,13 +18,13 @@
 package cn.devicelinks.common;
 
 import cn.devicelinks.common.annotation.ApiEnum;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -90,85 +90,50 @@ public enum AttributeDataType {
     public boolean validate(Object value) throws IllegalArgumentException {
         Assert.notNull(value, "value must not be null");
         boolean isValid = true;
-
-        switch (this) {
-            case STRING:
-                // ...
-                break;
-            case INTEGER:
-                try {
+        try {
+            switch (this) {
+                case STRING:
+                    // ...
+                    break;
+                case INTEGER:
                     Integer.parseInt(value.toString());
-                } catch (NumberFormatException e) {
-                    isValid = false;
-                }
-                break;
-            case DOUBLE:
-                try {
+                    break;
+                case DOUBLE:
                     Double.parseDouble(value.toString());
-                } catch (NumberFormatException e) {
-                    isValid = false;
-                }
-                break;
-            case ENUM:
-                isValid = value instanceof Enum;
-                break;
-            case BOOLEAN:
-                // Validate the value as a boolean (true/false)
-                if (!Boolean.TRUE.toString().equalsIgnoreCase(value.toString()) && !Boolean.FALSE.toString().equalsIgnoreCase(value.toString())) {
-                    isValid = false;
-                }
-                break;
-            case DATETIME:
-                // Validate the value as a valid date and time
-                SimpleDateFormat dateTimeFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT_YYYY_MM_DD_HH_MM_SS);
-                dateTimeFormat.setLenient(false);
-                try {
-                    dateTimeFormat.parse(value.toString());
-                } catch (ParseException e) {
-                    isValid = false;
-                }
-                break;
-            case DATE:
-                // Validate the value as a valid date
-                SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT_YYYY_MM_DD);
-                dateFormat.setLenient(false);
-                try {
-                    dateFormat.parse(value.toString());
-                } catch (ParseException e) {
-                    isValid = false;
-                }
-                break;
-            case TIME:
-                // Validate the value as a valid time
-                try {
-                    SimpleDateFormat timeFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT_HH_MM_SS);
-                    timeFormat.setLenient(false);
-                    timeFormat.parse(value.toString());
-                } catch (ParseException e) {
-                    isValid = false;
-                }
-                break;
-            case TIMESTAMP:
-                try {
+                    break;
+                case ENUM:
+                    isValid = value instanceof Enum;
+                    break;
+                case BOOLEAN:
+                    // Validate the value as a boolean (true/false)
+                    if (!Boolean.TRUE.toString().equalsIgnoreCase(value.toString()) && !Boolean.FALSE.toString().equalsIgnoreCase(value.toString())) {
+                        isValid = false;
+                    }
+                    break;
+                case DATE:
+                    LocalDate.parse(value.toString());
+                    break;
+                case DATETIME:
+                    LocalDateTime.parse(value.toString());
+                    break;
+                case TIME:
+                    LocalTime.parse(value.toString());
+                    break;
+                case TIMESTAMP:
                     long ts = Long.parseLong(value.toString());
                     if (ts < 0 || ts > 4102444800000L) {
                         isValid = false;
                     }
-                } catch (NumberFormatException e) {
-                    isValid = false;
-                }
-                break;
-            case ARRAY:
-                isValid = value.getClass().isArray() || value instanceof List;
-                break;
-            case JSON:
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    mapper.readTree(value.toString());
-                } catch (JsonProcessingException e) {
-                    isValid = false;
-                }
-                break;
+                    break;
+                case ARRAY:
+                    isValid = value.getClass().isArray() || value instanceof List;
+                    break;
+                case JSON:
+                    new ObjectMapper().readTree(value.toString());
+                    break;
+            }
+        } catch (Exception e) {
+            isValid = false;
         }
         return isValid;
     }

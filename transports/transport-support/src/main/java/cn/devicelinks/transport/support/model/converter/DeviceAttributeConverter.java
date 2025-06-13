@@ -4,6 +4,7 @@ import cn.devicelinks.api.device.center.model.request.SaveOrUpdateDeviceAttribut
 import cn.devicelinks.entity.DeviceAttribute;
 import cn.devicelinks.transport.support.model.body.ReportDeviceAttributeBody;
 import cn.devicelinks.transport.support.model.response.QueryDeviceAttributeResponse;
+import cn.devicelinks.transport.support.model.response.SubscribeDeviceAttributeUpdateResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -41,5 +42,16 @@ public interface DeviceAttributeConverter {
     QueryDeviceAttributeResponse.AttributeVersionValue fromDeviceAttribute(DeviceAttribute deviceAttribute);
 
     List<QueryDeviceAttributeResponse.AttributeVersionValue> fromDeviceAttribute(List<DeviceAttribute> deviceAttributeList);
+
+
+    /**
+     * {@link DeviceAttribute} Convert to {@link SubscribeDeviceAttributeUpdateResponse.AttributeUpdateVersionValue}
+     *
+     * @param desired 设备期望属性对象实例 {@link DeviceAttribute}
+     * @return 设备查询响应的期望属性值对象实例 {@link SubscribeDeviceAttributeUpdateResponse.AttributeUpdateVersionValue}
+     */
+    SubscribeDeviceAttributeUpdateResponse.AttributeUpdateVersionValue fromDeviceAttributeDesired(DeviceAttribute desired);
+
+    List<SubscribeDeviceAttributeUpdateResponse.AttributeUpdateVersionValue> fromDeviceAttributeDesired(List<DeviceAttribute> desired);
 
 }

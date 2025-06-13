@@ -2,7 +2,6 @@ package cn.devicelinks.jdbc.repository;
 
 import cn.devicelinks.api.model.dto.DeviceAttributeDTO;
 import cn.devicelinks.api.model.dto.DeviceAttributeLatestDTO;
-import cn.devicelinks.common.AttributeValueSource;
 import cn.devicelinks.entity.Attribute;
 import cn.devicelinks.entity.DeviceAttribute;
 import cn.devicelinks.jdbc.core.Repository;
@@ -45,9 +44,8 @@ public interface DeviceAttributeRepository extends Repository<DeviceAttribute, S
      * 查询设备属性列表
      *
      * @param deviceId    设备ID {@link DeviceAttribute#getDeviceId()}
-     * @param valueSource 值来源 {@link AttributeValueSource}
      * @param identifiers 属性标识符列表 {@link DeviceAttribute#getIdentifier()}
      * @return 设备属性 {@link DeviceAttribute}
      */
-    List<DeviceAttribute> selectDeviceAttributes(String deviceId, AttributeValueSource valueSource, String[] identifiers);
+    List<DeviceAttribute> selectDeviceAttributes(String deviceId, String[] identifiers);
 }

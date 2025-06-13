@@ -2,7 +2,6 @@ package cn.devicelinks.api.model.dto;
 
 import cn.devicelinks.common.AttributeDataType;
 import cn.devicelinks.common.AttributeScope;
-import cn.devicelinks.common.AttributeValueSource;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -22,8 +21,5 @@ public class DeviceAttributeLatestDTO {
     private AttributeScope scope;
     private String unitName;
     private Object lastReportValue;
-    private AttributeValueSource valueSource;
     private LocalDateTime lastReportTime;
-    private Object lastDesiredValue;
-    private LocalDateTime lastDesiredTime;
 }

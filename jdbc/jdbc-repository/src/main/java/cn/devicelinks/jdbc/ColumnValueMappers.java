@@ -68,20 +68,16 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     EnumColumnValueMapper NOTIFICATION_SEVERITY = new EnumColumnValueMapper(NotificationSeverity.class);
     EnumColumnValueMapper NOTIFICATION_TYPE = new EnumColumnValueMapper(NotificationType.class);
     EnumColumnValueMapper NOTIFICATION_MATCH_USER_AWAY = new EnumColumnValueMapper(NotificationMatchUserAway.class);
-    EnumColumnValueMapper NOTIFICATION_PUSH_AWAY = new EnumColumnValueMapper(NotificationPushAway.class);
     EnumColumnValueMapper ACCESS_GATEWAY_PROTOCOL = new EnumColumnValueMapper(AccessGatewayProtocol.class);
     EnumColumnValueMapper NOTIFICATION_TYPE_IDENTIFIER = new EnumColumnValueMapper(NotificationTypeIdentifier.class);
     EnumColumnValueMapper DEVICE_DESIRED_OPERATION_TYPE = new EnumColumnValueMapper(DeviceDesiredOperationType.class);
     EnumColumnValueMapper DEVICE_DESIRED_OPERATION_SOURCE = new EnumColumnValueMapper(DeviceDesiredOperationSource.class);
     EnumColumnValueMapper DEVICE_SHADOW_STATUS = new EnumColumnValueMapper(DeviceShadowStatus.class);
     EnumColumnValueMapper TELEMETRY_METRIC_TYPE = new EnumColumnValueMapper(TelemetryMetricType.class);
-    EnumColumnValueMapper DESIRED_ATTRIBUTE_STATUS = new EnumColumnValueMapper(DesiredAttributeStatus.class);
     EnumColumnValueMapper ATTRIBUTE_SCOPE = new EnumColumnValueMapper(AttributeScope.class);
-    EnumColumnValueMapper ATTRIBUTE_VALUE_SOURCE = new EnumColumnValueMapper(AttributeValueSource.class);
     EnumColumnValueMapper DATA_CHART_TARGET_LOCATION = new EnumColumnValueMapper(DataChartTargetLocation.class);
     EnumColumnValueMapper DATA_CHART_TYPE = new EnumColumnValueMapper(DataChartType.class);
     EnumColumnValueMapper DATA_CHART_FIELD_TYPE = new EnumColumnValueMapper(DataChartFieldType.class);
-    EnumColumnValueMapper DEVICE_AUTHENTICATION_METHOD = new EnumColumnValueMapper(DeviceAuthenticationMethod.class);
     EnumColumnValueMapper DEVICE_SECRET_STATUS = new EnumColumnValueMapper(DeviceSecretStatus.class);
     EnumColumnValueMapper ATTRIBUTE_CREATE_MODE =  new EnumColumnValueMapper(AttributeCreateMode.class);
 
@@ -97,7 +93,6 @@ public interface ColumnValueMappers extends BasicColumnValueMapper {
     JSONObjectValueMapper OTA_UPGRADE_BATCH_ADDITION = new JSONObjectValueMapper(OtaUpgradeBatchAddition.class);
     JSONObjectValueMapper SYS_LOG_ADDITION = new JSONObjectValueMapper(SysLogAddition.class);
     JSONObjectValueMapper TELEMETRY_ADDITION = new JSONObjectValueMapper(TelemetryAddition.class);
-    JSONObjectValueMapper DEVICE_SHADOW_DATA_ADDITION = new JSONObjectValueMapper(DeviceShadowDataAddition.class);
     JSONObjectValueMapper DEVICE_PROFILE_LOG_ADDITION = new JSONObjectValueMapper(DeviceProfileLogAddition.class);
     JSONObjectValueMapper DEVICE_PROFILE_ALARM_ADDITION = new JSONObjectValueMapper(DeviceProfileAlarmAddition.class);
     JSONObjectValueMapper DEVICE_PROFILE_PROVISION_ADDITION = new JSONObjectValueMapper(DeviceProfileProvisionAddition.class);

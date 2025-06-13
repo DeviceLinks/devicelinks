@@ -78,10 +78,6 @@ public enum SearchFieldModuleIdentifier {
      */
     DeviceAttribute("设备属性"),
     /**
-     * 设备期望属性
-     */
-    DeviceDesiredAttribute("设备期望属性"),
-    /**
      * 数据图表
      */
     DataChart("数据图表");

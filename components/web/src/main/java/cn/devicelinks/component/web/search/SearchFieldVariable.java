@@ -89,6 +89,7 @@ public enum SearchFieldVariable {
     DEVICE_ATTRIBUTE_REPORT_TIME("lastReportTime", "设备属性上报时间"),
     DEVICE_ATTRIBUTE_LAST_UPDATE_TIME("lastUpdateTime", "设备属性最后更新时间"),
     DEVICE_ATTRIBUTE_DESIRED_STATUS("status", "设备期望属性状态"),
+    DEVICE_ATTRIBUTE_SCOPE("scope","设备属性范围"),
 
     DATA_CHART_NAME("name", "数据图表名称"),
     DATA_CHART_TYPE("chartType", "数据图表类型"),
